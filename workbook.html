@@ -11,7 +11,6 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--bridge-bg); margin: 0; display: flex; height: 100vh; overflow: hidden; color: var(--bridge-charcoal); }
         
-        /* 사이드바 */
         .sidebar { width: 280px; background: var(--bridge-paper); display: flex; flex-direction: column; z-index: 20; border-right: 1px solid #EAEAEA; box-shadow: 2px 0 15px rgba(0,0,0,0.02); }
         .sidebar-header { padding: 30px 20px 20px; text-align: center; border-bottom: 1px solid #F0F0F0; cursor: pointer; }
         .sidebar-logo { max-width: 180px; height: auto; margin-bottom: 5px; }
@@ -22,25 +21,17 @@
         .nav-text { display: flex; flex-direction: column; font-size: 14px; }
         .nav-text span.page-num { font-size: 11px; opacity: 0.6; margin-bottom: 4px; font-weight: bold; }
 
-        /* 메인 뷰어 */
         .viewer { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 25px; position: relative; overflow-y: auto; }
         
-        /* 상단 타겟 단어 바 */
-        .top-info-bar { width: 100%; max-width: 850px; display: flex; justify-content: flex-end; align-items: center; margin-bottom: 15px; }
+        .top-info-bar { width: 100%; max-width: 850px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .target-words-box { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding: 10px 20px; background: #FFF; border-radius: 15px; border: 1px solid #EAEAEA; }
         .target-words-box span { font-size: 10px; color: var(--bridge-green); font-weight: 900; text-transform: uppercase; }
         #target-words-text { font-weight: 800; font-size: 16px; color: var(--bridge-charcoal); }
 
         .canvas-container { position: relative; background: var(--bridge-paper); border-radius: 20px; box-shadow: 0 10px 40px rgba(58, 58, 66, 0.08); padding: 10px; width: 100%; max-width: 850px; line-height: 0; }
-        #main-img { width: 100%; max-height: 45vh; display: block; pointer-events: none; object-fit: contain; }
+        #main-img { width: 100%; max-height: 50vh; display: block; pointer-events: none; object-fit: contain; }
         #drawing-canvas { position: absolute; top: 10px; left: 10px; cursor: crosshair; touch-action: none; }
 
-        /* 💡 1페이지 이름 입력 플로팅 UI */
-        #name-input-container { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); z-index: 10; text-align: center; display: none; }
-        .floating-label { font-size: 11px; color: var(--bridge-green); font-weight: 900; text-transform: uppercase; margin-bottom: 5px; display: block; }
-        .floating-name-input { border: 2px solid var(--bridge-green); border-radius: 50px; padding: 10px 25px; font-size: 18px; font-weight: bold; width: 250px; outline: none; box-shadow: 0 10px 25px rgba(140, 198, 159, 0.2); }
-
-        /* 컨트롤 패널 */
         .controls-wrapper { width: 100%; max-width: 850px; margin-top: 20px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
         .tool-bar { display: flex; align-items: center; justify-content: center; gap: 20px; background: white; padding: 15px 35px; border-radius: 50px; box-shadow: 0 5px 25px rgba(0,0,0,0.04); width: 100%; flex-wrap: wrap; border: 1px solid #F0F0F0; }
         .brush-control { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: bold; }
@@ -57,9 +48,6 @@
         .btn-record.recording { background: var(--bridge-danger); color: #FFF; animation: pulse 1.5s infinite; border: none; }
         .btn-submit { background: var(--bridge-charcoal); color: #FFF; box-shadow: 0 8px 20px rgba(58, 58, 66, 0.2); flex: 1; max-width: 300px; }
 
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-
-        /* 결과 팝업 */
         #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(247, 249, 248, 0.98); backdrop-filter: blur(8px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; border-radius: 20px; text-align: center; padding: 40px; }
         .status-title { font-size: 28px; font-weight: 900; color: var(--bridge-green); margin-bottom: 10px; }
         .score-badge { font-size: 44px; color: #FFF; background: var(--bridge-green); padding: 10px 50px; border-radius: 60px; margin-bottom: 25px; font-weight: 900; }
@@ -73,8 +61,7 @@
             .sidebar { width: 100%; height: auto; flex-direction: row; padding: 15px; }
             .nav-list { display: flex; overflow-x: auto; padding: 5px 0; gap: 10px; }
             .nav-item { min-width: 130px; margin-bottom: 0; }
-            .viewer { padding: 15px; }
-            #main-img { max-height: 35vh; }
+            #main-img { max-height: 40vh; }
             .nav-buttons { flex-direction: column; }
             .btn { width: 100%; max-width: 100%; }
         }
@@ -91,7 +78,8 @@
 
 <div class="viewer">
     <div class="top-info-bar">
-        <div class="target-words-box" id="target-words-box">
+        <div style="font-weight: 800; color: var(--bridge-green); font-size: 14px;">Inquiry Lab</div>
+        <div class="target-words-box">
             <span>Inquiry Target</span> <div id="target-words-text">Loading...</div>
         </div>
     </div>
@@ -110,11 +98,6 @@
     </div>
 
     <div class="canvas-container">
-        <!-- 💡 1페이지 이름 입력란 -->
-        <div id="name-input-container">
-            <span class="floating-label">Enter Student Name</span>
-            <input type="text" id="global-student-name" class="floating-name-input" placeholder="Type name here...">
-        </div>
         <img src="" id="main-img" crossorigin="anonymous">
         <canvas id="drawing-canvas"></canvas>
     </div>
@@ -156,7 +139,7 @@
     const data = curriculumData[urlParams.get('series') || 'A1'];
     let currentPageIndex = 0;
     let isSeriesFinished = false;
-    let savedName = "Student"; // 전역 이름 변수
+    let savedName = "Friend"; // 1페이지에서 인식 전 기본값
 
     const canvas = document.getElementById('drawing-canvas');
     const ctx = canvas.getContext('2d');
@@ -164,11 +147,10 @@
     const brushSlider = document.getElementById('brush-size');
     let drawing = false;
 
-    // --- 리셋 버그 수정 ---
     function resetCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.beginPath(); // 이전 경로 완전히 끊기
-        drawing = false; // 드로잉 상태 강제 종료
+        ctx.beginPath();
+        drawing = false;
     }
 
     // --- 컬러링 휠 ---
@@ -222,7 +204,7 @@
     canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); }, {passive: false});
     canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); }, {passive: false});
 
-    // --- 녹음 시스템 ---
+    // --- 음성 녹음 ---
     let mediaRecorder; let audioChunks = []; let audioBlob = null; let isRecording = false;
     async function toggleRecording() {
         const btn = document.getElementById('record-btn');
@@ -234,7 +216,7 @@
                 mediaRecorder.ondataavailable = e => { if(e.data.size > 0) audioChunks.push(e.data); };
                 mediaRecorder.onstop = () => {
                     audioBlob = new Blob(audioChunks, { type: mimeType });
-                    audioChunks = []; btn.innerHTML = "🎵 Recorded";
+                    audioChunks = []; btn.innerHTML = "🎵 Recording Ready";
                     btn.style.background = "var(--bridge-green)"; btn.style.color = "#FFF";
                 };
                 audioChunks = []; mediaRecorder.start(); isRecording = true;
@@ -246,20 +228,10 @@
         }
     }
 
-    // --- 이름 저장 리스너 ---
-    document.getElementById('global-student-name').addEventListener('input', (e) => {
-        savedName = e.target.value || "Student";
-    });
-
-    // --- 페이지 관리 ---
     function loadPage(index) {
         currentPageIndex = index; audioBlob = null;
         const btn = document.getElementById('record-btn');
         btn.innerHTML = "🎤 Voice Recording"; btn.style.background = "#F0F2F1"; btn.style.color = "var(--bridge-charcoal)";
-        
-        // 1페이지일 때만 이름 입력창 노출
-        document.getElementById('name-input-container').style.display = (index === 0) ? 'block' : 'none';
-
         img.src = data[index].img;
         document.getElementById('target-words-text').innerText = data[index].words;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -269,13 +241,13 @@
     }
     function changePage(step) { loadPage(currentPageIndex + step); }
 
-    // --- AI 피드백 엔진 ---
+    // --- AI 피드백 (이름 인식 기능 탑재 V14.3) ---
     async function submitWork() {
         const overlay = document.getElementById('success-overlay');
         overlay.style.display = 'flex';
         document.getElementById('status-title').innerText = "TEACHER'S ASSESSMENT 👩‍🏫";
         document.getElementById('score-badge').innerText = "WAIT";
-        document.getElementById('child-msg').innerText = "Analyzing your masterpiece...";
+        document.getElementById('child-msg').innerText = "Analyzing your inquiry work...";
 
         try {
             const tempCanvas = document.createElement('canvas');
@@ -287,8 +259,11 @@
             tCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, tempCanvas.width, tempCanvas.height);
             const combinedData = tempCanvas.toDataURL("image/jpeg", 0.5).split(',')[1];
 
+            // 1페이지인 경우 이름을 인식하도록 프롬프트 구성
+            let nameTask = currentPageIndex === 0 ? "Identify the handwritten name in this image and return it as 'extracted_name'." : "";
+            
             let promptParts = [
-                { text: `[Role]: Bridge Academy Teacher. [Student]: ${savedName}. [Target Words]: ${data[currentPageIndex].words}. [Instruction]: 1. Address ${savedName} by name. 2. Provide 1 enthusiastic sentence for the child. 3. Provide 1 professional sentence for parent insight. Strictly JSON: { "score": number, "child_msg": "string", "parent_insight": "string" }` },
+                { text: `[Role]: Bridge Academy Expert Teacher. [Target Words]: ${data[currentPageIndex].words}. [Student Name]: ${savedName}. ${nameTask} [Instruction]: 1. Praise the child by name (${savedName}) in 1 sentence. 2. Provide 1 professional sentence for parent insight. Strictly JSON: { "score": number, "child_msg": "string", "parent_insight": "string", "extracted_name": "string" }` },
                 { inline_data: { mime_type: "image/jpeg", data: combinedData } }
             ];
 
@@ -309,6 +284,11 @@
             const cleanJson = result.candidates[0].content.parts[0].text.replace(/```json|```/g, "").match(/\{.*\}/s)[0];
             const analysis = JSON.parse(cleanJson);
             
+            // 1페이지에서 이름이 인식되었다면 전역 변수 업데이트
+            if (currentPageIndex === 0 && analysis.extracted_name && analysis.extracted_name !== "string") {
+                savedName = analysis.extracted_name;
+            }
+
             document.getElementById('status-title').innerText = "ASSESSMENT COMPLETE ⭐";
             document.getElementById('score-badge').innerText = `${analysis.score}%`;
             document.getElementById('child-msg').innerText = `"${analysis.child_msg}"`;
@@ -318,7 +298,7 @@
         } catch (e) {
             document.getElementById('status-title').innerText = "WELL DONE! 👍";
             document.getElementById('score-badge').innerText = "100%"; 
-            document.getElementById('child-msg').innerText = `Amazing effort, ${savedName}! Teacher is so proud of you!`;
+            document.getElementById('child-msg').innerText = `Amazing effort! Teacher is so proud of your inquiry work!`;
             if (currentPageIndex === data.length - 1) { isSeriesFinished = true; document.getElementById('overlay-btn').innerText = "Finish Exploration"; }
         }
     }

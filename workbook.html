@@ -18,10 +18,11 @@
         .sidebar-logo { max-width: 180px; height: auto; margin-bottom: 5px; }
         
         .nav-list { flex: 1; overflow-y: auto; padding: 20px 15px; }
-        .nav-item { display: flex; align-items: center; padding: 12px 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; border: 1px solid transparent; color: #666; }
-        .nav-item.active { background: #EAF4ED; color: var(--bridge-charcoal); font-weight: bold; border-left: 5px solid var(--bridge-green); }
+        .nav-item { display: flex; align-items: center; padding: 12px 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; background: transparent; border: 1px solid transparent; color: #666; transition: all 0.3s ease; }
+        .nav-item:hover { background: #F8FBF9; color: var(--bridge-charcoal); }
+        .nav-item.active { background: #EAF4ED; color: var(--bridge-charcoal); font-weight: bold; border-left: 5px solid var(--bridge-green); border-radius: 8px 12px 12px 8px; }
         .nav-text { display: flex; flex-direction: column; font-size: 14px; }
-        .nav-text span.page-num { font-size: 11px; opacity: 0.6; margin-bottom: 4px; font-weight: bold; }
+        .nav-text span.page-num { font-size: 11px; opacity: 0.6; margin-bottom: 4px; font-weight: bold; letter-spacing: 0.5px;}
 
         /* 메인 뷰어 */
         .viewer { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 25px; position: relative; overflow-y: auto; }
@@ -29,36 +30,48 @@
         #main-img { width: 100%; max-height: 55vh; display: block; pointer-events: none; object-fit: contain; }
         #drawing-canvas { position: absolute; top: 10px; left: 10px; cursor: crosshair; touch-action: none; }
 
-        /* 컨트롤 도구 */
+        /* 컨트롤 패널 (컬러링 휠 복구) */
         .controls-wrapper { width: 100%; max-width: 850px; margin-top: 25px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
-        .tool-bar { display: flex; align-items: center; justify-content: center; gap: 20px; background: white; padding: 15px 35px; border-radius: 50px; box-shadow: 0 5px 25px rgba(0,0,0,0.04); width: 100%; border: 1px solid #F0F0F0; }
+        .tool-bar { display: flex; align-items: center; justify-content: center; gap: 20px; background: white; padding: 15px 35px; border-radius: 50px; box-shadow: 0 5px 25px rgba(0,0,0,0.04); width: 100%; flex-wrap: wrap; border: 1px solid #F0F0F0; }
+        .brush-control { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: bold; color: var(--bridge-charcoal); }
         input[type=range] { width: 120px; accent-color: var(--bridge-green); }
+        
+        .color-ring-container { position: relative; width: 45px; height: 45px; cursor: pointer; }
+        #color-wheel { border-radius: 50%; width: 100%; height: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .current-color-indicator { width: 30px; height: 30px; border-radius: 50%; border: 3px solid #FFF; box-shadow: 0 2px 6px rgba(0,0,0,0.15); background: #3A3A42; }
         
-        .btn { padding: 16px 32px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        .btn-clear { background: none; border: none; cursor: pointer; color: #888; font-weight: bold; font-size: 14px; }
+        
+        .nav-buttons { display: flex; flex-wrap: wrap; gap: 15px; width: 100%; justify-content: center; }
+        .btn { padding: 16px 32px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; letter-spacing: 0.5px; }
+        .btn-nav { background: #F0F2F1; color: var(--bridge-charcoal); min-width: 130px; }
         .btn-submit { background: var(--bridge-charcoal); color: #FFF; box-shadow: 0 8px 20px rgba(58, 58, 66, 0.2); flex: 1; max-width: 350px; }
 
-        /* 결과 오버레이 */
+        /* AI 팝업 */
         #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(247, 249, 248, 0.96); backdrop-filter: blur(8px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; border-radius: 20px; text-align: center; padding: 40px; }
-        .status-title { font-size: 34px; font-weight: 900; color: var(--bridge-green); margin-bottom: 15px; }
+        .status-title { font-size: 34px; font-weight: 900; color: var(--bridge-green); margin-bottom: 15px; letter-spacing: 1px; }
         .score-badge { font-size: 50px; color: #FFF; background: var(--bridge-green); padding: 15px 60px; border-radius: 60px; margin-bottom: 25px; font-weight: 900; box-shadow: 0 10px 30px rgba(140, 198, 159, 0.4); }
-        .ai-feedback { font-size: 22px; color: var(--bridge-charcoal); max-width: 80%; line-height: 1.6; font-weight: 600; }
-        .btn-continue { background: var(--bridge-charcoal); color: #FFF; padding: 18px 60px; margin-top: 40px; border-radius: 50px; width: auto; }
+        .ai-feedback { font-size: 22px; color: var(--bridge-charcoal); max-width: 80%; line-height: 1.6; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .btn-continue { background: var(--bridge-charcoal); color: #FFF; padding: 18px 60px; margin-top: 40px; font-size: 18px; border-radius: 50px; width: auto; box-shadow: 0 8px 20px rgba(58, 58, 66, 0.2); }
 
         @media (max-width: 900px) {
             body { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; flex-direction: row; padding: 15px; }
-            .nav-list { display: flex; flex-direction: row; overflow-x: auto; padding: 0; gap: 10px; }
-            .nav-item { min-width: 130px; margin-bottom: 0; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; align-items: center; padding: 15px; border-right: none; border-bottom: 1px solid #EAEAEA; }
+            .sidebar-header { padding: 0; border: none; text-align: left; margin-right: 20px; }
+            .sidebar-logo { max-width: 120px; margin-bottom: 0; }
+            .nav-list { display: flex; flex-direction: row; overflow-x: auto; padding: 5px 0; margin: 0; gap: 10px; }
+            .nav-item { min-width: 130px; margin-bottom: 0; border-left: none; border-bottom: 4px solid transparent; border-radius: 10px; padding: 10px; }
+            .nav-item.active { border-left: none; border-bottom: 4px solid var(--bridge-green); border-radius: 10px; }
+            .viewer { padding: 15px; }
             #main-img { max-height: 45vh; }
-            .btn-submit { order: -1; max-width: 100%; }
+            .tool-bar { padding: 12px; gap: 15px; border-radius: 25px; }
+            .btn-submit { order: -1; max-width: 100%; font-size: 18px; padding: 18px; margin-bottom: 5px; }
         }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <!-- 로고 클릭 시 index.html로 복귀 -->
     <div class="sidebar-header" onclick="window.location.href='index.html'">
         <img src="logo.png" alt="Bridge Academy" class="sidebar-logo">
         <div style="font-size: 11px; color: #888; margin-top: 5px;">◀ Back to Lobby</div>
@@ -68,25 +81,34 @@
 
 <div class="viewer">
     <div id="success-overlay">
-        <div class="status-title" id="status-title">CHECKING... 👀</div>
+        <div class="status-title" id="status-title">LOOKING... 👀</div>
         <div id="score-badge" class="score-badge">WAIT</div>
-        <div id="ai-feedback" class="ai-feedback">Teacher is looking at your work.</div>
+        <div id="ai-feedback" class="ai-feedback">Teacher is checking...</div>
         <button id="overlay-btn" class="btn btn-continue" onclick="handleOverlayClick()">Continue</button>
     </div>
 
-    <div class="canvas-container">
+    <div class="canvas-container" id="canvas-wrapper">
         <img src="" id="main-img" crossorigin="anonymous">
         <canvas id="drawing-canvas"></canvas>
     </div>
     
     <div class="controls-wrapper">
         <div class="tool-bar">
-            Pen <input type="range" id="brush-size" min="3" max="25" value="8">
+            <div class="brush-control">Pen <input type="range" id="brush-size" min="3" max="25" value="8"></div>
+            <div style="width: 1px; height: 25px; background: #EAEAEA; margin: 0 5px;"></div>
+            
+            <!-- 컬러링 휠 영역 복구 -->
+            <div class="color-ring-container">
+                <canvas id="color-wheel" width="80" height="80"></canvas>
+            </div>
             <div class="current-color-indicator" id="current-color-bg"></div>
-            <button onclick="ctx.clearRect(0, 0, canvas.width, canvas.height);" style="background: none; border: none; cursor: pointer; color: #888; font-weight: bold;">Erase All</button>
+            
+            <button class="btn-clear" onclick="ctx.clearRect(0, 0, canvas.width, canvas.height);">Erase</button>
         </div>
-        <div class="nav-buttons" style="display: flex; gap: 15px; width: 100%; justify-content: center;">
+        <div class="nav-buttons">
+            <button id="prev-btn" class="btn btn-nav" onclick="changePage(-1)">◀ Prev</button>
             <button id="submit-btn" class="btn btn-submit" onclick="submitWork()">Submit to Teacher ✨</button>
+            <button id="next-btn" class="btn btn-nav" onclick="changePage(1)">Next ▶</button>
         </div>
     </div>
 </div>
@@ -119,27 +141,110 @@
     const brushSlider = document.getElementById('brush-size');
     let drawing = false;
 
+    // --- 컬러링 휠 로직 복구 ---
+    const wheelCanvas = document.getElementById('color-wheel');
+    const wheelCtx = wheelCanvas.getContext('2d');
+
+    function drawColorWheel() {
+        const radius = wheelCanvas.width / 2;
+        for (let angle = 0; angle < 360; angle++) {
+            const startAngle = (angle - 1) * Math.PI / 180;
+            const endAngle = (angle + 1) * Math.PI / 180;
+            wheelCtx.beginPath(); wheelCtx.moveTo(radius, radius);
+            wheelCtx.arc(radius, radius, radius, startAngle, endAngle);
+            wheelCtx.fillStyle = `hsl(${angle}, 100%, 50%)`; wheelCtx.fill();
+        }
+        wheelCtx.beginPath(); wheelCtx.arc(radius, radius, radius * 0.4, 0, Math.PI * 2);
+        wheelCtx.fillStyle = "white"; wheelCtx.fill();
+    }
+    
+    function pickColor(e) {
+        const rect = wheelCanvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const x = (clientX - rect.left) * (wheelCanvas.width / rect.width);
+        const y = (clientY - rect.top) * (wheelCanvas.height / rect.height);
+        const pixel = wheelCtx.getImageData(x, y, 1, 1).data;
+        if (pixel[3] !== 0) {
+            const color = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+            ctx.strokeStyle = color;
+            document.getElementById('current-color-bg').style.background = color;
+        }
+    }
+    
+    wheelCanvas.addEventListener('mousedown', pickColor);
+    wheelCanvas.addEventListener('touchstart', (e) => { pickColor(e); e.preventDefault(); }, {passive: false});
+    // ---------------------------
+
+    function resizeCanvas() {
+        canvas.width = img.clientWidth;
+        canvas.height = img.clientHeight;
+        ctx.lineCap = 'round'; 
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = brushSlider.value;
+        ctx.strokeStyle = document.getElementById('current-color-bg').style.background || '#3A3A42';
+    }
+    
+    img.onload = resizeCanvas;
+    window.addEventListener('resize', () => {
+        if(canvas.width === 0) return;
+        const currentData = canvas.toDataURL();
+        resizeCanvas();
+        const tempImg = new Image();
+        tempImg.onload = () => { ctx.drawImage(tempImg, 0, 0, canvas.width, canvas.height); };
+        tempImg.src = currentData;
+    });
+    
+    brushSlider.oninput = () => { ctx.lineWidth = brushSlider.value; };
+
+    function getCoords(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: (clientX - rect.left) * (canvas.width / rect.width), y: (clientY - rect.top) * (canvas.height / rect.height) };
+    }
+
+    function startDrawing(e) { drawing = true; const pos = getCoords(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); }
+    function draw(e) {
+        if (!drawing) return;
+        e.preventDefault(); 
+        const pos = getCoords(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(pos.x, pos.y);
+    }
+    function stopDrawing() { drawing = false; ctx.beginPath(); }
+    
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); }, {passive: false});
+    canvas.addEventListener('touchmove', draw, {passive: false});
+    canvas.addEventListener('touchend', stopDrawing);
+
     function loadPage(index) {
+        if (!data || index >= data.length || index < 0) return; 
         currentPageIndex = index;
-        isSeriesFinished = false;
+        isSeriesFinished = false; 
         img.src = data[index].img;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         document.querySelectorAll('.nav-item').forEach((el, idx) => el.classList.toggle('active', idx === index));
-        document.getElementById('overlay-btn').innerText = "Continue";
+        document.getElementById('prev-btn').disabled = (index === 0);
+        document.getElementById('next-btn').disabled = (index === data.length - 1);
+        document.getElementById('overlay-btn').innerText = "Continue"; 
     }
+    
+    function changePage(step) { loadPage(currentPageIndex + step); }
 
-    // AI 분석 (속도 최적화 및 완료 로직)
+    // V12.0 프리미엄 피드백 로직 적용
     async function submitWork() {
         const overlay = document.getElementById('success-overlay');
         overlay.style.display = 'flex';
-        document.getElementById('status-title').innerText = "CHECKING... 👀";
+        
+        document.getElementById('status-title').innerText = "ANALYZING... 🧐";
         document.getElementById('score-badge').innerText = "WAIT";
-        document.getElementById('ai-feedback').innerText = "Teacher is checking...";
+        document.getElementById('ai-feedback').innerHTML = "Teacher is writing a special note for you and your parents...";
 
         const isLastPage = (currentPageIndex === data.length - 1);
 
         try {
-            // 이미지 압축 (최대 600px)
             const MAX_WIDTH = 600;
             const scale = MAX_WIDTH / img.naturalWidth;
             const tempCanvas = document.createElement('canvas');
@@ -157,7 +262,13 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     contents: [{ parts: [
-                        { text: `[Role]: Preschool teacher. [Student]: 5-7 years old. [Action]: Give a short, very positive praise in simple English (max 2 sentences). Result strictly JSON: {"score": number, "feedback": "string"}` },
+                        { text: `
+                            [Role]: Expert International School Teacher (IB PYP focus).
+                            [Task]: Analyze a child's workbook (Age 3-8). 
+                            [Target 1 - Child]: Enthusiastic praise in very simple English.
+                            [Target 2 - Parent]: Professional educational insight about motor skills, creativity, or cognitive focus.
+                            [Output Format]: Strictly JSON { "score": number, "child_msg": "short sentence", "parent_insight": "professional sentence" }
+                        ` },
                         { inline_data: { mime_type: "image/jpeg", data: combinedData } }
                     ]}]
                 })
@@ -166,63 +277,39 @@
             const result = await response.json();
             const analysis = JSON.parse(result.candidates[0].content.parts[0].text.match(/\{.*\}/s)[0]);
             
+            document.getElementById('status-title').innerText = "EXCELLENT! ⭐";
+            document.getElementById('score-badge').innerText = `${analysis.score}%`;
+            document.getElementById('ai-feedback').innerHTML = `
+                <div style="color: var(--bridge-green); font-size: 26px; font-weight: 800; width: 100%;">
+                    "${analysis.child_msg}" 🎈
+                </div>
+                <div style="font-size: 15px; color: #666; font-weight: 400; line-height: 1.5; border-top: 1px solid #EAEAEA; padding-top: 15px; width: 100%; text-align: left; background: #FFF; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                    <strong style="color: var(--bridge-charcoal); display: block; margin-bottom: 5px;">[Teacher's Observation]</strong>
+                    ${analysis.parent_insight}
+                </div>
+            `;
+
             if (isLastPage) {
                 isSeriesFinished = true;
-                document.getElementById('status-title').innerText = "COMPLETE! 🏆";
-                document.getElementById('score-badge').innerText = "100%";
-                document.getElementById('ai-feedback').innerText = "Wow! You finished the whole book! You are a superstar! 🌈";
                 document.getElementById('overlay-btn').innerText = "Finish & Go Home";
-            } else {
-                document.getElementById('status-title').innerText = analysis.score >= 95 ? "WOW! 🌟" : "GOOD JOB! 👍";
-                document.getElementById('score-badge').innerText = `${analysis.score}%`;
-                document.getElementById('ai-feedback').innerText = analysis.feedback;
             }
+
         } catch (e) {
+            document.getElementById('ai-feedback').innerHTML = "Wonderful work! You are exploring so well today.";
             if (isLastPage) {
                 isSeriesFinished = true;
-                document.getElementById('status-title').innerText = "COMPLETE! 🏆";
-                document.getElementById('ai-feedback').innerText = "Great job finishing the book!";
                 document.getElementById('overlay-btn').innerText = "Finish & Go Home";
-            } else {
-                document.getElementById('ai-feedback').innerText = "Nice work! I like it!";
             }
         }
     }
 
     function handleOverlayClick() {
-        if (isSeriesFinished) window.location.href = 'index.html';
-        else {
+        if (isSeriesFinished) {
+            window.location.href = 'index.html'; 
+        } else {
             document.getElementById('success-overlay').style.display = 'none';
-            if (currentPageIndex < data.length - 1) loadPage(currentPageIndex + 1);
         }
     }
-
-    function resizeCanvas() {
-        canvas.width = img.clientWidth; canvas.height = img.clientHeight;
-        ctx.lineCap = 'round'; ctx.lineWidth = brushSlider.value; ctx.strokeStyle = '#3A3A42';
-    }
-    img.onload = resizeCanvas;
-    brushSlider.oninput = () => { ctx.lineWidth = brushSlider.value; };
-
-    function startDrawing(e) { 
-        drawing = true; 
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX || e.touches[0].clientX) - rect.left;
-        const y = (e.clientY || e.touches[0].clientY) - rect.top;
-        ctx.beginPath(); ctx.moveTo(x, y); 
-    }
-    function draw(e) {
-        if (!drawing) return;
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX || e.touches[0].clientX) - rect.left;
-        const y = (e.clientY || e.touches[0].clientY) - rect.top;
-        ctx.lineTo(x, y); ctx.stroke();
-    }
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', () => drawing = false);
-    canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); });
-    canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); });
 
     if (data) {
         const navList = document.getElementById('nav-list');
@@ -233,6 +320,7 @@
             div.onclick = () => loadPage(index);
             navList.appendChild(div);
         });
+        drawColorWheel();
         setTimeout(() => loadPage(0), 100);
     }
 </script>

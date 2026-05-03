@@ -2,119 +2,120 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bridge Academy | Excellence in Education</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge Academy | Elite Digital Campus</title>
     <style>
         :root { 
-            --bridge-green: #8CC69F; --bridge-taupe: #A39B8E; --bridge-charcoal: #3A3A42;
-            --bridge-bg: #FDFDFD; --bridge-soft-bg: #F8F9F8;
+            --bridge-green: #8CC69F; --bridge-taupe: #A39B8E; --bridge-charcoal: #3A3A42; 
+            --bridge-bg: #F2F5F4; --bridge-paper: #FFFFFF; --bridge-gold: #D4AF37;
         }
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        body { font-family: 'Playfair Display', serif, 'Noto Sans KR'; background: var(--bridge-bg); margin: 0; color: var(--bridge-charcoal); }
         
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Optima', 'Didot', 'Apple SD Gothic Neo', serif; background: var(--bridge-bg); margin: 0; color: var(--bridge-charcoal); }
+        /* Premium Header */
+        header { padding: 40px 10% 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .logo { max-width: 220px; cursor: pointer; }
+        .campus-status { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; color: var(--bridge-taupe); }
 
-        /* 1. 플로팅 내비게이션 */
-        nav {
-            width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
-        }
-        .nav-logo { height: 40px; }
-        .nav-link { font-size: 13px; font-weight: bold; letter-spacing: 1px; color: var(--bridge-taupe); text-decoration: none; text-transform: uppercase; }
+        /* Hero Section */
+        .hero { padding: 80px 10% 60px; text-align: center; }
+        .hero h1 { font-size: 48px; margin-bottom: 15px; font-weight: 400; color: var(--bridge-charcoal); }
+        .hero p { font-size: 18px; color: var(--bridge-taupe); margin-bottom: 40px; letter-spacing: 0.5px; }
 
-        /* 2. 히어로 섹션 (고급화의 핵심) */
-        .hero {
-            height: 70vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; padding: 0 20px; background: linear-gradient(to bottom, #FFFFFF, var(--bridge-soft-bg));
-        }
-        .hero-logo { width: 280px; margin-bottom: 30px; animation: fadeIn 1.5s ease; }
-        .hero-title { font-size: 42px; font-weight: 300; letter-spacing: 4px; margin: 0; text-transform: uppercase; animation: fadeInUp 1s ease; }
-        .hero-subtitle { font-size: 16px; color: var(--bridge-taupe); margin-top: 15px; letter-spacing: 2px; animation: fadeInUp 1.2s ease; }
-        .scroll-indicator { margin-top: 50px; font-size: 12px; color: #BBB; letter-spacing: 2px; animation: bounce 2s infinite; }
-
-        /* 3. 시리즈 큐레이션 (카드 디자인) */
-        .content-section { max-width: 1100px; margin: 0 auto; padding: 100px 20px; }
-        .section-header { text-align: center; margin-bottom: 70px; }
-        .section-header h2 { font-size: 28px; font-weight: 900; letter-spacing: 1px; margin-bottom: 15px; }
-        .section-header div { width: 40px; height: 2px; background: var(--bridge-green); margin: 0 auto; }
-
-        .curriculum-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
-        .series-card {
-            background: white; border-radius: 0; padding: 50px 30px; text-decoration: none; color: inherit;
-            border: 1px solid #EEE; transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-            display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden;
-        }
-        .series-card::after {
-            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 0;
-            background: var(--bridge-soft-bg); z-index: -1; transition: 0.5s ease;
-        }
-        .series-card:hover { transform: translateY(-10px); border-color: var(--bridge-green); }
-        .series-card:hover::after { height: 100%; }
-
-        .card-level { font-size: 12px; font-weight: bold; color: var(--bridge-green); letter-spacing: 2px; margin-bottom: 20px; }
-        .card-title { font-size: 24px; font-weight: 400; margin: 0 0 15px 0; letter-spacing: 1px; }
-        .card-desc { font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 40px; max-width: 200px; }
+        /* Inquiry Series Grid */
+        .series-container { padding: 20px 10%; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; margin-bottom: 100px; }
+        .series-card { background: var(--bridge-paper); border-radius: 30px; overflow: hidden; position: relative; box-shadow: 0 20px 60px rgba(58, 58, 66, 0.05); border: 1px solid rgba(0,0,0,0.03); cursor: pointer; }
+        .series-card:hover { transform: translateY(-15px); box-shadow: 0 40px 80px rgba(140, 198, 159, 0.15); }
         
-        .btn-enter {
-            font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;
-            padding: 15px 40px; border: 1px solid var(--bridge-charcoal); transition: 0.3s;
-        }
-        .series-card:hover .btn-enter { background: var(--bridge-charcoal); color: white; }
+        .card-image { width: 100%; height: 280px; background: #EEE; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .card-image img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .card-content { padding: 35px; }
+        .tag { font-size: 10px; font-weight: 900; color: var(--bridge-green); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: block; }
+        .series-title { font-size: 24px; margin-bottom: 15px; font-weight: 600; }
+        .series-desc { font-size: 14px; color: #777; line-height: 1.8; margin-bottom: 25px; }
+        
+        .btn-enter { width: 100%; padding: 18px; border-radius: 15px; background: var(--bridge-charcoal); color: #FFF; border: none; font-weight: bold; cursor: pointer; font-size: 15px; letter-spacing: 1px; }
+        .series-card:hover .btn-enter { background: var(--bridge-green); }
 
-        /* 애니메이션 */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } 60% { transform: translateY(-5px); } }
+        /* Premium Logic Section */
+        .premium-features { padding: 100px 10%; background: #FFF; display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px; text-align: center; }
+        .feature-box h3 { font-size: 18px; color: var(--bridge-charcoal); margin-bottom: 15px; }
+        .feature-box p { font-size: 14px; color: #888; line-height: 1.6; }
+        .feature-icon { font-size: 32px; margin-bottom: 20px; display: block; }
 
-        /* 모바일 최적화 */
+        footer { padding: 60px 10%; background: var(--bridge-charcoal); color: #FFF; text-align: center; }
+        .footer-logo { max-width: 150px; opacity: 0.6; margin-bottom: 20px; }
+        .copyright { font-size: 12px; opacity: 0.4; letter-spacing: 1px; }
+
         @media (max-width: 768px) {
-            .hero-title { font-size: 30px; }
-            .curriculum-grid { grid-template-columns: 1fr; }
-            nav { padding: 15px 20px; }
+            .series-container { grid-template-columns: 1fr; }
+            .premium-features { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <img src="logo.png" alt="Logo" class="nav-logo">
-        <a href="#" class="nav-link">IBL Curriculum</a>
-    </nav>
+<header>
+    <img src="logo.png" alt="Bridge Academy" class="logo">
+    <div class="campus-status">Private Access Only</div>
+</header>
 
-    <section class="hero">
-        <img src="logo.png" alt="Bridge Academy" class="hero-logo">
-        <h1 class="hero-title">Beyond English</h1>
-        <p class="hero-subtitle">Cultivating Confidence through Inquiry</p>
-        <div class="scroll-indicator">EXPLORE</div>
-    </section>
+<section class="hero">
+    <h1>Welcome to the Future of Inquiry</h1>
+    <p>Premium Digital Learning Platform for Bridge Academy Leaders</p>
+</section>
 
-    <section class="content-section">
-        <div class="section-header">
-            <h2>Digital Workbook Archive</h2>
-            <div></div>
+<div class="series-container">
+    <!-- Series A1 -->
+    <div class="series-card" onclick="location.href='workbook.html?series=A1'">
+        <div class="card-image">
+            <img src="1.png" alt="Series A1">
         </div>
-
-        <div class="curriculum-grid">
-            <!-- A1 시리즈 -->
-            <a href="workbook.html?series=A1" class="series-card">
-                <span class="card-level">SERIES A1</span>
-                <h3 class="card-title">All About Me</h3>
-                <p class="card-desc">Exploring personal identity through creative tracing.</p>
-                <div class="btn-enter">Enter Room</div>
-            </a>
-
-            <!-- A2 시리즈 -->
-            <a href="workbook.html?series=A2" class="series-card">
-                <span class="card-level">SERIES A2</span>
-                <h3 class="card-title">World Around Us</h3>
-                <p class="card-desc">Expanding horizons with foundational vocabulary.</p>
-                <div class="btn-enter">Enter Room</div>
-            </a>
+        <div class="card-content">
+            <span class="tag">Foundation Series</span>
+            <div class="series-title">Inquiry Level: A1</div>
+            <p class="series-desc">자아 인식과 기초 감각 탐구를 통해 <br>북미 사립학교 스타일의 창의적 사고를 형성하는 입문 과정입니다.</p>
+            <button class="btn-enter">Start Inquiry Journey</button>
         </div>
-    </section>
+    </div>
 
-    <footer style="padding: 60px 20px; text-align: center; background: #FFF; border-top: 1px solid #EEE;">
-        <p style="font-size: 11px; color: #AAA; letter-spacing: 1px;">&copy; 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
-    </footer>
+    <!-- Series B1 (Upcoming) -->
+    <div class="series-card" style="opacity: 0.7; filter: grayscale(1);">
+        <div class="card-image">
+            <img src="8.png" alt="Series B1">
+        </div>
+        <div class="card-content">
+            <span class="tag">Advanced Series</span>
+            <div class="series-title">Inquiry Level: B1</div>
+            <p class="series-desc">사회와 자연의 연결 고리를 탐구하며 <br>심화된 언어 표현과 비판적 사고력을 확장하는 고학년 과정입니다.</p>
+            <button class="btn-enter" disabled>Coming Soon</button>
+        </div>
+    </div>
+</div>
+
+<section class="premium-features">
+    <div class="feature-box">
+        <span class="feature-icon">🎙️</span>
+        <h3>AI Speaking Lab</h3>
+        <p>인공지능이 아이의 발음과 언어 자신감을 <br>실시간으로 분석하여 전문 리포트를 제공합니다.</p>
+    </div>
+    <div class="feature-box">
+        <span class="feature-icon">🎨</span>
+        <h3>Multimodal Inquiry</h3>
+        <p>시각적 예술 활동과 언어적 탐구가 결합된 <br>다면적 커리큘럼으로 아이의 잠재력을 깨웁니다.</p>
+    </div>
+    <div class="feature-box">
+        <span class="feature-icon">👩‍🏫</span>
+        <h3>Professional Insight</h3>
+        <p>IB 교육 전문가의 관점으로 분석된 <br>매수업 별 교육 인사이트가 학부모님께 공유됩니다.</p>
+    </div>
+</section>
+
+<footer>
+    <img src="logo.png" alt="Bridge Academy" class="footer-logo">
+    <div class="copyright">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</div>
+</footer>
 
 </body>
 </html>

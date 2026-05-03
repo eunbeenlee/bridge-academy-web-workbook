@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bridge Academy | Professional Classroom</title>
+    <title>Bridge Academy | Deep Insight Classroom</title>
     <style>
         :root { 
             --bridge-green: #8CC69F; --bridge-taupe: #A39B8E; --bridge-charcoal: #3A3A42; --bridge-bg: #F7F9F8; --bridge-paper: #FFFFFF; --bridge-danger: #E07A5F;
@@ -139,7 +139,7 @@
     const data = curriculumData[urlParams.get('series') || 'A1'];
     let currentPageIndex = 0;
     let isSeriesFinished = false;
-    let savedName = "Friend"; // 1페이지에서 인식 전 기본값
+    let savedName = "Friend"; 
 
     const canvas = document.getElementById('drawing-canvas');
     const ctx = canvas.getContext('2d');
@@ -153,7 +153,6 @@
         drawing = false;
     }
 
-    // --- 컬러링 휠 ---
     const wheelCanvas = document.getElementById('color-wheel');
     const wheelCtx = wheelCanvas.getContext('2d');
     function drawColorWheel() {
@@ -184,7 +183,6 @@
     wheelCanvas.addEventListener('mousedown', pickColor);
     wheelCanvas.addEventListener('touchstart', (e) => { pickColor(e); e.preventDefault(); }, {passive: false});
 
-    // --- 드로잉 시스템 ---
     function resizeCanvas() {
         canvas.width = img.clientWidth; canvas.height = img.clientHeight;
         ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = brushSlider.value;
@@ -204,7 +202,6 @@
     canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); }, {passive: false});
     canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); }, {passive: false});
 
-    // --- 음성 녹음 ---
     let mediaRecorder; let audioChunks = []; let audioBlob = null; let isRecording = false;
     async function toggleRecording() {
         const btn = document.getElementById('record-btn');
@@ -241,13 +238,13 @@
     }
     function changePage(step) { loadPage(currentPageIndex + step); }
 
-    // --- AI 피드백 (이름 인식 기능 탑재 V14.3) ---
+    // --- AI 피드백 (Deep Observation V15.0) ---
     async function submitWork() {
         const overlay = document.getElementById('success-overlay');
         overlay.style.display = 'flex';
         document.getElementById('status-title').innerText = "TEACHER'S ASSESSMENT 👩‍🏫";
         document.getElementById('score-badge').innerText = "WAIT";
-        document.getElementById('child-msg').innerText = "Analyzing your inquiry work...";
+        document.getElementById('child-msg').innerText = "Observing your artwork closely...";
 
         try {
             const tempCanvas = document.createElement('canvas');
@@ -259,11 +256,27 @@
             tCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, tempCanvas.width, tempCanvas.height);
             const combinedData = tempCanvas.toDataURL("image/jpeg", 0.5).split(',')[1];
 
-            // 1페이지인 경우 이름을 인식하도록 프롬프트 구성
-            let nameTask = currentPageIndex === 0 ? "Identify the handwritten name in this image and return it as 'extracted_name'." : "";
+            let nameTask = currentPageIndex === 0 ? "Carefully read the handwritten name in the image. Return it as 'extracted_name'." : "";
             
             let promptParts = [
-                { text: `[Role]: Bridge Academy Expert Teacher. [Target Words]: ${data[currentPageIndex].words}. [Student Name]: ${savedName}. ${nameTask} [Instruction]: 1. Praise the child by name (${savedName}) in 1 sentence. 2. Provide 1 professional sentence for parent insight. Strictly JSON: { "score": number, "child_msg": "string", "parent_insight": "string", "extracted_name": "string" }` },
+                { text: `
+                    [Role]: Expert Bridge Academy Teacher specializing in Inquiry-Based Learning.
+                    [Task]: Perform a deep observation of the child's drawing and optional audio.
+                    [Target Words]: ${data[currentPageIndex].words}
+                    [Student Name]: ${savedName}
+                    ${nameTask}
+                    
+                    [Instructions for 'child_msg']:
+                    1. Mention at least ONE specific visual detail from the drawing (e.g., color, shape, or object drawn).
+                    2. Use the student's name (${savedName}).
+                    3. Connect the visual detail to the target word/concept in a simple, happy way.
+                    
+                    [Instructions for 'parent_insight']:
+                    1. Provide a professional pedagogical observation about the child's motor skills or conceptual understanding based on the SPECIFIC details in the image.
+                    2. Focus on how the child expressed the "Inquiry Target" through their art.
+                    
+                    Result strictly JSON: { "score": number, "child_msg": "string", "parent_insight": "string", "extracted_name": "string" }` 
+                },
                 { inline_data: { mime_type: "image/jpeg", data: combinedData } }
             ];
 
@@ -284,7 +297,6 @@
             const cleanJson = result.candidates[0].content.parts[0].text.replace(/```json|```/g, "").match(/\{.*\}/s)[0];
             const analysis = JSON.parse(cleanJson);
             
-            // 1페이지에서 이름이 인식되었다면 전역 변수 업데이트
             if (currentPageIndex === 0 && analysis.extracted_name && analysis.extracted_name !== "string") {
                 savedName = analysis.extracted_name;
             }
@@ -298,7 +310,7 @@
         } catch (e) {
             document.getElementById('status-title').innerText = "WELL DONE! 👍";
             document.getElementById('score-badge').innerText = "100%"; 
-            document.getElementById('child-msg').innerText = `Amazing effort! Teacher is so proud of your inquiry work!`;
+            document.getElementById('child-msg').innerText = `Amazing effort! Teacher sees your wonderful creative process!`;
             if (currentPageIndex === data.length - 1) { isSeriesFinished = true; document.getElementById('overlay-btn').innerText = "Finish Exploration"; }
         }
     }

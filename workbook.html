@@ -25,13 +25,16 @@
         /* 메인 뷰어 */
         .viewer { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 25px; position: relative; overflow-y: auto; }
         
-        /* 학생 이름 입력 필드 */
-        .top-info-bar { width: 100%; max-width: 850px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .student-name-input { border: none; background: transparent; font-size: 18px; font-weight: bold; color: var(--bridge-green); border-bottom: 2px solid #EAEAEA; padding: 5px; width: 150px; outline: none; }
+        /* 상단 정보 바 (이름 입력 고정) */
+        .top-info-bar { width: 100%; max-width: 850px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #FFF; padding: 15px 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .student-identity { display: flex; flex-direction: column; gap: 4px; }
+        .student-identity label { font-size: 10px; text-transform: uppercase; color: var(--bridge-green); font-weight: 900; }
+        .student-name-input { border: none; background: transparent; font-size: 18px; font-weight: bold; color: var(--bridge-charcoal); border-bottom: 2px solid #EEE; padding: 2px; width: 180px; outline: none; }
         .student-name-input:focus { border-bottom-color: var(--bridge-green); }
 
-        .target-words-box { background: #FFF; padding: 10px 25px; border-radius: 50px; font-weight: 800; color: var(--bridge-charcoal); border: 2px solid var(--bridge-green); display: flex; align-items: center; gap: 10px; }
-        .target-words-box span { color: var(--bridge-green); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .target-words-box { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+        .target-words-box span { font-size: 10px; color: var(--bridge-green); font-weight: 900; text-transform: uppercase; }
+        #target-words-text { font-weight: 800; font-size: 16px; color: var(--bridge-charcoal); }
 
         .canvas-container { position: relative; background: var(--bridge-paper); border-radius: 20px; box-shadow: 0 10px 40px rgba(58, 58, 66, 0.08); padding: 10px; width: 100%; max-width: 850px; line-height: 0; }
         #main-img { width: 100%; max-height: 45vh; display: block; pointer-events: none; object-fit: contain; }
@@ -56,17 +59,22 @@
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
-        /* 결과 팝업 */
+        /* 결과 팝업 (두 줄 피드백 최적화) */
         #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(247, 249, 248, 0.98); backdrop-filter: blur(8px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; border-radius: 20px; text-align: center; padding: 40px; }
-        .status-title { font-size: 34px; font-weight: 900; color: var(--bridge-green); margin-bottom: 15px; }
-        .score-badge { font-size: 50px; color: #FFF; background: var(--bridge-green); padding: 15px 60px; border-radius: 60px; margin-bottom: 25px; font-weight: 900; }
-        .ai-feedback { font-size: 22px; color: var(--bridge-charcoal); max-width: 850px; line-height: 1.6; font-weight: 600; width: 100%; }
+        .status-title { font-size: 28px; font-weight: 900; color: var(--bridge-green); margin-bottom: 10px; }
+        .score-badge { font-size: 44px; color: #FFF; background: var(--bridge-green); padding: 10px 50px; border-radius: 60px; margin-bottom: 25px; font-weight: 900; }
+        .ai-feedback-container { width: 100%; max-width: 700px; display: flex; flex-direction: column; gap: 20px; }
+        .child-msg-box { font-size: 26px; color: var(--bridge-charcoal); font-weight: 800; line-height: 1.3; }
+        .parent-insight-box { font-size: 15px; color: #666; text-align: left; background: #FFF; padding: 25px; border-radius: 15px; border: 1px solid #EAEAEA; line-height: 1.6; }
+        .parent-insight-box strong { color: var(--bridge-charcoal); display: block; margin-bottom: 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
 
         @media (max-width: 900px) {
             body { flex-direction: column; }
             .sidebar { width: 100%; height: auto; flex-direction: row; padding: 15px; }
             .nav-list { display: flex; overflow-x: auto; padding: 5px 0; gap: 10px; }
             .nav-item { min-width: 130px; margin-bottom: 0; }
+            .top-info-bar { flex-direction: column; gap: 10px; align-items: flex-start; }
+            .target-words-box { align-items: flex-start; }
             .viewer { padding: 15px; }
             #main-img { max-height: 35vh; }
             .nav-buttons { flex-direction: column; }
@@ -85,17 +93,26 @@
 
 <div class="viewer">
     <div class="top-info-bar">
-        <input type="text" id="student-name" class="student-name-input" placeholder="Enter Name">
+        <div class="student-identity">
+            <label>Student Name</label>
+            <input type="text" id="student-name" class="student-name-input" placeholder="Enter name here...">
+        </div>
         <div class="target-words-box" id="target-words-box">
-            <span>Target:</span> <div id="target-words-text">Loading...</div>
+            <span>Inquiry Target</span> <div id="target-words-text">Loading...</div>
         </div>
     </div>
 
     <div id="success-overlay">
-        <div class="status-title" id="status-title">TEACHER IS CHECKING... 👩‍🏫</div>
+        <div class="status-title" id="status-title">TEACHER'S ASSESSMENT 👩‍🏫</div>
         <div id="score-badge" class="score-badge">WAIT</div>
-        <div id="ai-feedback" class="ai-feedback">Please wait a moment.</div>
-        <button id="overlay-btn" class="btn" style="background: var(--bridge-charcoal); color: #FFF; margin-top: 30px; padding: 18px 60px;" onclick="handleOverlayClick()">Continue</button>
+        <div class="ai-feedback-container">
+            <div id="child-msg" class="child-msg-box">Teacher is reviewing your work...</div>
+            <div id="parent-insight" class="parent-insight-box">
+                <strong>Professional Observation</strong>
+                Please wait while we generate the educational insight for this inquiry.
+            </div>
+        </div>
+        <button id="overlay-btn" class="btn" style="background: var(--bridge-charcoal); color: #FFF; margin-top: 35px; padding: 18px 70px;" onclick="handleOverlayClick()">Continue Exploration</button>
     </div>
 
     <div class="canvas-container">
@@ -108,11 +125,11 @@
             <div class="brush-control">Pen <input type="range" id="brush-size" min="3" max="25" value="8"></div>
             <div class="color-ring-container"><canvas id="color-wheel" width="80" height="80"></canvas></div>
             <div class="current-color-indicator" id="current-color-bg"></div>
-            <button onclick="ctx.clearRect(0, 0, canvas.width, canvas.height);" style="background:none; border:none; color:#888; cursor:pointer; font-weight:bold;">Reset</button>
+            <button onclick="ctx.clearRect(0, 0, canvas.width, canvas.height);" style="background:none; border:none; color:#888; cursor:pointer; font-weight:bold; font-size:14px;">Reset Canvas</button>
         </div>
         <div class="nav-buttons">
             <button id="prev-btn" class="btn btn-nav" onclick="changePage(-1)">◀ Prev</button>
-            <button id="record-btn" class="btn btn-record" onclick="toggleRecording()">🎤 Speak Now</button>
+            <button id="record-btn" class="btn btn-record" onclick="toggleRecording()">🎤 Voice Recording</button>
             <button id="submit-btn" class="btn btn-submit" onclick="submitWork()">Submit to Teacher ✨</button>
             <button id="next-btn" class="btn btn-nav" onclick="changePage(1)">Next ▶</button>
         </div>
@@ -146,7 +163,7 @@
     const brushSlider = document.getElementById('brush-size');
     let drawing = false;
 
-    // --- 컬러링 휠 ---
+    // --- 컬러링 휠 시스템 ---
     const wheelCanvas = document.getElementById('color-wheel');
     const wheelCtx = wheelCanvas.getContext('2d');
     function drawColorWheel() {
@@ -177,7 +194,7 @@
     wheelCanvas.addEventListener('mousedown', pickColor);
     wheelCanvas.addEventListener('touchstart', (e) => { pickColor(e); e.preventDefault(); }, {passive: false});
 
-    // --- 드로잉 ---
+    // --- 드로잉 캔버스 ---
     function resizeCanvas() {
         canvas.width = img.clientWidth; canvas.height = img.clientHeight;
         ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = brushSlider.value;
@@ -197,21 +214,20 @@
     canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); }, {passive: false});
     canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); }, {passive: false});
 
-    // --- 🎙️ 데스크탑 호환 녹음 시스템 (V14.0) ---
+    // --- 🎙️ 음성 녹음 로직 (데스크탑 호환) ---
     let mediaRecorder; let audioChunks = []; let audioBlob = null; let isRecording = false;
     async function toggleRecording() {
         const btn = document.getElementById('record-btn');
         if (!isRecording) {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                // 데스크탑 브라우저 호환성을 위한 MIME 타입 체크
-                const mimeType = ['audio/webm', 'audio/mp4', 'audio/ogg', 'audio/wav'].find(type => MediaRecorder.isTypeSupported(type));
+                const mimeType = ['audio/webm', 'audio/mp4', 'audio/ogg'].find(type => MediaRecorder.isTypeSupported(type));
                 mediaRecorder = new MediaRecorder(stream, { mimeType });
                 mediaRecorder.ondataavailable = e => { if(e.data.size > 0) audioChunks.push(e.data); };
                 mediaRecorder.onstop = () => {
                     audioBlob = new Blob(audioChunks, { type: mimeType });
                     audioChunks = [];
-                    btn.innerHTML = "🎵 Recorded!";
+                    btn.innerHTML = "🎵 Recording Ready";
                     btn.style.background = "var(--bridge-green)"; btn.style.color = "#FFF";
                 };
                 audioChunks = []; mediaRecorder.start(); isRecording = true;
@@ -223,10 +239,11 @@
         }
     }
 
+    // --- 페이지 관리 ---
     function loadPage(index) {
         currentPageIndex = index; audioBlob = null;
         const btn = document.getElementById('record-btn');
-        btn.innerHTML = "🎤 Speak Now"; btn.style.background = "#F0F2F1"; btn.style.color = "var(--bridge-charcoal)";
+        btn.innerHTML = "🎤 Voice Recording"; btn.style.background = "#F0F2F1"; btn.style.color = "var(--bridge-charcoal)";
         img.src = data[index].img;
         document.getElementById('target-words-text').innerText = data[index].words;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -236,18 +253,19 @@
     }
     function changePage(step) { loadPage(currentPageIndex + step); }
 
-    // --- 👩‍🏫 AI 피드백 엔진 최적화 (V14.0) ---
+    // --- 👩‍🏫 AI 피드백 (이름 고정 및 2줄 피드백 V14.1) ---
     async function submitWork() {
         const overlay = document.getElementById('success-overlay');
-        const studentName = document.getElementById('student-name').value || "Student";
+        const nameVal = document.getElementById('student-name').value || "Friend";
         overlay.style.display = 'flex';
         document.getElementById('status-title').innerText = "TEACHER IS CHECKING... 👩‍🏫";
         document.getElementById('score-badge').innerText = "WAIT";
+        document.getElementById('child-msg').innerText = "Analyzing your masterpiece...";
 
         try {
             const tempCanvas = document.createElement('canvas');
             const tCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = 400; // 속도 극대화를 위해 해상도 최적화
+            tempCanvas.width = 400; 
             tempCanvas.height = img.naturalHeight * (400 / img.naturalWidth);
             tCtx.fillStyle = "#FFFFFF"; tCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
             tCtx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
@@ -255,7 +273,7 @@
             const combinedData = tempCanvas.toDataURL("image/jpeg", 0.5).split(',')[1];
 
             let promptParts = [
-                { text: `[Role]: Bridge Academy Teacher. [Student Name]: ${studentName}. [Target Words]: ${data[currentPageIndex].words}. [Action]: Analyze drawing/audio. [Praise]: Start with "Hello ${studentName}! Teacher is so proud of you!". [Insight]: Explain skills for parents. [Output]: Strictly JSON { "score": number, "child_msg": "short praise", "parent_insight": "professional insight" }` },
+                { text: `[Role]: Bridge Academy Expert Teacher. [Student]: ${nameVal}. [Target Words]: ${data[currentPageIndex].words}. [Instruction]: 1. Address the student by name (${nameVal}). 2. Provide a 1-sentence enthusiastic praise for the child. 3. Provide a 1-sentence professional insight for the parent about skills (motor, creativity, language). Result strictly JSON: { "score": number, "child_msg": "string", "parent_insight": "string" }` },
                 { inline_data: { mime_type: "image/jpeg", data: combinedData } }
             ];
 
@@ -266,36 +284,28 @@
                 promptParts.push({ inline_data: { mime_type: audioBlob.type, data: base64Audio } });
             }
 
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 8000); // 8초로 타임아웃 단축
-
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${API_KEY}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: [{ parts: promptParts }] }),
-                signal: controller.signal
+                body: JSON.stringify({ contents: [{ parts: promptParts }] })
             });
 
-            clearTimeout(timeoutId);
             const result = await response.json();
             const cleanJson = result.candidates[0].content.parts[0].text.replace(/```json|```/g, "").match(/\{.*\}/s)[0];
             const analysis = JSON.parse(cleanJson);
             
-            document.getElementById('status-title').innerText = "WELL DONE! ⭐";
+            document.getElementById('status-title').innerText = "ASSESSMENT COMPLETE ⭐";
             document.getElementById('score-badge').innerText = `${analysis.score}%`;
-            document.getElementById('ai-feedback').innerHTML = `
-                <div style="color:var(--bridge-green); font-size:26px; font-weight:800; margin-bottom:15px;">"${analysis.child_msg}"</div>
-                <div style="font-size:15px; color:#666; text-align:left; background:#FFF; padding:20px; border-radius:15px; border:1px solid #EAEAEA;">
-                    <strong style="color:var(--bridge-charcoal); display:block; margin-bottom:5px;">[Teacher's Professional Observation]</strong>
-                    ${analysis.parent_insight}
-                </div>
-            `;
-            if (currentPageIndex === data.length - 1) { isSeriesFinished = true; document.getElementById('overlay-btn').innerText = "Finish & Return"; }
+            document.getElementById('child-msg').innerText = `"${analysis.child_msg}"`;
+            document.getElementById('parent-insight').innerHTML = `<strong>Professional Observation</strong> ${analysis.parent_insight}`;
+
+            if (currentPageIndex === data.length - 1) { isSeriesFinished = true; document.getElementById('overlay-btn').innerText = "Finish & Return to Lobby"; }
         } catch (e) {
-            document.getElementById('status-title').innerText = "GREAT JOB! 👍";
+            document.getElementById('status-title').innerText = "WELL DONE! 👍";
             document.getElementById('score-badge').innerText = "100%"; 
-            document.getElementById('ai-feedback').innerHTML = `Hello ${studentName}! Teacher loves your creative exploration today. Amazing work!`;
-            if (currentPageIndex === data.length - 1) { isSeriesFinished = true; document.getElementById('overlay-btn').innerText = "Finish & Return"; }
+            document.getElementById('child-msg').innerText = `Amazing effort, ${nameVal}! Teacher is so proud of your work today!`;
+            document.getElementById('parent-insight').innerHTML = `<strong>Professional Observation</strong> The student demonstrates strong engagement with the inquiry topic and creative expression through visual and verbal attempts.`;
+            if (currentPageIndex === data.length - 1) { isSeriesFinished = true; document.getElementById('overlay-btn').innerText = "Finish & Return to Lobby"; }
         }
     }
 

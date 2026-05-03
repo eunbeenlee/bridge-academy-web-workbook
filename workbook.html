@@ -3,81 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bridge Academy | Milo's Lab</title>
+    <title>Bridge Academy | Classroom</title>
     <style>
         :root { 
-            --bridge-green: #8CC69F; --bridge-taupe: #A39B8E; --bridge-charcoal: #3A3A42; 
-            --bridge-bg: #F7F9F8; --bridge-paper: #FFFFFF; --bridge-gold: #D4AF37;
+            --bridge-green: #8CC69F; --bridge-taupe: #A39B8E; --bridge-charcoal: #3A3A42; --bridge-bg: #F7F9F8; --bridge-paper: #FFFFFF;
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--bridge-bg); margin: 0; display: flex; height: 100vh; overflow: hidden; color: var(--bridge-charcoal); }
         
-        /* 사이드바: 프리미엄 다크 모드 스타일 */
+        /* 사이드바 */
         .sidebar { width: 280px; background: var(--bridge-paper); display: flex; flex-direction: column; z-index: 20; border-right: 1px solid #EAEAEA; box-shadow: 2px 0 15px rgba(0,0,0,0.02); }
-        .sidebar-header { padding: 30px 20px 20px; text-align: center; border-bottom: 1px solid #F0F0F0; cursor: pointer; }
-        .sidebar-logo { max-width: 160px; height: auto; }
+        .sidebar-header { padding: 30px 20px 20px; text-align: center; border-bottom: 1px solid #F0F0F0; cursor: pointer; transition: 0.2s; }
+        .sidebar-header:hover { opacity: 0.8; }
+        .sidebar-logo { max-width: 180px; height: auto; margin-bottom: 5px; }
         
         .nav-list { flex: 1; overflow-y: auto; padding: 20px 15px; }
-        .nav-item { display: flex; align-items: center; padding: 15px; margin-bottom: 12px; border-radius: 15px; cursor: pointer; transition: 0.3s; border: 1px solid transparent; }
-        .nav-item.active { background: #F2F8F4; border: 1px solid var(--bridge-green); }
-        .nav-text { font-size: 14px; font-weight: 600; }
-        .stage-tag { font-size: 10px; color: var(--bridge-green); font-weight: 800; text-transform: uppercase; margin-bottom: 4px; display: block; }
+        .nav-item { display: flex; align-items: center; padding: 12px 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; border: 1px solid transparent; color: #666; }
+        .nav-item.active { background: #EAF4ED; color: var(--bridge-charcoal); font-weight: bold; border-left: 5px solid var(--bridge-green); }
+        .nav-text { display: flex; flex-direction: column; font-size: 14px; }
+        .nav-text span.page-num { font-size: 11px; opacity: 0.6; margin-bottom: 4px; font-weight: bold; }
 
-        /* 메인 학습 공간 */
-        .viewer { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 25px; position: relative; overflow-y: auto; }
-        .inquiry-header { width: 100%; max-width: 850px; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
-        .milo-mini { width: 60px; height: 60px; background: #FFF; border-radius: 50%; border: 2px solid var(--bridge-green); padding: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        /* 메인 뷰어 */
+        .viewer { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 25px; position: relative; overflow-y: auto; }
+        .canvas-container { position: relative; background: var(--bridge-paper); border-radius: 20px; box-shadow: 0 10px 40px rgba(58, 58, 66, 0.08); padding: 10px; width: 100%; max-width: 850px; line-height: 0; }
+        #main-img { width: 100%; max-height: 55vh; display: block; pointer-events: none; object-fit: contain; }
+        #drawing-canvas { position: absolute; top: 10px; left: 10px; cursor: crosshair; touch-action: none; }
 
-        .canvas-container { position: relative; background: var(--bridge-paper); border-radius: 30px; box-shadow: 0 20px 50px rgba(58, 58, 66, 0.1); padding: 15px; width: 100%; max-width: 850px; }
-        #main-img { width: 100%; max-height: 50vh; display: block; pointer-events: none; object-fit: contain; border-radius: 20px; }
-        #drawing-canvas { position: absolute; top: 15px; left: 15px; cursor: crosshair; touch-action: none; }
+        /* 컨트롤 도구 */
+        .controls-wrapper { width: 100%; max-width: 850px; margin-top: 25px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .tool-bar { display: flex; align-items: center; justify-content: center; gap: 20px; background: white; padding: 15px 35px; border-radius: 50px; box-shadow: 0 5px 25px rgba(0,0,0,0.04); width: 100%; border: 1px solid #F0F0F0; }
+        input[type=range] { width: 120px; accent-color: var(--bridge-green); }
+        .current-color-indicator { width: 30px; height: 30px; border-radius: 50%; border: 3px solid #FFF; box-shadow: 0 2px 6px rgba(0,0,0,0.15); background: #3A3A42; }
+        
+        .btn { padding: 16px 32px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        .btn-submit { background: var(--bridge-charcoal); color: #FFF; box-shadow: 0 8px 20px rgba(58, 58, 66, 0.2); flex: 1; max-width: 350px; }
 
-        /* 도구 및 버튼 */
-        .controls-wrapper { width: 100%; max-width: 850px; margin-top: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .tool-bar { display: flex; align-items: center; justify-content: center; gap: 25px; background: white; padding: 15px 40px; border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .btn-submit { background: var(--bridge-charcoal); color: #FFF; padding: 18px 40px; border-radius: 100px; border: none; font-weight: bold; cursor: pointer; flex: 1; font-size: 18px; box-shadow: 0 10px 25px rgba(58, 58, 66, 0.2); }
-
-        /* 마일로 피드백 오버레이 (Seesaw 스타일) */
-        #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.98); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; }
-        .milo-feedback-img { width: 180px; margin-bottom: 20px; animation: bounce 2s infinite; }
-        .ai-feedback-bubble { background: #F2F8F4; padding: 25px 40px; border-radius: 30px; max-width: 80%; border: 1px solid var(--bridge-green); position: relative; }
-        .ai-feedback-bubble::after { content: ''; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); border-left: 15px solid transparent; border-right: 15px solid transparent; border-bottom: 15px solid #F2F8F4; }
-
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        /* 결과 오버레이 */
+        #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(247, 249, 248, 0.96); backdrop-filter: blur(8px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; border-radius: 20px; text-align: center; padding: 40px; }
+        .status-title { font-size: 34px; font-weight: 900; color: var(--bridge-green); margin-bottom: 15px; }
+        .score-badge { font-size: 50px; color: #FFF; background: var(--bridge-green); padding: 15px 60px; border-radius: 60px; margin-bottom: 25px; font-weight: 900; box-shadow: 0 10px 30px rgba(140, 198, 159, 0.4); }
+        .ai-feedback { font-size: 22px; color: var(--bridge-charcoal); max-width: 80%; line-height: 1.6; font-weight: 600; }
+        .btn-continue { background: var(--bridge-charcoal); color: #FFF; padding: 18px 60px; margin-top: 40px; border-radius: 50px; width: auto; }
 
         @media (max-width: 900px) {
             body { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; }
-            .nav-list { display: flex; overflow-x: auto; padding: 10px; }
-            .nav-item { min-width: 150px; margin-bottom: 0; margin-right: 10px; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; padding: 15px; }
+            .nav-list { display: flex; flex-direction: row; overflow-x: auto; padding: 0; gap: 10px; }
+            .nav-item { min-width: 130px; margin-bottom: 0; }
+            #main-img { max-height: 45vh; }
+            .btn-submit { order: -1; max-width: 100%; }
         }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <div class="sidebar-header" onclick="location.href='index.html'">
+    <!-- 로고 클릭 시 index.html로 복귀 -->
+    <div class="sidebar-header" onclick="window.location.href='index.html'">
         <img src="logo.png" alt="Bridge Academy" class="sidebar-logo">
+        <div style="font-size: 11px; color: #888; margin-top: 5px;">◀ Back to Lobby</div>
     </div>
     <div id="nav-list" class="nav-list"></div>
 </div>
 
 <div class="viewer">
-    <div class="inquiry-header">
-        <div>
-            <h2 id="page-title" style="margin: 0; font-size: 24px;">Wondering Time</h2>
-            <p id="page-subtitle" style="margin: 5px 0 0; color: #888;">Let's explore with Milo!</p>
-        </div>
-        <img src="milo.png" alt="Milo" class="milo-mini">
-    </div>
-
     <div id="success-overlay">
-        <img src="milo.png" alt="Milo" class="milo-feedback-img">
-        <div class="status-title" id="status-title" style="font-size: 28px; font-weight: 900; margin-bottom: 10px;">GREAT!</div>
-        <div class="ai-feedback-bubble">
-            <div id="ai-feedback" style="font-size: 20px; font-weight: 600; line-height: 1.5;">Milo is checking...</div>
-        </div>
-        <button class="btn-submit" onclick="handleOverlayClick()" style="margin-top: 30px; width: 250px;">Keep Going!</button>
+        <div class="status-title" id="status-title">CHECKING... 👀</div>
+        <div id="score-badge" class="score-badge">WAIT</div>
+        <div id="ai-feedback" class="ai-feedback">Teacher is looking at your work.</div>
+        <button id="overlay-btn" class="btn btn-continue" onclick="handleOverlayClick()">Continue</button>
     </div>
 
     <div class="canvas-container">
@@ -87,12 +81,12 @@
     
     <div class="controls-wrapper">
         <div class="tool-bar">
-            <input type="range" id="brush-size" min="3" max="25" value="8">
-            <div id="current-color-bg" style="width: 35px; height: 35px; border-radius: 50%; background: #3A3A42; border: 3px solid #EEE;"></div>
-            <button onclick="ctx.clearRect(0, 0, canvas.width, canvas.height);" style="background: none; border: none; font-weight: bold; color: #888; cursor: pointer;">Reset</button>
+            Pen <input type="range" id="brush-size" min="3" max="25" value="8">
+            <div class="current-color-indicator" id="current-color-bg"></div>
+            <button onclick="ctx.clearRect(0, 0, canvas.width, canvas.height);" style="background: none; border: none; cursor: pointer; color: #888; font-weight: bold;">Erase All</button>
         </div>
-        <div class="nav-buttons" style="display: flex; gap: 15px; width: 100%;">
-            <button id="submit-btn" class="btn-submit" onclick="submitWork()">Submit to Milo ✨</button>
+        <div class="nav-buttons" style="display: flex; gap: 15px; width: 100%; justify-content: center;">
+            <button id="submit-btn" class="btn btn-submit" onclick="submitWork()">Submit to Teacher ✨</button>
         </div>
     </div>
 </div>
@@ -101,24 +95,23 @@
     const API_KEY = "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4"; 
     const modelName = "gemini-3-flash-preview"; 
 
-    // Toddle 스타일의 단계별 데이터 구조
     const curriculumData = {
         "A1": [
-            { id: 1, stage: "Wonder", title: "All About Me", img: "1.png" },
-            { id: 2, stage: "Wonder", title: "My Feelings", img: "2.png" },
-            { id: 3, stage: "Find Out", title: "Body Parts", img: "3.png" },
-            { id: 4, stage: "Find Out", title: "My Senses", img: "4.png" },
-            { id: 5, stage: "Explore", title: "Family Tree", img: "5.png" },
-            { id: 6, stage: "Explore", title: "My Home", img: "6.png" },
-            { id: 7, stage: "Reflect", title: "I am Special", img: "7.png" },
-            { id: 8, stage: "Reflect", title: "Final Inquiry", img: "8.png" }
+            { id: 1, title: "All About Me", img: "1.png" },
+            { id: 2, title: "Book of the Month", img: "2.png" },
+            { id: 3, title: "Key Words (Body)", img: "3.png" },
+            { id: 4, title: "Key Words (Review)", img: "4.png" },
+            { id: 5, title: "Key Words (Sensory)", img: "5.png" },
+            { id: 6, title: "Key Sentences", img: "6.png" },
+            { id: 7, title: "I Can... (Matching)", img: "7.png" },
+            { id: 8, title: "This is My Face", img: "8.png" }
         ]
     };
 
     const urlParams = new URLSearchParams(window.location.search);
     const data = curriculumData[urlParams.get('series') || 'A1'];
     let currentPageIndex = 0;
-    let isFinished = false;
+    let isSeriesFinished = false;
 
     const canvas = document.getElementById('drawing-canvas');
     const ctx = canvas.getContext('2d');
@@ -126,32 +119,33 @@
     const brushSlider = document.getElementById('brush-size');
     let drawing = false;
 
-    // 초기화 로직
     function loadPage(index) {
         currentPageIndex = index;
-        isFinished = false;
-        const page = data[index];
-        img.src = page.img;
-        document.getElementById('page-title').innerText = page.title;
-        document.getElementById('page-subtitle').innerText = `Stage: ${page.stage}`;
-        
+        isSeriesFinished = false;
+        img.src = data[index].img;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         document.querySelectorAll('.nav-item').forEach((el, idx) => el.classList.toggle('active', idx === index));
+        document.getElementById('overlay-btn').innerText = "Continue";
     }
 
-    // AI 분석: Milo의 페르소나 적용
+    // AI 분석 (속도 최적화 및 완료 로직)
     async function submitWork() {
         const overlay = document.getElementById('success-overlay');
         overlay.style.display = 'flex';
-        document.getElementById('ai-feedback').innerText = "Milo is looking at your work... 👀";
+        document.getElementById('status-title').innerText = "CHECKING... 👀";
+        document.getElementById('score-badge').innerText = "WAIT";
+        document.getElementById('ai-feedback').innerText = "Teacher is checking...";
 
         const isLastPage = (currentPageIndex === data.length - 1);
 
         try {
+            // 이미지 압축 (최대 600px)
+            const MAX_WIDTH = 600;
+            const scale = MAX_WIDTH / img.naturalWidth;
             const tempCanvas = document.createElement('canvas');
             const tCtx = tempCanvas.getContext('2d');
-            tempCanvas.width = 600;
-            tempCanvas.height = img.naturalHeight * (600 / img.naturalWidth);
+            tempCanvas.width = MAX_WIDTH;
+            tempCanvas.height = img.naturalHeight * scale;
             tCtx.fillStyle = "#FFFFFF";
             tCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
             tCtx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
@@ -163,7 +157,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     contents: [{ parts: [
-                        { text: `[Role]: Milo, a friendly mascot teacher. [Audience]: 5-year-old student. [Context]: Inquiry Lab. [Instruction]: Give a short, super happy compliment starting with "Milo says...". Use max 15 words. Result must be JSON: {"feedback": "string"}` },
+                        { text: `[Role]: Preschool teacher. [Student]: 5-7 years old. [Action]: Give a short, very positive praise in simple English (max 2 sentences). Result strictly JSON: {"score": number, "feedback": "string"}` },
                         { inline_data: { mime_type: "image/jpeg", data: combinedData } }
                     ]}]
                 })
@@ -173,48 +167,69 @@
             const analysis = JSON.parse(result.candidates[0].content.parts[0].text.match(/\{.*\}/s)[0]);
             
             if (isLastPage) {
-                isFinished = true;
-                document.getElementById('status-title').innerText = "YOU ARE A STAR! 🏆";
-                document.getElementById('ai-feedback').innerText = "Milo says: You finished the whole Inquiry! I'm so proud of you!";
+                isSeriesFinished = true;
+                document.getElementById('status-title').innerText = "COMPLETE! 🏆";
+                document.getElementById('score-badge').innerText = "100%";
+                document.getElementById('ai-feedback').innerText = "Wow! You finished the whole book! You are a superstar! 🌈";
+                document.getElementById('overlay-btn').innerText = "Finish & Go Home";
             } else {
-                document.getElementById('status-title').innerText = "MILO LOVES IT! ✨";
+                document.getElementById('status-title').innerText = analysis.score >= 95 ? "WOW! 🌟" : "GOOD JOB! 👍";
+                document.getElementById('score-badge').innerText = `${analysis.score}%`;
                 document.getElementById('ai-feedback').innerText = analysis.feedback;
             }
         } catch (e) {
-            document.getElementById('ai-feedback').innerText = "Milo says: Wow! Beautiful colors!";
+            if (isLastPage) {
+                isSeriesFinished = true;
+                document.getElementById('status-title').innerText = "COMPLETE! 🏆";
+                document.getElementById('ai-feedback').innerText = "Great job finishing the book!";
+                document.getElementById('overlay-btn').innerText = "Finish & Go Home";
+            } else {
+                document.getElementById('ai-feedback').innerText = "Nice work! I like it!";
+            }
         }
     }
 
     function handleOverlayClick() {
-        if (isFinished) location.href = 'index.html';
+        if (isSeriesFinished) window.location.href = 'index.html';
         else {
             document.getElementById('success-overlay').style.display = 'none';
             if (currentPageIndex < data.length - 1) loadPage(currentPageIndex + 1);
         }
     }
 
-    // 캔버스 드로잉 로직 (기존과 동일)
     function resizeCanvas() {
         canvas.width = img.clientWidth; canvas.height = img.clientHeight;
         ctx.lineCap = 'round'; ctx.lineWidth = brushSlider.value; ctx.strokeStyle = '#3A3A42';
     }
     img.onload = resizeCanvas;
-    canvas.addEventListener('mousedown', (e) => { drawing = true; ctx.beginPath(); });
-    canvas.addEventListener('mousemove', (e) => {
+    brushSlider.oninput = () => { ctx.lineWidth = brushSlider.value; };
+
+    function startDrawing(e) { 
+        drawing = true; 
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX || e.touches[0].clientX) - rect.left;
+        const y = (e.clientY || e.touches[0].clientY) - rect.top;
+        ctx.beginPath(); ctx.moveTo(x, y); 
+    }
+    function draw(e) {
         if (!drawing) return;
         const rect = canvas.getBoundingClientRect();
-        ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
-        ctx.stroke();
-    });
+        const x = (e.clientX || e.touches[0].clientX) - rect.left;
+        const y = (e.clientY || e.touches[0].clientY) - rect.top;
+        ctx.lineTo(x, y); ctx.stroke();
+    }
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); });
+    canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); });
 
-    // 초기 리스트 생성
     if (data) {
         const navList = document.getElementById('nav-list');
         data.forEach((item, index) => {
             const div = document.createElement('div');
             div.className = 'nav-item' + (index === 0 ? ' active' : '');
-            div.innerHTML = `<div class="nav-text"><span class="stage-tag">${item.stage}</span>${item.title}</div>`;
+            div.innerHTML = `<div class="nav-text"><span class="page-num">PAGE 0${item.id}</span>${item.title}</div>`;
             div.onclick = () => loadPage(index);
             navList.appendChild(div);
         });

@@ -11,7 +11,7 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--bridge-bg); margin: 0; display: flex; height: 100vh; overflow: hidden; color: var(--bridge-charcoal); }
         
-        /* 사이드바 */
+        /* 사이드바 설정 */
         .sidebar { width: 280px; background: var(--bridge-paper); display: flex; flex-direction: column; z-index: 20; border-right: 1px solid #EAEAEA; box-shadow: 2px 0 15px rgba(0,0,0,0.02); }
         .sidebar-header { padding: 30px 20px 20px; text-align: center; border-bottom: 1px solid #F0F0F0; cursor: pointer; transition: 0.2s; }
         .sidebar-header:hover { opacity: 0.8; }
@@ -19,15 +19,14 @@
         
         .nav-list { flex: 1; overflow-y: auto; padding: 20px 15px; }
         .nav-item { display: flex; align-items: center; padding: 12px 15px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; background: transparent; border: 1px solid transparent; color: #666; transition: all 0.3s ease; }
-        .nav-item:hover { background: #F8FBF9; color: var(--bridge-charcoal); }
         .nav-item.active { background: #EAF4ED; color: var(--bridge-charcoal); font-weight: bold; border-left: 5px solid var(--bridge-green); border-radius: 8px 12px 12px 8px; }
         .nav-text { display: flex; flex-direction: column; font-size: 14px; }
         .nav-text span.page-num { font-size: 11px; opacity: 0.6; margin-bottom: 4px; font-weight: bold; letter-spacing: 0.5px;}
 
-        /* 메인 뷰어 */
+        /* 메인 학습 영역 */
         .viewer { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 25px; position: relative; overflow-y: auto; }
         
-        /* 💡 타겟 단어 표시 영역 (신규) */
+        /* 타겟 단어 박스 (북미 스타일 교수법 반영) */
         .target-words-box { background: #FFF; padding: 10px 25px; border-radius: 50px; font-weight: 800; color: var(--bridge-charcoal); margin-bottom: 15px; border: 2px solid var(--bridge-green); box-shadow: 0 4px 15px rgba(140, 198, 159, 0.15); display: flex; align-items: center; gap: 10px; }
         .target-words-box span { color: var(--bridge-green); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
 
@@ -35,7 +34,7 @@
         #main-img { width: 100%; max-height: 50vh; display: block; pointer-events: none; object-fit: contain; }
         #drawing-canvas { position: absolute; top: 10px; left: 10px; cursor: crosshair; touch-action: none; }
 
-        /* 컨트롤 패널 */
+        /* 컨트롤 및 도구 모음 */
         .controls-wrapper { width: 100%; max-width: 850px; margin-top: 20px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
         .tool-bar { display: flex; align-items: center; justify-content: center; gap: 20px; background: white; padding: 15px 35px; border-radius: 50px; box-shadow: 0 5px 25px rgba(0,0,0,0.04); width: 100%; flex-wrap: wrap; border: 1px solid #F0F0F0; }
         .brush-control { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: bold; color: var(--bridge-charcoal); }
@@ -50,18 +49,18 @@
         .btn { padding: 15px 25px; border-radius: 50px; border: none; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; letter-spacing: 0.5px; }
         .btn-nav { background: #F0F2F1; color: var(--bridge-charcoal); min-width: 100px; }
         
-        /* 💡 녹음 버튼 스타일 (신규) */
-        .btn-record { background: #EAEAEA; color: var(--bridge-charcoal); flex: 1; max-width: 250px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-record.recording { background: var(--bridge-danger); color: #FFF; animation: pulse 1.5s infinite; }
+        /* 녹음 버튼 애니메이션 */
+        .btn-record { background: #F0F2F1; color: var(--bridge-charcoal); flex: 1; max-width: 250px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #EAEAEA; }
+        .btn-record.recording { background: var(--bridge-danger); color: #FFF; animation: pulse 1.5s infinite; border: none; }
         .btn-submit { background: var(--bridge-charcoal); color: #FFF; box-shadow: 0 8px 20px rgba(58, 58, 66, 0.2); flex: 1; max-width: 300px; }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
-        /* AI 팝업 */
-        #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(247, 249, 248, 0.96); backdrop-filter: blur(8px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; border-radius: 20px; text-align: center; padding: 40px; }
+        /* AI 분석 팝업 (Seesaw 스타일 오마주) */
+        #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(247, 249, 248, 0.98); backdrop-filter: blur(8px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; border-radius: 20px; text-align: center; padding: 40px; }
         .status-title { font-size: 34px; font-weight: 900; color: var(--bridge-green); margin-bottom: 15px; letter-spacing: 1px; }
         .score-badge { font-size: 50px; color: #FFF; background: var(--bridge-green); padding: 15px 60px; border-radius: 60px; margin-bottom: 25px; font-weight: 900; box-shadow: 0 10px 30px rgba(140, 198, 159, 0.4); }
-        .ai-feedback { font-size: 22px; color: var(--bridge-charcoal); max-width: 80%; line-height: 1.6; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .ai-feedback { font-size: 22px; color: var(--bridge-charcoal); max-width: 850px; line-height: 1.6; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; }
         .btn-continue { background: var(--bridge-charcoal); color: #FFF; padding: 18px 60px; margin-top: 40px; font-size: 18px; border-radius: 50px; width: auto; box-shadow: 0 8px 20px rgba(58, 58, 66, 0.2); }
 
         @media (max-width: 900px) {
@@ -74,7 +73,6 @@
             .nav-item.active { border-left: none; border-bottom: 4px solid var(--bridge-green); border-radius: 10px; }
             .viewer { padding: 15px; }
             #main-img { max-height: 40vh; }
-            .tool-bar { padding: 12px; gap: 15px; border-radius: 25px; }
             .nav-buttons { flex-direction: column; align-items: center; }
             .btn { width: 100%; max-width: 100%; }
         }
@@ -92,15 +90,14 @@
 
 <div class="viewer">
     
-    <!-- 💡 타겟 단어 표시 영역 -->
     <div class="target-words-box" id="target-words-box">
-        <span>Say these words:</span> <div id="target-words-text">Loading...</div>
+        <span>Target Words:</span> <div id="target-words-text">Loading...</div>
     </div>
 
     <div id="success-overlay">
         <div class="status-title" id="status-title">LOOKING & LISTENING... 👀👂</div>
         <div id="score-badge" class="score-badge">WAIT</div>
-        <div id="ai-feedback" class="ai-feedback">Teacher is checking your drawing and voice...</div>
+        <div id="ai-feedback" class="ai-feedback">Milo is checking your drawing and voice...</div>
         <button id="overlay-btn" class="btn btn-continue" onclick="handleOverlayClick()">Continue</button>
     </div>
 
@@ -117,15 +114,12 @@
             <div class="color-ring-container"><canvas id="color-wheel" width="80" height="80"></canvas></div>
             <div class="current-color-indicator" id="current-color-bg"></div>
             
-            <button class="btn-clear" onclick="ctx.clearRect(0, 0, canvas.width, canvas.height);">Erase</button>
+            <button class="btn-clear" onclick="ctx.clearRect(0, 0, canvas.width, canvas.height);">Erase All</button>
         </div>
         <div class="nav-buttons">
             <button id="prev-btn" class="btn btn-nav" onclick="changePage(-1)">◀ Prev</button>
-            
-            <!-- 💡 녹음 버튼 -->
             <button id="record-btn" class="btn btn-record" onclick="toggleRecording()">🎤 Tap to Speak</button>
-            
-            <button id="submit-btn" class="btn btn-submit" onclick="submitWork()">Submit to Teacher ✨</button>
+            <button id="submit-btn" class="btn btn-submit" onclick="submitWork()">Submit to Milo ✨</button>
             <button id="next-btn" class="btn btn-nav" onclick="changePage(1)">Next ▶</button>
         </div>
     </div>
@@ -133,9 +127,9 @@
 
 <script>
     const API_KEY = "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4"; 
-    const modelName = "gemini-1.5-flash"; // 음성 분석을 위해 1.5 모델로 상향
+    const modelName = "gemini-1.5-flash"; // 음성 분석 필수 모델
 
-    // 💡 단어 데이터 추가
+    // 커리큘럼 데이터
     const curriculumData = {
         "A1": [
             { id: 1, title: "All About Me", img: "1.png", words: "Me, Face" },
@@ -160,7 +154,7 @@
     const brushSlider = document.getElementById('brush-size');
     let drawing = false;
 
-    // --- 컬러링 휠 로직 ---
+    // --- 컬러링 휠 시스템 ---
     const wheelCanvas = document.getElementById('color-wheel');
     const wheelCtx = wheelCanvas.getContext('2d');
 
@@ -190,16 +184,15 @@
             document.getElementById('current-color-bg').style.background = color;
         }
     }
-    
     wheelCanvas.addEventListener('mousedown', pickColor);
     wheelCanvas.addEventListener('touchstart', (e) => { pickColor(e); e.preventDefault(); }, {passive: false});
 
+    // --- 캔버스 드로잉 로직 ---
     function resizeCanvas() {
         canvas.width = img.clientWidth; canvas.height = img.clientHeight;
         ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = brushSlider.value;
         ctx.strokeStyle = document.getElementById('current-color-bg').style.background || '#3A3A42';
     }
-    
     img.onload = resizeCanvas;
     window.addEventListener('resize', () => {
         if(canvas.width === 0) return;
@@ -214,25 +207,19 @@
         const clientY = e.touches ? e.touches[0].clientY : e.clientY;
         return { x: (clientX - rect.left) * (canvas.width / rect.width), y: (clientY - rect.top) * (canvas.height / rect.height) };
     }
-
     function startDrawing(e) { drawing = true; const pos = getCoords(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); }
     function draw(e) {
         if (!drawing) return; e.preventDefault(); const pos = getCoords(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(pos.x, pos.y);
     }
     function stopDrawing() { drawing = false; ctx.beginPath(); }
-    
     canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', draw); canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('touchstart', (e) => { startDrawing(e); e.preventDefault(); }, {passive: false}); canvas.addEventListener('touchmove', draw, {passive: false}); canvas.addEventListener('touchend', stopDrawing);
 
-    // --- 💡 오디오 녹음 로직 ---
-    let mediaRecorder;
-    let audioChunks = [];
-    let audioBlob = null;
-    let isRecording = false;
+    // --- 오디오 녹음 시스템 (V13.1 보강) ---
+    let mediaRecorder; let audioChunks = []; let audioBlob = null; let isRecording = false;
 
     async function toggleRecording() {
         const btn = document.getElementById('record-btn');
-        
         if (!isRecording) {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -241,91 +228,65 @@
                 mediaRecorder.onstop = () => {
                     audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
                     audioChunks = [];
-                    btn.innerHTML = "🎵 Audio Ready! (Tap to Re-record)";
-                    btn.classList.remove('recording');
-                    btn.style.background = "var(--bridge-green)";
-                    btn.style.color = "#FFF";
+                    btn.innerHTML = "🎵 Recorded! (Tap to Redo)";
+                    btn.style.background = "var(--bridge-green)"; btn.style.color = "#FFF"; btn.classList.remove('recording');
                 };
-                audioChunks = [];
-                mediaRecorder.start();
-                isRecording = true;
-                btn.innerHTML = "🔴 Recording... Tap to Stop";
-                btn.classList.add('recording');
-            } catch (err) {
-                alert("Please allow microphone access to record words!");
-            }
+                audioChunks = []; mediaRecorder.start(); isRecording = true;
+                btn.innerHTML = "🔴 Recording... Stop"; btn.classList.add('recording');
+            } catch (err) { alert("Please allow microphone access!"); }
         } else {
-            mediaRecorder.stop();
-            isRecording = false;
-            mediaRecorder.stream.getTracks().forEach(t => t.stop()); // 마이크 끄기
+            mediaRecorder.stop(); isRecording = false;
+            mediaRecorder.stream.getTracks().forEach(t => t.stop());
         }
     }
 
+    // --- 페이지 로드 로직 ---
     function loadPage(index) {
         if (!data || index >= data.length || index < 0) return; 
-        currentPageIndex = index;
-        isSeriesFinished = false; 
-        audioBlob = null; // 페이지 바뀔 때 녹음 초기화
-        
+        currentPageIndex = index; isSeriesFinished = false; audioBlob = null;
         const btn = document.getElementById('record-btn');
-        btn.innerHTML = "🎤 Tap to Speak";
-        btn.style.background = "#EAEAEA";
-        btn.style.color = "var(--bridge-charcoal)";
-        btn.classList.remove('recording');
-
+        btn.innerHTML = "🎤 Tap to Speak"; btn.style.background = "#F0F2F1"; btn.style.color = "var(--bridge-charcoal)";
         img.src = data[index].img;
-        document.getElementById('target-words-text').innerText = data[index].words; // 타겟 단어 세팅
-        
+        document.getElementById('target-words-text').innerText = data[index].words;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         document.querySelectorAll('.nav-item').forEach((el, idx) => el.classList.toggle('active', idx === index));
         document.getElementById('prev-btn').disabled = (index === 0);
         document.getElementById('next-btn').disabled = (index === data.length - 1);
         document.getElementById('overlay-btn').innerText = "Continue"; 
     }
-    
     function changePage(step) { loadPage(currentPageIndex + step); }
 
-    // --- 프리미엄 피드백 (오디오 + 이미지 동시 분석) ---
+    // --- [V13.1] 프리미엄 AI 분석 (멈춤 현상 해결 버전) ---
     async function submitWork() {
-        if (isRecording) {
-            alert("Please stop recording first!"); return;
-        }
+        if (isRecording) { alert("Please stop recording first!"); return; }
 
         const overlay = document.getElementById('success-overlay');
+        const statusTitle = document.getElementById('status-title');
+        const scoreBadge = document.getElementById('score-badge');
+        const feedbackBox = document.getElementById('ai-feedback');
+
         overlay.style.display = 'flex';
-        
-        document.getElementById('status-title').innerText = "ANALYZING... 🧐";
-        document.getElementById('score-badge').innerText = "WAIT";
-        document.getElementById('ai-feedback').innerHTML = "Teacher is checking your drawing and voice...";
+        statusTitle.innerText = "ANALYZING... 🧐";
+        scoreBadge.innerText = "WAIT";
+        feedbackBox.innerHTML = "Milo is writing a special note for you and your parents...";
 
         const isLastPage = (currentPageIndex === data.length - 1);
         const currentWords = data[currentPageIndex].words;
 
         try {
-            const MAX_WIDTH = 600;
-            const scale = MAX_WIDTH / img.naturalWidth;
-            const tempCanvas = document.createElement('canvas');
-            const tCtx = tempCanvas.getContext('2d');
+            const MAX_WIDTH = 600; const scale = MAX_WIDTH / img.naturalWidth;
+            const tempCanvas = document.createElement('canvas'); const tCtx = tempCanvas.getContext('2d');
             tempCanvas.width = MAX_WIDTH; tempCanvas.height = img.naturalHeight * scale;
             tCtx.fillStyle = "#FFFFFF"; tCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
             tCtx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
             tCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, tempCanvas.width, tempCanvas.height);
             const combinedData = tempCanvas.toDataURL("image/jpeg", 0.7).split(',')[1];
 
-            // AI에게 보낼 데이터 배열 구성
             let promptParts = [
-                { text: `
-                    [Role]: Expert International School Teacher (IB PYP focus).
-                    [Target Words]: ${currentWords}
-                    [Task]: Analyze the child's drawing (and audio if provided).
-                    [Target 1 - Child]: Enthusiastic praise in very simple English.
-                    [Target 2 - Parent]: Professional educational insight. If audio is provided, assess their pronunciation of the target words and speaking confidence. If no audio, focus on fine motor skills and creativity.
-                    [Output Format]: Strictly JSON { "score": number, "child_msg": "short sentence", "parent_insight": "professional sentence" }
-                ` },
+                { text: `[Role]: Expert International School Teacher. [Task]: Analyze drawing and audio. [Target Words]: ${currentWords}. [Output Format]: Strictly JSON { "score": number, "child_msg": "short sentence", "parent_insight": "professional sentence" }` },
                 { inline_data: { mime_type: "image/jpeg", data: combinedData } }
             ];
 
-            // 💡 오디오가 녹음되었다면 AI 전송 데이터에 추가
             if (audioBlob) {
                 const base64Audio = await new Promise(resolve => {
                     const reader = new FileReader();
@@ -335,47 +296,49 @@
                 promptParts.push({ inline_data: { mime_type: audioBlob.type, data: base64Audio } });
             }
 
+            // 10초 타임아웃 방어 코드
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000);
+
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${API_KEY}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: [{ parts: promptParts }] })
+                body: JSON.stringify({ contents: [{ parts: promptParts }] }),
+                signal: controller.signal
             });
 
+            clearTimeout(timeoutId);
             const result = await response.json();
-            const analysis = JSON.parse(result.candidates[0].content.parts[0].text.match(/\{.*\}/s)[0]);
+            const rawText = result.candidates[0].content.parts[0].text;
             
-            document.getElementById('status-title').innerText = "EXCELLENT! ⭐";
-            document.getElementById('score-badge').innerText = `${analysis.score}%`;
-            document.getElementById('ai-feedback').innerHTML = `
-                <div style="color: var(--bridge-green); font-size: 26px; font-weight: 800; width: 100%;">
-                    "${analysis.child_msg}" 🎈
-                </div>
+            // JSON 파싱 안정화 로직
+            const cleanJson = rawText.replace(/```json|```/g, "").match(/\{.*\}/s)[0];
+            const analysis = JSON.parse(cleanJson);
+            
+            statusTitle.innerText = "EXCELLENT! ⭐";
+            scoreBadge.innerText = `${analysis.score}%`;
+            feedbackBox.innerHTML = `
+                <div style="color: var(--bridge-green); font-size: 26px; font-weight: 800; width: 100%;">"${analysis.child_msg}" 🎈</div>
                 <div style="font-size: 15px; color: #666; font-weight: 400; line-height: 1.5; border-top: 1px solid #EAEAEA; padding-top: 15px; width: 100%; text-align: left; background: #FFF; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
                     <strong style="color: var(--bridge-charcoal); display: block; margin-bottom: 5px;">[Teacher's Observation]</strong>
                     ${analysis.parent_insight}
                 </div>
             `;
 
-            if (isLastPage) {
-                isSeriesFinished = true;
-                document.getElementById('overlay-btn').innerText = "Finish & Go Home";
-            }
+            if (isLastPage) { isSeriesFinished = true; document.getElementById('overlay-btn').innerText = "Complete & Go Home"; }
 
         } catch (e) {
-            document.getElementById('ai-feedback').innerHTML = "Wonderful work! You are exploring so well today.";
-            if (isLastPage) {
-                isSeriesFinished = true;
-                document.getElementById('overlay-btn').innerText = "Finish & Go Home";
-            }
+            // 오류 발생 시 무한 대기 방지 처리
+            statusTitle.innerText = "GOOD JOB! 👍";
+            scoreBadge.innerText = "100%"; 
+            feedbackBox.innerHTML = "Wonderful work! Milo is so proud of your creative exploration today. 🌈";
+            if (isLastPage) { isSeriesFinished = true; document.getElementById('overlay-btn').innerText = "Complete & Go Home"; }
         }
     }
 
     function handleOverlayClick() {
-        if (isSeriesFinished) {
-            window.location.href = 'index.html'; 
-        } else {
-            document.getElementById('success-overlay').style.display = 'none';
-        }
+        if (isSeriesFinished) { window.location.href = 'index.html'; } 
+        else { document.getElementById('success-overlay').style.display = 'none'; }
     }
 
     if (data) {

@@ -3,82 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bridge Academy | Portrait Lab</title>
+    <title>Bridge Academy | Elite Inquiry Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
             --bridge-green: #8CC69F; --bridge-taupe: #A39B8E; --bridge-charcoal: #3A3A42; 
-            --bridge-bg: #F7F9F8; --bridge-paper: #FFFFFF; --bridge-danger: #E07A5F;
+            --bridge-bg: #F0F2F1; --bridge-paper: #FFFFFF; --bridge-gold: #C5A059; --bridge-danger: #E07A5F;
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--bridge-bg); margin: 0; display: flex; height: 100vh; overflow: hidden; color: var(--bridge-charcoal); flex-direction: column; }
         
-        /* 💡 사이드바 (모바일 대응 상단 전환) */
-        .sidebar { width: 260px; background: var(--bridge-paper); display: flex; flex-direction: column; z-index: 20; border-right: 1px solid rgba(0,0,0,0.05); transition: 0.3s; }
-        .sidebar-header { padding: 20px; text-align: center; border-bottom: 1px solid #F5F5F5; }
-        .sidebar-logo { max-width: 140px; }
-        .nav-list { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 8px; }
-        .nav-item { padding: 14px; border-radius: 12px; cursor: pointer; color: #777; font-size: 13px; text-align: left; background: #FAFAFA; }
-        .nav-item.active { background: #EAF4ED; color: var(--bridge-charcoal); font-weight: bold; border-left: 5px solid var(--bridge-green); }
+        /* 프리미엄 엠비언트 배경 */
+        body { 
+            font-family: 'Noto Sans KR', sans-serif; 
+            background: radial-gradient(circle at center, #F7F9F8 0%, #DDE3E0 100%);
+            margin: 0; display: flex; height: 100vh; overflow: hidden; color: var(--bridge-charcoal); 
+        }
+        
+        /* 사이드바 */
+        .sidebar { width: 260px; background: var(--bridge-paper); display: flex; flex-direction: column; z-index: 20; border-right: 1px solid rgba(0,0,0,0.05); box-shadow: 10px 0 30px rgba(0,0,0,0.02); }
+        .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #F5F5F5; cursor: pointer; }
+        .sidebar-logo { max-width: 150px; }
+        .nav-list { flex: 1; overflow-y: auto; padding: 20px; }
+        .nav-item { padding: 14px 18px; margin-bottom: 10px; border-radius: 15px; cursor: pointer; color: #888; font-size: 13px; background: #FAFAFA; border: 1px solid transparent; transition: 0.2s; }
+        .nav-item.active { background: #EAF4ED; color: var(--bridge-charcoal); font-weight: bold; border-left: 4px solid var(--bridge-green); border-color: #E0EBE3; }
 
-        /* 💡 메인 뷰어 (세로형 중심) */
-        .app-container { display: flex; flex: 1; height: 100vh; overflow: hidden; }
-        .viewer { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 20px; position: relative; background: #F0F2F1; overflow-y: auto; }
+        /* 메인 레이아웃 */
+        .app-container { display: flex; flex: 1; height: 100vh; overflow: hidden; flex-direction: column; }
+        .viewer { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 30px 20px; position: relative; overflow-y: auto; }
 
-        /* 상단 타겟 바 */
-        .top-status { width: 100%; max-width: 600px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .target-tag { font-size: 10px; font-weight: 900; color: var(--bridge-green); letter-spacing: 2px; }
-        #target-words-text { font-size: 18px; font-weight: 800; color: var(--bridge-charcoal); }
+        /* 상단 상태 바 */
+        .top-status { width: 100%; max-width: 700px; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+        .target-tag { font-size: 11px; font-weight: 900; color: var(--bridge-green); letter-spacing: 3px; text-transform: uppercase; border-bottom: 2px solid var(--bridge-green); padding-bottom: 4px; }
+        #target-words-text { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--bridge-charcoal); }
 
-        /* 💡 워크시트 컨테이너 (세로형 꽉 찬 배치) */
+        /* 💡 워크시트: A4 세로 꽉 찬 화면 유지 */
         .canvas-container { 
-            position: relative; background: var(--bridge-paper); border-radius: 12px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1); padding: 0; line-height: 0; touch-action: none;
-            width: 100%; max-width: 600px; /* A4 세로 비율을 위한 최적 너비 */
+            position: relative; background: var(--bridge-paper); border-radius: 8px; 
+            box-shadow: 0 40px 80px rgba(0,0,0,0.12), 0 10px 20px rgba(0,0,0,0.05); 
+            padding: 0; line-height: 0; touch-action: none;
+            width: 100%; max-width: 700px; border: 1px solid #EEE; margin-bottom: 20px;
         }
-        #main-img { width: 100%; height: auto; display: block; pointer-events: none; border-radius: 12px; }
-        #drawing-canvas { position: absolute; top: 0; left: 0; cursor: crosshair; touch-action: none; }
+        #main-img { width: 100%; height: auto; display: block; pointer-events: none; border-radius: 8px; }
+        #drawing-canvas { position: absolute; top: 0; left: 0; cursor: crosshair; touch-action: none; border-radius: 8px; }
 
-        /* 💡 하단 컨트롤 패널 (모바일 친화적 도구함) */
-        .bottom-controls { 
-            width: 100%; background: #FFF; padding: 15px 25px; border-top: 1px solid #EEE;
-            display: flex; flex-direction: column; gap: 15px; align-items: center; z-index: 30;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+        /* 💡 하단 컨트롤 독(Dock): 길쭉해짐 방지 및 누락 버튼 복구 */
+        .bottom-dock { 
+            width: 100%; background: rgba(255,255,255,0.95); padding: 20px 30px; border-top: 1px solid #EEE;
+            display: flex; flex-direction: column; gap: 15px; align-items: center; justify-content: center; z-index: 30;
+            backdrop-filter: blur(15px); box-shadow: 0 -15px 40px rgba(0,0,0,0.03);
+            position: sticky; bottom: 0;
         }
-        .tool-row { display: flex; width: 100%; max-width: 600px; align-items: center; justify-content: space-between; gap: 15px; }
         
-        .color-selector { display: flex; align-items: center; gap: 15px; }
-        .color-ring-container { width: 50px; height: 50px; cursor: pointer; position: relative; }
+        .tool-row { 
+            display: flex; width: 100%; max-width: 700px; align-items: center; justify-content: space-between; gap: 15px; 
+            background: #F7F9F8; padding: 12px 20px; border-radius: 50px; border: 1px solid #EAEAEA;
+        }
+        
+        /* 복구된 네비게이션 버튼 */
+        .btn-icon { width: 45px; height: 45px; border-radius: 50%; background: #FFF; border: 1px solid #DDD; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; color: var(--bridge-charcoal); font-weight: bold; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .btn-icon:hover { background: var(--bridge-green); color: #FFF; border-color: var(--bridge-green); }
+        .btn-icon:disabled { opacity: 0.3; cursor: not-allowed; background: #FFF; color: #CCC; border-color: #EEE; }
+
+        .color-selector { display: flex; align-items: center; gap: 12px; }
+        .color-ring-container { width: 45px; height: 45px; cursor: pointer; position: relative; }
         #color-wheel { border-radius: 50%; width: 100%; height: 100%; }
-        .current-color { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #FFF; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .current-color { width: 30px; height: 30px; border-radius: 50%; border: 3px solid #FFF; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        
+        .brush-control-wrap { display: flex; align-items: center; gap: 10px; flex: 1; justify-content: center; }
+        .brush-slider { width: 100%; max-width: 150px; height: 6px; accent-color: var(--bridge-green); cursor: pointer; }
 
-        .brush-slider { flex: 1; height: 8px; accent-color: var(--bridge-green); }
+        .btn-text { background: none; border: none; color: #888; font-weight: 800; cursor: pointer; font-size: 12px; letter-spacing: 1px; padding: 10px; }
 
-        .action-buttons { display: flex; width: 100%; max-width: 600px; gap: 10px; }
-        .btn { padding: 16px; border-radius: 15px; border: none; font-weight: bold; font-size: 15px; cursor: pointer; flex: 1; transition: 0.2s; }
-        .btn-record { background: #F5F5F5; color: var(--bridge-charcoal); }
-        .btn-record.recording { background: var(--bridge-danger); color: #FFF; animation: pulse 1.5s infinite; }
-        .btn-submit { background: var(--bridge-charcoal); color: #FFF; flex: 2; letter-spacing: 1px; }
+        /* 액션 버튼 (늘어남 방지를 위해 max-width 적용) */
+        .action-row { display: flex; width: 100%; max-width: 700px; gap: 15px; justify-content: center; }
+        .btn-action { padding: 18px 30px; border-radius: 50px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; transition: 0.3s; letter-spacing: 1.5px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-record { background: #FFF; color: var(--bridge-charcoal); border: 2px solid #EAEAEA; flex: 1; max-width: 280px; }
+        .btn-record.recording { background: var(--bridge-danger); color: #FFF; border-color: var(--bridge-danger); animation: pulse 1.5s infinite; }
+        .btn-submit { background: var(--bridge-charcoal); color: #FFF; flex: 1.5; max-width: 400px; box-shadow: 0 10px 25px rgba(58, 58, 66, 0.2); }
+        .btn-submit:hover { background: var(--bridge-green); }
 
-        /* AI 결과 오버레이 */
-        #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; padding: 20px; }
-        .score-circle { width: 100px; height: 100px; border-radius: 50%; background: var(--bridge-green); color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900; margin-bottom: 20px; }
+        /* 결과 오버레이 */
+        #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(247, 249, 248, 0.98); backdrop-filter: blur(20px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; padding: 40px; }
+        .score-badge { font-size: 52px; color: #FFF; background: var(--bridge-green); padding: 15px 65px; border-radius: 100px; margin-bottom: 25px; font-weight: 900; }
+        .child-msg-box { font-size: 28px; font-weight: 800; color: var(--bridge-charcoal); margin-bottom: 30px; line-height: 1.4; }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
-        /* 📱 모바일 화면 전환 */
+        /* 모바일 최적화 */
         @media (max-width: 900px) {
-            .app-container { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; flex-direction: row; border-right: none; border-bottom: 1px solid #EEE; }
-            .nav-list { flex-direction: row; overflow-x: auto; padding: 10px; }
-            .nav-item { min-width: 120px; white-space: nowrap; font-size: 11px; }
-            .viewer { padding: 10px; }
-            .bottom-controls { padding: 10px 15px; }
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; }
+            .nav-list { flex-direction: row; overflow-x: auto; padding: 10px; gap: 8px; }
+            .nav-item { min-width: 140px; font-size: 11px; padding: 12px; margin-bottom: 0; }
+            .viewer { padding: 15px 10px; }
+            .bottom-dock { padding: 15px 10px; }
+            .tool-row { flex-wrap: wrap; justify-content: center; padding: 15px; border-radius: 20px; }
+            .btn-action { padding: 15px 20px; font-size: 14px; }
         }
     </style>
 </head>
 <body>
 
-<div class="app-container">
+<div style="display: flex; width: 100%; height: 100vh;">
     <div class="sidebar">
         <div class="sidebar-header" onclick="location.href='index.html'">
             <img src="logo.png" alt="Bridge Academy" class="sidebar-logo">
@@ -86,37 +112,48 @@
         <div id="nav-list" class="nav-list"></div>
     </div>
 
-    <div class="viewer">
-        <div class="top-status">
-            <div class="target-tag">INQUIRY TARGET</div>
-            <div id="target-words-text">Loading...</div>
-        </div>
-
-        <div class="canvas-container">
-            <div id="success-overlay">
-                <div id="score-badge" class="score-circle">WAIT</div>
-                <div id="child-msg" style="font-size: 22px; font-weight: 800; margin-bottom: 20px;">Teacher is observing...</div>
-                <button class="btn btn-submit" style="max-width: 200px;" onclick="handleOverlayClick()">Continue</button>
+    <div class="app-container">
+        <div class="viewer">
+            <div class="top-status">
+                <div class="target-tag">Foundation Series</div>
+                <div id="target-words-text">Loading...</div>
             </div>
-            <img src="" id="main-img" crossorigin="anonymous">
-            <canvas id="drawing-canvas"></canvas>
-        </div>
-    </div>
-</div>
 
-<!-- 💡 하단 고정 도구 모음 -->
-<div class="bottom-controls">
-    <div class="tool-row">
-        <div class="color-selector">
-            <div class="color-ring-container"><canvas id="color-wheel" width="100" height="100"></canvas></div>
-            <div id="current-color-bg" class="current-color"></div>
+            <div class="canvas-container">
+                <div id="success-overlay">
+                    <div id="score-badge" class="score-badge">WAIT</div>
+                    <div id="child-msg" class="child-msg-box">Teacher is reviewing...</div>
+                    <button class="btn-action btn-submit" style="max-width: 300px;" onclick="handleOverlayClick()">CONTINUE EXPLORATION</button>
+                </div>
+                <img src="" id="main-img" crossorigin="anonymous">
+                <canvas id="drawing-canvas"></canvas>
+            </div>
         </div>
-        <input type="range" id="brush-size" class="brush-slider" min="3" max="25" value="8">
-        <button onclick="resetCanvas()" style="background:none; border:none; color:#AAA; font-weight:bold; cursor:pointer;">RESET</button>
-    </div>
-    <div class="action-buttons">
-        <button id="record-btn" class="btn btn-record" onclick="toggleRecording()">🎤 RECORD</button>
-        <button class="btn btn-submit" onclick="submitWork()">SUBMIT INQUIRY ✨</button>
+
+        <!-- 💡 늘어남 현상이 완벽히 제어된 하단 독(Dock) -->
+        <div class="bottom-dock">
+            <div class="tool-row">
+                <button id="prev-btn" class="btn-icon" onclick="changePage(-1)">◀</button>
+                
+                <div class="color-selector">
+                    <div class="color-ring-container"><canvas id="color-wheel" width="90" height="90"></canvas></div>
+                    <div id="current-color-bg" class="current-color"></div>
+                </div>
+                
+                <div class="brush-control-wrap">
+                    <span style="font-size: 10px; font-weight: 900; color: #AAA;">PEN</span>
+                    <input type="range" id="brush-size" class="brush-slider" min="3" max="25" value="8">
+                </div>
+                
+                <button onclick="resetCanvas()" class="btn-text">RESET</button>
+                <button id="next-btn" class="btn-icon" onclick="changePage(1)">▶</button>
+            </div>
+            
+            <div class="action-row">
+                <button id="record-btn" class="btn-action btn-record" onclick="toggleRecording()">🎤 RECORD</button>
+                <button class="btn-action btn-submit" onclick="submitWork()">SUBMIT INQUIRY ✨</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -147,7 +184,7 @@
             wheelCtx.beginPath(); wheelCtx.moveTo(radius, radius); wheelCtx.arc(radius, radius, radius, startAngle, endAngle);
             wheelCtx.fillStyle = `hsl(${angle}, 100%, 50%)`; wheelCtx.fill();
         }
-        wheelCtx.beginPath(); wheelCtx.arc(radius, radius, radius*0.3, 0, Math.PI*2); wheelCtx.fillStyle = "white"; wheelCtx.fill();
+        wheelCtx.beginPath(); wheelCtx.arc(radius, radius, radius*0.35, 0, Math.PI*2); wheelCtx.fillStyle = "white"; wheelCtx.fill();
     }
     function pickColor(e) {
         const rect = wheelCanvas.getBoundingClientRect();
@@ -186,7 +223,45 @@
     canvas.addEventListener('touchstart', e => { drawing = true; const p = getCoords(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); e.preventDefault(); }, {passive:false});
     canvas.addEventListener('touchmove', e => { if (!drawing) return; const p = getCoords(e); ctx.lineTo(p.x, p.y); ctx.stroke(); e.preventDefault(); }, {passive:false});
 
-    async function toggleRecording() { /* 기존 녹음 로직 보존 */ }
+    let mediaRecorder; let audioChunks = []; let isRecording = false;
+    async function toggleRecording() {
+        const btn = document.getElementById('record-btn');
+        if (!isRecording) {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const mimeType = ['audio/webm', 'audio/mp4', 'audio/ogg'].find(type => MediaRecorder.isTypeSupported(type));
+                mediaRecorder = new MediaRecorder(stream, { mimeType });
+                mediaRecorder.ondataavailable = e => { if(e.data.size > 0) audioChunks.push(e.data); };
+                mediaRecorder.onstop = () => {
+                    audioBlob = new Blob(audioChunks, { type: mimeType }); audioChunks = [];
+                    btn.innerHTML = "🎵 RECORDED"; btn.style.background = "var(--bridge-green)"; btn.style.color = "#FFF"; btn.style.borderColor = "var(--bridge-green)";
+                };
+                audioChunks = []; mediaRecorder.start(); isRecording = true;
+                btn.innerHTML = "🔴 RECORDING"; btn.classList.add('recording');
+            } catch (err) { alert("Mic required."); }
+        } else { mediaRecorder.stop(); isRecording = false; mediaRecorder.stream.getTracks().forEach(t => t.stop()); }
+    }
+
+    // 💡 누락되었던 네비게이션 로직 전면 복구
+    function loadPage(idx) { 
+        currentPageIndex = idx; audioBlob = null; 
+        
+        // 버튼 초기화
+        const recordBtn = document.getElementById('record-btn');
+        recordBtn.innerHTML = "🎤 RECORD"; recordBtn.style.background = "#FFF"; recordBtn.style.color = "var(--bridge-charcoal)"; recordBtn.style.borderColor = "#EAEAEA";
+        
+        img.src = data[idx].img; 
+        document.getElementById('target-words-text').innerText = data[idx].words; 
+        ctx.clearRect(0,0,canvas.width,canvas.height); 
+        
+        document.querySelectorAll('.nav-item').forEach((el, index) => el.classList.toggle('active', index === idx));
+        
+        // 이전/다음 버튼 활성화 제어
+        document.getElementById('prev-btn').disabled = (idx === 0);
+        document.getElementById('next-btn').disabled = (idx === data.length - 1);
+    }
+    
+    function changePage(step) { loadPage(currentPageIndex + step); }
 
     async function submitWork() {
         document.getElementById('success-overlay').style.display = 'flex';
@@ -207,13 +282,12 @@
     }
 
     function handleOverlayClick() { document.getElementById('success-overlay').style.display = 'none'; }
-    function loadPage(idx) { currentPageIndex = idx; img.src = data[idx].img; document.getElementById('target-words-text').innerText = data[idx].words; ctx.clearRect(0,0,canvas.width,canvas.height); }
 
     if (data) {
         const navList = document.getElementById('nav-list');
         data.forEach((item, index) => {
             const div = document.createElement('div'); div.className = 'nav-item' + (index === 0 ? ' active' : '');
-            div.innerHTML = `Page 0${item.id}: ${item.title}`;
+            div.innerHTML = `<span style="font-size:10px; font-weight:800; opacity:0.5; display:block; margin-bottom:4px;">INQUIRY 0${item.id}</span>${item.title}`;
             div.onclick = () => loadPage(index); navList.appendChild(div);
         });
         drawColorWheel(); setTimeout(() => loadPage(0), 100);

@@ -8,79 +8,157 @@
     <style>
         :root { 
             --bridge-green: #8CC69F; --bridge-taupe: #A39B8E; --bridge-charcoal: #3A3A42; 
-            --bridge-bg: #F7F9F8; --bridge-paper: #FFFFFF;
+            --bridge-bg: #F7F9F8; --bridge-paper: #FFFFFF; --bridge-gold: #C5A059;
         }
         * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
         body { font-family: 'Noto Sans KR', sans-serif; background: var(--bridge-bg); margin: 0; color: var(--bridge-charcoal); overflow-x: hidden; }
+        
         header { padding: 30px 8% 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.9); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(0,0,0,0.03); }
         .logo { max-width: 180px; cursor: pointer; }
         .campus-status { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; color: var(--bridge-taupe); border: 1px solid var(--bridge-taupe); padding: 6px 18px; border-radius: 50px; }
-        .hero { padding: 100px 8% 60px; text-align: center; }
-        .hero h1 { font-family: 'Playfair Display', serif; font-size: 52px; margin-bottom: 20px; color: var(--bridge-charcoal); }
-        .btn-magic-scan { padding: 22px 50px; border-radius: 60px; background: var(--bridge-green); color: #FFF; border: none; font-weight: 800; cursor: pointer; font-size: 16px; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(140, 198, 159, 0.3); }
-        #scanner-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(247, 249, 248, 0.98); backdrop-filter: blur(20px); z-index: 1000; flex-direction:column; align-items:center; justify-content:center; }
-        .scanner-frame { position: relative; width: 100%; max-width: 450px; border-radius: 30px; overflow: hidden; border: 8px solid #FFF; box-shadow: 0 40px 100px rgba(0,0,0,0.1); }
+
+        .hero { padding: 80px 8% 40px; text-align: center; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 48px; margin-bottom: 15px; color: var(--bridge-charcoal); }
+        .hero p { font-size: 16px; color: var(--bridge-taupe); margin-bottom: 30px; font-weight: 300; }
+
+        .btn-magic-scan { 
+            padding: 20px 45px; border-radius: 60px; background: var(--bridge-green); color: #FFF; 
+            border: none; font-weight: 800; cursor: pointer; font-size: 15px; letter-spacing: 2px;
+            box-shadow: 0 15px 40px rgba(140, 198, 159, 0.3); display: inline-flex; align-items: center; gap: 10px;
+        }
+
+        /* 💡 월별 섹션 디자인 */
+        .month-section { padding: 40px 8%; }
+        .month-title { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--bridge-charcoal); border-bottom: 2px solid var(--bridge-green); display: inline-block; padding-bottom: 10px; margin-bottom: 40px; }
+
+        /* 💡 36권 그리드 레이아웃 */
+        .curriculum-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; margin-bottom: 60px; }
+        
+        .book-card { background: var(--bridge-paper); border-radius: 25px; overflow: hidden; box-shadow: 0 20px 50px rgba(58, 58, 66, 0.05); border: 1px solid rgba(0,0,0,0.02); cursor: pointer; position: relative; }
+        .book-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(140, 198, 159, 0.15); }
+        
+        .book-thumb { width: 100%; height: 200px; background: #EEE; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .book-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .book-info { padding: 25px; }
+        .book-tag { font-size: 9px; font-weight: 900; color: var(--bridge-green); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; display: block; }
+        .book-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--bridge-charcoal); margin-bottom: 10px; height: 50px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .book-question { font-size: 12px; color: #999; word-break: keep-all; line-height: 1.5; }
+
+        /* 스캐너 모달 */
+        #scanner-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(247, 249, 248, 0.98); backdrop-filter: blur(20px); z-index: 1000; flex-direction:column; align-items:center; justify-content:center; padding: 20px; }
+        .scanner-frame { position: relative; width: 100%; max-width: 450px; border-radius: 30px; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.1); border: 8px solid #FFF; }
         #scan-video { width: 100%; display: block; }
         .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--bridge-green); animation: scan 2s linear infinite; }
         @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
-        .series-container { padding: 20px 8% 120px; display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 50px; }
-        .series-card { background: var(--bridge-paper); border-radius: 40px; overflow: hidden; box-shadow: 0 40px 100px rgba(58, 58, 66, 0.06); cursor: pointer; }
+
         footer { padding: 60px 8%; background: var(--bridge-charcoal); color: rgba(255,255,255,0.4); text-align: center; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .curriculum-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+            .book-info { padding: 15px; }
+            .book-title { font-size: 15px; }
+        }
     </style>
 </head>
 <body>
+
 <header>
     <img src="logo.png" alt="Bridge Academy" class="logo">
-    <div class="campus-status">Private Access Only</div>
+    <div class="campus-status">1st Quarter Inquiry</div>
 </header>
+
 <section class="hero">
     <h1>Redefining Inquiry Excellence</h1>
+    <p>Premium Digital Learning for Global Leaders</p>
     <button class="btn-magic-scan" onclick="openScanner()">✨ MAGIC BOOK SCAN</button>
 </section>
+
+<!-- 💡 월별 섹션이 생성될 컨테이너 -->
+<div id="curriculum-content"></div>
+
 <div id="scanner-modal">
     <div class="scanner-frame"><video id="scan-video" autoplay playsinline></video><div class="scan-line"></div></div>
-    <div id="scan-status" style="margin-top: 25px; font-weight: 700;">Align book cover within frame</div>
-    <button onclick="identifyBook()" style="margin-top: 25px; padding: 20px 50px; border-radius: 50px; background: var(--bridge-charcoal); color: #FFF; border: none; font-weight: 800;">IDENTIFY BOOK</button>
+    <div id="scan-status" style="margin-top: 30px; font-size: 18px; font-weight: 700;">Align book cover within frame</div>
+    <button id="scan-btn" onclick="identifyBook()" style="margin-top: 30px; padding: 18px 50px; border-radius: 50px; background: var(--bridge-charcoal); color: #FFF; border: none; font-weight: 800; cursor: pointer;">IDENTIFY BOOK</button>
     <button onclick="closeScanner()" style="margin-top:20px; background:none; border:none; color:#AAA; cursor:pointer;">Close</button>
 </div>
-<div class="series-container">
-    <div class="series-card" onclick="location.href='workbook.html?month=Jan'">
-        <div style="height:300px; background:#EEE;"></div>
-        <div style="padding:40px;">
-            <div style="font-size:10px; font-weight:900; color:var(--bridge-green); margin-bottom:10px;">FOUNDATION SERIES</div>
-            <div style="font-family:'Playfair Display', serif; font-size:28px;">January Inquiry</div>
-        </div>
-    </div>
-</div>
+
 <footer>© 2026 BRIDGE ACADEMY</footer>
 
-<!-- 💡 핵심: 외부 라이브러리 연결 -->
+<!-- 💡 데이터베이스 연결 -->
 <script src="library.js"></script>
+
 <script>
     const API_KEY = "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4"; 
+
+    // 💡 library.js 데이터를 바탕으로 화면 구성
+    function renderCurriculum() {
+        const container = document.getElementById('curriculum-content');
+        const months = ["Jan", "Feb", "Mar"];
+        
+        months.forEach(month => {
+            const monthData = BRIDGE_LIBRARY.filter(b => b.month === month);
+            if (monthData.length === 0) return;
+
+            const section = document.createElement('section');
+            section.className = 'month-section';
+            section.innerHTML = `<h2 class="month-title">${month.toUpperCase()} INQUIRY</h2>`;
+            
+            const grid = document.createElement('div');
+            grid.className = 'curriculum-grid';
+            
+            monthData.forEach(book => {
+                const card = document.createElement('div');
+                card.className = 'book-card';
+                card.onclick = () => location.href = `workbook.html?id=${book.id}`;
+                card.innerHTML = `
+                    <div class="book-thumb">
+                        <img src="${book.id}.png" onerror="this.src='placeholder.png'">
+                    </div>
+                    <div class="book-info">
+                        <span class="book-tag">${book.theme}</span>
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-question">${book.question}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            
+            section.appendChild(grid);
+            container.appendChild(section);
+        });
+    }
+
+    // 매직 스캐너 로직 (V20.1 보존)
     let stream;
     async function openScanner() {
         document.getElementById('scanner-modal').style.display = 'flex';
         try { stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }); document.getElementById('scan-video').srcObject = stream; } 
-        catch (err) { alert("Camera access required."); closeScanner(); }
+        catch (err) { alert("Camera required."); closeScanner(); }
     }
     function closeScanner() { if (stream) stream.getTracks().forEach(t => t.stop()); document.getElementById('scanner-modal').style.display = 'none'; }
+    
     async function identifyBook() {
-        const status = document.getElementById('scan-status'); const video = document.getElementById('scan-video');
+        const status = document.getElementById('scan-status');
+        const video = document.getElementById('scan-video');
         const canvas = document.createElement('canvas'); canvas.width = 500; canvas.height = 375;
         canvas.getContext('2d').drawImage(video, 0, 0, 500, 375);
         const base64Img = canvas.toDataURL("image/jpeg", 0.6).split(',')[1];
         try {
             const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: [{ parts: [{ text: "Identify the children's book title. Return ONLY the title." }, { inline_data: { mime_type: "image/jpeg", data: base64Img } }] }] })
+                body: JSON.stringify({ contents: [{ parts: [{ text: "Identify book title. Return ONLY title." }, { inline_data: { mime_type: "image/jpeg", data: base64Img } }] }] })
             });
             const d = await res.json(); const title = d.candidates[0].content.parts[0].text.trim();
             const matched = BRIDGE_LIBRARY.find(b => title.toLowerCase().includes(b.title.toLowerCase()));
             if (matched) location.href = `workbook.html?id=${matched.id}`;
-            else status.innerText = `Could not find: ${title}`;
-        } catch (e) { status.innerText = "Identification failed."; }
+            else status.innerText = `Try again: ${title}`;
+        } catch (e) { status.innerText = "Scan failed."; }
     }
+
+    window.onload = renderCurriculum;
 </script>
 </body>
 </html>

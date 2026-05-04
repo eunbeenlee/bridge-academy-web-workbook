@@ -3,504 +3,425 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bridge Academy | Elite Digital Campus</title>
+    <title>Bridge Academy | Private Heritage Campus</title>
     
-    <!-- [Fonts] Google Fonts Integration -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- [Premium Fonts] Playfair Display for Heritage, Noto Sans for Clarity -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
         /* 
-         * [CSS Architecture] 
-         * Bridge Academy Premium Design System 
+         * [Architecture: Bridge Academy Premium Design System V25.0]
+         * Designed by Gemini for Director Lee Yun-ji
          */
         :root {
             --bridge-green: #8CC69F;
-            --bridge-taupe: #A39B8E;
             --bridge-charcoal: #3A3A42;
+            --bridge-taupe: #A39B8E;
+            --bridge-gold: #C5A059; /* [Key] Luxury Gold Accent */
             --bridge-bg: #F7F9F8;
             --bridge-paper: #FFFFFF;
-            --bridge-gold: #C5A059;
             --bridge-border: rgba(58, 58, 66, 0.08);
-            --transition-smooth: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-            --shadow-premium: 0 30px 60px rgba(58, 58, 66, 0.05);
-            --shadow-hover: 0 50px 100px rgba(140, 198, 159, 0.15);
+            --luxury-shadow: 0 40px 100px rgba(58, 58, 66, 0.08);
+            --gold-glow: 0 10px 30px rgba(197, 160, 89, 0.2);
+            --transition-hq: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        /* Base Reset */
-        * { 
-            margin: 0; padding: 0; 
-            box-sizing: border-box; 
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+        /* [Base Reset] */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bridge-bg); color: var(--bridge-charcoal); line-height: 1.7; overflow-x: hidden; }
 
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: var(--bridge-bg);
-            color: var(--bridge-charcoal);
-            line-height: 1.6;
-            overflow-x: hidden;
+        /* [Elite Access Gateway] - 프라이빗 입장 효과 */
+        #access-gateway {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bridge-charcoal); z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1);
         }
+        #access-gateway.unlocked { transform: translateY(-100%); }
+        .gateway-logo { max-width: 220px; margin-bottom: 40px; filter: brightness(0) invert(1); opacity: 0; animation: fadeIn 1s forwards 0.5s; }
+        .gateway-text { color: var(--bridge-gold); font-family: 'Playfair Display', serif; font-size: 14px; letter-spacing: 6px; opacity: 0; animation: fadeIn 1s forwards 1s; }
+        .btn-enter {
+            margin-top: 50px; padding: 18px 50px; background: none; border: 1px solid var(--bridge-gold);
+            color: var(--bridge-gold); font-weight: 700; cursor: pointer; border-radius: 50px;
+            letter-spacing: 3px; transition: 0.3s; opacity: 0; animation: fadeIn 1s forwards 1.5s;
+        }
+        .btn-enter:hover { background: var(--bridge-gold); color: #FFF; box-shadow: var(--gold-glow); }
 
-        /* [Header] Premium Navigation */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* [Header] Heritage Navigation */
         header {
-            width: 100%;
-            padding: 35px 8%;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            width: 100%; padding: 40px 8%; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(25px);
+            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1500;
             border-bottom: 1px solid var(--bridge-border);
         }
+        .logo-box { cursor: pointer; transition: 0.3s; }
+        .logo-box:hover { opacity: 0.7; }
+        .logo-img { max-width: 200px; }
+        .nav-meta { display: flex; align-items: center; gap: 30px; }
+        .campus-id { font-size: 11px; font-weight: 800; letter-spacing: 4px; color: var(--bridge-taupe); border: 1px solid var(--bridge-taupe); padding: 10px 25px; border-radius: 50px; }
 
-        .logo-wrap { display: flex; align-items: center; gap: 15px; cursor: pointer; }
-        .logo-img { max-width: 190px; height: auto; }
-        .campus-badge {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--bridge-taupe);
-            border: 1.5px solid var(--bridge-taupe);
-            padding: 8px 22px;
-            border-radius: 50px;
-        }
-
-        /* [Hero] High-End Visuals */
-        .hero-section {
-            padding: 120px 8% 80px;
-            text-align: center;
-            background: linear-gradient(180deg, #FFFFFF 0%, var(--bridge-bg) 100%);
-        }
-
-        .hero-section h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 64px;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: var(--bridge-charcoal);
-            letter-spacing: -1px;
-        }
-
-        .hero-section p {
-            font-size: 20px;
-            color: var(--bridge-taupe);
-            font-weight: 300;
-            margin-bottom: 50px;
-            letter-spacing: 1px;
-        }
+        /* [Hero Section] Inquiry Vision */
+        .hero { padding: 140px 8% 80px; text-align: center; background: radial-gradient(circle at top, #FFF 0%, var(--bridge-bg) 100%); }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 900; margin-bottom: 30px; letter-spacing: -2px; line-height: 1.1; }
+        .hero h1 span { color: var(--bridge-green); }
+        .hero p { font-size: 20px; color: var(--bridge-taupe); font-weight: 300; max-width: 800px; margin: 0 auto 50px; }
 
         .btn-magic-scan {
-            padding: 24px 60px;
-            border-radius: 100px;
-            background: var(--bridge-green);
-            color: #FFFFFF;
-            border: none;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            letter-spacing: 3px;
-            box-shadow: 0 20px 50px rgba(140, 198, 159, 0.4);
-            transition: var(--transition-smooth);
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            text-transform: uppercase;
+            padding: 26px 70px; border-radius: 100px; background: var(--bridge-green); color: #FFF; border: none;
+            font-size: 16px; font-weight: 800; cursor: pointer; letter-spacing: 4px; box-shadow: 0 30px 60px rgba(140, 198, 159, 0.3);
+            transition: var(--transition-hq); display: inline-flex; align-items: center; gap: 18px;
         }
+        .btn-magic-scan:hover { transform: translateY(-8px); background: var(--bridge-charcoal); box-shadow: 0 40px 80px rgba(58, 58, 66, 0.2); }
 
-        .btn-magic-scan:hover {
-            transform: translateY(-5px);
-            background: var(--bridge-charcoal);
-            box-shadow: 0 30px 60px rgba(58, 58, 66, 0.2);
-        }
-
-        /* [Curriculum] Dynamic Grid System */
-        .curriculum-content { padding: 60px 8% 120px; }
-
-        .month-container { margin-bottom: 100px; }
+        /* [Private Dashboard] 학부모용 프라이빗 통찰 구역 */
+        .private-dashboard { padding: 0 8% 60px; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
+        .dashboard-card { background: var(--bridge-paper); border-radius: 40px; padding: 50px; border: 1px solid var(--bridge-border); box-shadow: var(--luxury-shadow); }
+        .card-label { font-size: 11px; font-weight: 900; color: var(--bridge-gold); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; display: block; }
+        .card-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 20px; }
+        .card-content { font-size: 15px; color: #777; font-weight: 300; }
         
-        .month-header {
-            display: flex;
-            align-items: flex-end;
-            gap: 20px;
-            margin-bottom: 50px;
-            border-bottom: 2px solid var(--bridge-green);
-            padding-bottom: 15px;
+        /* [Curriculum Filtration] */
+        .filter-section { display: flex; justify-content: center; gap: 20px; margin-bottom: 100px; position: sticky; top: 140px; z-index: 1000; padding: 10px; }
+        .filter-btn {
+            padding: 14px 40px; border-radius: 100px; border: 1px solid var(--bridge-border);
+            background: #FFF; font-weight: 800; font-size: 13px; letter-spacing: 2px; cursor: pointer;
+            transition: 0.4s; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
         }
+        .filter-btn.active { background: var(--bridge-charcoal); color: #FFF; border-color: var(--bridge-charcoal); transform: scale(1.05); }
 
-        .month-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 42px;
-            font-weight: 700;
-            color: var(--bridge-charcoal);
-            line-height: 1;
-        }
+        /* [Curriculum Engine] 24 Themes */
+        .curriculum-roadmap { padding: 0 8% 150px; }
+        .month-block { margin-bottom: 150px; opacity: 0; transform: translateY(30px); transition: 1s; }
+        .month-block.visible { opacity: 1; transform: translateY(0); }
+        
+        .month-title-wrap { display: flex; align-items: baseline; gap: 25px; border-bottom: 3px solid var(--bridge-green); padding-bottom: 20px; margin-bottom: 60px; }
+        .month-name { font-family: 'Playfair Display', serif; font-size: 60px; font-weight: 900; line-height: 1; color: var(--bridge-charcoal); }
+        .month-meta { font-size: 13px; font-weight: 900; color: var(--bridge-gold); letter-spacing: 5px; text-transform: uppercase; }
 
-        .month-subtitle {
-            font-size: 12px;
-            font-weight: 900;
-            color: var(--bridge-taupe);
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            padding-bottom: 8px;
-        }
+        .theme-unit { margin-bottom: 80px; background: #FFF; padding: 60px; border-radius: 50px; box-shadow: var(--luxury-shadow); border: 1px solid rgba(0,0,0,0.02); position: relative; overflow: hidden; }
+        .theme-unit::before { content: ""; position: absolute; top: 0; left: 0; width: 12px; height: 100%; }
+        .theme-unit.series-a::before { background: var(--bridge-green); }
+        .theme-unit.level-b::before { background: var(--bridge-gold); }
 
-        .curriculum-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 40px;
-        }
+        .unit-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 50px; }
+        .unit-info h3 { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 800; margin-bottom: 15px; }
+        .unit-question { font-size: 18px; font-weight: 500; color: var(--bridge-taupe); font-style: italic; }
 
-        .book-card {
-            background: var(--bridge-paper);
-            border-radius: 35px;
-            overflow: hidden;
-            box-shadow: var(--shadow-premium);
-            border: 1px solid var(--bridge-border);
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            position: relative;
-        }
+        /* [Book Grid System] 5 Books per Unit */
+        .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 35px; }
+        
+        .book-card { background: var(--bridge-bg); border-radius: 35px; overflow: hidden; border: 1px solid transparent; transition: var(--transition-hq); position: relative; }
+        .book-card.is-lab { background: #FFF; border-color: rgba(140, 198, 159, 0.3); cursor: pointer; }
+        .book-card.is-lab:hover { transform: translateY(-15px); box-shadow: 0 40px 80px rgba(140, 198, 159, 0.2); border-color: var(--bridge-green); }
 
-        .book-card:hover {
-            transform: translateY(-15px);
-            box-shadow: var(--shadow-hover);
-        }
+        .badge-type { position: absolute; top: 20px; right: 20px; font-size: 10px; font-weight: 900; padding: 7px 16px; border-radius: 50px; z-index: 10; letter-spacing: 2px; }
+        .badge-lab { background: var(--bridge-green); color: #FFF; box-shadow: 0 5px 15px rgba(140, 198, 159, 0.3); }
+        .badge-read { background: #EEE; color: #888; }
 
-        .book-thumb-wrap {
-            width: 100%;
-            height: 240px;
-            background: #F1F1F1;
-            position: relative;
-            overflow: hidden;
-        }
+        .book-thumb { width: 100%; height: 200px; background: #F5F5F5; overflow: hidden; position: relative; }
+        .book-thumb img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition-hq); }
+        .book-card.is-lab:hover img { transform: scale(1.1); filter: brightness(0.9); }
 
-        .book-thumb-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition-smooth);
-        }
+        .book-info { padding: 30px; }
+        .book-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; line-height: 1.4; height: 56px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 
-        .book-card:hover .book-thumb-img { transform: scale(1.1); }
+        /* [AI Magic Scanner UI] */
+        #scanner-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(247, 249, 248, 0.99); backdrop-filter: blur(50px); z-index: 3000; flex-direction:column; align-items:center; justify-content:center; }
+        .scanner-frame { width: 100%; max-width: 550px; border-radius: 60px; overflow: hidden; border: 15px solid #FFF; box-shadow: 0 80px 200px rgba(0,0,0,0.2); position: relative; }
+        #scan-video { width: 100%; height: auto; display: block; transform: scaleX(-1); }
+        .scan-laser { position: absolute; top: 0; left: 0; width: 100%; height: 8px; background: var(--bridge-green); box-shadow: 0 0 40px var(--bridge-green); animation: laserAnim 3s ease-in-out infinite; }
+        @keyframes laserAnim { 0%, 100% { top: 0; opacity: 0; } 50% { top: 100%; opacity: 1; } }
 
-        .book-info-area { padding: 35px; }
+        /* [Footer] Elite Branding */
+        footer { background: var(--bridge-charcoal); padding: 150px 8%; text-align: center; }
+        .footer-logo { max-width: 180px; opacity: 0.2; margin-bottom: 50px; }
+        .copyright { font-size: 12px; color: rgba(255,255,255,0.2); letter-spacing: 5px; text-transform: uppercase; }
 
-        .theme-tag {
-            font-size: 10px;
-            font-weight: 900;
-            color: var(--bridge-green);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .book-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--bridge-charcoal);
-            margin-bottom: 15px;
-            line-height: 1.3;
-            height: 58px;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-
-        .book-desc {
-            font-size: 13px;
-            color: #999;
-            line-height: 1.6;
-            font-weight: 300;
-        }
-
-        /* [Scanner] AI Vision UI */
-        #scanner-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(247, 249, 248, 0.98);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            z-index: 2000;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-        }
-
-        .scanner-container {
-            width: 100%;
-            max-width: 500px;
-            position: relative;
-            border-radius: 40px;
-            overflow: hidden;
-            border: 10px solid #FFF;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.15);
-        }
-
-        #scan-video { width: 100%; height: auto; display: block; }
-
-        .scan-overlay-line {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 5px;
-            background: var(--bridge-green);
-            box-shadow: 0 0 20px var(--bridge-green);
-            animation: scannerLoop 2.5s ease-in-out infinite;
-        }
-
-        @keyframes scannerLoop {
-            0% { top: 0%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
-        }
-
-        .scanner-status {
-            margin-top: 40px;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--bridge-charcoal);
-        }
-
-        .btn-scanner-action {
-            margin-top: 40px;
-            padding: 22px 70px;
-            border-radius: 100px;
-            background: var(--bridge-charcoal);
-            color: #FFF;
-            border: none;
-            font-weight: 800;
-            font-size: 16px;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-        }
-
-        .btn-scanner-action:hover { background: var(--bridge-green); transform: scale(1.05); }
-
-        /* [Footer] */
-        footer {
-            background: var(--bridge-charcoal);
-            padding: 100px 8%;
-            text-align: center;
-        }
-
-        .footer-logo { max-width: 150px; opacity: 0.4; margin-bottom: 30px; }
-        .copyright { font-size: 12px; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
-
-        /* [Responsive] Mobile Tuning */
+        /* [Responsive] Professional Mobile Tuning */
         @media (max-width: 1024px) {
-            .hero-section h1 { font-size: 48px; }
-            .curriculum-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .hero h1 { font-size: 52px; }
+            .private-dashboard { grid-template-columns: 1fr; }
+            .book-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .theme-unit { padding: 40px; }
         }
 
         @media (max-width: 768px) {
-            header { padding: 25px 5%; }
-            .hero-section { padding: 80px 5%; }
-            .hero-section h1 { font-size: 36px; }
-            .curriculum-grid { grid-template-columns: 1fr; }
-            .month-title { font-size: 32px; }
+            header { padding: 30px 5%; }
+            .hero h1 { font-size: 40px; }
+            .filter-section { overflow-x: auto; justify-content: flex-start; padding: 10px 5%; }
+            .month-name { font-size: 44px; }
+            .theme-unit { border-radius: 30px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
+    <!-- Private Access Gateway -->
+    <div id="access-gateway">
+        <img src="logo.png" alt="Bridge Academy" class="gateway-logo">
+        <div class="gateway-text">PRIVATE ACCESS ONLY</div>
+        <button class="btn-enter" onclick="EliteApp.unlock()">ENTER CAMPUS</button>
+    </div>
+
+    <!-- Heritage Navigation -->
     <header>
-        <div class="logo-wrap" onclick="window.location.reload()">
+        <div class="logo-box" onclick="EliteApp.refresh()">
             <img src="logo.png" alt="Bridge Academy" class="logo-img">
         </div>
-        <div class="campus-badge">Private Campus V22.0</div>
+        <div class="nav-meta">
+            <div class="campus-id">ACADEMY HERITAGE 2026</div>
+        </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main>
-        <!-- Hero Introduction -->
-        <section class="hero-section">
-            <h1 id="hero-title">Redefining Inquiry Excellence</h1>
-            <p id="hero-desc">Connecting Global Inquiry Standards with Creative AI Analysis</p>
-            <button class="btn-magic-scan" onclick="ScannerUI.open()">
-                <span class="icon">✨</span> MAGIC BOOK SCAN
+    <main id="main-campus" style="display: none;">
+        <!-- Strategy Hero -->
+        <section class="hero">
+            <h1>Where Inquiry Meets <span>Excellence</span></h1>
+            <p>Experience the most sophisticated English Inquiry curriculum, meticulously designed for the future leaders of the global society.</p>
+            <button class="btn-magic-scan" onclick="EliteScanner.open()">
+                ✨ MAGIC BOOK IDENTIFIER
             </button>
         </section>
 
-        <!-- Dynamic Curriculum Sections -->
-        <div id="curriculum-content" class="curriculum-content">
-            <!-- JavaScript will inject content here -->
+        <!-- Parent Insights Dashboard -->
+        <section class="private-dashboard">
+            <div class="dashboard-card">
+                <span class="card-label">Director's Insight</span>
+                <h3 class="card-title">The Power of Inquiry-Based Learning</h3>
+                <p class="card-content">
+                    브릿지 아카데미의 IBL 커리큘럼은 단순한 지식 습득을 넘어, 아이들이 스스로 질문을 던지고 증거를 찾아가는 '사고의 근육'을 길러줍니다. 북미 사립학교의 표준을 넘어선 깊이 있는 교육을 직접 경험하십시오.
+                </p>
+            </div>
+            <div class="dashboard-card" style="background: var(--bridge-charcoal); color: #FFF;">
+                <span class="card-label" style="color: var(--bridge-gold);">Campus Status</span>
+                <div style="font-size: 32px; font-weight: 900; color: var(--bridge-gold);">120+</div>
+                <p style="font-size: 12px; opacity: 0.6;">Curated Global Book Inquiry Sessions</p>
+            </div>
+        </section>
+
+        <!-- Category Filtration -->
+        <div class="filter-section">
+            <button id="btn-all" class="filter-btn active" onclick="EliteUI.filter('ALL')">ALL JOURNEYS</button>
+            <button id="btn-a" class="filter-btn" onclick="EliteUI.filter('A')">SERIES A: FOUNDATIONS</button>
+            <button id="btn-b" class="filter-btn" onclick="EliteUI.filter('B')">LEVEL B: GLOBAL PERSPECTIVE</button>
         </div>
+
+        <!-- Master Roadmap Container -->
+        <section id="master-roadmap" class="curriculum-roadmap">
+            <!-- JavaScript Renders the 24 Heritage Themes -->
+        </section>
     </main>
 
-    <!-- AI Scanner Modal -->
+    <!-- AI Vision Identifier Modal -->
     <div id="scanner-modal">
-        <div style="font-size: 11px; letter-spacing: 5px; font-weight: 900; color: var(--bridge-green); margin-bottom: 20px;">AI VISION IDENTIFIER</div>
-        <div class="scanner-container">
+        <div style="font-size: 12px; letter-spacing: 8px; font-weight: 900; color: var(--bridge-green); margin-bottom: 30px;">AI VISION SCANNER</div>
+        <div class="scanner-frame">
             <video id="scan-video" autoplay playsinline></video>
-            <div class="scan-overlay-line"></div>
+            <div class="scan-laser"></div>
         </div>
-        <div id="scan-status" class="scanner-status">Align the Book Cover within the Frame</div>
-        <div style="display:flex; gap:15px;">
-            <button class="btn-scanner-action" onclick="ScannerUI.identify()">IDENTIFY BOOK</button>
-            <button class="btn-scanner-action" onclick="ScannerUI.close()" style="background:#EEE; color:#888;">CANCEL</button>
+        <div id="scan-status" style="margin-top: 45px; font-weight: 800; font-size: 22px; color: var(--bridge-charcoal);">Scan Book Cover to Unlock Digital Lab</div>
+        <div style="display:flex; gap:25px; margin-top:45px;">
+            <button class="btn-action-large" onclick="EliteScanner.identify()" style="padding: 22px 70px; border-radius: 100px; background: var(--bridge-charcoal); color:#FFF; border:none; font-weight:900; cursor:pointer; letter-spacing:4px;">IDENTIFY</button>
+            <button onclick="EliteScanner.close()" style="background:none; border:none; color:#AAA; font-weight:900; cursor:pointer;">CANCEL</button>
         </div>
     </div>
 
-    <!-- Footer Area -->
+    <!-- Luxury Branding Footer -->
     <footer>
-        <img src="logo.png" alt="Bridge Academy" class="footer-logo">
-        <div class="copyright">© 2026 BRIDGE ACADEMY. PRESERVING INQUIRY STANDARDS WORLDWIDE.</div>
+        <img src="logo.png" class="footer-logo">
+        <div class="copyright">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</div>
     </footer>
 
-    <!-- [JavaScript] Module Integration -->
+    <!-- [JavaScript Engine] V25.0 Enterprise Logic -->
     <script src="library.js"></script>
     <script>
         /**
-         * [V22.0 Core Logic]
-         * Author: Bridge Academy Dev Team
+         * [Elite Campus V25.0 Engine]
+         * Designed for Maximum Stability and Premium Performance
          */
-
-        const CONFIG = {
-            API_KEY: "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4",
+        const APP_CONFIG = {
+            KEY: "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4",
             MODEL: "gemini-1.5-flash",
-            MONTHS: ["Jan", "Feb", "Mar"]
+            MONTHS: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         };
 
-        // UI Rendering Module
-        const AppUI = {
+        // Gateway Controller
+        const EliteApp = {
+            unlock() {
+                const gateway = document.getElementById('access-gateway');
+                const main = document.getElementById('main-campus');
+                gateway.classList.add('unlocked');
+                main.style.display = 'block';
+                setTimeout(() => EliteUI.init(), 600);
+            },
+            refresh() { window.location.reload(); }
+        };
+
+        // UI Management Module
+        const EliteUI = {
+            currentFilter: 'ALL',
+
             init() {
-                this.renderCurriculum();
-                console.log("Bridge Academy Index Initialized Successfully.");
+                this.render();
+                this.observeScroll();
             },
 
-            renderCurriculum() {
-                const container = document.getElementById('curriculum-content');
-                
-                CONFIG.MONTHS.forEach(month => {
-                    const monthData = BRIDGE_LIBRARY.filter(b => b.month === month);
-                    if (monthData.length === 0) return;
+            filter(type) {
+                this.currentFilter = type;
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                document.getElementById(`btn-${type.toLowerCase()}`).classList.add('active');
+                this.render();
+            },
 
-                    const section = document.createElement('section');
-                    section.className = 'month-container';
-                    
-                    section.innerHTML = `
-                        <div class="month-header">
-                            <h2 class="month-title">${month.toUpperCase()}</h2>
-                            <span class="month-subtitle">Inquiry Lab Series</span>
+            render() {
+                const roadmap = document.getElementById('master-roadmap');
+                roadmap.innerHTML = ""; 
+
+                APP_CONFIG.MONTHS.forEach(month => {
+                    const monthBooks = BRIDGE_LIBRARY.filter(b => b.month === month);
+                    if (monthBooks.length === 0) return;
+
+                    const block = document.createElement('div');
+                    block.className = 'month-block';
+                    block.innerHTML = `
+                        <div class="month-title-wrap">
+                            <h2 class="month-name">${month.toUpperCase()}</h2>
+                            <span class="month-meta">Premium Inquiry Cycle</span>
                         </div>
                     `;
 
-                    const grid = document.createElement('div');
-                    grid.className = 'curriculum-grid';
+                    // Unique Units in this month (A1, B1 etc.)
+                    const unitsInMonth = [...new Set(monthBooks.map(b => b.unit))];
 
-                    monthData.forEach(book => {
-                        const card = document.createElement('div');
-                        card.className = 'book-card';
-                        card.onclick = () => window.location.href = `workbook.html?id=${book.id}`;
+                    unitsInMonth.forEach(unitId => {
+                        const isSeriesA = unitId.includes('A');
                         
-                        card.innerHTML = `
-                            <div class="book-thumb-wrap">
-                                <img src="${book.id}.png" class="book-thumb-img" onerror="this.src='placeholder.png'">
-                            </div>
-                            <div class="book-info-area">
-                                <span class="theme-tag">${book.theme}</span>
-                                <h3 class="book-title">${book.title}</h3>
-                                <p class="book-desc">${book.question}</p>
-                            </div>
-                        `;
-                        grid.appendChild(card);
+                        // Apply Tab Filter Logic
+                        if (this.currentFilter !== 'ALL') {
+                            if (this.currentFilter === 'A' && !isSeriesA) return;
+                            if (this.currentFilter === 'B' && isSeriesA) return;
+                        }
+
+                        const themeBooks = monthBooks.filter(b => b.unit === unitId);
+                        const unitCard = this.createThemeUnit(unitId, themeBooks);
+                        block.appendChild(unitCard);
                     });
 
-                    section.appendChild(grid);
-                    container.appendChild(section);
+                    if (block.children.length > 1) {
+                        roadmap.appendChild(block);
+                        // Trigger entry animation
+                        setTimeout(() => block.classList.add('visible'), 100);
+                    }
                 });
+            },
+
+            createThemeUnit(unitId, books) {
+                const isSeriesA = unitId.includes('A');
+                const unit = document.createElement('div');
+                unit.className = `theme-unit ${isSeriesA ? 'series-a' : 'level-b'}`;
+                
+                unit.innerHTML = `
+                    <div class="unit-header">
+                        <div class="unit-info">
+                            <span class="card-label">${unitId}: ${isSeriesA ? 'Series A Foundations' : 'Level B Perspectives'}</span>
+                            <h3>${books[0].theme}</h3>
+                            <p class="unit-question">"${books[0].question}"</p>
+                        </div>
+                    </div>
+                    <div class="book-grid">
+                        ${books.map(book => this.createBookCard(book)).join('')}
+                    </div>
+                `;
+                return unit;
+            },
+
+            createBookCard(book) {
+                const isLab = (book.type === 'workbook');
+                return `
+                    <div class="book-card ${isLab ? 'is-lab' : ''}" 
+                         ${isLab ? `onclick="window.location.href='workbook.html?id=${book.id}'"` : ''}>
+                        <span class="badge-type ${isLab ? 'badge-lab' : 'badge-read'}">
+                            ${isLab ? 'INQUIRY LAB' : 'READING'}
+                        </span>
+                        <div class="book-thumb">
+                            <img src="${book.id}.png" onerror="this.src='placeholder.png'">
+                        </div>
+                        <div class="book-info">
+                            <h4 class="book-title">${book.title}</h4>
+                        </div>
+                    </div>
+                `;
+            },
+
+            observeScroll() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) entry.target.classList.add('visible');
+                    });
+                }, { threshold: 0.1 });
+
+                document.querySelectorAll('.month-block').forEach(b => observer.observe(b));
             }
         };
 
-        // AI Scanner Management Module
-        const ScannerUI = {
+        // AI Vision Scanner Module
+        const EliteScanner = {
             stream: null,
 
             async open() {
                 const modal = document.getElementById('scanner-modal');
                 modal.style.display = 'flex';
-                
                 try {
                     this.stream = await navigator.mediaDevices.getUserMedia({ 
                         video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } } 
                     });
                     document.getElementById('scan-video').srcObject = this.stream;
-                } catch (err) {
-                    console.error("Camera Access Denied:", err);
-                    alert("Camera access is required for Magic Scan.");
-                    this.close();
+                } catch(e) { 
+                    alert("Exclusive camera access is required for Magic Scan."); 
+                    this.close(); 
                 }
             },
 
-            close() {
-                if (this.stream) {
-                    this.stream.getTracks().forEach(track => track.stop());
-                }
-                document.getElementById('scanner-modal').style.display = 'none';
+            close() { 
+                if(this.stream) this.stream.getTracks().forEach(t => t.stop()); 
+                document.getElementById('scanner-modal').style.display = 'none'; 
             },
 
             async identify() {
-                const status = document.getElementById('scan-status');
                 const video = document.getElementById('scan-video');
+                const status = document.getElementById('scan-status');
+                status.innerText = "Analyzing Digital Blueprint...";
                 
-                status.innerText = "Analyzing Book Identity...";
+                const canvas = document.createElement('canvas'); canvas.width = 640; canvas.height = 480;
+                canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
+                const b64 = canvas.toDataURL("image/jpeg", 0.7).split(',')[1];
                 
-                const canvas = document.createElement('canvas');
-                canvas.width = 640;
-                canvas.height = 480;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                const base64Image = canvas.toDataURL("image/jpeg", 0.7).split(',')[1];
-
                 try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.MODEL}:generateContent?key=${CONFIG.API_KEY}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{
-                                parts: [
-                                    { text: "Return only the exact children's book title recognized from the cover image. No extra words." },
-                                    { inline_data: { mime_type: "image/jpeg", data: base64Image } }
-                                ]
-                            }]
-                        })
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${APP_CONFIG.MODEL}:generateContent?key=${APP_CONFIG.KEY}`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [
+                            { text: "Analyze the children's book cover. Return ONLY the identified title. No preamble." }, 
+                            { inline_data: { mime_type: "image/jpeg", data: b64 } }
+                        ] }] })
                     });
-
-                    const data = await response.json();
-                    const title = data.candidates[0].content.parts[0].text.trim().toLowerCase();
+                    const d = await res.json(); 
+                    const rawTitle = d.candidates[0].content.parts[0].text.trim().toLowerCase().replace(/[^a-z0-9 ]/g, "");
                     
-                    const matchedBook = BRIDGE_LIBRARY.find(b => 
-                        title.includes(b.title.toLowerCase()) || b.title.toLowerCase().includes(title)
-                    );
-
-                    if (matchedBook) {
-                        status.innerText = "Success! Entering Lab...";
-                        setTimeout(() => window.location.href = `workbook.html?id=${matchedBook.id}`, 800);
+                    const matched = BRIDGE_LIBRARY.find(b => {
+                        const libTitle = b.title.toLowerCase().replace(/[^a-z0-9 ]/g, "");
+                        return rawTitle.includes(libTitle) || libTitle.includes(rawTitle);
+                    });
+                    
+                    if (matched && matched.type === 'workbook') {
+                        status.innerText = "Access Granted. Opening Lab...";
+                        setTimeout(() => window.location.href = `workbook.html?id=${matched.id}`, 800);
                     } else {
-                        status.innerText = "No Matching Book Found. Try Again.";
+                        status.innerText = "Access Restricted. Book not in Heritage Library.";
                     }
-                } catch (error) {
-                    console.error("Vision Analysis Failed:", error);
-                    status.innerText = "Connection Error. Please Check your Internet.";
-                }
+                } catch(e) { status.innerText = "System Error. Check Network Integrity."; }
             }
         };
-
-        // Initialize Application
-        window.onload = () => AppUI.init();
     </script>
 </body>
 </html>

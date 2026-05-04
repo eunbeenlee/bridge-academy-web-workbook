@@ -12,61 +12,92 @@
         }
         * { box-sizing: border-box; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); }
         body { font-family: 'Noto Sans KR', sans-serif; background: var(--bridge-bg); margin: 0; color: var(--bridge-charcoal); overflow-x: hidden; }
+        
         header { padding: 30px 8% 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.9); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(0,0,0,0.03); }
         .logo { max-width: 180px; cursor: pointer; }
         .campus-status { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; color: var(--bridge-taupe); border: 1px solid var(--bridge-taupe); padding: 6px 18px; border-radius: 50px; }
+
         .hero { padding: 100px 8% 60px; text-align: center; }
         .hero h1 { font-family: 'Playfair Display', serif; font-size: 52px; margin-bottom: 20px; color: var(--bridge-charcoal); }
-        .btn-magic-scan { padding: 22px 50px; border-radius: 60px; background: var(--bridge-green); color: #FFF; border: none; font-weight: 800; cursor: pointer; font-size: 16px; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(140, 198, 159, 0.3); }
+        .hero p { font-size: 18px; color: var(--bridge-taupe); margin-bottom: 40px; font-weight: 300; letter-spacing: 1px; }
+
+        .btn-magic-scan { 
+            padding: 22px 50px; border-radius: 60px; background: var(--bridge-green); color: #FFF; 
+            border: none; font-weight: 800; cursor: pointer; font-size: 16px; letter-spacing: 2px;
+            box-shadow: 0 15px 40px rgba(140, 198, 159, 0.3); display: inline-flex; align-items: center; gap: 12px;
+        }
+        .btn-magic-scan:hover { transform: scale(1.05); background: var(--bridge-charcoal); }
+
         .series-container { padding: 20px 8% 120px; display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 50px; }
-        .series-card { background: var(--bridge-paper); border-radius: 40px; overflow: hidden; box-shadow: 0 40px 100px rgba(58, 58, 66, 0.06); border: 1px solid rgba(0,0,0,0.02); cursor: pointer; }
-        .card-image { width: 100%; height: 320px; position: relative; overflow: hidden; background: #EEE; }
+        .series-card { background: var(--bridge-paper); border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 40px 100px rgba(58, 58, 66, 0.06); border: 1px solid rgba(0,0,0,0.02); cursor: pointer; }
+        .series-card:hover { transform: translateY(-20px); box-shadow: 0 60px 120px rgba(140, 198, 159, 0.12); }
+        
+        .card-image { width: 100%; height: 320px; background: #EAEAEA; position: relative; overflow: hidden; }
         .card-image img { width: 100%; height: 100%; object-fit: cover; }
+        
         .card-content { padding: 45px; }
-        .tag { font-size: 10px; font-weight: 900; color: var(--bridge-green); text-transform: uppercase; letter-spacing: 3px; border-bottom: 2px solid var(--bridge-green); padding-bottom: 5px; margin-bottom: 15px; display: inline-block; }
-        .series-title { font-family: 'Playfair Display', serif; font-size: 30px; margin-bottom: 15px; font-weight: 700; }
-        #scanner-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(247, 249, 248, 0.98); backdrop-filter: blur(20px); z-index: 1000; flex-direction:column; align-items:center; justify-content:center; }
-        .scanner-frame { position: relative; width: 100%; max-width: 450px; border-radius: 30px; overflow: hidden; border: 8px solid #FFF; box-shadow: 0 40px 100px rgba(0,0,0,0.1); }
+        .tag { font-size: 10px; font-weight: 900; color: var(--bridge-green); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 15px; display: inline-block; border-bottom: 2px solid var(--bridge-green); padding-bottom: 5px; }
+        .series-title { font-family: 'Playfair Display', serif; font-size: 30px; margin-bottom: 15px; font-weight: 700; color: var(--bridge-charcoal); }
+        .series-desc { font-size: 14px; color: #777; line-height: 1.8; margin-bottom: 30px; word-break: keep-all; font-weight: 300; }
+
+        #scanner-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(247, 249, 248, 0.98); backdrop-filter: blur(20px); z-index: 1000; flex-direction:column; align-items:center; justify-content:center; padding: 20px; text-align: center; }
+        .scanner-frame { position: relative; width: 100%; max-width: 450px; border-radius: 30px; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.1); border: 8px solid #FFF; }
         #scan-video { width: 100%; display: block; }
-        .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--bridge-green); animation: scan 2s linear infinite; }
+        .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--bridge-green); box-shadow: 0 0 15px var(--bridge-green); animation: scan 2s linear infinite; }
         @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+
         footer { padding: 80px 8%; background: var(--bridge-charcoal); color: rgba(255,255,255,0.4); text-align: center; }
     </style>
 </head>
 <body>
+
 <header>
     <img src="logo.png" alt="Bridge Academy" class="logo">
-    <div class="campus-status">Private Access</div>
+    <div class="campus-status">Private Access Only</div>
 </header>
+
 <section class="hero">
     <h1>Redefining Inquiry Excellence</h1>
+    <p>Premium Digital Learning Platform for Global Leaders</p>
     <button class="btn-magic-scan" onclick="openScanner()">✨ MAGIC BOOK SCAN</button>
 </section>
+
 <div id="scanner-modal">
+    <div style="font-size: 12px; letter-spacing: 3px; font-weight: 900; color: var(--bridge-green); margin-bottom: 15px;">BRIDGE SMART IDENTIFIER</div>
     <div class="scanner-frame"><video id="scan-video" autoplay playsinline></video><div class="scan-line"></div></div>
-    <div id="scan-status" style="margin-top:20px; font-weight:800;">Align book cover</div>
-    <button id="scan-btn" onclick="identifyBook()" style="margin-top:20px; padding:20px 50px; border-radius:50px; background:var(--bridge-charcoal); color:#FFF; border:none; font-weight:800; cursor:pointer;">IDENTIFY BOOK</button>
-    <button onclick="closeScanner()" style="margin-top:15px; background:none; border:none; color:#AAA; cursor:pointer;">Cancel</button>
+    <div id="scan-status" style="margin-top: 30px; font-size: 18px; font-weight: 700;">Align book cover within frame</div>
+    <button id="scan-btn" onclick="identifyBook()" style="margin-top: 30px; padding: 20px 60px; border-radius: 50px; background: var(--bridge-charcoal); color: #FFF; border: none; font-weight: 800; cursor: pointer;">IDENTIFY BOOK</button>
+    <button onclick="closeScanner()" style="margin-top:20px; background:none; border:none; color:#AAA; cursor:pointer;">Cancel</button>
 </div>
+
 <div class="series-container">
     <div class="series-card" onclick="location.href='workbook.html?series=A1'">
-        <div class="card-image"><img src="elite_inquiry_A1.jpg" alt="A1"></div>
+        <div class="card-image"><img src="elite_inquiry_A1.jpg" alt="A1 Series"></div>
         <div class="card-content">
-            <span class="tag">Foundation</span>
+            <span class="tag">Foundation Series</span>
             <div class="series-title">Inquiry Level: A1</div>
-            <p>자아 인식과 기초 감각 탐구 과정</p>
+            <p class="series-desc">자아 인식과 기초 감각 탐구를 통해 북미 정통 사립학교의 창의적 사고 체계를 형성하는 프리미엄 과정입니다.</p>
         </div>
     </div>
 </div>
-<footer>© 2026 BRIDGE ACADEMY.</footer>
+
+<footer>© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</footer>
+
 <script>
     const API_KEY = "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4"; 
-    const BRIDGE_LIBRARY = [{ id: "A1-01", title: "All About Me" }, { id: "A1-02", title: "Under the Sea" }];
+    const BRIDGE_LIBRARY = [
+        { id: "A1-01", title: "All About Me" },
+        { id: "A1-02", title: "Under the Sea" }
+    ];
+
     let stream;
     async function openScanner() {
-        const modal = document.getElementById('scanner-modal'); modal.style.display = 'flex';
-        try { stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }); document.getElementById('scan-video').srcObject = stream; } 
-        catch (err) { alert("Camera error"); closeScanner(); }
+        const modal = document.getElementById('scanner-modal');
+        modal.style.display = 'flex';
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+            document.getElementById('scan-video').srcObject = stream;
+        } catch (err) { alert("Camera error"); closeScanner(); }
     }
     function closeScanner() { if (stream) stream.getTracks().forEach(t => t.stop()); document.getElementById('scanner-modal').style.display = 'none'; }
     async function identifyBook() {
@@ -77,11 +108,11 @@
         try {
             const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: [{ parts: [{ text: "Return only the book title." }, { inline_data: { mime_type: "image/jpeg", data: base64Image } }] }] })
+                body: JSON.stringify({ contents: [{ parts: [{ text: "Identify the book title." }, { inline_data: { mime_type: "image/jpeg", data: base64Image } }] }] })
             });
-            const data = await res.json(); const title = data.candidates[0].content.parts[0].text.trim();
+            const d = await res.json(); const title = d.candidates[0].content.parts[0].text.trim();
             const matched = BRIDGE_LIBRARY.find(b => title.toLowerCase().includes(b.title.toLowerCase()));
-            if (matched) location.href = `workbook.html?series=A1&id=${matched.id}`; else status.innerText = "No match found.";
+            if (matched) location.href = `workbook.html?series=A1&id=${matched.id}`; else status.innerText = `Not found: ${title}`;
         } catch (e) { status.innerText = "Scan failed."; }
     }
 </script>

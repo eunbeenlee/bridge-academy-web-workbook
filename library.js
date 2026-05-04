@@ -1,47 +1,43 @@
-/**
- * Bridge Academy | Elite IBL Curriculum Database (Q1)
- * Version: 1.0 (Jan - Mar)
- */
 const BRIDGE_LIBRARY = [
     // --- JANUARY (Jan) ---
-    // Theme A: All About Me
-    { id: "JAN-A-01", theme: "All About Me", question: "나는 누구일까요?", title: "I Like Myself!", words: "Me, Smile, Special, Curly hair" },
-    { id: "JAN-A-02", theme: "All About Me", question: "나는 누구일까요?", title: "The Color Monster", words: "Feelings, Red, Yellow, Blue, Scribble" },
-    { id: "JAN-A-03", theme: "All About Me", question: "나는 누구일까요?", title: "My Five Senses", words: "Eyes, Ears, Nose, Mouth, Touch" },
-    { id: "JAN-A-04", theme: "All About Me", question: "나는 누구일까요?", title: "The Family Book", words: "Family, House, Together, Love" },
-    { id: "JAN-A-05", theme: "All About Me", question: "나는 누구일까요?", title: "From Head to Toe", words: "Body, Movement, Neck, Hands, Feet" },
-    // Theme B: Me on the Map
-    { id: "JAN-B-01", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", title: "Me on the Map", words: "Map, Street, Town, Earth, Circle" },
-    { id: "JAN-B-02", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", title: "This Is How We Do It", words: "Friend, School, Different, Flag, Daily life" },
-    { id: "JAN-B-03", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", title: "Whoever You Are", words: "World, Skin color, Smile, Heart, Same" },
-    { id: "JAN-B-04", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", title: "Madeline", words: "Paris, Yellow hat, Straight line, Twelve" },
-    { id: "JAN-B-05", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", title: "We're All Wonders", words: "One eye, Helmet, Space, Kind, Star" },
+    { id: "JAN-A-1", month: "Jan", theme: "All About Me", question: "나는 누구일까요?", title: "I Like Myself!", words: "Me, Smile, Special" },
+    { id: "JAN-A-2", month: "Jan", theme: "All About Me", question: "나는 누구일까요?", title: "The Color Monster", words: "Feelings, Color, Emotion" },
+    { id: "JAN-A-3", month: "Jan", theme: "All About Me", question: "나는 누구일까요?", title: "My Five Senses", words: "Eyes, Ears, Nose, Mouth" },
+    { id: "JAN-A-4", month: "Jan", theme: "All About Me", question: "나는 누구일까요?", title: "The Family Book", words: "Family, House, Together" },
+    { id: "JAN-A-5", month: "Jan", theme: "All About Me", question: "나는 누구일까요?", title: "From Head to Toe", words: "Body, Movement, Hands" },
+    { id: "JAN-A-6", month: "Jan", theme: "All About Me", question: "나는 누구일까요?", title: "Review: This is Me", words: "Identity, Name, Face" },
+    { id: "JAN-B-1", month: "Jan", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", title: "Me on the Map", words: "Map, World, Home" },
+    { id: "JAN-B-2", month: "Jan", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", title: "This Is How We Do It", words: "Friend, School, Different" },
+    { id: "JAN-B-3", month: "Jan", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", title: "Whoever You Are", words: "World, Heart, Same" },
+    { id: "JAN-B-4", month: "Jan", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", title: "Madeline", words: "Paris, Yellow hat, Twelve" },
+    { id: "JAN-B-5", month: "Jan", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", title: "We're All Wonders", words: "Kind, Star, Unique" },
+    { id: "JAN-B-6", month: "Jan", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", title: "My Global Village", words: "Flag, Earth, Connection" },
 
     // --- FEBRUARY (Feb) ---
-    // Theme A: Little Crawlers
-    { id: "FEB-A-01", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", title: "The Very Hungry Caterpillar", words: "Caterpillar, Apple, Leaf, Butterfly, Rainbow" },
-    { id: "FEB-A-02", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", title: "The Very Busy Spider", words: "Spider web, Fly, Horse, Circle, Line" },
-    { id: "FEB-A-03", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", title: "The Grouchy Ladybug", words: "Ladybug, Sun, Clock, Small, Angry" },
-    { id: "FEB-A-04", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", title: "Waiting for Wings", words: "Egg, Caterpillar, Flower, Wing, Pattern" },
-    { id: "FEB-A-05", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", title: "The Honeybee", words: "Bee, Yellow, Black, Flower, Honey" },
-    // Theme B: How Things Grow
-    { id: "FEB-B-01", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", title: "The Tiny Seed", words: "Seed, Wind, Flower, Giant, Sun" },
-    { id: "FEB-B-02", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", title: "From Caterpillar to Butterfly", words: "Caterpillar, Chrysalis, Butterfly, Change" },
-    { id: "FEB-B-03", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", title: "Planting a Rainbow", words: "Garden, Rainbow, Colors, Bulb, Dirt" },
-    { id: "FEB-B-04", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", title: "A Seed Is Sleepy", words: "Seed, Shell, Soil, Water, Sprout" },
-    { id: "FEB-B-05", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", title: "Up in the Garden and Down in the Dirt", words: "Garden, Worm, Roots, Green, Brown" },
+    { id: "FEB-A-1", month: "Feb", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", title: "The Very Hungry Caterpillar", words: "Caterpillar, Food, Butterfly" },
+    { id: "FEB-A-2", month: "Feb", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", title: "The Very Busy Spider", words: "Spider web, Fly, Spin" },
+    { id: "FEB-A-3", month: "Feb", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", title: "The Grouchy Ladybug", words: "Ladybug, Sun, Time" },
+    { id: "FEB-A-4", month: "Feb", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", title: "Waiting for Wings", words: "Egg, Flower, Wing" },
+    { id: "FEB-A-5", month: "Feb", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", title: "The Honeybee", words: "Bee, Yellow, Honey" },
+    { id: "FEB-A-6", month: "Feb", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", title: "Insects Everywhere", words: "Nature, Crawl, Tiny" },
+    { id: "FEB-B-1", month: "Feb", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", title: "The Tiny Seed", words: "Seed, Wind, Flower" },
+    { id: "FEB-B-2", month: "Feb", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", title: "From Caterpillar to Butterfly", words: "Chrysalis, Change, Fly" },
+    { id: "FEB-B-3", month: "Feb", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", title: "Planting a Rainbow", words: "Garden, Colors, Bulb" },
+    { id: "FEB-B-4", month: "Feb", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", title: "A Seed Is Sleepy", words: "Soil, Water, Sprout" },
+    { id: "FEB-B-5", month: "Feb", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", title: "Up in the Garden", words: "Roots, Dirt, Green" },
+    { id: "FEB-B-6", month: "Feb", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", title: "The Magic of Growth", words: "Life, Cycle, Nature" },
 
     // --- MARCH (Mar) ---
-    // Theme A: My Super Family
-    { id: "MAR-A-01", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", title: "My Mom", words: "Mom, Super, Strong, Flower, Heart" },
-    { id: "MAR-A-02", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", title: "My Dad", words: "Dad, Brave, Big, Sun, Together" },
-    { id: "MAR-A-03", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", title: "Love You Forever", words: "Baby, Bear, Moon, Night, Family" },
-    { id: "MAR-A-04", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", title: "Guess How Much I Love You", words: "Rabbit, Big, Love, Moon, High" },
-    { id: "MAR-A-05", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", title: "The Night Before Mother's Day", words: "Mom, Present, Kitchen, Breakfast, Card" },
-    // Theme B: Animal Homes
-    { id: "MAR-B-01", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", title: "A House is a House for Me", words: "House, Shell, Nest, Hole, Different" },
-    { id: "MAR-B-02", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", title: "Welcome Home, Bear", words: "Bear, Forest, Mountain, Stream, Home" },
-    { id: "MAR-B-03", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", title: "The Great Kapok Tree", words: "Jungle, Tree, Snake, Monkey, Green" },
-    { id: "MAR-B-04", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", title: "Over in the Meadow", words: "Meadow, Sun, Turtle, Fish, Blue" },
-    { id: "MAR-B-05", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", title: "Who Lives Here?", words: "Cave, Tree, Water, Animal, Secret" }
+    { id: "MAR-A-1", month: "Mar", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", title: "My Mom", words: "Mom, Super, Love" },
+    { id: "MAR-A-2", month: "Mar", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", title: "My Dad", words: "Dad, Brave, Strong" },
+    { id: "MAR-A-3", month: "Mar", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", title: "Love You Forever", words: "Baby, Bear, Night" },
+    { id: "MAR-A-4", month: "Mar", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", title: "Guess How Much I Love You", words: "Rabbit, Big, High" },
+    { id: "MAR-A-5", month: "Mar", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", title: "The Night Before Mother's Day", words: "Present, Kitchen, Card" },
+    { id: "MAR-A-6", month: "Mar", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", title: "Family Superpowers", words: "Together, Help, Team" },
+    { id: "MAR-B-1", month: "Mar", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", title: "A House is a House for Me", words: "Shell, Nest, Different" },
+    { id: "MAR-B-2", month: "Mar", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", title: "Welcome Home, Bear", words: "Bear, Forest, Mountain" },
+    { id: "MAR-B-3", month: "Mar", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", title: "The Great Kapok Tree", words: "Jungle, Tree, Green" },
+    { id: "MAR-B-4", month: "Mar", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", title: "Over in the Meadow", words: "Meadow, Sun, Turtle" },
+    { id: "MAR-B-5", month: "Mar", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", title: "Who Lives Here?", words: "Cave, Secret, Animal" },
+    { id: "MAR-B-6", month: "Mar", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", title: "Architects of Nature", words: "Build, Design, Safety" }
 ];

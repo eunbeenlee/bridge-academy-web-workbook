@@ -22,7 +22,7 @@
         .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #F5F5F5; cursor: pointer; }
         .sidebar-logo { max-width: 150px; }
         .nav-list { flex: 1; overflow-y: auto; padding: 20px; }
-        .nav-item { padding: 14px 18px; margin-bottom: 10px; border-radius: 15px; cursor: pointer; color: #888; font-size: 13px; background: #FAFAFA; border: 1px solid transparent; transition: 0.2s; }
+        .nav-item { padding: 14px 18px; margin-bottom: 10px; border-radius: 15px; cursor: pointer; color: #888; font-size: 13px; background: #FAFAFA; border: 1px solid transparent; }
         .nav-item.active { background: #EAF4ED; color: var(--bridge-charcoal); font-weight: bold; border-left: 4px solid var(--bridge-green); border-color: #E0EBE3; }
 
         .app-container { display: flex; flex: 1; height: 100vh; overflow: hidden; flex-direction: column; }
@@ -34,23 +34,22 @@
 
         .canvas-container { 
             position: relative; background: var(--bridge-paper); border-radius: 8px; 
-            box-shadow: 0 30px 70px rgba(0,0,0,0.08), 0 10px 20px rgba(0,0,0,0.04); 
-            padding: 0; line-height: 0; touch-action: none;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.12); 
             width: 100%; max-width: 700px; border: 1px solid #EEE; margin-bottom: 20px;
         }
         #main-img { width: 100%; height: auto; display: block; pointer-events: none; border-radius: 8px; }
         #drawing-canvas { position: absolute; top: 0; left: 0; cursor: crosshair; touch-action: none; border-radius: 8px; }
 
-        #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(247, 249, 248, 0.98); backdrop-filter: blur(12px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; padding: 40px; border-radius: 8px; }
-        .score-badge { font-size: 52px; color: #FFF; background: var(--bridge-green); padding: 15px 65px; border-radius: 100px; margin-bottom: 25px; font-weight: 900; line-height: 1; display: inline-block; }
-        .child-msg-box { font-size: 24px; font-weight: 800; color: var(--bridge-charcoal); margin-bottom: 30px; line-height: 1.4; word-break: keep-all; }
-        .btn-overlay-continue { padding: 18px 45px; border-radius: 50px; background: var(--bridge-charcoal); color: #FFF; border: none; font-weight: 800; font-size: 15px; cursor: pointer; letter-spacing: 1.5px; transition: 0.3s; }
+        /* 결과 오버레이 (V20.0 정밀 보정) */
+        #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(247, 249, 248, 0.98); backdrop-filter: blur(15px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; padding: 40px; border-radius: 8px; }
+        .score-badge { font-size: 48px; color: #FFF; background: var(--bridge-green); padding: 15px 60px; border-radius: 100px; margin-bottom: 25px; font-weight: 900; line-height: 1; display: inline-block; }
+        .child-msg-box { font-size: 26px; font-weight: 800; color: var(--bridge-charcoal); margin-bottom: 30px; line-height: 1.4; word-break: keep-all; }
+        .btn-overlay-continue { padding: 18px 45px; border-radius: 50px; background: var(--bridge-charcoal); color: #FFF; border: none; font-weight: 800; font-size: 15px; cursor: pointer; letter-spacing: 1.5px; width: auto; height: auto; display: block; }
 
         .bottom-dock { 
             width: 100%; background: rgba(255,255,255,0.95); padding: 20px 30px; border-top: 1px solid #EEE;
             display: flex; flex-direction: column; gap: 15px; align-items: center; justify-content: center; z-index: 30;
-            backdrop-filter: blur(15px); box-shadow: 0 -10px 30px rgba(0,0,0,0.03);
-            position: sticky; bottom: 0;
+            backdrop-filter: blur(15px); box-shadow: 0 -10px 30px rgba(0,0,0,0.03); position: sticky; bottom: 0;
         }
         
         .tool-row { 
@@ -58,34 +57,25 @@
             background: #F7F9F8; padding: 12px 25px; border-radius: 50px; border: 1px solid #EAEAEA;
         }
         
-        .btn-nav { width: 55px; height: 55px; border-radius: 18px; border: 1px solid #EAEAEA; background: #FFF; font-size: 18px; cursor: pointer; font-weight: bold; color: var(--bridge-charcoal); transition: 0.2s; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-        
-        .color-selector { display: flex; align-items: center; gap: 12px; }
+        .color-selector { display: flex; align-items: center; gap: 15px; }
         .color-ring-container { width: 45px; height: 45px; cursor: pointer; position: relative; }
         #color-wheel { border-radius: 50%; width: 100%; height: 100%; }
         .current-color { width: 30px; height: 30px; border-radius: 50%; border: 3px solid #FFF; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        
-        .brush-control-wrap { display: flex; align-items: center; gap: 10px; flex: 1; justify-content: center; }
         .brush-slider { width: 100%; max-width: 180px; height: 6px; accent-color: var(--bridge-green); cursor: pointer; }
 
-        .btn-text { background: none; border: none; color: #888; font-weight: 800; cursor: pointer; font-size: 12px; letter-spacing: 1px; }
-
         .action-row { display: flex; width: 100%; max-width: 700px; gap: 12px; justify-content: center; align-items: center; }
-        .btn-action { height: 55px; border-radius: 18px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-nav { width: 55px; height: 55px; border-radius: 18px; border: 1px solid #EAEAEA; background: #FFF; font-size: 18px; cursor: pointer; font-weight: bold; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .btn-action { height: 55px; border-radius: 18px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-record { background: #FFF; color: var(--bridge-charcoal); border: 2px solid #EAEAEA; flex: 1; }
         .btn-record.recording { background: var(--bridge-danger); color: #FFF; border-color: var(--bridge-danger); animation: pulse 1.5s infinite; }
-        .btn-submit { background: var(--bridge-charcoal); color: #FFF; flex: 1.5; box-shadow: 0 8px 20px rgba(58, 58, 66, 0.2); }
+        .btn-submit { background: var(--bridge-charcoal); color: #FFF; flex: 1.5; box-shadow: 0 10px 25px rgba(58, 58, 66, 0.2); }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-
         @media (max-width: 900px) {
-            body { flex-direction: column; }
+            .app-container { flex-direction: column; }
             .sidebar { width: 100%; height: auto; flex-direction: row; }
             .nav-list { flex-direction: row; overflow-x: auto; padding: 10px; gap: 8px; }
-            .nav-item { min-width: 140px; font-size: 11px; padding: 12px; margin-bottom: 0; }
-            .viewer { padding: 15px 10px; }
-            .bottom-dock { padding: 15px 10px; }
+            .nav-item { min-width: 130px; font-size: 11px; padding: 12px; }
         }
     </style>
 </head>
@@ -93,7 +83,7 @@
 
 <div style="display: flex; width: 100%; height: 100vh;">
     <div class="sidebar">
-        <div class="sidebar-header" onclick="location.href='index.html'"><img src="logo.png" alt="Bridge Academy" class="sidebar-logo"></div>
+        <div class="sidebar-header" onclick="location.href='index.html'"><img src="logo.png" style="max-width:140px;"></div>
         <div id="nav-list" class="nav-list"></div>
     </div>
 
@@ -113,16 +103,15 @@
                 <canvas id="drawing-canvas"></canvas>
             </div>
         </div>
+
         <div class="bottom-dock">
             <div class="tool-row">
                 <div class="color-selector">
                     <div class="color-ring-container"><canvas id="color-wheel" width="90" height="90"></canvas></div>
                     <div id="current-color-bg" class="current-color"></div>
                 </div>
-                <div class="brush-control-wrap">
-                    <input type="range" id="brush-size" class="brush-slider" min="3" max="25" value="8">
-                </div>
-                <button onclick="resetCanvas()" class="btn-text">RESET</button>
+                <input type="range" id="brush-size" class="brush-slider" min="3" max="25" value="8">
+                <button onclick="resetCanvas()" style="background:none; border:none; color:#AAA; font-weight:800; font-size:12px; cursor:pointer;">RESET</button>
             </div>
             <div class="action-row">
                 <button id="prev-btn" class="btn-nav" onclick="changePage(-1)">◀</button>
@@ -137,8 +126,6 @@
 <script>
     const API_KEY = "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4"; 
     const modelName = "gemini-1.5-flash"; 
-
-    // ✅ library.js 연동 또는 BRIDGE_LIBRARY 데이터
     const curriculumData = { "A1": [ { id: 1, title: "All About Me", img: "1.png", words: "Me, Face" }, { id: 2, title: "Under the Sea", img: "2.png", words: "Shark, Whale" } ] };
     const urlParams = new URLSearchParams(window.location.search);
     const data = curriculumData[urlParams.get('series') || 'A1'];
@@ -148,6 +135,7 @@
 
     function resetCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.beginPath(); drawing = false; }
 
+    // 컬러링 휠
     const wheelCanvas = document.getElementById('color-wheel'); const wheelCtx = wheelCanvas.getContext('2d');
     function drawColorWheel() {
         const radius = wheelCanvas.width / 2;
@@ -160,10 +148,8 @@
     }
     function pickColor(e) {
         const rect = wheelCanvas.getBoundingClientRect();
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        const x = (clientX - rect.left) * (wheelCanvas.width / rect.width);
-        const y = (clientY - rect.top) * (wheelCanvas.height / rect.height);
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX; const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const x = (clientX - rect.left) * (wheelCanvas.width / rect.width); const y = (clientY - rect.top) * (wheelCanvas.height / rect.height);
         const pixel = wheelCtx.getImageData(x, y, 1, 1).data;
         if (pixel[3] !== 0) {
             const color = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
@@ -217,50 +203,38 @@
     }
     function changePage(step) { loadPage(currentPageIndex + step); }
 
-    // ✅ 속도 최적화된 제출 로직 (V19.0)
+    // ✅ V20.0 증거 기반 심층 분석 엔진
     async function submitWork() {
-        const overlay = document.getElementById('success-overlay');
-        const submitBtn = document.getElementById('submit-btn');
-        overlay.style.display = 'flex';
-        submitBtn.disabled = true;
+        const overlay = document.getElementById('success-overlay'); const submitBtn = document.getElementById('submit-btn');
+        overlay.style.display = 'flex'; submitBtn.disabled = true;
+        document.getElementById('score-badge').innerText = "WAIT";
+        document.getElementById('child-msg').innerText = "Teacher is reviewing your inquiry...";
 
         try {
             const tempCanvas = document.createElement('canvas'); const tCtx = tempCanvas.getContext('2d');
-            // 이미지 크기를 더 줄여서 전송 속도 향상 (폭 300px)
-            tempCanvas.width = 300; tempCanvas.height = img.naturalHeight * (300 / img.naturalWidth);
+            tempCanvas.width = 450; tempCanvas.height = img.naturalHeight * (450 / img.naturalWidth);
+            tCtx.fillStyle = "#FFFFFF"; tCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
             tCtx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
             tCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, tempCanvas.width, tempCanvas.height);
-            
-            // 품질을 0.4로 낮추어 용량 최소화
-            const base64Img = tempCanvas.toDataURL("image/jpeg", 0.4).split(',')[1];
+            const base64Img = tempCanvas.toDataURL("image/jpeg", 0.5).split(',')[1];
             
             let promptParts = [
-                { text: `Analyze for ${savedName}. Target: ${data[currentPageIndex].words}. Short feedback & JSON: {score:number, child_msg:string, extracted_name:string}` },
+                { text: `[Role]: Expert Teacher at Bridge Academy. [Student]: ${savedName}. [Target]: ${data[currentPageIndex].words}. [Rules]: DO NOT use generic praise. YOU MUST mention AT LEAST ONE specific visual detail (color/shape/item) from the child's drawing. Return JSON: {score:number, child_msg:string, extracted_name:string}` },
                 { inline_data: { mime_type: "image/jpeg", data: base64Img } }
             ];
-
             if (audioBlob) {
                 const base64Audio = await new Promise(resolve => { const r = new FileReader(); r.onload = () => resolve(r.result.split(',')[1]); r.readAsDataURL(audioBlob); });
                 promptParts.push({ inline_data: { mime_type: "audio/webm", data: base64Audio } });
             }
-
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${API_KEY}`, {
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${API_KEY}`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ contents: [{ parts: promptParts }] })
             });
-
-            const d = await response.json();
-            const analysis = JSON.parse(d.candidates[0].content.parts[0].text.replace(/```json|```/g, "").match(/\{.*\}/s)[0]);
-            
+            const d = await res.json(); const analysis = JSON.parse(d.candidates[0].content.parts[0].text.replace(/```json|```/g, "").match(/\{.*\}/s)[0]);
             if (currentPageIndex === 0 && analysis.extracted_name) savedName = analysis.extracted_name;
             document.getElementById('score-badge').innerText = analysis.score + "%";
             document.getElementById('child-msg').innerText = analysis.child_msg;
-        } catch (e) {
-            document.getElementById('score-badge').innerText = "100%";
-            document.getElementById('child-msg').innerText = "Wonderful inquiry journey!";
-        } finally {
-            submitBtn.disabled = false;
-        }
+        } catch (e) { document.getElementById('score-badge').innerText = "100%"; } finally { submitBtn.disabled = false; }
     }
 
     function handleOverlayClick() { document.getElementById('success-overlay').style.display = 'none'; }

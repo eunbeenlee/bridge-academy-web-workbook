@@ -7,106 +7,163 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --bridge-green: #8CC69F; --bridge-charcoal: #3A3A42; --bridge-bg: #F0F2F1; --bridge-paper: #FFFFFF; --bridge-danger: #E07A5F;
+            --bridge-green: #8CC69F; --bridge-taupe: #A39B8E; --bridge-charcoal: #3A3A42; 
+            --bridge-bg: #F0F2F1; --bridge-paper: #FFFFFF; --bridge-gold: #C5A059; --bridge-danger: #E07A5F;
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Noto Sans KR', sans-serif; background: radial-gradient(circle at center, #F7F9F8 0%, #DDE3E0 100%); margin: 0; display: flex; height: 100vh; overflow: hidden; flex-direction: row; }
-        .sidebar { width: 260px; background: var(--bridge-paper); border-right: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; z-index: 20; }
+        
+        body { 
+            font-family: 'Noto Sans KR', sans-serif; 
+            background: radial-gradient(circle at center, #F7F9F8 0%, #DDE3E0 100%);
+            margin: 0; display: flex; height: 100vh; overflow: hidden; color: var(--bridge-charcoal); 
+        }
+        
+        /* 💡 사이드바: 선택된 책의 17페이지를 보여주는 공간 */
+        .sidebar { width: 260px; background: var(--bridge-paper); display: flex; flex-direction: column; z-index: 20; border-right: 1px solid rgba(0,0,0,0.05); box-shadow: 10px 0 30px rgba(0,0,0,0.02); }
+        .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #F5F5F5; cursor: pointer; }
+        .sidebar-logo { max-width: 140px; margin-bottom: 15px; }
+        .book-title-tag { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: var(--bridge-taupe); word-break: keep-all; }
+
         .nav-list { flex: 1; overflow-y: auto; padding: 20px; }
-        .nav-item { padding: 14px; margin-bottom: 8px; border-radius: 12px; cursor: pointer; color: #888; font-size: 13px; background: #FAFAFA; border: 1px solid transparent; }
-        .nav-item.active { background: #EAF4ED; color: var(--bridge-charcoal); font-weight: bold; border-left: 4px solid var(--bridge-green); }
+        .nav-item { padding: 14px 18px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; color: #888; font-size: 13px; background: #FAFAFA; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; }
+        .nav-item.active { background: #EAF4ED; color: var(--bridge-charcoal); font-weight: bold; border-left: 4px solid var(--bridge-green); border-color: #E0EBE3; }
+        .page-indicator { font-size: 10px; opacity: 0.5; font-weight: 800; }
+
+        .app-container { display: flex; flex: 1; height: 100vh; overflow: hidden; flex-direction: column; }
+        .viewer { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 30px 20px; position: relative; overflow-y: auto; }
+
+        .top-status { width: 100%; max-width: 700px; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+        .target-tag { font-size: 11px; font-weight: 900; color: var(--bridge-green); letter-spacing: 3px; text-transform: uppercase; border-bottom: 2px solid var(--bridge-green); padding-bottom: 4px; }
+        #target-words-text { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--bridge-charcoal); }
+
+        .canvas-container { 
+            position: relative; background: var(--bridge-paper); border-radius: 8px; 
+            box-shadow: 0 40px 80px rgba(0,0,0,0.12); width: 100%; max-width: 700px; border: 1px solid #EEE; margin-bottom: 20px;
+        }
+        #main-img { width: 100%; height: auto; display: block; pointer-events: none; border-radius: 8px; }
+        #drawing-canvas { position: absolute; top: 0; left: 0; cursor: crosshair; touch-action: none; border-radius: 8px; }
+
+        #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(247, 249, 248, 0.98); backdrop-filter: blur(15px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; padding: 40px; border-radius: 8px; }
+        .score-badge { font-size: 52px; color: #FFF; background: var(--bridge-green); padding: 15px 65px; border-radius: 100px; margin-bottom: 25px; font-weight: 900; line-height: 1; display: inline-block; }
+        .btn-overlay-continue { padding: 18px 45px; border-radius: 50px; background: var(--bridge-charcoal); color: #FFF; border: none; font-weight: 800; font-size: 15px; cursor: pointer; letter-spacing: 1.5px; }
+
+        .bottom-dock { 
+            width: 100%; background: rgba(255,255,255,0.95); padding: 20px 30px; border-top: 1px solid #EEE;
+            display: flex; flex-direction: column; gap: 15px; align-items: center; justify-content: center; z-index: 30;
+            backdrop-filter: blur(15px); box-shadow: 0 -10px 30px rgba(0,0,0,0.03); position: sticky; bottom: 0;
+        }
         
-        .app-container { display: flex; flex: 1; height: 100vh; flex-direction: column; position: relative; }
-        .viewer { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 30px 20px; overflow-y: auto; }
-        .top-status { width: 100%; max-width: 650px; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
-        #target-words-text { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; }
+        .tool-row { 
+            display: flex; width: 100%; max-width: 700px; align-items: center; justify-content: space-between; gap: 15px; 
+            background: #F7F9F8; padding: 12px 25px; border-radius: 50px; border: 1px solid #EAEAEA;
+        }
         
-        .canvas-container { position: relative; background: #FFF; border-radius: 4px; box-shadow: 0 40px 80px rgba(0,0,0,0.1); width: 100%; max-width: 650px; touch-action: none; margin-bottom: 20px; }
-        #main-img { width: 100%; height: auto; display: block; pointer-events: none; }
-        #drawing-canvas { position: absolute; top: 0; left: 0; touch-action: none; }
+        .btn-nav { width: 55px; height: 55px; border-radius: 18px; border: 1px solid #EAEAEA; background: #FFF; font-size: 18px; cursor: pointer; font-weight: bold; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
         
-        #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.98); backdrop-filter: blur(10px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; padding: 40px; }
-        .score-badge { font-size: 48px; color: #FFF; background: var(--bridge-green); padding: 15px 60px; border-radius: 100px; margin-bottom: 25px; font-weight: 900; }
-        
-        .bottom-dock { width: 100%; background: rgba(255,255,255,0.95); padding: 20px; border-top: 1px solid #EEE; display: flex; flex-direction: column; gap: 15px; align-items: center; backdrop-filter: blur(15px); position: sticky; bottom: 0; }
-        .tool-row { display: flex; width: 100%; max-width: 650px; align-items: center; justify-content: space-between; background: #F7F9F8; padding: 12px 20px; border-radius: 50px; border: 1px solid #EAEAEA; }
-        .action-row { display: flex; width: 100%; max-width: 650px; gap: 12px; }
-        .btn-nav { width: 50px; height: 50px; border-radius: 15px; border: 1px solid #EEE; background: #FFF; cursor: pointer; font-weight: bold; }
-        .btn-action { height: 50px; border-radius: 15px; border: none; font-weight: 800; cursor: pointer; flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-submit { background: var(--bridge-charcoal); color: #FFF; flex: 1.5; }
-        .btn-record.recording { background: var(--bridge-danger); color: #FFF; animation: pulse 1.5s infinite; }
+        .color-selector { display: flex; align-items: center; gap: 12px; }
+        .color-ring-container { width: 45px; height: 45px; cursor: pointer; position: relative; }
+        #color-wheel { border-radius: 50%; width: 100%; height: 100%; }
+        .current-color { width: 30px; height: 30px; border-radius: 50%; border: 3px solid #FFF; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .brush-slider { width: 100%; max-width: 180px; height: 6px; accent-color: var(--bridge-green); cursor: pointer; }
+
+        .action-row { display: flex; width: 100%; max-width: 700px; gap: 12px; justify-content: center; align-items: center; }
+        .btn-action { height: 55px; border-radius: 18px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-record { background: #FFF; color: var(--bridge-charcoal); border: 2px solid #EAEAEA; flex: 1; }
+        .btn-record.recording { background: var(--bridge-danger); color: #FFF; border-color: var(--bridge-danger); animation: pulse 1.5s infinite; }
+        .btn-submit { background: var(--bridge-charcoal); color: #FFF; flex: 1.5; box-shadow: 0 8px 20px rgba(58, 58, 66, 0.2); }
+
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-        @media (max-width: 900px) { body { flex-direction: column; } .sidebar { width: 100%; height: auto; flex-direction: row; } .nav-list { flex-direction: row; overflow-x: auto; padding: 10px; } .viewer { padding: 15px 10px; } }
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; }
+            .nav-list { flex-direction: row; overflow-x: auto; padding: 10px; gap: 8px; }
+            .nav-item { min-width: 100px; font-size: 11px; padding: 12px; flex-direction: column; gap: 5px; }
+        }
     </style>
 </head>
 <body>
-<div class="sidebar">
-    <div class="sidebar-header" onclick="location.href='index.html'" style="padding:20px; text-align:center;"><img src="logo.png" style="max-width:140px;"></div>
-    <div id="nav-list" class="nav-list"></div>
-</div>
-<div class="app-container">
-    <div class="viewer">
-        <div class="top-status">
-            <div style="font-size:10px; font-weight:900; color:var(--bridge-green); letter-spacing:2px;">INQUIRY CHALLENGE</div>
-            <div id="target-words-text">Loading...</div>
+
+<div style="display: flex; width: 100%; height: 100vh;">
+    <!-- 💡 사이드바: 현재 책의 17페이지 구성을 보여줌 -->
+    <div class="sidebar">
+        <div class="sidebar-header" onclick="location.href='index.html'">
+            <img src="logo.png" class="sidebar-logo">
+            <div id="active-book-title" class="book-title-tag">Loading Book...</div>
         </div>
-        <div class="canvas-container">
-            <div id="success-overlay">
-                <div id="score-badge" class="score-badge">WAIT</div>
-                <div id="child-msg" style="font-size:24px; font-weight:800; margin-bottom:30px;">Teacher is observing...</div>
-                <button onclick="handleOverlayClick()" style="padding:15px 40px; background:var(--bridge-charcoal); color:#FFF; border:none; border-radius:50px; font-weight:800; cursor:pointer;">CONTINUE</button>
-            </div>
-            <img src="" id="main-img" crossorigin="anonymous">
-            <canvas id="drawing-canvas"></canvas>
+        <div id="nav-list" class="nav-list">
+            <!-- 1~17페이지가 JS로 생성됨 -->
         </div>
     </div>
-    <div class="bottom-dock">
-        <div class="tool-row">
-            <div style="display:flex; align-items:center; gap:12px;">
-                <div class="color-ring-container" style="width:40px; height:40px; cursor:pointer;"><canvas id="color-wheel" width="80" height="80" style="border-radius:50%; width:100%;"></canvas></div>
-                <div id="current-color-bg" style="width:25px; height:25px; border-radius:50%; border:2px solid #FFF; background:#333;"></div>
+
+    <div class="app-container">
+        <div class="viewer">
+            <div class="top-status">
+                <div class="target-tag">Inquiry Lab</div>
+                <div id="target-words-text">Loading...</div>
             </div>
-            <input type="range" id="brush-size" style="flex:1; max-width:150px;" min="3" max="25" value="8">
-            <button onclick="resetCanvas()" style="background:none; border:none; color:#AAA; font-weight:800; font-size:11px; cursor:pointer;">RESET</button>
+            <div class="canvas-container">
+                <div id="success-overlay">
+                    <div id="score-badge" class="score-badge">WAIT</div>
+                    <div id="child-msg" style="font-size:24px; font-weight:800; margin-bottom:30px;">Teacher is observing...</div>
+                    <button class="btn-overlay-continue" onclick="handleOverlayClick()">CONTINUE</button>
+                </div>
+                <img src="" id="main-img" crossorigin="anonymous">
+                <canvas id="drawing-canvas"></canvas>
+            </div>
         </div>
-        <div class="action-row">
-            <button id="prev-btn" class="btn-nav" onclick="changePage(-1)">◀</button>
-            <button id="record-btn" class="btn-action btn-record" onclick="toggleRecording()">🎤 RECORD</button>
-            <button id="submit-btn" class="btn-action btn-submit" onclick="submitWork()">SUBMIT ✨</button>
-            <button id="next-btn" class="btn-nav" onclick="changePage(1)">▶</button>
+        <div class="bottom-dock">
+            <div class="tool-row">
+                <div class="color-selector">
+                    <div class="color-ring-container"><canvas id="color-wheel" width="90" height="90"></canvas></div>
+                    <div id="current-color-bg" class="current-color"></div>
+                </div>
+                <input type="range" id="brush-size" class="brush-slider" min="3" max="25" value="8">
+                <button onclick="resetCanvas()" style="background:none; border:none; color:#AAA; font-weight:800; cursor:pointer;">RESET</button>
+            </div>
+            <div class="action-row">
+                <button id="prev-btn" class="btn-nav" onclick="changePage(-1)">◀</button>
+                <button id="record-btn" class="btn-action btn-record" onclick="toggleRecording()">🎤 RECORD</button>
+                <button id="submit-btn" class="btn-action btn-submit" onclick="submitWork()">SUBMIT ✨</button>
+                <button id="next-btn" class="btn-nav" onclick="changePage(1)">▶</button>
+            </div>
         </div>
     </div>
 </div>
 
 <script src="library.js"></script>
 <script>
-    const API_KEY = "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4";
-    const modelName = "gemini-1.5-flash";
+    const API_KEY = "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4"; 
+    const modelName = "gemini-1.5-flash"; 
+    
     const urlParams = new URLSearchParams(window.location.search);
-    const bookId = urlParams.get('id');
-    const filteredList = BRIDGE_LIBRARY.filter(b => b.id.includes(urlParams.get('month') || 'JAN'));
-    let currentPageIndex = bookId ? BRIDGE_LIBRARY.findIndex(b => b.id === bookId) : 0;
+    const bookId = urlParams.get('id') || "JAN-A-1"; 
+    const currentBook = BRIDGE_LIBRARY.find(b => b.id === bookId);
+    
+    let currentPageNum = 1; // 1~17페이지 관리
     let savedName = "Student"; let drawing = false; let audioBlob = null;
-    const canvas = document.getElementById('drawing-canvas'); const ctx = canvas.getContext('2d'); const img = document.getElementById('main-img');
+    const canvas = document.getElementById('drawing-canvas'); const ctx = canvas.getContext('2d');
+    const img = document.getElementById('main-img'); const brushSlider = document.getElementById('brush-size');
 
     function resetCanvas() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.beginPath(); drawing = false; }
-    
-    // 컬러휠 및 드로잉 로직 (V19.0 고도화 보존)
+
+    // 컬러휠 및 드로잉 로직 (기존 고성능 로직 보존)
     const wheelCanvas = document.getElementById('color-wheel'); const wheelCtx = wheelCanvas.getContext('2d');
     function drawColorWheel() {
-        const r = 40; for(let a=0; a<360; a++) { wheelCtx.beginPath(); wheelCtx.moveTo(r,r); wheelCtx.arc(r,r,r,(a-1)*Math.PI/180,(a+1)*Math.PI/180); wheelCtx.fillStyle=`hsl(${a},100%,50%)`; wheelCtx.fill(); }
-        wheelCtx.beginPath(); wheelCtx.arc(r,r,15,0,Math.PI*2); wheelCtx.fillStyle="white"; wheelCtx.fill();
+        const r = 45; for(let a=0; a<360; a++) { wheelCtx.beginPath(); wheelCtx.moveTo(r,r); wheelCtx.arc(r,r,r,(a-1)*Math.PI/180,(a+1)*Math.PI/180); wheelCtx.fillStyle=`hsl(${a},100%,50%)`; wheelCtx.fill(); }
+        wheelCtx.beginPath(); wheelCtx.arc(r,r,16,0,Math.PI*2); wheelCtx.fillStyle="white"; wheelCtx.fill();
     }
     function pickColor(e) {
         const rect = wheelCanvas.getBoundingClientRect(); const cx = e.touches ? e.touches[0].clientX : e.clientX; const cy = e.touches ? e.touches[0].clientY : e.clientY;
-        const x = (cx - rect.left) * (80/rect.width); const y = (cy - rect.top) * (80/rect.height);
+        const x = (cx - rect.left) * (90/rect.width); const y = (cy - rect.top) * (90/rect.height);
         const p = wheelCtx.getImageData(x,y,1,1).data; if(p[3]!==0) { const c=`rgb(${p[0]},${p[1]},${p[2]})`; ctx.strokeStyle=c; document.getElementById('current-color-bg').style.background=c; }
     }
     wheelCanvas.addEventListener('mousedown', pickColor); wheelCanvas.addEventListener('touchstart', e => { pickColor(e); e.preventDefault(); }, {passive:false});
 
-    function resizeCanvas() { const dpr=window.devicePixelRatio||1; canvas.width=img.clientWidth*dpr; canvas.height=img.clientHeight*dpr; canvas.style.width=img.clientWidth+'px'; canvas.style.height=img.clientHeight+'px'; ctx.scale(dpr,dpr); ctx.lineCap='round'; ctx.lineWidth=document.getElementById('brush-size').value; }
+    function resizeCanvas() { const dpr=window.devicePixelRatio||1; canvas.width=img.clientWidth*dpr; canvas.height=img.clientHeight*dpr; canvas.style.width=img.clientWidth+'px'; canvas.style.height=img.clientHeight+'px'; ctx.scale(dpr,dpr); ctx.lineCap='round'; ctx.lineWidth=brushSlider.value; }
     img.onload = resizeCanvas; window.addEventListener('resize', resizeCanvas);
-    
+    brushSlider.oninput = () => { ctx.lineWidth = brushSlider.value; };
+
     function getCoords(e) { const r=canvas.getBoundingClientRect(); const cx=e.touches?e.touches[0].clientX:e.clientX; const cy=e.touches?e.touches[0].clientY:e.clientY; return {x:cx-r.left, y:cy-r.top}; }
     canvas.addEventListener('mousedown', e => { drawing=true; const p=getCoords(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
     canvas.addEventListener('mousemove', e => { if(!drawing) return; e.preventDefault(); const p=getCoords(e); ctx.lineTo(p.x,p.y); ctx.stroke(); });
@@ -126,47 +183,63 @@
         } else { mediaRecorder.stop(); mediaRecorder.stream.getTracks().forEach(t=>t.stop()); btn.classList.remove('recording'); }
     }
 
-    function loadPage(idx) {
-        if(idx < 0 || idx >= BRIDGE_LIBRARY.length) return;
-        currentPageIndex = idx; audioBlob = null;
-        const item = BRIDGE_LIBRARY[idx];
-        img.src = `${item.id}.png`; // 💡 팁: 이미지 파일명을 ID와 동일하게 저장하세요.
-        document.getElementById('target-words-text').innerText = item.title;
+    // 💡 단일 도서 내 17페이지 로드 시스템
+    function loadPage(pageNum) {
+        if(pageNum < 1 || pageNum > 17) return;
+        currentPageNum = pageNum; audioBlob = null;
+        
+        // 이미지 경로 규칙: JAN-A-1_01.png, JAN-A-1_02.png ...
+        const paddedNum = String(pageNum).padStart(2, '0');
+        img.src = `${bookId}_${paddedNum}.png`; 
+        
+        document.getElementById('target-words-text').innerText = `Page ${paddedNum}`;
         document.getElementById('record-btn').innerHTML = "🎤 RECORD";
         resetCanvas();
-        document.querySelectorAll('.nav-item').forEach((el, i) => el.classList.toggle('active', BRIDGE_LIBRARY.findIndex(b=>b.id === item.id) === i));
+        
+        // 사이드바 활성화 업데이트
+        document.querySelectorAll('.nav-item').forEach((el, idx) => el.classList.toggle('active', (idx + 1) === pageNum));
+        document.getElementById('prev-btn').disabled = (pageNum === 1);
+        document.getElementById('next-btn').disabled = (pageNum === 17);
     }
-    function changePage(s) { loadPage(currentPageIndex + s); }
+    
+    function changePage(step) { loadPage(currentPageNum + step); }
 
-    // ✅ V20.0 딥 인사이트 엔진 적용
+    // V20.0 딥 인사이트 엔진 (질문 기반 분석)
     async function submitWork() {
-        const item = BRIDGE_LIBRARY[currentPageIndex];
         const overlay = document.getElementById('success-overlay'); overlay.style.display = 'flex';
+        document.getElementById('score-badge').innerText = "WAIT";
         const tempCanvas = document.createElement('canvas'); const tCtx = tempCanvas.getContext('2d');
         tempCanvas.width = 400; tempCanvas.height = img.naturalHeight*(400/img.naturalWidth);
         tCtx.drawImage(img,0,0,400,tempCanvas.height); tCtx.drawImage(canvas,0,0,canvas.width,canvas.height,0,0,400,tempCanvas.height);
         const base64Img = tempCanvas.toDataURL("image/jpeg", 0.5).split(',')[1];
         try {
-            const prompt = `[Teacher Mode] Student: ${savedName}. Book: ${item.title}. Question: ${item.question}. Words: ${item.words}. DO NOT use generic praise. Mention specific colors/shapes in drawing. JSON: {score, child_msg, extracted_name}`;
+            const prompt = `[Teacher Mode] Book: ${currentBook.title}. Page: ${currentPageNum}. Target: ${currentBook.words}. Question: ${currentBook.question}. Mention specific visual evidence. JSON: {score, child_msg, extracted_name}`;
             const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${API_KEY}`, {
                 method: 'POST', headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({ contents: [{ parts: [{text: prompt}, {inline_data: {mime_type: "image/jpeg", data: base64Img}}] }] })
             });
             const d = await res.json(); const analysis = JSON.parse(d.candidates[0].content.parts[0].text.replace(/```json|```/g, "").match(/\{.*\}/s)[0]);
-            if(currentPageIndex === 0 && analysis.extracted_name) savedName = analysis.extracted_name;
+            if(currentPageNum === 1 && analysis.extracted_name) savedName = analysis.extracted_name;
             document.getElementById('score-badge').innerText = analysis.score+"%"; document.getElementById('child-msg').innerText = analysis.child_msg;
         } catch(e) { document.getElementById('score-badge').innerText = "100%"; }
     }
     function handleOverlayClick() { document.getElementById('success-overlay').style.display='none'; }
 
-    // 초기 네비게이션 생성
-    const navList = document.getElementById('nav-list');
-    BRIDGE_LIBRARY.forEach((b, i) => {
-        const div = document.createElement('div'); div.className = 'nav-item' + (i === currentPageIndex ? ' active' : '');
-        div.innerHTML = `<span style="font-size:10px; opacity:0.5;">${b.month || b.id.split('-')[0]}</span><br>${b.title}`;
-        div.onclick = () => loadPage(i); navList.appendChild(div);
-    });
-    drawColorWheel(); setTimeout(() => loadPage(currentPageIndex), 200);
+    // 💡 17페이지 네비게이션 생성
+    if (currentBook) {
+        document.getElementById('active-book-title').innerText = currentBook.title;
+        const navList = document.getElementById('nav-list');
+        for (let i = 1; i <= 17; i++) {
+            const pNum = String(i).padStart(2, '0');
+            const div = document.createElement('div');
+            div.className = 'nav-item' + (i === 1 ? ' active' : '');
+            div.innerHTML = `<span>Inquiry Log</span><span class="page-indicator">P.${pNum}</span>`;
+            div.onclick = () => loadPage(i);
+            navList.appendChild(div);
+        }
+        drawColorWheel(); 
+        setTimeout(() => loadPage(1), 200);
+    }
 </script>
 </body>
 </html>

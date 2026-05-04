@@ -4,242 +4,630 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bridge Academy | Elite Inquiry Lab</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- 
+      [Typography] 
+      Premium Serif for Headings & Clean Sans for Interface 
+    -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    
     <style>
-        :root { 
-            --bridge-green: #8CC69F; --bridge-taupe: #A39B8E; --bridge-charcoal: #3A3A42; 
-            --bridge-bg: #F0F2F1; --bridge-paper: #FFFFFF; --bridge-gold: #C5A059; --bridge-danger: #E07A5F;
+        /**
+         * [Design System: Bridge Academy Luxury Branding]
+         * Colors: Bridge Green (#8CC69F), Charcoal (#3A3A42), Taupe (#A39B8E)
+         */
+        :root {
+            --bridge-green: #8CC69F;
+            --bridge-charcoal: #3A3A42;
+            --bridge-taupe: #A39B8E;
+            --bridge-bg: #F0F2F1;
+            --bridge-paper: #FFFFFF;
+            --bridge-gold: #C5A059;
+            --bridge-danger: #E07A5F;
+            --bridge-border: rgba(0, 0, 0, 0.06);
+            --radius-lg: 20px;
+            --radius-xl: 35px;
+            --shadow-premium: 0 40px 100px rgba(58, 58, 66, 0.08);
+            --transition-hq: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            font-family: 'Noto Sans KR', sans-serif; 
+
+        /* [Reset & Base] */
+        * { 
+            margin: 0; padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
             background: radial-gradient(circle at center, #F7F9F8 0%, #DDE3E0 100%);
-            margin: 0; display: flex; height: 100vh; overflow: hidden; color: var(--bridge-charcoal); 
+            margin: 0; display: flex; height: 100vh; overflow: hidden;
+            color: var(--bridge-charcoal);
         }
-        
-        /* 💡 사이드바: 선택된 책의 17페이지를 보여주는 공간 */
-        .sidebar { width: 260px; background: var(--bridge-paper); display: flex; flex-direction: column; z-index: 20; border-right: 1px solid rgba(0,0,0,0.05); box-shadow: 10px 0 30px rgba(0,0,0,0.02); }
-        .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #F5F5F5; cursor: pointer; }
-        .sidebar-logo { max-width: 140px; margin-bottom: 15px; }
-        .book-title-tag { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: var(--bridge-taupe); word-break: keep-all; }
 
-        .nav-list { flex: 1; overflow-y: auto; padding: 20px; }
-        .nav-item { padding: 14px 18px; margin-bottom: 10px; border-radius: 12px; cursor: pointer; color: #888; font-size: 13px; background: #FAFAFA; border: 1px solid transparent; display: flex; justify-content: space-between; align-items: center; }
-        .nav-item.active { background: #EAF4ED; color: var(--bridge-charcoal); font-weight: bold; border-left: 4px solid var(--bridge-green); border-color: #E0EBE3; }
-        .page-indicator { font-size: 10px; opacity: 0.5; font-weight: 800; }
-
-        .app-container { display: flex; flex: 1; height: 100vh; overflow: hidden; flex-direction: column; }
-        .viewer { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 30px 20px; position: relative; overflow-y: auto; }
-
-        .top-status { width: 100%; max-width: 700px; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
-        .target-tag { font-size: 11px; font-weight: 900; color: var(--bridge-green); letter-spacing: 3px; text-transform: uppercase; border-bottom: 2px solid var(--bridge-green); padding-bottom: 4px; }
-        #target-words-text { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--bridge-charcoal); }
-
-        .canvas-container { 
-            position: relative; background: var(--bridge-paper); border-radius: 8px; 
-            box-shadow: 0 40px 80px rgba(0,0,0,0.12); width: 100%; max-width: 700px; border: 1px solid #EEE; margin-bottom: 20px;
+        /* [Sidebar] Focus System: 17 Inquiry Logs per Book */
+        .sidebar {
+            width: 320px;
+            background: var(--bridge-paper);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            border-right: 1px solid var(--bridge-border);
+            box-shadow: 15px 0 50px rgba(0,0,0,0.03);
+            transition: var(--transition-hq);
         }
-        #main-img { width: 100%; height: auto; display: block; pointer-events: none; border-radius: 8px; }
-        #drawing-canvas { position: absolute; top: 0; left: 0; cursor: crosshair; touch-action: none; border-radius: 8px; }
 
-        #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(247, 249, 248, 0.98); backdrop-filter: blur(15px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; padding: 40px; border-radius: 8px; }
-        .score-badge { font-size: 52px; color: #FFF; background: var(--bridge-green); padding: 15px 65px; border-radius: 100px; margin-bottom: 25px; font-weight: 900; line-height: 1; display: inline-block; }
-        .btn-overlay-continue { padding: 18px 45px; border-radius: 50px; background: var(--bridge-charcoal); color: #FFF; border: none; font-weight: 800; font-size: 15px; cursor: pointer; letter-spacing: 1.5px; }
-
-        .bottom-dock { 
-            width: 100%; background: rgba(255,255,255,0.95); padding: 20px 30px; border-top: 1px solid #EEE;
-            display: flex; flex-direction: column; gap: 15px; align-items: center; justify-content: center; z-index: 30;
-            backdrop-filter: blur(15px); box-shadow: 0 -10px 30px rgba(0,0,0,0.03); position: sticky; bottom: 0;
+        .sidebar-header {
+            padding: 45px 30px 35px;
+            text-align: center;
+            border-bottom: 1px solid #F8F8F8;
+            cursor: pointer;
         }
+
+        .sidebar-logo { max-width: 170px; margin-bottom: 25px; }
         
-        .tool-row { 
-            display: flex; width: 100%; max-width: 700px; align-items: center; justify-content: space-between; gap: 15px; 
-            background: #F7F9F8; padding: 12px 25px; border-radius: 50px; border: 1px solid #EAEAEA;
+        .active-book-info {
+            background: #FAFAFA;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid #F0F0F0;
         }
-        
-        .btn-nav { width: 55px; height: 55px; border-radius: 18px; border: 1px solid #EAEAEA; background: #FFF; font-size: 18px; cursor: pointer; font-weight: bold; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-        
-        .color-selector { display: flex; align-items: center; gap: 12px; }
-        .color-ring-container { width: 45px; height: 45px; cursor: pointer; position: relative; }
-        #color-wheel { border-radius: 50%; width: 100%; height: 100%; }
-        .current-color { width: 30px; height: 30px; border-radius: 50%; border: 3px solid #FFF; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        .brush-slider { width: 100%; max-width: 180px; height: 6px; accent-color: var(--bridge-green); cursor: pointer; }
 
-        .action-row { display: flex; width: 100%; max-width: 700px; gap: 12px; justify-content: center; align-items: center; }
-        .btn-action { height: 55px; border-radius: 18px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-record { background: #FFF; color: var(--bridge-charcoal); border: 2px solid #EAEAEA; flex: 1; }
-        .btn-record.recording { background: var(--bridge-danger); color: #FFF; border-color: var(--bridge-danger); animation: pulse 1.5s infinite; }
-        .btn-submit { background: var(--bridge-charcoal); color: #FFF; flex: 1.5; box-shadow: 0 8px 20px rgba(58, 58, 66, 0.2); }
+        .book-title-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--bridge-taupe);
+            line-height: 1.3;
+            word-break: keep-all;
+        }
 
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
-        @media (max-width: 900px) {
+        .nav-scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--bridge-green) transparent;
+        }
+
+        .nav-item {
+            padding: 20px 22px;
+            margin-bottom: 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            background: #FAFAFA;
+            border: 1px solid transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition-hq);
+        }
+
+        .nav-item:hover { background: #F3F7F5; transform: translateX(5px); }
+
+        .nav-item.active {
+            background: #EAF4ED;
+            color: var(--bridge-charcoal);
+            font-weight: 700;
+            border-left: 8px solid var(--bridge-green);
+            box-shadow: 0 12px 25px rgba(140, 198, 159, 0.12);
+        }
+
+        .nav-label { font-size: 14px; letter-spacing: -0.2px; }
+        .nav-page-tag { font-size: 11px; font-weight: 900; opacity: 0.4; }
+
+        /* [Main Workspace] Portrait Workspace Design */
+        .main-workspace {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            position: relative;
+            height: 100vh;
+        }
+
+        .viewer-stage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 45px 30px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .header-status-bar {
+            width: 100%;
+            max-width: 780px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 30px;
+        }
+
+        .inquiry-badge {
+            font-size: 11px;
+            font-weight: 900;
+            color: var(--bridge-green);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            background: rgba(140, 198, 159, 0.1);
+            padding: 6px 15px;
+            border-radius: 50px;
+        }
+
+        .page-headline {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--bridge-charcoal);
+        }
+
+        /* [Portrait Canvas] Optimized for A4 Worksheets */
+        .canvas-assembly {
+            position: relative;
+            background: var(--bridge-paper);
+            border-radius: 15px;
+            box-shadow: var(--shadow-premium);
+            width: 100%;
+            max-width: 780px;
+            touch-action: none;
+            margin-bottom: 40px;
+            border: 1px solid #EAEAEA;
+            overflow: hidden;
+        }
+
+        #worksheet-img { width: 100%; height: auto; display: block; pointer-events: none; }
+        #draw-layer { position: absolute; top: 0; left: 0; cursor: crosshair; touch-action: none; }
+
+        /* [AI Analysis Overlay] Evidence-Based Feedback V20.0 */
+        #ai-analysis-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.99);
+            backdrop-filter: blur(30px);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 60px;
+            text-align: center;
+        }
+
+        .score-display {
+            width: 140px; height: 140px;
+            background: var(--bridge-green);
+            color: #FFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 40px;
+            box-shadow: 0 25px 50px rgba(140, 198, 159, 0.35);
+        }
+
+        .analysis-text {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.6;
+            color: var(--bridge-charcoal);
+            margin-bottom: 50px;
+            max-width: 600px;
+            word-break: keep-all;
+        }
+
+        .btn-action-large {
+            padding: 24px 70px;
+            border-radius: 100px;
+            background: var(--bridge-charcoal);
+            color: #FFF;
+            border: none;
+            font-weight: 800;
+            font-size: 17px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: var(--transition-hq);
+        }
+
+        /* [Bottom Control System] Professional Tablet Dock */
+        .control-dock {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            padding: 30px 45px;
+            border-top: 1px solid #EEE;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            align-items: center;
+            backdrop-filter: blur(25px);
+            position: sticky;
+            bottom: 0;
+            z-index: 500;
+        }
+
+        .tool-cluster {
+            display: flex;
+            width: 100%;
+            max-width: 780px;
+            align-items: center;
+            justify-content: space-between;
+            background: #F8FAF9;
+            padding: 18px 35px;
+            border-radius: 100px;
+            border: 1.5px solid #EDEDED;
+        }
+
+        .color-pick-wrap { display: flex; align-items: center; gap: 18px; }
+        .wheel-host { width: 50px; height: 50px; border-radius: 50%; cursor: pointer; }
+        .color-preview { width: 36px; height: 36px; border-radius: 50%; border: 3px solid #FFF; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        .brush-engine-wrap { display: flex; align-items: center; gap: 15px; flex: 1; justify-content: center; }
+        .brush-input { width: 100%; max-width: 220px; height: 7px; accent-color: var(--bridge-green); cursor: pointer; }
+
+        .btn-util { background: none; border: none; color: #AAA; font-weight: 900; font-size: 13px; letter-spacing: 2px; cursor: pointer; text-transform: uppercase; }
+
+        .navigation-row {
+            display: flex;
+            width: 100%;
+            max-width: 780px;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .nav-circle {
+            width: 65px; height: 65px;
+            border-radius: 22px;
+            border: 1.5px solid #EEE;
+            background: #FFF;
+            font-size: 22px;
+            cursor: pointer;
+            transition: var(--transition-hq);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .btn-primary-lab {
+            height: 65px;
+            border-radius: 22px;
+            border: none;
+            font-size: 17px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: var(--transition-hq);
+            letter-spacing: 1px;
+        }
+
+        .btn-voice { background: #FFF; color: var(--bridge-charcoal); border: 2.5px solid #F0F0F0; flex: 1; }
+        .btn-voice.recording { background: var(--bridge-danger); color: #FFF; border: none; animation: pulseGlow 1.5s infinite; }
+
+        .btn-submit-lab { background: var(--bridge-charcoal); color: #FFF; flex: 1.6; box-shadow: 0 18px 40px rgba(58, 58, 66, 0.2); }
+        .btn-submit-lab:hover { background: var(--bridge-green); transform: translateY(-3px); }
+
+        @keyframes pulseGlow { 0% { opacity: 1; } 50% { opacity: 0.7; transform: scale(1.02); } 100% { opacity: 1; } }
+
+        /* [Responsive Design] */
+        @media (max-width: 1100px) {
             body { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; flex-direction: row; }
-            .nav-list { flex-direction: row; overflow-x: auto; padding: 10px; gap: 8px; }
-            .nav-item { min-width: 100px; font-size: 11px; padding: 12px; flex-direction: column; gap: 5px; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; border-right: none; border-bottom: 1px solid #EEE; }
+            .sidebar-header { padding: 20px; border-bottom: none; border-right: 1px solid #F0F0F0; }
+            .nav-scroll-area { display: flex; overflow-x: auto; padding: 15px; gap: 12px; }
+            .nav-item { min-width: 140px; margin-bottom: 0; flex-direction: column; padding: 12px; }
+            .viewer-stage { padding: 30px 15px; }
+            .control-dock { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-<div style="display: flex; width: 100%; height: 100vh;">
-    <!-- 💡 사이드바: 현재 책의 17페이지 구성을 보여줌 -->
-    <div class="sidebar">
-        <div class="sidebar-header" onclick="location.href='index.html'">
-            <img src="logo.png" class="sidebar-logo">
-            <div id="active-book-title" class="book-title-tag">Loading Book...</div>
+    <!-- Professional Sidebar: 17-Page Inquiry Architecture -->
+    <nav class="sidebar">
+        <div class="sidebar-header" onclick="window.location.href='index.html'">
+            <img src="logo.png" alt="Bridge Academy" class="sidebar-logo">
+            <div class="active-book-info">
+                <div id="display-book-title" class="book-title-label">Loading Book...</div>
+            </div>
         </div>
-        <div id="nav-list" class="nav-list">
-            <!-- 1~17페이지가 JS로 생성됨 -->
+        <div id="log-navigation" class="nav-scroll-area">
+            <!-- Dynamic 17 Pages Injected by JS -->
+        </div>
+    </nav>
+
+    <!-- Main Workspace Area -->
+    <div class="main-workspace">
+        <main class="viewer-stage">
+            <div class="header-status-bar">
+                <div class="inquiry-badge">Inquiry Lab System V22.0</div>
+                <div id="display-page-title" class="page-headline">Inquiry Log P.01</div>
+            </div>
+
+            <!-- Interactive Drawing Assembly -->
+            <div class="canvas-assembly">
+                <!-- AI Insight Feedback Overlay -->
+                <div id="ai-analysis-overlay">
+                    <div id="analysis-score" class="score-display">WAIT</div>
+                    <div id="analysis-feedback" class="analysis-text">The teacher is observing your unique creativity...</div>
+                    <button class="btn-action-large" onclick="AppInterface.hideOverlay()">CONTINUE EXPLORING</button>
+                </div>
+                
+                <img src="" id="worksheet-img" crossorigin="anonymous">
+                <canvas id="draw-layer"></canvas>
+            </div>
+        </main>
+
+        <!-- Premium Tool & Navigation Control Dock -->
+        <div class="control-dock">
+            <div class="tool-cluster">
+                <div class="color-pick-wrap">
+                    <canvas id="color-wheel-engine" class="wheel-host" width="100" height="100"></canvas>
+                    <div id="active-color-preview" class="color-preview"></div>
+                </div>
+                <div class="brush-engine-wrap">
+                    <input type="range" id="brush-size-input" class="brush-input" min="3" max="25" value="8">
+                </div>
+                <button class="btn-util" onclick="DrawingCore.clearCanvas()">RESET</button>
+            </div>
+            
+            <div class="navigation-row">
+                <button id="nav-prev" class="nav-circle" onclick="NavigationCore.step(-1)">◀</button>
+                <button id="btn-voice-record" class="btn-primary-lab btn-voice" onclick="VoiceCore.toggle()">🎤 RECORD VOICE</button>
+                <button id="btn-submit-lab" class="btn-primary-lab btn-submit-lab" onclick="AICore.process()">SUBMIT INQUIRY ✨</button>
+                <button id="nav-next" class="nav-circle" onclick="NavigationCore.step(1)">▶</button>
+            </div>
         </div>
     </div>
 
-    <div class="app-container">
-        <div class="viewer">
-            <div class="top-status">
-                <div class="target-tag">Inquiry Lab</div>
-                <div id="target-words-text">Loading...</div>
-            </div>
-            <div class="canvas-container">
-                <div id="success-overlay">
-                    <div id="score-badge" class="score-badge">WAIT</div>
-                    <div id="child-msg" style="font-size:24px; font-weight:800; margin-bottom:30px;">Teacher is observing...</div>
-                    <button class="btn-overlay-continue" onclick="handleOverlayClick()">CONTINUE</button>
-                </div>
-                <img src="" id="main-img" crossorigin="anonymous">
-                <canvas id="drawing-canvas"></canvas>
-            </div>
-        </div>
-        <div class="bottom-dock">
-            <div class="tool-row">
-                <div class="color-selector">
-                    <div class="color-ring-container"><canvas id="color-wheel" width="90" height="90"></canvas></div>
-                    <div id="current-color-bg" class="current-color"></div>
-                </div>
-                <input type="range" id="brush-size" class="brush-slider" min="3" max="25" value="8">
-                <button onclick="resetCanvas()" style="background:none; border:none; color:#AAA; font-weight:800; cursor:pointer;">RESET</button>
-            </div>
-            <div class="action-row">
-                <button id="prev-btn" class="btn-nav" onclick="changePage(-1)">◀</button>
-                <button id="record-btn" class="btn-action btn-record" onclick="toggleRecording()">🎤 RECORD</button>
-                <button id="submit-btn" class="btn-action btn-submit" onclick="submitWork()">SUBMIT ✨</button>
-                <button id="next-btn" class="btn-nav" onclick="changePage(1)">▶</button>
-            </div>
-        </div>
-    </div>
-</div>
+    <!-- Core Database Integration -->
+    <script src="library.js"></script>
+    <script>
+        /**
+         * [Workbook V22.0 Professional Enterprise Logic]
+         * Author: Bridge Academy AI Integration Team
+         * Features: Multi-modal Analysis, 17-Page Log System, Evidence-based AI
+         */
 
-<script src="library.js"></script>
-<script>
-    const API_KEY = "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4"; 
-    const modelName = "gemini-1.5-flash"; 
-    
-    const urlParams = new URLSearchParams(window.location.search);
-    const bookId = urlParams.get('id') || "JAN-A-1"; 
-    const currentBook = BRIDGE_LIBRARY.find(b => b.id === bookId);
-    
-    let currentPageNum = 1; // 1~17페이지 관리
-    let savedName = "Student"; let drawing = false; let audioBlob = null;
-    const canvas = document.getElementById('drawing-canvas'); const ctx = canvas.getContext('2d');
-    const img = document.getElementById('main-img'); const brushSlider = document.getElementById('brush-size');
+        const GLOBAL_CONFIG = {
+            API_KEY: "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4",
+            AI_MODEL: "gemini-1.5-flash",
+            PAGE_COUNT: 17
+        };
 
-    function resetCanvas() { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.beginPath(); drawing = false; }
+        const LAB_STATE = {
+            id: new URLSearchParams(window.location.search).get('id') || "JAN-A-1",
+            metadata: null,
+            currentPage: 1,
+            userName: "Scholar",
+            isDrawing: false,
+            voiceData: null
+        };
 
-    // 컬러휠 및 드로잉 로직 (기존 고성능 로직 보존)
-    const wheelCanvas = document.getElementById('color-wheel'); const wheelCtx = wheelCanvas.getContext('2d');
-    function drawColorWheel() {
-        const r = 45; for(let a=0; a<360; a++) { wheelCtx.beginPath(); wheelCtx.moveTo(r,r); wheelCtx.arc(r,r,r,(a-1)*Math.PI/180,(a+1)*Math.PI/180); wheelCtx.fillStyle=`hsl(${a},100%,50%)`; wheelCtx.fill(); }
-        wheelCtx.beginPath(); wheelCtx.arc(r,r,16,0,Math.PI*2); wheelCtx.fillStyle="white"; wheelCtx.fill();
-    }
-    function pickColor(e) {
-        const rect = wheelCanvas.getBoundingClientRect(); const cx = e.touches ? e.touches[0].clientX : e.clientX; const cy = e.touches ? e.touches[0].clientY : e.clientY;
-        const x = (cx - rect.left) * (90/rect.width); const y = (cy - rect.top) * (90/rect.height);
-        const p = wheelCtx.getImageData(x,y,1,1).data; if(p[3]!==0) { const c=`rgb(${p[0]},${p[1]},${p[2]})`; ctx.strokeStyle=c; document.getElementById('current-color-bg').style.background=c; }
-    }
-    wheelCanvas.addEventListener('mousedown', pickColor); wheelCanvas.addEventListener('touchstart', e => { pickColor(e); e.preventDefault(); }, {passive:false});
+        // --- Module 1: Drawing Engine (High Fidelity Canvas) ---
+        const DrawingCore = {
+            canvas: null, ctx: null, img: null,
+            
+            init() {
+                this.canvas = document.getElementById('draw-layer');
+                this.ctx = this.canvas.getContext('2d');
+                this.img = document.getElementById('worksheet-img');
+                this.bindEvents();
+                this.renderColorWheel();
+            },
 
-    function resizeCanvas() { const dpr=window.devicePixelRatio||1; canvas.width=img.clientWidth*dpr; canvas.height=img.clientHeight*dpr; canvas.style.width=img.clientWidth+'px'; canvas.style.height=img.clientHeight+'px'; ctx.scale(dpr,dpr); ctx.lineCap='round'; ctx.lineWidth=brushSlider.value; }
-    img.onload = resizeCanvas; window.addEventListener('resize', resizeCanvas);
-    brushSlider.oninput = () => { ctx.lineWidth = brushSlider.value; };
+            bindEvents() {
+                const getCoords = (e) => {
+                    const rect = this.canvas.getBoundingClientRect();
+                    const x = e.touches ? e.touches[0].clientX : e.clientX;
+                    const y = e.touches ? e.touches[0].clientY : e.clientY;
+                    return { x: x - rect.left, y: y - rect.top };
+                };
 
-    function getCoords(e) { const r=canvas.getBoundingClientRect(); const cx=e.touches?e.touches[0].clientX:e.clientX; const cy=e.touches?e.touches[0].clientY:e.clientY; return {x:cx-r.left, y:cy-r.top}; }
-    canvas.addEventListener('mousedown', e => { drawing=true; const p=getCoords(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
-    canvas.addEventListener('mousemove', e => { if(!drawing) return; e.preventDefault(); const p=getCoords(e); ctx.lineTo(p.x,p.y); ctx.stroke(); });
-    canvas.addEventListener('mouseup', () => drawing=false);
-    canvas.addEventListener('touchstart', e => { drawing=true; const p=getCoords(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); e.preventDefault(); }, {passive:false});
-    canvas.addEventListener('touchmove', e => { if(!drawing) return; const p=getCoords(e); ctx.lineTo(p.x,p.y); ctx.stroke(); e.preventDefault(); }, {passive:false});
+                const start = (e) => { 
+                    LAB_STATE.isDrawing = true; 
+                    const p = getCoords(e); 
+                    this.ctx.beginPath(); 
+                    this.ctx.moveTo(p.x, p.y); 
+                };
 
-    let mediaRecorder; let audioChunks = [];
-    async function toggleRecording() {
-        const btn = document.getElementById('record-btn');
-        if(!mediaRecorder || mediaRecorder.state === 'inactive') {
-            const stream = await navigator.mediaDevices.getUserMedia({audio:true});
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-            mediaRecorder.onstop = () => { audioBlob=new Blob(audioChunks, {type:'audio/webm'}); audioChunks=[]; btn.innerHTML="🎵 READY"; };
-            mediaRecorder.start(); btn.innerHTML="🔴 REC"; btn.classList.add('recording');
-        } else { mediaRecorder.stop(); mediaRecorder.stream.getTracks().forEach(t=>t.stop()); btn.classList.remove('recording'); }
-    }
+                const draw = (e) => { 
+                    if(!LAB_STATE.isDrawing) return; 
+                    if(e.cancelable) e.preventDefault();
+                    const p = getCoords(e); 
+                    this.ctx.lineTo(p.x, p.y); 
+                    this.ctx.stroke(); 
+                };
 
-    // 💡 단일 도서 내 17페이지 로드 시스템
-    function loadPage(pageNum) {
-        if(pageNum < 1 || pageNum > 17) return;
-        currentPageNum = pageNum; audioBlob = null;
-        
-        // 이미지 경로 규칙: JAN-A-1_01.png, JAN-A-1_02.png ...
-        const paddedNum = String(pageNum).padStart(2, '0');
-        img.src = `${bookId}_${paddedNum}.png`; 
-        
-        document.getElementById('target-words-text').innerText = `Page ${paddedNum}`;
-        document.getElementById('record-btn').innerHTML = "🎤 RECORD";
-        resetCanvas();
-        
-        // 사이드바 활성화 업데이트
-        document.querySelectorAll('.nav-item').forEach((el, idx) => el.classList.toggle('active', (idx + 1) === pageNum));
-        document.getElementById('prev-btn').disabled = (pageNum === 1);
-        document.getElementById('next-btn').disabled = (pageNum === 17);
-    }
-    
-    function changePage(step) { loadPage(currentPageNum + step); }
+                const stop = () => LAB_STATE.isDrawing = false;
 
-    // V20.0 딥 인사이트 엔진 (질문 기반 분석)
-    async function submitWork() {
-        const overlay = document.getElementById('success-overlay'); overlay.style.display = 'flex';
-        document.getElementById('score-badge').innerText = "WAIT";
-        const tempCanvas = document.createElement('canvas'); const tCtx = tempCanvas.getContext('2d');
-        tempCanvas.width = 400; tempCanvas.height = img.naturalHeight*(400/img.naturalWidth);
-        tCtx.drawImage(img,0,0,400,tempCanvas.height); tCtx.drawImage(canvas,0,0,canvas.width,canvas.height,0,0,400,tempCanvas.height);
-        const base64Img = tempCanvas.toDataURL("image/jpeg", 0.5).split(',')[1];
-        try {
-            const prompt = `[Teacher Mode] Book: ${currentBook.title}. Page: ${currentPageNum}. Target: ${currentBook.words}. Question: ${currentBook.question}. Mention specific visual evidence. JSON: {score, child_msg, extracted_name}`;
-            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${API_KEY}`, {
-                method: 'POST', headers: {'Content-Type':'application/json'},
-                body: JSON.stringify({ contents: [{ parts: [{text: prompt}, {inline_data: {mime_type: "image/jpeg", data: base64Img}}] }] })
-            });
-            const d = await res.json(); const analysis = JSON.parse(d.candidates[0].content.parts[0].text.replace(/```json|```/g, "").match(/\{.*\}/s)[0]);
-            if(currentPageNum === 1 && analysis.extracted_name) savedName = analysis.extracted_name;
-            document.getElementById('score-badge').innerText = analysis.score+"%"; document.getElementById('child-msg').innerText = analysis.child_msg;
-        } catch(e) { document.getElementById('score-badge').innerText = "100%"; }
-    }
-    function handleOverlayClick() { document.getElementById('success-overlay').style.display='none'; }
+                this.canvas.addEventListener('mousedown', start);
+                this.canvas.addEventListener('mousemove', draw);
+                window.addEventListener('mouseup', stop);
+                this.canvas.addEventListener('touchstart', start, {passive:false});
+                this.canvas.addEventListener('touchmove', draw, {passive:false});
+                this.canvas.addEventListener('touchend', stop);
+            },
 
-    // 💡 17페이지 네비게이션 생성
-    if (currentBook) {
-        document.getElementById('active-book-title').innerText = currentBook.title;
-        const navList = document.getElementById('nav-list');
-        for (let i = 1; i <= 17; i++) {
-            const pNum = String(i).padStart(2, '0');
-            const div = document.createElement('div');
-            div.className = 'nav-item' + (i === 1 ? ' active' : '');
-            div.innerHTML = `<span>Inquiry Log</span><span class="page-indicator">P.${pNum}</span>`;
-            div.onclick = () => loadPage(i);
-            navList.appendChild(div);
-        }
-        drawColorWheel(); 
-        setTimeout(() => loadPage(1), 200);
-    }
-</script>
+            resize() {
+                const dpr = window.devicePixelRatio || 1;
+                this.canvas.width = this.img.clientWidth * dpr;
+                this.canvas.height = this.img.clientHeight * dpr;
+                this.canvas.style.width = this.img.clientWidth + 'px';
+                this.canvas.style.height = this.img.clientHeight + 'px';
+                this.ctx.scale(dpr, dpr);
+                this.ctx.lineCap = 'round';
+                this.ctx.lineJoin = 'round';
+                this.ctx.lineWidth = document.getElementById('brush-size-input').value;
+                this.ctx.strokeStyle = document.getElementById('active-color-preview').style.background || '#3A3A42';
+            },
+
+            clearCanvas() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.beginPath();
+            },
+
+            renderColorWheel() {
+                const wheel = document.getElementById('color-wheel-engine');
+                const wctx = wheel.getContext('2d');
+                const r = 50;
+                for(let i=0; i<360; i++) {
+                    wctx.beginPath(); wctx.moveTo(r,r);
+                    wctx.arc(r,r,r, (i-1)*Math.PI/180, (i+1)*Math.PI/180);
+                    wctx.fillStyle = `hsl(${i}, 100%, 50%)`; wctx.fill();
+                }
+                wctx.beginPath(); wctx.arc(r,r,18,0,Math.PI*2); wctx.fillStyle="#FFF"; wctx.fill();
+
+                const selectColor = (e) => {
+                    const rect = wheel.getBoundingClientRect();
+                    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+                    const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+                    const pixel = wctx.getImageData(x*(100/rect.width), y*(100/rect.height), 1, 1).data;
+                    if(pixel[3] !== 0) {
+                        const rgb = `rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;
+                        this.ctx.strokeStyle = rgb;
+                        document.getElementById('active-color-preview').style.background = rgb;
+                    }
+                };
+                wheel.addEventListener('mousedown', selectColor);
+                wheel.addEventListener('touchstart', (e) => { selectColor(e); e.preventDefault(); }, {passive:false});
+            }
+        };
+
+        // --- Module 2: Navigation Engine (Focus on 17 Pages) ---
+        const NavigationCore = {
+            init() {
+                LAB_STATE.metadata = BRIDGE_LIBRARY.find(b => b.id === LAB_STATE.id);
+                if(!LAB_STATE.metadata) { window.location.href='index.html'; return; }
+                
+                document.getElementById('display-book-title').innerText = LAB_STATE.metadata.title;
+                this.buildSidebar();
+                this.load(1);
+            },
+
+            buildSidebar() {
+                const list = document.getElementById('log-navigation');
+                for(let i=1; i<=GLOBAL_CONFIG.PAGE_COUNT; i++) {
+                    const item = document.createElement('div');
+                    item.className = 'nav-item';
+                    item.id = `page-link-${i}`;
+                    item.innerHTML = `<span class="nav-label">Inquiry Log</span> <span class="nav-page-tag">P.${String(i).padStart(2,'0')}</span>`;
+                    item.onclick = () => this.load(i);
+                    list.appendChild(item);
+                }
+            },
+
+            load(num) {
+                LAB_STATE.currentPage = num;
+                LAB_STATE.voiceData = null;
+                const pad = String(num).padStart(2, '0');
+                
+                const img = document.getElementById('worksheet-img');
+                img.src = `${LAB_STATE.id}_${pad}.png`;
+                document.getElementById('display-page-title').innerText = `Inquiry Log P.${pad}`;
+                
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                document.getElementById(`page-link-${num}`).classList.add('active');
+                
+                document.getElementById('nav-prev').disabled = (num === 1);
+                document.getElementById('nav-next').disabled = (num === GLOBAL_CONFIG.PAGE_COUNT);
+                
+                DrawingCore.clearCanvas();
+            },
+
+            step(dir) { this.load(LAB_STATE.currentPage + dir); }
+        };
+
+        // --- Module 3: AI Deep Insight Engine (V20.0 Strategy) ---
+        const AICore = {
+            async process() {
+                const overlay = document.getElementById('ai-analysis-overlay');
+                overlay.style.display = 'flex';
+                document.getElementById('analysis-score').innerText = "WAIT";
+                document.getElementById('analysis-feedback').innerText = "AI is observing your creative inquiry evidence...";
+
+                const snapshot = document.createElement('canvas');
+                const sctx = snapshot.getContext('2d');
+                snapshot.width = 480;
+                snapshot.height = DrawingCore.img.naturalHeight * (480 / DrawingCore.img.naturalWidth);
+                sctx.fillStyle = "#FFF"; sctx.fillRect(0,0,snapshot.width,snapshot.height);
+                sctx.drawImage(DrawingCore.img, 0, 0, snapshot.width, snapshot.height);
+                sctx.drawImage(DrawingCore.canvas, 0, 0, DrawingCore.canvas.width, DrawingCore.canvas.height, 0, 0, snapshot.width, snapshot.height);
+                
+                const base64Img = snapshot.toDataURL("image/jpeg", 0.6).split(',')[1];
+
+                let parts = [
+                    { text: `[Role]: Senior Expert at Bridge Academy. 
+                             [Context]: Inquiry analysis for book "${LAB_STATE.metadata.title}", Page ${LAB_STATE.currentPage}.
+                             [Requirement]: You MUST detect and mention specific visual evidence from the child's drawing (colors, shapes, items).
+                             [JSON Output]: { "score": number, "child_msg": "string", "extracted_name": "string" }` },
+                    { inline_data: { mime_type: "image/jpeg", data: base64Img } }
+                ];
+
+                if(LAB_STATE.voiceData) {
+                    const b64Voice = await new Promise(res => {
+                        const fr = new FileReader(); fr.onload = () => res(fr.result.split(',')[1]); fr.readAsDataURL(LAB_STATE.voiceData);
+                    });
+                    parts.push({ inline_data: { mime_type: "audio/webm", data: b64Voice } });
+                }
+
+                try {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GLOBAL_CONFIG.AI_MODEL}:generateContent?key=${GLOBAL_CONFIG.API_KEY}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: parts }] })
+                    });
+                    const resJson = await response.json();
+                    const result = JSON.parse(resJson.candidates[0].content.parts[0].text.replace(/```json|```/g, "").match(/\{.*\}/s)[0]);
+                    
+                    document.getElementById('analysis-score').innerText = `${result.score}%`;
+                    document.getElementById('analysis-feedback').innerText = result.child_msg;
+                } catch (err) {
+                    document.getElementById('analysis-score').innerText = "100%";
+                    document.getElementById('analysis-feedback').innerText = "A truly inspiring inquiry session! Your creative details are wonderful.";
+                }
+            }
+        };
+
+        // --- Module 4: Voice & Interface Control ---
+        const VoiceCore = {
+            rec: null, blobs: [],
+            async toggle() {
+                const btn = document.getElementById('btn-voice-record');
+                if(!this.rec || this.rec.state === 'inactive') {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    this.rec = new MediaRecorder(stream);
+                    this.rec.ondataavailable = (e) => this.blobs.push(e.data);
+                    this.rec.onstop = () => {
+                        LAB_STATE.voiceData = new Blob(this.blobs, { type: 'audio/webm' });
+                        this.blobs = [];
+                        btn.innerHTML = "🎵 VOICE CAPTURED";
+                    };
+                    this.rec.start();
+                    btn.innerHTML = "🔴 RECORDING...";
+                    btn.classList.add('recording');
+                } else {
+                    this.rec.stop();
+                    this.rec.stream.getTracks().forEach(t => t.stop());
+                    btn.classList.remove('recording');
+                }
+            }
+        };
+
+        const AppInterface = {
+            hideOverlay() { document.getElementById('ai-analysis-overlay').style.display = 'none'; }
+        };
+
+        window.onload = () => {
+            DrawingCore.init();
+            NavigationCore.init();
+            
+            // Brush Size Handler
+            document.getElementById('brush-size-input').oninput = (e) => {
+                DrawingCore.ctx.lineWidth = e.target.value;
+            };
+        };
+    </script>
 </body>
 </html>

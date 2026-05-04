@@ -12,7 +12,7 @@
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        /* 프리미엄 엠비언트 배경 */
+        /* 럭셔리 엠비언트 배경 */
         body { 
             font-family: 'Noto Sans KR', sans-serif; 
             background: radial-gradient(circle at center, #F7F9F8 0%, #DDE3E0 100%);
@@ -36,56 +36,61 @@
         .target-tag { font-size: 11px; font-weight: 900; color: var(--bridge-green); letter-spacing: 3px; text-transform: uppercase; border-bottom: 2px solid var(--bridge-green); padding-bottom: 4px; }
         #target-words-text { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--bridge-charcoal); }
 
-        /* 💡 워크시트: A4 세로 꽉 찬 화면 유지 */
+        /* 워크시트 (A4 세로 꽉 찬 화면 유지) */
         .canvas-container { 
             position: relative; background: var(--bridge-paper); border-radius: 8px; 
-            box-shadow: 0 40px 80px rgba(0,0,0,0.12), 0 10px 20px rgba(0,0,0,0.05); 
+            box-shadow: 0 30px 70px rgba(0,0,0,0.08), 0 10px 20px rgba(0,0,0,0.04); 
             padding: 0; line-height: 0; touch-action: none;
             width: 100%; max-width: 700px; border: 1px solid #EEE; margin-bottom: 20px;
         }
         #main-img { width: 100%; height: auto; display: block; pointer-events: none; border-radius: 8px; }
         #drawing-canvas { position: absolute; top: 0; left: 0; cursor: crosshair; touch-action: none; border-radius: 8px; }
 
-        /* 💡 하단 컨트롤 독(Dock): 길쭉해짐 방지 및 누락 버튼 복구 */
+        /* 💡 결과 오버레이 (버튼 늘어남, 뱃지 찌그러짐 완벽 해결) */
+        #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(247, 249, 248, 0.98); backdrop-filter: blur(10px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; padding: 40px; border-radius: 8px; }
+        .score-badge { font-size: 46px; color: #FFF; background: var(--bridge-green); padding: 15px 50px; border-radius: 60px; margin-bottom: 20px; font-weight: 900; line-height: 1; display: inline-block; }
+        .child-msg-box { font-size: 24px; font-weight: 800; color: var(--bridge-charcoal); margin-bottom: 30px; line-height: 1.4; word-break: keep-all; }
+        
+        /* 오버레이 전용 버튼 (flex 충돌 방지) */
+        .btn-overlay-continue { padding: 18px 45px; border-radius: 50px; background: var(--bridge-charcoal); color: #FFF; border: none; font-weight: 800; font-size: 15px; cursor: pointer; letter-spacing: 1.5px; transition: 0.3s; width: auto; height: auto; }
+        .btn-overlay-continue:hover { background: var(--bridge-green); }
+
+        /* 💡 하단 컨트롤 독 (구조 전면 개편) */
         .bottom-dock { 
             width: 100%; background: rgba(255,255,255,0.95); padding: 20px 30px; border-top: 1px solid #EEE;
             display: flex; flex-direction: column; gap: 15px; align-items: center; justify-content: center; z-index: 30;
-            backdrop-filter: blur(15px); box-shadow: 0 -15px 40px rgba(0,0,0,0.03);
+            backdrop-filter: blur(15px); box-shadow: 0 -10px 30px rgba(0,0,0,0.03);
             position: sticky; bottom: 0;
         }
         
+        /* 1열: 드로잉 도구 모음 */
         .tool-row { 
             display: flex; width: 100%; max-width: 700px; align-items: center; justify-content: space-between; gap: 15px; 
-            background: #F7F9F8; padding: 12px 20px; border-radius: 50px; border: 1px solid #EAEAEA;
+            background: #F7F9F8; padding: 12px 25px; border-radius: 50px; border: 1px solid #EAEAEA;
         }
         
-        /* 복구된 네비게이션 버튼 */
-        .btn-icon { width: 45px; height: 45px; border-radius: 50%; background: #FFF; border: 1px solid #DDD; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; color: var(--bridge-charcoal); font-weight: bold; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .btn-icon:hover { background: var(--bridge-green); color: #FFF; border-color: var(--bridge-green); }
-        .btn-icon:disabled { opacity: 0.3; cursor: not-allowed; background: #FFF; color: #CCC; border-color: #EEE; }
-
-        .color-selector { display: flex; align-items: center; gap: 12px; }
+        .color-selector { display: flex; align-items: center; gap: 15px; }
         .color-ring-container { width: 45px; height: 45px; cursor: pointer; position: relative; }
         #color-wheel { border-radius: 50%; width: 100%; height: 100%; }
         .current-color { width: 30px; height: 30px; border-radius: 50%; border: 3px solid #FFF; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         
         .brush-control-wrap { display: flex; align-items: center; gap: 10px; flex: 1; justify-content: center; }
-        .brush-slider { width: 100%; max-width: 150px; height: 6px; accent-color: var(--bridge-green); cursor: pointer; }
+        .brush-slider { width: 100%; max-width: 180px; height: 6px; accent-color: var(--bridge-green); cursor: pointer; }
 
-        .btn-text { background: none; border: none; color: #888; font-weight: 800; cursor: pointer; font-size: 12px; letter-spacing: 1px; padding: 10px; }
+        .btn-text { background: none; border: none; color: #888; font-weight: 800; cursor: pointer; font-size: 12px; letter-spacing: 1px; }
 
-        /* 액션 버튼 (늘어남 방지를 위해 max-width 적용) */
-        .action-row { display: flex; width: 100%; max-width: 700px; gap: 15px; justify-content: center; }
-        .btn-action { padding: 18px 30px; border-radius: 50px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; transition: 0.3s; letter-spacing: 1.5px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-record { background: #FFF; color: var(--bridge-charcoal); border: 2px solid #EAEAEA; flex: 1; max-width: 280px; }
+        /* 💡 2열: 네비게이션 & 액션 버튼 (명확하게 밖으로 빼냄) */
+        .action-row { display: flex; width: 100%; max-width: 700px; gap: 12px; justify-content: center; align-items: center; }
+        
+        .btn-nav { width: 55px; height: 55px; border-radius: 18px; border: 1px solid #EAEAEA; background: #FFF; font-size: 18px; cursor: pointer; font-weight: bold; color: var(--bridge-charcoal); transition: 0.2s; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .btn-nav:hover { background: #F5F5F5; border-color: #DDD; }
+        .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; }
+        
+        .btn-action { height: 55px; border-radius: 18px; border: none; font-weight: 800; font-size: 15px; cursor: pointer; transition: 0.3s; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-record { background: #FFF; color: var(--bridge-charcoal); border: 2px solid #EAEAEA; flex: 1; }
         .btn-record.recording { background: var(--bridge-danger); color: #FFF; border-color: var(--bridge-danger); animation: pulse 1.5s infinite; }
-        .btn-submit { background: var(--bridge-charcoal); color: #FFF; flex: 1.5; max-width: 400px; box-shadow: 0 10px 25px rgba(58, 58, 66, 0.2); }
+        .btn-submit { background: var(--bridge-charcoal); color: #FFF; flex: 1.5; box-shadow: 0 8px 20px rgba(58, 58, 66, 0.2); }
         .btn-submit:hover { background: var(--bridge-green); }
-
-        /* 결과 오버레이 */
-        #success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(247, 249, 248, 0.98); backdrop-filter: blur(20px); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; text-align: center; padding: 40px; }
-        .score-badge { font-size: 52px; color: #FFF; background: var(--bridge-green); padding: 15px 65px; border-radius: 100px; margin-bottom: 25px; font-weight: 900; }
-        .child-msg-box { font-size: 28px; font-weight: 800; color: var(--bridge-charcoal); margin-bottom: 30px; line-height: 1.4; }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
@@ -97,8 +102,11 @@
             .nav-item { min-width: 140px; font-size: 11px; padding: 12px; margin-bottom: 0; }
             .viewer { padding: 15px 10px; }
             .bottom-dock { padding: 15px 10px; }
-            .tool-row { flex-wrap: wrap; justify-content: center; padding: 15px; border-radius: 20px; }
-            .btn-action { padding: 15px 20px; font-size: 14px; }
+            .tool-row { padding: 10px 15px; border-radius: 20px; }
+            .btn-nav { width: 45px; height: 45px; border-radius: 12px; font-size: 14px; }
+            .btn-action { height: 45px; border-radius: 12px; font-size: 13px; padding: 0 10px; }
+            .score-badge { font-size: 36px; padding: 10px 40px; }
+            .child-msg-box { font-size: 20px; }
         }
     </style>
 </head>
@@ -123,18 +131,17 @@
                 <div id="success-overlay">
                     <div id="score-badge" class="score-badge">WAIT</div>
                     <div id="child-msg" class="child-msg-box">Teacher is reviewing...</div>
-                    <button class="btn-action btn-submit" style="max-width: 300px;" onclick="handleOverlayClick()">CONTINUE EXPLORATION</button>
+                    <!-- 수정됨: CSS 충돌을 방지하는 전용 버튼 클래스 사용 -->
+                    <button class="btn-overlay-continue" onclick="handleOverlayClick()">CONTINUE EXPLORATION</button>
                 </div>
                 <img src="" id="main-img" crossorigin="anonymous">
                 <canvas id="drawing-canvas"></canvas>
             </div>
         </div>
 
-        <!-- 💡 늘어남 현상이 완벽히 제어된 하단 독(Dock) -->
         <div class="bottom-dock">
+            <!-- 1열: 드로잉 툴 (깔끔하게 독립) -->
             <div class="tool-row">
-                <button id="prev-btn" class="btn-icon" onclick="changePage(-1)">◀</button>
-                
                 <div class="color-selector">
                     <div class="color-ring-container"><canvas id="color-wheel" width="90" height="90"></canvas></div>
                     <div id="current-color-bg" class="current-color"></div>
@@ -146,12 +153,14 @@
                 </div>
                 
                 <button onclick="resetCanvas()" class="btn-text">RESET</button>
-                <button id="next-btn" class="btn-icon" onclick="changePage(1)">▶</button>
             </div>
             
+            <!-- 💡 2열: 누락되었던 이전/다음 버튼을 핵심 위치에 전면 배치 -->
             <div class="action-row">
+                <button id="prev-btn" class="btn-nav" onclick="changePage(-1)">◀</button>
                 <button id="record-btn" class="btn-action btn-record" onclick="toggleRecording()">🎤 RECORD</button>
                 <button class="btn-action btn-submit" onclick="submitWork()">SUBMIT INQUIRY ✨</button>
+                <button id="next-btn" class="btn-nav" onclick="changePage(1)">▶</button>
             </div>
         </div>
     </div>
@@ -242,11 +251,9 @@
         } else { mediaRecorder.stop(); isRecording = false; mediaRecorder.stream.getTracks().forEach(t => t.stop()); }
     }
 
-    // 💡 누락되었던 네비게이션 로직 전면 복구
     function loadPage(idx) { 
         currentPageIndex = idx; audioBlob = null; 
         
-        // 버튼 초기화
         const recordBtn = document.getElementById('record-btn');
         recordBtn.innerHTML = "🎤 RECORD"; recordBtn.style.background = "#FFF"; recordBtn.style.color = "var(--bridge-charcoal)"; recordBtn.style.borderColor = "#EAEAEA";
         
@@ -256,7 +263,7 @@
         
         document.querySelectorAll('.nav-item').forEach((el, index) => el.classList.toggle('active', index === idx));
         
-        // 이전/다음 버튼 활성화 제어
+        // 이전/다음 버튼 상태 업데이트
         document.getElementById('prev-btn').disabled = (idx === 0);
         document.getElementById('next-btn').disabled = (idx === data.length - 1);
     }

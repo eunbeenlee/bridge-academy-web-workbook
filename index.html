@@ -3,78 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Bridge Academy Master Inquiry Workbook Roadmap">
-    <title>Bridge Academy | Workbook Project</title>
+    <meta name="description" content="Bridge Academy Premium Inquiry Workbook">
+    <title>Bridge Academy | Premium Workbook</title>
     
     <!-- 
       ======================================================================
-      [Typography Engine]
-      Playfair Display: 글로벌 교육 기관의 헤리티지와 고급스러움을 표현
-      Noto Sans KR: 본문 및 UI 텍스트의 완벽한 가독성을 제공
+      [Premium Typography Engine]
+      Playfair Display: 클래식하고 부드러운 세리프체 (헤드라인용)
+      Noto Sans KR: 완벽한 가독성을 제공하는 고딕체 (본문용)
       ====================================================================== 
     -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
         /* 
          * ======================================================================
-         * [Architecture: Bridge Academy Premium Design System]
-         * Absolute Single-Focus Theme Engine | Designed for Director Lee
+         * [Architecture: Premium Silk Design System V37.0]
+         * 더 부드럽고, 더 고급스럽게: Director Lee Yun-ji 헌정 에디션
          * ======================================================================
          */
 
         :root {
-            /* --- 1. Core Identity Colors (Series Accent) --- */
-            /* Foundation: 자연스럽고 안정적인 그린 */
-            --bridge-green: #7BB891;    
-            /* Perspective: 권위와 통찰력을 상징하는 골드 */
-            --bridge-gold: #C5A059;     
-            /* Exploration: 넓은 세상을 탐구하는 블루 */
-            --bridge-blue: #6A9CBE;     
-            /* Innovation: 깊이 있는 사고와 혁신의 차콜 */
-            --bridge-charcoal: #2D2D34; 
+            /* --- 1. Softened Identity Colors --- */
+            /* 기존의 강한 색상에 채도를 살짝 낮추고 명도를 조절하여 부드러움을 극대화 */
+            --bridge-green: #89BFA0;    /* 파스텔톤이 가미된 세이지 그린 */
+            --bridge-gold: #CBAE75;     /* 따뜻하게 빛나는 샴페인 골드 */
+            --bridge-blue: #7CA6C1;     /* 차분한 더스티 블루 */
+            --bridge-charcoal: #363431; /* 강한 블랙 대신 부드러운 다크 에스프레소 */
             
-            /* --- 2. Neutral Palette & Backgrounds --- */
-            /* 부드러운 웜그레이 톤으로 눈의 피로를 최소화 */
-            --bridge-taupe: #A39B8E;
-            --bridge-light-taupe: #EAE6DF;
-            /* 종이 질감을 연상시키는 오프화이트 배경 */
-            --bridge-bg: #F9FAF9;       
-            --bridge-paper: #FFFFFF;
-            /* 은은한 경계선 */
-            --bridge-border: rgba(45, 45, 52, 0.08);
+            /* --- 2. Luxury Warm Palette --- */
+            /* 쨍한 화이트 대신 최고급 종이 질감의 웜톤 적용 */
+            --bridge-bg: #FCFBF9;       /* 크림 아이보리 배경 (눈의 피로도 최소화) */
+            --bridge-paper: #FFFFFF;    /* 카드 본체는 순백으로 띄워 입체감 부여 */
+            --bridge-border: #F0EFEB;   /* 아주 연하고 따뜻한 경계선 */
             
-            /* --- 3. Text Colors --- */
-            --bridge-text-main: #1A1A1E;
-            --bridge-text-muted: #888890;
-            --bridge-text-light: #B0B0B5;
+            /* --- 3. Refined Text Colors --- */
+            --bridge-text-main: #2A2825;
+            --bridge-text-muted: #8C8985;
+            --bridge-taupe: #B5B0A8;
             
-            /* --- 4. Spatial Shadows & Depth (3D Layering) --- */
-            --shadow-flat: 0 5px 15px rgba(0, 0, 0, 0.02);
-            --shadow-subtle: 0 10px 30px rgba(0, 0, 0, 0.04);
-            --shadow-float: 0 30px 60px rgba(0, 0, 0, 0.05);
-            --shadow-massive: 0 50px 100px rgba(45, 45, 52, 0.1);
+            /* --- 4. Silky Shadows --- */
+            /* 그림자의 반경을 넓히고 투명도를 낮춰 구름 위에 뜬 듯한 느낌 연출 */
+            --shadow-flat: 0 4px 20px rgba(54, 52, 49, 0.02);
+            --shadow-float: 0 20px 50px rgba(54, 52, 49, 0.04);
+            --shadow-hover: 0 40px 80px rgba(54, 52, 49, 0.08);
             
-            /* --- 5. Motion Dynamics & Easing --- */
-            --ease-lux: cubic-bezier(0.19, 1, 0.22, 1);
-            --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
-            --transition-fast: all 0.3s var(--ease-smooth);
-            --transition-slow: all 0.8s var(--ease-lux);
+            /* --- 5. Fluid Motion Dynamics --- */
+            --ease-silk: cubic-bezier(0.25, 1, 0.3, 1); /* 아주 부드럽게 감속하는 곡선 */
+            --transition-fast: all 0.4s var(--ease-silk);
+            --transition-slow: all 0.9s var(--ease-silk);
             
-            /* --- 6. Layout Variables --- */
-            --max-width-desktop: 1400px;
+            /* --- 6. Layout Constants --- */
+            --max-width-desktop: 1300px;
             --padding-desktop: 6%;
             --padding-mobile: 24px;
         }
 
-        /* 
-         * --------------------------------------------------
+        /* --------------------------------------------------
          * [CSS Reset & Base Normalization]
-         * 브라우저 간의 기본 스타일 차이를 완벽히 제거합니다.
-         * -------------------------------------------------- 
-         */
+         * -------------------------------------------------- */
         *, *::before, *::after { 
             margin: 0; 
             padding: 0; 
@@ -83,42 +72,31 @@
             -moz-osx-font-smoothing: grayscale;
         }
         
-        html { 
-            scroll-behavior: smooth; 
-            font-size: 16px; 
-        }
+        html { scroll-behavior: smooth; font-size: 16px; }
         
         body { 
             font-family: 'Noto Sans KR', sans-serif; 
             background-color: var(--bridge-bg); 
             color: var(--bridge-text-main); 
-            line-height: 1.6; 
+            line-height: 1.7; 
             overflow-x: hidden; 
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* 텍스트 드래그 시 브릿지 아카데미 컬러 적용 */
-        ::selection { 
-            background: var(--bridge-charcoal); 
-            color: #FFF; 
-        }
-
+        ::selection { background: var(--bridge-gold); color: #FFF; }
         ul, ol { list-style: none; }
         a { text-decoration: none; color: inherit; }
         button { border: none; background: none; font-family: inherit; }
 
-        /* 
-         * --------------------------------------------------
-         * [Header Navigation]
-         * 상단에 고정되어 기관의 아이덴티티를 지속적으로 노출합니다.
-         * -------------------------------------------------- 
-         */
+        /* --------------------------------------------------
+         * [Header Navigation] 우아하고 투명한 헤더
+         * -------------------------------------------------- */
         header {
             width: 100%; 
             padding: 24px var(--padding-desktop); 
-            background: rgba(255, 255, 255, 0.95); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(252, 251, 249, 0.85); /* 따뜻한 배경색에 투명도 적용 */
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px);
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
@@ -136,81 +114,67 @@
             cursor: pointer; 
         }
         
-        /* 로고 텍스트 스타일링 */
         .brand-logo-text {
             font-family: 'Playfair Display', serif;
-            font-weight: 900;
+            font-weight: 800; /* 900에서 800으로 낮춰 부드러움 강조 */
             font-size: 26px;
             color: var(--bridge-charcoal);
             letter-spacing: -0.5px;
-            line-height: 1;
         }
-        .brand-logo-text span { 
-            color: var(--bridge-green); 
-            font-style: italic; 
-        }
+        .brand-logo-text span { color: var(--bridge-green); font-style: italic; font-weight: 600; }
         
-        /* 프로젝트 배지 */
         .header-badge { 
             font-size: 11px; 
-            font-weight: 800; 
-            letter-spacing: 5px; 
-            color: var(--bridge-charcoal); 
-            background: var(--bridge-light-taupe);
+            font-weight: 700; 
+            letter-spacing: 6px; 
+            color: var(--bridge-taupe); 
+            border: 1px solid var(--bridge-border);
             padding: 10px 24px; 
             border-radius: 100px; 
             text-transform: uppercase; 
         }
 
-        /* 
-         * --------------------------------------------------
-         * [Hero Section]
-         * 워크북 프로젝트의 비전과 철학을 보여주는 첫 화면
-         * -------------------------------------------------- 
-         */
+        /* --------------------------------------------------
+         * [Hero Section] 압도적이면서도 고요한 인트로
+         * -------------------------------------------------- */
         .hero-section { 
-            padding: 140px var(--padding-desktop) 100px; 
+            padding: 160px var(--padding-desktop) 100px; 
             text-align: center; 
-            background: radial-gradient(ellipse at top, #FFFFFF 0%, transparent 80%); 
+            /* 아주 미세한 광원 효과로 포근한 느낌 연출 */
+            background: radial-gradient(ellipse at top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%); 
         }
         
         .hero-title { 
             font-family: 'Playfair Display', serif; 
-            font-size: 80px; 
-            font-weight: 900; 
-            margin-bottom: 30px; 
-            letter-spacing: -2px; 
+            font-size: 84px; 
+            font-weight: 700; /* 너무 무겁지 않게 조절 */
+            margin-bottom: 35px; 
+            letter-spacing: -1.5px; 
             line-height: 1.1; 
             color: var(--bridge-charcoal); 
         }
-        .hero-title span { 
-            color: var(--bridge-green); 
-            font-style: italic; 
-        }
+        .hero-title span { color: var(--bridge-green); font-style: italic; font-weight: 500; }
         
         .hero-subtitle { 
-            font-size: 20px; 
+            font-size: 21px; 
             color: var(--bridge-text-muted); 
             font-weight: 300; 
-            max-width: 800px; 
+            max-width: 780px; 
             margin: 0 auto; 
-            line-height: 1.8; 
+            line-height: 1.9; 
             word-break: keep-all;
         }
 
-        /* 
-         * --------------------------------------------------
-         * [Filter Navigation Dock]
-         * A, B, C, D 시리즈별로 워크북을 필터링하는 컨트롤러
-         * -------------------------------------------------- 
-         */
+        /* --------------------------------------------------
+         * [Filter Navigation Dock] 정제된 컨트롤러
+         * -------------------------------------------------- */
         .filter-dock { 
             display: flex; 
             justify-content: center; 
             gap: 16px; 
-            margin-bottom: 100px; 
+            margin-bottom: 120px; 
             position: sticky; 
-            top: 90px; /* 헤더 높이 아래에 위치 */
+            top: 90px; 
             z-index: 1000; 
             padding: 20px var(--padding-desktop); 
         }
@@ -218,23 +182,23 @@
         .filter-btn {
             padding: 16px 40px; 
             border-radius: 100px; 
-            border: 1px solid var(--bridge-border);
-            background: rgba(255, 255, 255, 0.9); 
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
-            font-weight: 700; 
-            font-size: 12px; 
-            letter-spacing: 3px; 
+            border: 1px solid rgba(203, 174, 117, 0.2); /* 골드 톤의 얇은 테두리 */
+            background: rgba(255, 255, 255, 0.7); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            font-weight: 500; 
+            font-size: 13px; 
+            letter-spacing: 4px; 
             cursor: pointer; 
             transition: var(--transition-fast); 
-            box-shadow: var(--shadow-subtle); 
+            box-shadow: var(--shadow-flat); 
             color: var(--bridge-text-muted); 
             text-transform: uppercase;
         }
         
         .filter-btn:hover { 
-            color: var(--bridge-charcoal); 
-            border-color: var(--bridge-taupe); 
+            color: var(--bridge-gold); 
+            border-color: var(--bridge-gold); 
             background: #FFF;
         }
         
@@ -242,16 +206,13 @@
             background: var(--bridge-charcoal); 
             color: #FFFFFF; 
             border-color: var(--bridge-charcoal); 
-            transform: scale(1.05); 
+            transform: scale(1.03); 
             box-shadow: var(--shadow-float); 
         }
 
-        /* 
-         * --------------------------------------------------
-         * [Roadmap Container & Month Segments]
-         * 월별로 묶인 워크북 리스트를 감싸는 컨테이너
-         * -------------------------------------------------- 
-         */
+        /* --------------------------------------------------
+         * [Roadmap Container]
+         * -------------------------------------------------- */
         .roadmap-container { 
             padding: 0 var(--padding-desktop) 200px; 
             max-width: var(--max-width-desktop); 
@@ -259,85 +220,83 @@
         }
         
         .month-segment { 
-            margin-bottom: 180px; 
+            margin-bottom: 200px; 
             opacity: 0; 
-            transform: translateY(40px); 
+            transform: translateY(50px); 
             transition: var(--transition-slow); 
         }
-        .month-segment.revealed { 
-            opacity: 1; 
-            transform: translateY(0); 
-        }
+        .month-segment.revealed { opacity: 1; transform: translateY(0); }
         
         .month-header { 
             display: flex; 
             flex-direction: column;
             align-items: center; 
-            margin-bottom: 80px; 
+            margin-bottom: 90px; 
             text-align: center;
         }
         
         .month-tag { 
             font-size: 12px; 
-            font-weight: 800; 
+            font-weight: 700; 
             color: var(--bridge-gold); 
-            letter-spacing: 6px; 
+            letter-spacing: 8px; 
             text-transform: uppercase; 
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
         
         .month-title { 
             font-family: 'Playfair Display', serif; 
-            font-size: 64px; 
-            font-weight: 900; 
+            font-size: 68px; 
+            font-weight: 700; 
             line-height: 1; 
             color: var(--bridge-charcoal); 
             letter-spacing: -1px; 
         }
         
         .month-divider {
-            width: 40px;
-            height: 3px;
-            background: var(--bridge-charcoal);
-            margin-top: 30px;
+            width: 30px;
+            height: 2px;
+            background: var(--bridge-gold); /* 라인을 얇고 고급스럽게 골드로 변경 */
+            margin-top: 35px;
             border-radius: 2px;
+            opacity: 0.5;
         }
 
-        /* 
-         * --------------------------------------------------
-         * [Absolute Single-Focus Workbook Card]
-         * 원장님의 요청: 이미지를 모두 제거하고 거대한 단일 클릭 영역 구성
-         * -------------------------------------------------- 
-         */
+        /* --------------------------------------------------
+         * [Premium Single-Focus Workbook Card] V37.0
+         * 가장 중요한 오류 수정 및 디자인 밸런싱
+         * -------------------------------------------------- */
         .workbook-card { 
-            margin-bottom: 60px; 
+            margin-bottom: 50px; 
             background: var(--bridge-paper); 
             border-radius: 40px; 
             box-shadow: var(--shadow-float); 
-            border: 1px solid rgba(0,0,0,0.03); 
+            border: 1px solid var(--bridge-border); 
             position: relative; 
             overflow: hidden; 
             transition: var(--transition-slow);
-            cursor: pointer; /* 카드 전체가 버튼 역할을 함 */
+            cursor: pointer; 
             display: flex; 
             flex-direction: row;
-            min-height: 420px;
+            min-height: 400px;
             text-decoration: none;
         }
         
+        /* 호버 시 극강의 부드러움 */
         .workbook-card:hover { 
-            transform: translateY(-12px); 
-            box-shadow: var(--shadow-massive); 
+            transform: translateY(-10px) scale(1.005); 
+            box-shadow: var(--shadow-hover); 
+            border-color: rgba(203, 174, 117, 0.15); /* 호버 시 아주 연한 골드 테두리 */
         }
         
-        /* 시리즈별 색상을 나타내는 좌측 포인트 바 */
+        /* 부드러운 파스텔톤의 측면 바 */
         .card-accent-bar {
-            width: 20px;
+            width: 16px; /* 두께를 살짝 줄여서 세련미 강조 */
             height: 100%;
             position: absolute;
             left: 0;
             top: 0;
-            transition: width 0.5s var(--ease-lux);
+            transition: width 0.6s var(--ease-silk);
             z-index: 5;
         }
         .workbook-card.series-A .card-accent-bar { background: var(--bridge-green); }
@@ -345,14 +304,12 @@
         .workbook-card.series-C .card-accent-bar { background: var(--bridge-blue); }
         .workbook-card.series-D .card-accent-bar { background: var(--bridge-charcoal); }
         
-        .workbook-card:hover .card-accent-bar { width: 30px; }
+        .workbook-card:hover .card-accent-bar { width: 24px; }
 
-        /* --------------------------------------------------
-         * 좌측 영역: 테마의 핵심 정보 (아이들의 시선이 머무는 곳)
-         * -------------------------------------------------- */
+        /* 좌측 정보 영역 */
         .card-primary-focus { 
             flex: 6.5; 
-            padding: 80px 80px 80px 100px; /* 좌측 포인트 바 공간 확보 */
+            padding: 80px 80px 80px 100px; 
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -365,90 +322,88 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
         
         .unit-badge { 
-            font-size: 12px; 
-            font-weight: 900; 
+            font-size: 11px; 
+            font-weight: 800; 
             color: #FFF; 
             background: var(--bridge-charcoal);
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 8px 18px;
+            border-radius: 6px;
             text-transform: uppercase; 
-            letter-spacing: 3px; 
+            letter-spacing: 4px; 
         }
         
         .series-label {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--bridge-text-muted);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--bridge-taupe);
             letter-spacing: 3px;
             text-transform: uppercase;
         }
         
         .theme-title-text { 
             font-family: 'Playfair Display', serif; 
-            font-size: 64px; 
-            font-weight: 900; 
-            margin-bottom: 24px; 
+            font-size: 58px; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
             color: var(--bridge-text-main); 
-            letter-spacing: -2px; 
-            line-height: 1.1; 
-            transition: color 0.3s;
+            letter-spacing: -1.5px; 
+            line-height: 1.15; 
+            transition: color 0.4s;
         }
         
         .theme-core-question { 
-            font-size: 26px; 
+            font-size: 24px; 
             font-weight: 400; 
             color: var(--bridge-text-muted); 
             font-family: 'Playfair Display', serif;
             font-style: italic; 
             margin-bottom: 0; 
-            line-height: 1.5; 
+            line-height: 1.6; 
             word-break: keep-all;
         }
 
-        /* 워크북으로 진입하는 액션 버튼 영역 */
+        /* 워크북으로 진입하는 액션 버튼 */
         .action-cta-wrap { 
             margin-top: 60px; 
             display: inline-flex;
             align-items: center;
             gap: 16px;
-            font-size: 14px;
-            font-weight: 800;
-            color: var(--bridge-charcoal);
-            letter-spacing: 3px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--bridge-taupe);
+            letter-spacing: 4px;
             text-transform: uppercase;
-            padding-bottom: 8px;
-            border-bottom: 2px solid transparent;
+            padding-bottom: 6px;
+            border-bottom: 1px solid transparent;
             transition: var(--transition-fast);
             width: max-content;
         }
         
         .action-cta-wrap svg {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             fill: none;
             stroke: currentColor;
-            stroke-width: 2;
-            transition: transform 0.4s var(--ease-lux);
+            stroke-width: 1.5;
+            transition: transform 0.5s var(--ease-silk);
         }
         
         .workbook-card:hover .action-cta-wrap { 
             color: var(--bridge-gold); 
-            border-bottom-color: var(--bridge-gold); 
+            border-bottom-color: rgba(203, 174, 117, 0.4); 
         }
         .workbook-card:hover .action-cta-wrap svg { 
-            transform: translateX(10px); 
+            transform: translateX(12px); 
         }
 
-        /* --------------------------------------------------
-         * 우측 영역: 권장 도서 목록 (텍스트로만 심플하게 배치)
-         * -------------------------------------------------- */
+        /* 우측 권장 도서 영역 (부드러운 대비) */
         .card-secondary-focus { 
             flex: 3.5;
-            background: var(--bridge-bg); 
+            background: #FAFAF8; /* 기존보다 더 따뜻하고 부드러운 톤 */
             padding: 80px 60px; 
             display: flex; 
             flex-direction: column; 
@@ -459,12 +414,12 @@
         }
         
         .booklist-title { 
-            font-size: 12px; 
-            font-weight: 800; 
-            color: var(--bridge-text-muted); 
+            font-size: 11px; 
+            font-weight: 700; 
+            color: var(--bridge-taupe); 
             letter-spacing: 5px; 
             text-transform: uppercase; 
-            margin-bottom: 40px; 
+            margin-bottom: 35px; 
             display: flex;
             align-items: center;
             gap: 16px;
@@ -474,18 +429,18 @@
             content: "";
             flex: 1;
             height: 1px;
-            background: #E0E0E0;
+            background: var(--bridge-border);
         }
         
         .book-list-group { 
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 18px;
         }
         
         .book-list-item { 
             font-family: 'Playfair Display', serif; 
-            font-size: 18px; 
+            font-size: 19px; 
             font-weight: 500;
             color: var(--bridge-text-muted); 
             display: flex; 
@@ -497,27 +452,24 @@
         .book-list-item span.index-num { 
             font-family: 'Noto Sans KR', sans-serif;
             font-size: 11px; 
-            font-weight: 900; 
-            color: var(--bridge-charcoal); 
-            opacity: 0.3; 
+            font-weight: 700; 
+            color: var(--bridge-taupe); 
+            opacity: 0.5; 
             letter-spacing: 2px;
         }
         
-        /* 카드에 마우스를 올렸을 때 도서 목록도 반응하도록 처리 */
         .workbook-card:hover .book-list-item { 
-            color: var(--bridge-text-main); 
-            transform: translateX(5px); 
+            color: var(--bridge-charcoal); 
+            transform: translateX(6px); 
         }
         .workbook-card:hover .book-list-item span.index-num { 
             opacity: 1; 
             color: var(--bridge-gold); 
         }
 
-        /* 
-         * --------------------------------------------------
-         * [Footer Section]
-         * -------------------------------------------------- 
-         */
+        /* --------------------------------------------------
+         * [Footer]
+         * -------------------------------------------------- */
         footer { 
             background: var(--bridge-charcoal); 
             padding: 120px var(--padding-desktop) 100px; 
@@ -528,94 +480,65 @@
         }
         
         .footer-logo {
-            color: #FFF; 
-            opacity: 0.3; 
+            color: var(--bridge-taupe); 
+            opacity: 0.4; 
             font-family: 'Playfair Display', serif; 
-            font-weight: 900; 
-            font-size: 32px;
+            font-weight: 700; 
+            font-size: 28px;
         }
         
         .footer-copyright { 
-            font-size: 12px; 
-            color: rgba(255,255,255,0.3); 
+            font-size: 11px; 
+            color: rgba(255,255,255,0.2); 
             letter-spacing: 6px; 
             text-transform: uppercase; 
-            font-weight: 500; 
-            margin-top: 40px;
+            font-weight: 400; 
+            margin-top: 35px;
         }
 
-        /* 
-         * --------------------------------------------------
+        /* --------------------------------------------------
          * [Responsive Media Queries]
-         * 스마트폰, 태블릿, 작은 노트북 환경을 위한 완벽한 레이아웃 대응
-         * -------------------------------------------------- 
-         */
-         
-        /* Tablet & Small Desktop (Max 1200px) */
+         * -------------------------------------------------- */
         @media (max-width: 1200px) {
             .hero-title { font-size: 64px; }
             .workbook-card { flex-direction: column; min-height: auto; }
-            /* 카드가 세로로 배치될 때 좌우 패딩을 조정합니다. */
-            .card-primary-focus { padding: 60px 60px 60px 80px; }
-            .card-secondary-focus { 
-                border-left: none; 
-                border-top: 1px solid var(--bridge-border); 
-                padding: 60px 80px; 
-                background: #FFF; 
-            }
-            .theme-title-text { font-size: 52px; }
+            .card-primary-focus { padding: 70px 60px 70px 80px; }
+            .card-secondary-focus { border-left: none; border-top: 1px solid var(--bridge-border); padding: 60px 80px; }
+            .theme-title-text { font-size: 48px; }
         }
         
-        /* Mobile (Max 768px) */
         @media (max-width: 768px) {
             header { padding: 20px var(--padding-mobile); }
             .brand-logo-text { font-size: 20px; }
-            
             .hero-section { padding: 100px var(--padding-mobile) 60px; }
-            .hero-title { font-size: 48px; }
+            .hero-title { font-size: 44px; }
             .hero-subtitle { font-size: 18px; }
             
-            /* 필터 버튼 스크롤 가능하도록 가로 스크롤 적용 */
             .filter-dock { 
                 overflow-x: auto; 
                 justify-content: flex-start; 
-                padding: 20px var(--padding-mobile); 
+                padding: 10px var(--padding-mobile) 20px; 
                 margin-bottom: 60px;
-                /* 스크롤바 숨기기 (모바일 환경에서 깔끔함 유지) */
                 -ms-overflow-style: none;
                 scrollbar-width: none;
             }
             .filter-dock::-webkit-scrollbar { display: none; }
-            
-            .filter-btn { padding: 14px 30px; white-space: nowrap; }
+            .filter-btn { padding: 14px 28px; white-space: nowrap; font-size: 12px; }
             
             .month-title { font-size: 48px; }
-            .month-segment { margin-bottom: 120px; }
+            .month-segment { margin-bottom: 100px; }
             
-            .workbook-card { border-radius: 30px; }
+            .workbook-card { border-radius: 28px; margin-bottom: 40px; }
             .card-primary-focus { padding: 50px 30px 50px 40px; }
             .card-secondary-focus { padding: 40px 30px 50px 40px; }
             
-            .theme-title-text { font-size: 38px; }
-            .theme-core-question { font-size: 20px; }
-        }
-        
-        /* Very Small Mobile (Max 480px) */
-        @media (max-width: 480px) {
-            .hero-title { font-size: 40px; }
-            .theme-title-text { font-size: 32px; }
-            .theme-meta-info { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .theme-title-text { font-size: 34px; }
+            .theme-core-question { font-size: 18px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 
-      ======================================================================
-      [Header Section] 
-      로고 및 네비게이션 영역
-      ====================================================================== 
-    -->
     <header>
         <div class="header-brand" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
             <div class="brand-logo-text">Bridge<span>Academy</span></div>
@@ -623,23 +546,14 @@
         <div class="header-badge">WORKBOOK PROJECT</div>
     </header>
 
-    <!-- 
-      ======================================================================
-      [Main Content Application]
-      앱의 핵심 렌더링 영역
-      ====================================================================== 
-    -->
     <main>
-        
-        <!-- 히어로 섹션 (소개 영역) -->
         <section class="hero-section">
             <h1 class="hero-title">Inquiry <span>Workbook</span></h1>
             <p class="hero-subtitle">
-                브릿지 아카데미의 24개 핵심 테마. 오직 깊이 있는 질문과 주제에 온전히 집중하여, 아이들의 비판적 사고를 확장하는 17페이지 워크북을 탐구합니다.
+                브릿지 아카데미의 24개 핵심 테마. 오직 깊이 있는 질문과 주제에 온전히 집중하여, 아이들의 비판적 사고를 우아하게 확장하는 17페이지 워크북을 탐구합니다.
             </p>
         </section>
 
-        <!-- 필터 네비게이션 (시리즈별 정렬) -->
         <nav class="filter-dock">
             <button id="filter-all" class="filter-btn active" onclick="AppController.filterThemes('ALL')">All Units</button>
             <button id="filter-A" class="filter-btn" onclick="AppController.filterThemes('A')">Series A : Foundation</button>
@@ -648,477 +562,90 @@
             <button id="filter-D" class="filter-btn" onclick="AppController.filterThemes('D')">Series D : Innovation</button>
         </nav>
 
-        <!-- 워크북 카드가 렌더링될 메인 컨테이너 -->
         <section id="roadmap-container" class="roadmap-container">
-            <!-- 자바스크립트 엔진이 이 위치에 DOM을 생성하여 주입합니다. -->
+            <!-- 자바스크립트 엔진이 DOM을 생성하여 주입합니다. -->
         </section>
         
     </main>
 
-    <!-- 
-      ======================================================================
-      [Footer Section]
-      ====================================================================== 
-    -->
     <footer>
         <div class="footer-logo">Bridge Academy</div>
         <div class="footer-copyright">© 2026 Bridge Academy Education. All Rights Reserved.</div>
     </footer>
 
-    <!-- 
-      ======================================================================
-      [Application Script Core - V36.0]
-      엔터프라이즈급 24개 유닛 데이터베이스 및 렌더링 엔진
-      ====================================================================== 
-    -->
     <script>
         /**
          * [Database: WORKBOOK_MASTER_DB]
-         * 브릿지 아카데미의 24개 핵심 테마 정보를 담은 불변 데이터 객체입니다.
-         * 'id' 값은 워크북 상세 페이지(workbook.html?id=***)로 전달되는 핵심 키입니다.
-         * 이 데이터베이스는 어떠한 경우에도 도서 '이미지'를 로드하지 않습니다.
          */
         const WORKBOOK_MASTER_DB = [
             
-            /* ==========================================
-               SERIES A: FOUNDATION (Foundation of Self & World)
-               ========================================== */
-            {
-                month: "Jan",
-                unit: "A1",
-                series: "A",
-                theme: "All About Me",
-                question: "나는 누구일까요?",
-                id: "A-1",
-                books: [
-                    "I Like Myself!",
-                    "The Color Monster",
-                    "My Five Senses",
-                    "The Family Book",
-                    "From Head to Toe"
-                ]
-            },
-            {
-                month: "Feb",
-                unit: "A2",
-                series: "A",
-                theme: "Little Crawlers",
-                question: "작은 곤충들의 세상은 어떨까?",
-                id: "A-2",
-                books: [
-                    "The Very Hungry Caterpillar",
-                    "The Very Busy Spider",
-                    "The Grouchy Ladybug",
-                    "Waiting for Wings",
-                    "The Honeybee"
-                ]
-            },
-            {
-                month: "Mar",
-                unit: "A3",
-                series: "A",
-                theme: "My Super Family",
-                question: "우리 가족은 어떤 초능력이 있을까?",
-                id: "A-3",
-                books: [
-                    "My Mom",
-                    "My Dad",
-                    "Love You Forever",
-                    "Guess How Much I Love You",
-                    "The Night Before Mother's Day"
-                ]
-            },
-            {
-                month: "Apr",
-                unit: "A4",
-                series: "A",
-                theme: "Under the Sea",
-                question: "바다 밑에는 누가 살고 있을까?",
-                id: "A-4",
-                books: [
-                    "The Pout-Pout Fish",
-                    "Ocean Commotion",
-                    "The Rainbow Fish",
-                    "I'm the Biggest Thing in the Ocean",
-                    "Swimmy"
-                ]
-            },
-            {
-                month: "May",
-                unit: "A5",
-                series: "A",
-                theme: "Colors of Weather",
-                question: "날씨에도 색깔이 있을까?",
-                id: "A-5",
-                books: [
-                    "Rain",
-                    "Little Raindrop",
-                    "Cloudy With a Chance of Meatballs",
-                    "Elmer and the Rainbow",
-                    "Worm Weather"
-                ]
-            },
-            {
-                month: "Jun",
-                unit: "A6",
-                series: "A",
-                theme: "Space Adventure",
-                question: "달나라 소풍을 가면 무엇이 필요할까?",
-                id: "A-6",
-                books: [
-                    "There's No Place Like Space",
-                    "Roaring Rockets",
-                    "How to Catch a Star",
-                    "A Moon of My Own",
-                    "Blast Off!"
-                ]
-            },
+            /* --- SERIES A: FOUNDATION --- */
+            { month: "Jan", unit: "A1", series: "A", theme: "All About Me", question: "나는 누구일까요?", id: "A-1", books: ["I Like Myself!", "The Color Monster", "My Five Senses", "The Family Book", "From Head to Toe"] },
+            { month: "Feb", unit: "A2", series: "A", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", id: "A-2", books: ["The Very Hungry Caterpillar", "The Very Busy Spider", "The Grouchy Ladybug", "Waiting for Wings", "The Honeybee"] },
+            { month: "Mar", unit: "A3", series: "A", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", id: "A-3", books: ["My Mom", "My Dad", "Love You Forever", "Guess How Much I Love You", "Night Before Mother's Day"] },
+            { month: "Apr", unit: "A4", series: "A", theme: "Under the Sea", question: "바다 밑에는 누가 살고 있을까?", id: "A-4", books: ["The Pout-Pout Fish", "Ocean Commotion", "The Rainbow Fish", "I'm the Biggest Thing", "Swimmy"] },
+            { month: "May", unit: "A5", series: "A", theme: "Colors of Weather", question: "날씨에도 색깔이 있을까?", id: "A-5", books: ["Rain", "Little Raindrop", "Chance of Meatballs", "Elmer and Rainbow", "Worm Weather"] },
+            { month: "Jun", unit: "A6", series: "A", theme: "Space Adventure", question: "달나라 소풍을 가면 무엇이 필요할까?", id: "A-6", books: ["No Place Like Space", "Roaring Rockets", "Catch a Star", "Moon for Me", "Blast Off!"] },
 
-            /* ==========================================
-               SERIES B: PERSPECTIVE (Understanding Surroundings)
-               ========================================== */
-            {
-                month: "Jan",
-                unit: "B1",
-                series: "B",
-                theme: "Me on the Map",
-                question: "나는 세상 어디에 살고 있을까?",
-                id: "B-1",
-                books: [
-                    "Me on the Map",
-                    "This Is How We Do It",
-                    "Whoever You Are",
-                    "Madeline",
-                    "We're All Wonders"
-                ]
-            },
-            {
-                month: "Feb",
-                unit: "B2",
-                series: "B",
-                theme: "How Things Grow",
-                question: "아주 작은 씨앗은 어떻게 꽃이 될까?",
-                id: "B-2",
-                books: [
-                    "The Tiny Seed",
-                    "A Butterfly Is Patient",
-                    "Planting a Rainbow",
-                    "A Seed Is Sleepy",
-                    "Up in the Garden and Down in the Dirt"
-                ]
-            },
-            {
-                month: "Mar",
-                unit: "B3",
-                series: "B",
-                theme: "Animal Homes",
-                question: "동물들은 왜 각자 다른 집에 살까?",
-                id: "B-3",
-                books: [
-                    "A House is a House for Me",
-                    "Welcome Home, Bear",
-                    "The Great Kapok Tree",
-                    "Over in the Meadow",
-                    "Who Lives Here?"
-                ]
-            },
-            {
-                month: "Apr",
-                unit: "B4",
-                series: "B",
-                theme: "Water Wonders",
-                question: "무거운 배는 어떻게 물에 뜰까?",
-                id: "B-4",
-                books: [
-                    "Who Sank the Boat?",
-                    "Hey, Water!",
-                    "A Drop Around the World",
-                    "The Water Princess",
-                    "All the Water in the World"
-                ]
-            },
-            {
-                month: "May",
-                unit: "B5",
-                series: "B",
-                theme: "Inside My Body",
-                question: "밥을 먹으면 배 속에서 무슨 일이 생길까?",
-                id: "B-5",
-                books: [
-                    "Me and My Amazing Body",
-                    "Look Inside Your Body",
-                    "The Magic School Bus Inside the Human Body",
-                    "Hear Your Heart",
-                    "Parts"
-                ]
-            },
-            {
-                month: "Jun",
-                unit: "B6",
-                series: "B",
-                theme: "Little Inventors",
-                question: "머릿속 아이디어를 어떻게 진짜로 만들까?",
-                id: "B-6",
-                books: [
-                    "Rosie Revere, Engineer",
-                    "What Do You Do With an Idea?",
-                    "The Most Magnificent Thing",
-                    "Iggy Peck, Architect",
-                    "Boxitects"
-                ]
-            },
+            /* --- SERIES B: PERSPECTIVE --- */
+            { month: "Jan", unit: "B1", series: "B", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", id: "B-1", books: ["Me on the Map", "This Is How We Do It", "Whoever You Are", "Madeline", "We're All Wonders"] },
+            { month: "Feb", unit: "B2", series: "B", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", id: "B-2", books: ["The Tiny Seed", "Butterfly Cycle", "Planting a Rainbow", "Seed is Sleepy", "In the Garden"] },
+            { month: "Mar", unit: "B3", series: "B", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", id: "B-3", books: ["A House for Me", "Welcome Home Bear", "Great Kapok Tree", "Over in Meadow", "Who Lives Here?"] },
+            { month: "Apr", unit: "B4", series: "B", theme: "Water Wonders", question: "무거운 배는 어떻게 물에 뜰까?", id: "B-4", books: ["Who Sank Boat?", "Hey, Water!", "Drop Around World", "Water Princess", "All the Water"] },
+            { month: "May", unit: "B5", series: "B", theme: "Inside My Body", question: "밥을 먹으면 배 속에서 무슨 일이 생길까?", id: "B-5", books: ["Amazing Body", "Look Inside Body", "Magic School Bus", "Hear Your Heart", "Parts"] },
+            { month: "Jun", unit: "B6", series: "B", theme: "Little Inventors", question: "머릿속 아이디어를 어떻게 진짜로 만들까?", id: "B-6", books: ["Rosie Revere", "The Idea", "Magnificent Thing", "Iggy Peck", "Boxitects"] },
 
-            /* ==========================================
-               SERIES C: EXPLORATION (Navigating History & Society)
-               ========================================== */
-            {
-                month: "Jul",
-                unit: "C1",
-                series: "C",
-                theme: "Dinos Rule!",
-                question: "공룡들은 어떻게 친구가 되었을까?",
-                id: "C-1",
-                books: [
-                    "How Do Dinosaurs Say Good Night?",
-                    "Dinosaurs, Dinosaurs",
-                    "Danny and the Dinosaur",
-                    "If the Dinosaurs Came Back",
-                    "Stomp, Dinosaur, Stomp!"
-                ]
-            },
-            {
-                month: "Aug",
-                unit: "C2",
-                series: "C",
-                theme: "Senses & Food",
-                question: "맛있는 소리는 어떤 느낌일까?",
-                id: "C-2",
-                books: [
-                    "Eating the Alphabet",
-                    "Green Eggs and Ham",
-                    "Stone Soup",
-                    "Growing Vegetable Soup",
-                    "Yummy Yucky"
-                ]
-            },
-            {
-                month: "Sep",
-                unit: "C3",
-                series: "C",
-                theme: "Helper Heroes",
-                question: "우리 마을을 돕는 영웅은 누구일까?",
-                id: "C-3",
-                books: [
-                    "Jobs People Do",
-                    "Whose Hat Is This?",
-                    "Fire Truck",
-                    "Doctor De Soto",
-                    "Officer Buckle and Gloria"
-                ]
-            },
-            {
-                month: "Oct",
-                unit: "C4",
-                series: "C",
-                theme: "How Do We Go?",
-                question: "하늘, 땅, 바다 어디든 갈 수 있다면?",
-                id: "C-4",
-                books: [
-                    "Go, Dog. Go!",
-                    "Freight Train",
-                    "Don't Let the Pigeon Drive the Bus!",
-                    "The Little Engine That Could",
-                    "Cars and Trucks and Things That Go"
-                ]
-            },
-            {
-                month: "Nov",
-                unit: "C5",
-                series: "C",
-                theme: "Wild Animals",
-                question: "정글 속 동물들은 무엇을 좋아할까?",
-                id: "C-5",
-                books: [
-                    "Dear Zoo",
-                    "Brown Bear, Brown Bear, What Do You See?",
-                    "Walking Through the Jungle",
-                    "The Mixed-Up Chameleon",
-                    "Polar Bear, Polar Bear, What Do You Hear?"
-                ]
-            },
-            {
-                month: "Dec",
-                unit: "C6",
-                series: "C",
-                theme: "Winter Warmth",
-                question: "겨울은 왜 따뜻한 계절일까?",
-                id: "C-6",
-                books: [
-                    "The Snowy Day",
-                    "The Giving Tree",
-                    "Bear Stays Up for Christmas",
-                    "Little Tree",
-                    "How the Grinch Stole Christmas!"
-                ]
-            },
+            /* --- SERIES C: EXPLORATION --- */
+            { month: "Jul", unit: "C1", series: "C", theme: "Dinos Rule!", question: "공룡들은 어떻게 친구가 되었을까?", id: "C-1", books: ["Dino Good Night?", "Dinosaurs", "Danny Dinosaur", "If Dinos Back", "Stomp!"] },
+            { month: "Aug", unit: "C2", series: "C", theme: "Senses & Food", question: "맛있는 소리는 어떤 느낌일까?", id: "C-2", books: ["Alphabet", "Green Eggs", "Stone Soup", "Vegetable Soup", "Yummy Yucky"] },
+            { month: "Sep", unit: "C3", series: "C", theme: "Helper Heroes", question: "우리 마을을 돕는 영웅은 누구일까?", id: "C-3", books: ["Jobs People Do", "Whose Hat?", "Fire Truck", "Dr De Soto", "Police Dog"] },
+            { month: "Oct", unit: "C4", series: "C", theme: "How do we Go?", question: "하늘, 땅, 바다 어디든 갈 수 있다면?", id: "C-4", books: ["Go Dog Go", "Freight Train", "Pigeon Bus", "Little Engine", "Cars & Trucks"] },
+            { month: "Nov", unit: "C5", series: "C", theme: "Wild Animals", question: "정글 속 동물들은 무엇을 좋아할까?", id: "C-5", books: ["Dear Zoo", "Brown Bear", "Walking Jungle", "Mixed Chameleon", "Polar Bear"] },
+            { month: "Dec", unit: "C6", series: "C", theme: "Winter Warmth", question: "겨울은 왜 따뜻한 계절일까?", id: "C-6", books: ["Snowy Day", "Giving Tree", "Bear Christmas", "Little Tree", "Grinch"] },
 
-            /* ==========================================
-               SERIES D: INNOVATION (Future, Empathy & Preservation)
-               ========================================== */
-            {
-                month: "Jul",
-                unit: "D1",
-                series: "D",
-                theme: "Earth & Beyond",
-                question: "태양계 행성들은 왜 다르게 생겼을까?",
-                id: "D-1",
-                books: [
-                    "If You Decide to Go to the Moon",
-                    "Our Stars",
-                    "Sun! One in a Billion",
-                    "Go to the Moon",
-                    "First Big Book of Space"
-                ]
-            },
-            {
-                month: "Aug",
-                unit: "D2",
-                series: "D",
-                theme: "Colors & Art",
-                question: "색깔을 섞으면 어떤 감정이 될까?",
-                id: "D-2",
-                books: [
-                    "The Dot",
-                    "Mix It Up!",
-                    "Ish",
-                    "Beautiful Oops!",
-                    "Swatch: The Girl Who Loved Color"
-                ]
-            },
-            {
-                month: "Sep",
-                unit: "D3",
-                series: "D",
-                theme: "Elite Friends",
-                question: "진짜 좋은 친구란 어떤 걸까?",
-                id: "D-3",
-                books: [
-                    "Stick and Stone",
-                    "A Sick Day for Amos McGee",
-                    "Enemy Pie",
-                    "Peanut Butter and Cupcake",
-                    "Strictly No Elephants"
-                ]
-            },
-            {
-                month: "Oct",
-                unit: "D4",
-                series: "D",
-                theme: "Time Travel",
-                question: "세상은 어떻게 변했을까?",
-                id: "D-4",
-                books: [
-                    "The Little House",
-                    "Window",
-                    "First the Egg",
-                    "Once Upon a Time",
-                    "A Street Through Time"
-                ]
-            },
-            {
-                month: "Nov",
-                unit: "D5",
-                series: "D",
-                theme: "Earth Heroes",
-                question: "지구를 어떻게 지켜줄 수 있을까?",
-                id: "D-5",
-                books: [
-                    "Michael Recycle",
-                    "10 Things I Can Do to Help My World",
-                    "The Lorax",
-                    "Compost Stew",
-                    "Here We Are: Notes for Living on Planet Earth"
-                ]
-            },
-            {
-                month: "Dec",
-                unit: "D6",
-                series: "D",
-                theme: "Festival Lights",
-                question: "우리는 겨울을 어떻게 기념할까?",
-                id: "D-6",
-                books: [
-                    "Lights of Winter",
-                    "Celebrate!",
-                    "The Polar Express",
-                    "Lucia Morning in Sweden",
-                    "Seven Spools of Thread"
-                ]
-            }
+            /* --- SERIES D: INNOVATION --- */
+            { month: "Jul", unit: "D1", series: "D", theme: "Earth & Beyond", question: "태양계 행성들은 왜 다르게 생겼을까?", id: "D-1", books: ["Moon Friend", "Our Stars", "Sun! One Billion", "Go to Moon", "First Space"] },
+            { month: "Aug", unit: "D2", series: "D", theme: "Colors & Art", question: "색깔을 섞으면 어떤 감정이 될까?", id: "D-2", books: ["The Dot", "Mix It Up!", "Ish", "Oops!", "Swatch"] },
+            { month: "Sep", unit: "D3", series: "D", theme: "Elite Friends", question: "진짜 좋은 친구란 어떤 걸까?", id: "D-3", books: ["Stick and Stone", "Amos McGee", "Enemy Pie", "PB Cupcake", "No Elephants"] },
+            { month: "Oct", unit: "D4", series: "D", theme: "Time Travel", question: "세상은 어떻게 변했을까?", id: "D-4", books: ["Little House", "Window", "First the Egg", "Once Upon Time", "Street Time"] },
+            { month: "Nov", unit: "D5", series: "D", theme: "Earth Heroes", question: "지구를 어떻게 지켜줄 수 있을까?", id: "D-5", books: ["Michael Recycle", "10 Things World", "The Lorax", "Compost Stew", "Here We Are"] },
+            { month: "Dec", unit: "D6", series: "D", theme: "Festival Lights", question: "우리는 겨울을 어떻게 기념할까?", id: "D-6", books: ["Lights Winter", "Celebrate!", "Polar Express", "Sweden Light", "Seven Spools"] }
         ];
 
-        // 연간 정렬을 위한 12개월 배열 상수
         const APP_CONSTANTS = {
             MONTHS: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         };
 
-        /**
-         * [AppController Core Module]
-         * 애플리케이션의 렌더링, 필터링, 상호작용 로직을 통제합니다.
-         */
         const AppController = {
-            
-            // 현재 활성화된 필터 상태 ('ALL', 'A', 'B', 'C', 'D')
             activeFilter: 'ALL',
 
-            /**
-             * 애플리케이션 초기화 메서드
-             */
             init() {
                 this.renderWorkbookRoadmap();
                 this.attachScrollObserver();
             },
 
-            /**
-             * 상단 필터 버튼 클릭 시 호출되는 핸들러
-             * @param {string} filterTarget - 선택된 필터링 값
-             */
             filterThemes(filterTarget) {
                 this.activeFilter = filterTarget;
                 
-                // UI 버튼 상태 업데이트
-                document.querySelectorAll('.filter-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
                 const activeBtn = document.getElementById(`filter-${filterTarget}`);
                 if (activeBtn) activeBtn.classList.add('active');
                 
-                // DOM 재구성
                 this.renderWorkbookRoadmap();
-                
-                // 애니메이션 옵저버 재부착
                 setTimeout(() => this.attachScrollObserver(), 50);
             },
 
-            /**
-             * 데이터베이스를 순회하여 DOM 요소를 생성하고 화면에 주입합니다.
-             */
             renderWorkbookRoadmap() {
                 const container = document.getElementById('roadmap-container');
-                container.innerHTML = ""; // 기존 내용 초기화
+                container.innerHTML = ""; 
                 
-                // 월별 순서대로 데이터베이스 렌더링
                 APP_CONSTANTS.MONTHS.forEach(monthKey => {
-                    
-                    // 해당 월에 속하는 테마 추출
                     const monthThemes = WORKBOOK_MASTER_DB.filter(item => item.month === monthKey);
                     if (monthThemes.length === 0) return;
 
-                    // 월별 컨테이너(Segment) DOM 생성
                     const segmentElement = document.createElement('div');
                     segmentElement.className = 'month-segment';
                     
-                    // 월 타이틀 헤더 주입
                     segmentElement.innerHTML = `
                         <div class="month-header">
                             <span class="month-tag">Academic Cycle</span>
@@ -1127,20 +654,15 @@
                         </div>
                     `;
 
-                    // 해당 월의 테마들을 카드로 생성하여 주입
                     let addedCardsCount = 0;
                     monthThemes.forEach(themeObj => {
-                        
-                        // 현재 선택된 시리즈 필터에 맞지 않으면 건너뜀
                         if (this.activeFilter !== 'ALL' && themeObj.series !== this.activeFilter) return;
                         
-                        // 카드 DOM 요소 생성 및 추가
                         const cardDom = this.createCardDOM(themeObj);
                         segmentElement.appendChild(cardDom);
                         addedCardsCount++;
                     });
 
-                    // 화면에 보일 카드가 1개 이상일 때만 화면에 렌더링
                     if (addedCardsCount > 0) {
                         container.appendChild(segmentElement);
                     }
@@ -1148,20 +670,17 @@
             },
 
             /**
-             * [핵심 메서드] 단일 테마 데이터를 기반으로 거대한 클릭형 DOM 카드를 생성합니다.
-             * 
-             * @param {Object} data - 단일 테마 정보 객체
-             * @returns {HTMLElement} - 완성된 카드 DOM 객체
+             * [V37.0 Bug Fix] 
+             * 기존 <a> 태그 충돌을 막기 위해 <div>에 자바스크립트 강제 이동 로직 할당
              */
             createCardDOM(data) {
-                // 1. 최상위 래퍼 생성 (a 태그 역할 수행)
-                const cardWrapper = document.createElement('a');
-                // 카드의 href 속성에 이동할 주소 할당 (예: workbook.html?id=A-1)
-                cardWrapper.href = `workbook.html?id=${data.id}`;
+                const cardWrapper = document.createElement('div');
                 cardWrapper.className = `workbook-card series-${data.series}`;
                 
-                // 2. 카드 내부 HTML 템플릿 작성
-                // 주의: 어떠한 img 태그도 포함하지 않으며, 오직 텍스트 정보로만 UI를 구성합니다.
+                // [강력한 페이지 이동 로직] 클릭 시 워크북 주소로 강제 전환
+                cardWrapper.onclick = () => {
+                    window.location.href = `workbook.html?id=${data.id}`;
+                };
                 
                 let booksHTML = "";
                 data.books.forEach((bookTitle, index) => {
@@ -1175,30 +694,22 @@
                 });
 
                 cardWrapper.innerHTML = `
-                    <!-- 카드 좌측 상태선 -->
                     <div class="card-accent-bar"></div>
-                    
-                    <!-- 테마 주요 정보 영역 (좌측 70%) -->
                     <div class="card-primary-focus">
                         <div class="theme-meta-info">
                             <span class="unit-badge">UNIT ${data.id}</span>
                             <span class="series-label">SERIES ${data.series}</span>
                         </div>
-                        
                         <h2 class="theme-title-text">${data.theme}</h2>
                         <h3 class="theme-core-question">"${data.question}"</h3>
                         
-                        <!-- CTA 버튼 (텍스트형) -->
                         <div class="action-cta-wrap">
                             WORKBOOK 시작하기 
-                            <!-- 고급스러운 우측 화살표 아이콘 (인라인 SVG) -->
                             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </div>
                     </div>
-                    
-                    <!-- 도서 리스트 영역 (우측 30%) -->
                     <div class="card-secondary-focus">
                         <span class="booklist-title">권장 도서 목록</span>
                         <ul class="book-list-group">
@@ -1210,39 +721,23 @@
                 return cardWrapper;
             },
 
-            /**
-             * 스크롤 시 카드가 부드럽게 나타나도록 하는 Intersection Observer 적용
-             */
             attachScrollObserver() {
-                // 브라우저가 Observer API를 지원하는지 체크 (오류 방지 로직)
                 if (!('IntersectionObserver' in window)) return;
-
-                const options = {
-                    threshold: 0.15, // 타겟 요소가 15% 보일 때 작동
-                    rootMargin: "0px 0px -50px 0px"
-                };
 
                 const observer = new IntersectionObserver((entries, observerInstance) => {
                     entries.forEach(entry => { 
                         if (entry.isIntersecting) {
-                            // 요소가 화면에 보이면 클래스 추가하여 애니메이션 실행
                             entry.target.classList.add('revealed'); 
-                            // 애니메이션이 한 번 실행되면 감시 해제 (성능 최적화)
                             observerInstance.unobserve(entry.target); 
                         }
                     });
-                }, options);
+                }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
                 
-                // 모든 month-segment 요소에 옵저버 부착
-                const segments = document.querySelectorAll('.month-segment');
-                segments.forEach(segment => observer.observe(segment));
+                document.querySelectorAll('.month-segment').forEach(segment => observer.observe(segment));
             }
         };
 
-        // DOM이 완전히 로드된 후 애플리케이션 코어 초기화 실행
-        document.addEventListener('DOMContentLoaded', () => {
-            AppController.init();
-        });
+        document.addEventListener('DOMContentLoaded', () => AppController.init());
         
     </script>
 </body>

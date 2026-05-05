@@ -5,42 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bridge Academy | Private Heritage Campus</title>
     
-    <!-- [Premium Fonts] Playfair Display for Heritage, Noto Sans for Clarity -->
+    <!-- [Premium Typography] Playfair Display for Luxury, Noto Sans for Clarity -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
         /* 
          * ======================================================================
-         * [Architecture: Bridge Academy Premium Design System V25.1]
-         * Designed specifically for Director Lee Yun-ji
+         * [Architecture: Bridge Academy Premium Design System V26.0]
+         * Theme-Centric Inquiry System for Director Lee Yun-ji
          * ======================================================================
          */
         :root {
             --bridge-green: #8CC69F;
             --bridge-charcoal: #3A3A42;
             --bridge-taupe: #A39B8E;
-            --bridge-gold: #C5A059; /* Luxury Accent */
+            --bridge-gold: #C5A059; /* [Elite] Signature Gold */
             --bridge-bg: #F7F9F8;
             --bridge-paper: #FFFFFF;
-            --bridge-danger: #E07A5F;
             --bridge-border: rgba(58, 58, 66, 0.08);
             
             --luxury-shadow: 0 40px 100px rgba(58, 58, 66, 0.08);
-            --card-hover-shadow: 0 40px 80px rgba(140, 198, 159, 0.2);
+            --theme-hover-shadow: 0 50px 100px rgba(140, 198, 159, 0.25);
             --gold-glow: 0 10px 30px rgba(197, 160, 89, 0.2);
-            --green-glow: 0 10px 30px rgba(140, 198, 159, 0.3);
             
-            --transition-hq: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-            --transition-fast: all 0.3s ease;
+            --transition-master: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+            --transition-smooth: all 0.4s ease;
         }
 
-        /* --------------------------------------------------
-         * [Base Reset & Typography]
-         * -------------------------------------------------- */
+        /* [Universal Reset] */
         * { 
             margin: 0; padding: 0; box-sizing: border-box; 
             -webkit-font-smoothing: antialiased; 
-            -moz-osx-font-smoothing: grayscale;
             scroll-behavior: smooth; 
         }
         
@@ -48,811 +43,622 @@
             font-family: 'Noto Sans KR', sans-serif; 
             background-color: var(--bridge-bg); 
             color: var(--bridge-charcoal); 
-            line-height: 1.7; 
+            line-height: 1.8; 
             overflow-x: hidden; 
         }
 
-        a { text-decoration: none; color: inherit; }
-        button { font-family: inherit; }
-
         /* --------------------------------------------------
-         * [Elite Access Gateway] (Private Entry Effect)
+         * [Elite Access Gateway] (Private Membership Logic)
          * -------------------------------------------------- */
         #access-gateway {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bridge-charcoal); 
-            z-index: 9999;
+            background: var(--bridge-charcoal); z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1);
+            transition: transform 1.3s cubic-bezier(0.86, 0, 0.07, 1);
         }
-        
         #access-gateway.unlocked { transform: translateY(-100%); }
-        
-        .gateway-logo { 
-            max-width: 220px; margin-bottom: 40px; 
-            filter: brightness(0) invert(1); 
-            opacity: 0; animation: fadeIn 1s forwards 0.5s; 
-        }
-        
-        .gateway-text { 
-            color: var(--bridge-gold); 
-            font-family: 'Playfair Display', serif; 
-            font-size: 14px; letter-spacing: 6px; 
-            opacity: 0; animation: fadeIn 1s forwards 1s; 
-            text-transform: uppercase;
-        }
-        
-        .btn-enter {
-            margin-top: 60px; padding: 18px 50px; 
-            background: transparent; border: 1.5px solid var(--bridge-gold);
+        .gateway-logo { max-width: 240px; margin-bottom: 40px; filter: brightness(0) invert(1); opacity: 0; animation: luxuryFadeIn 1.2s forwards 0.5s; }
+        .gateway-text { color: var(--bridge-gold); font-family: 'Playfair Display', serif; font-size: 14px; letter-spacing: 8px; opacity: 0; animation: luxuryFadeIn 1.2s forwards 1s; }
+        .btn-enter-campus {
+            margin-top: 60px; padding: 20px 60px; background: transparent; border: 1.5px solid var(--bridge-gold);
             color: var(--bridge-gold); font-weight: 700; cursor: pointer; border-radius: 50px;
-            letter-spacing: 3px; transition: var(--transition-fast); 
-            opacity: 0; animation: fadeIn 1s forwards 1.5s;
+            letter-spacing: 4px; transition: var(--transition-smooth); opacity: 0; animation: luxuryFadeIn 1.2s forwards 1.5s;
         }
-        
-        .btn-enter:hover { 
-            background: var(--bridge-gold); color: #FFF; 
-            box-shadow: var(--gold-glow); transform: translateY(-3px);
-        }
+        .btn-enter-campus:hover { background: var(--bridge-gold); color: #FFF; box-shadow: var(--gold-glow); }
 
-        @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(15px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
+        @keyframes luxuryFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --------------------------------------------------
-         * [Header] Heritage Navigation
+         * [Navigation] Heritage Brand Identity
          * -------------------------------------------------- */
         header {
-            width: 100%; padding: 35px 8%; 
-            background: rgba(255, 255, 255, 0.95); 
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            width: 100%; padding: 40px 8%; background: rgba(255, 255, 255, 0.96); 
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
             display: flex; justify-content: space-between; align-items: center; 
-            position: sticky; top: 0; z-index: 1500;
-            border-bottom: 1px solid var(--bridge-border);
-            transition: var(--transition-hq);
+            position: sticky; top: 0; z-index: 1500; border-bottom: 1px solid var(--bridge-border);
         }
-        
-        .logo-box { cursor: pointer; transition: var(--transition-fast); }
-        .logo-box:hover { opacity: 0.7; }
-        .logo-img { max-width: 190px; }
-        
-        .nav-meta { display: flex; align-items: center; gap: 30px; }
-        .campus-id { 
-            font-size: 11px; font-weight: 800; letter-spacing: 4px; 
-            color: var(--bridge-taupe); border: 1.5px solid var(--bridge-taupe); 
-            padding: 10px 25px; border-radius: 50px; 
-            text-transform: uppercase;
-        }
+        .heritage-logo { cursor: pointer; transition: 0.3s; }
+        .heritage-logo:hover { opacity: 0.6; }
+        .logo-img { max-width: 210px; }
+        .campus-access-code { font-size: 11px; font-weight: 800; letter-spacing: 5px; color: var(--bridge-taupe); border: 1.5px solid var(--bridge-taupe); padding: 12px 30px; border-radius: 50px; text-transform: uppercase; }
 
         /* --------------------------------------------------
-         * [Hero Section] Vision & Scanner CTA
+         * [Hero Stage] Inquiry Strategy
          * -------------------------------------------------- */
-        .hero { 
-            padding: 140px 8% 80px; text-align: center; 
-            background: radial-gradient(circle at top, #FFFFFF 0%, var(--bridge-bg) 100%); 
-        }
-        
-        .hero h1 { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 72px; font-weight: 900; margin-bottom: 30px; 
-            letter-spacing: -2px; line-height: 1.1; 
-        }
+        .hero { padding: 160px 8% 80px; text-align: center; background: radial-gradient(circle at top, #FFFFFF 0%, var(--bridge-bg) 100%); }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 76px; font-weight: 900; margin-bottom: 35px; letter-spacing: -2px; line-height: 1.1; }
         .hero h1 span { color: var(--bridge-green); position: relative; }
-        .hero h1 span::after {
-            content: ''; position: absolute; bottom: 5px; left: 0; width: 100%; height: 4px;
-            background: var(--bridge-green); border-radius: 2px; opacity: 0.3;
-        }
-        
-        .hero p { 
-            font-size: 20px; color: var(--bridge-taupe); 
-            font-weight: 300; max-width: 800px; margin: 0 auto 50px; 
-            line-height: 1.8;
-        }
+        .hero p { font-size: 21px; color: var(--bridge-taupe); font-weight: 300; max-width: 850px; margin: 0 auto 60px; line-height: 1.9; }
 
         .btn-magic-scan {
-            padding: 26px 70px; border-radius: 100px; 
-            background: var(--bridge-green); color: #FFFFFF; border: none;
-            font-size: 16px; font-weight: 800; cursor: pointer; 
-            letter-spacing: 4px; box-shadow: var(--green-glow);
-            transition: var(--transition-hq); 
-            display: inline-flex; align-items: center; gap: 18px;
-            text-transform: uppercase;
+            padding: 28px 80px; border-radius: 100px; background: var(--bridge-green); color: #FFFFFF; border: none;
+            font-size: 16px; font-weight: 800; cursor: pointer; letter-spacing: 5px; box-shadow: 0 30px 60px rgba(140, 198, 159, 0.4);
+            transition: var(--transition-master); display: inline-flex; align-items: center; gap: 20px;
         }
-        
-        .btn-magic-scan:hover { 
-            transform: translateY(-8px); 
-            background: var(--bridge-charcoal); 
-            box-shadow: 0 40px 80px rgba(58, 58, 66, 0.2); 
-        }
+        .btn-magic-scan:hover { transform: translateY(-10px); background: var(--bridge-charcoal); box-shadow: 0 45px 90px rgba(58, 58, 66, 0.25); }
 
         /* --------------------------------------------------
-         * [Private Dashboard] Director's Insight & Status
+         * [Director Dashboard] Exclusive Insight
          * -------------------------------------------------- */
-        .private-dashboard { 
-            padding: 0 8% 80px; 
-            display: grid; grid-template-columns: 2fr 1fr; gap: 40px; 
-        }
+        .private-dashboard { padding: 0 8% 100px; display: grid; grid-template-columns: 2.2fr 1fr; gap: 50px; }
+        .dashboard-card { background: var(--bridge-paper); border-radius: 45px; padding: 60px; border: 1px solid var(--bridge-border); box-shadow: var(--luxury-shadow); }
+        .insight-label { font-size: 12px; font-weight: 900; color: var(--bridge-gold); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 25px; display: block; }
+        .insight-title { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 800; margin-bottom: 30px; }
+        .insight-text { font-size: 17px; color: #666; font-weight: 300; line-height: 2; }
         
-        .dashboard-card { 
-            background: var(--bridge-paper); border-radius: 40px; 
-            padding: 50px; border: 1px solid var(--bridge-border); 
-            box-shadow: var(--luxury-shadow);
-            transition: var(--transition-hq);
-        }
-        
-        .dashboard-card:hover { transform: translateY(-5px); }
-        
-        .card-label { 
-            font-size: 11px; font-weight: 900; color: var(--bridge-gold); 
-            letter-spacing: 4px; text-transform: uppercase; 
-            margin-bottom: 20px; display: block; 
-        }
-        
-        .card-title { 
-            font-family: 'Playfair Display', serif; font-size: 32px; 
-            font-weight: 800; margin-bottom: 25px; color: var(--bridge-charcoal);
-        }
-        
-        .card-content { font-size: 16px; color: #666; font-weight: 300; line-height: 1.8; }
-        
-        .status-card {
-            background: var(--bridge-charcoal); color: #FFFFFF;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-        }
-        .status-number { font-size: 72px; font-weight: 900; color: var(--bridge-gold); line-height: 1; margin-bottom: 15px; font-family: 'Playfair Display', serif; }
-        .status-desc { font-size: 13px; opacity: 0.6; letter-spacing: 1px; font-weight: 300; }
+        .status-card { background: var(--bridge-charcoal); color: #FFFFFF; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .status-digit { font-size: 84px; font-weight: 900; color: var(--bridge-gold); line-height: 1; margin-bottom: 15px; font-family: 'Playfair Display', serif; }
+        .status-sub { font-size: 14px; opacity: 0.6; letter-spacing: 2px; font-weight: 300; text-transform: uppercase; }
 
         /* --------------------------------------------------
-         * [Curriculum Filtration] Sticky Tabs
+         * [Filter Tabs] Legacy Categories
          * -------------------------------------------------- */
-        .filter-section { 
-            display: flex; justify-content: center; gap: 20px; 
-            margin-bottom: 100px; position: sticky; top: 130px; z-index: 1000; 
-            padding: 15px 8%;
+        .curriculum-tabs { display: flex; justify-content: center; gap: 25px; margin-bottom: 120px; position: sticky; top: 140px; z-index: 1000; padding: 20px 8%; }
+        .tab-btn {
+            padding: 18px 50px; border-radius: 100px; border: 1.5px solid var(--bridge-border);
+            background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            font-weight: 800; font-size: 14px; letter-spacing: 3px; cursor: pointer; transition: var(--transition-master); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.04); color: var(--bridge-charcoal);
         }
-        
-        .filter-btn {
-            padding: 16px 45px; border-radius: 100px; border: 1.5px solid var(--bridge-border);
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
-            font-weight: 800; font-size: 14px; letter-spacing: 2px; cursor: pointer;
-            transition: var(--transition-hq); box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            color: var(--bridge-charcoal);
-        }
-        
-        .filter-btn:hover { background: #F8F8F8; transform: translateY(-2px); }
-        
-        .filter-btn.active { 
-            background: var(--bridge-charcoal); color: #FFFFFF; 
-            border-color: var(--bridge-charcoal); transform: scale(1.05); 
-            box-shadow: 0 20px 40px rgba(58, 58, 66, 0.2);
-        }
+        .tab-btn.active { background: var(--bridge-charcoal); color: #FFFFFF; border-color: var(--bridge-charcoal); transform: scale(1.08); box-shadow: 0 25px 50px rgba(58, 58, 66, 0.2); }
 
         /* --------------------------------------------------
-         * [Curriculum Engine] 24 Themes Display
+         * [Theme Mastery Engine] THE CORE OF V26.0
          * -------------------------------------------------- */
-        .curriculum-roadmap { padding: 0 8% 150px; min-height: 100vh; }
+        .heritage-roadmap { padding: 0 8% 180px; min-height: 100vh; }
+        .month-segment { margin-bottom: 180px; opacity: 0; transform: translateY(50px); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
+        .month-segment.active-view { opacity: 1; transform: translateY(0); }
         
-        .month-block { 
-            margin-bottom: 150px; opacity: 0; transform: translateY(40px); 
-            transition: 1s cubic-bezier(0.165, 0.84, 0.44, 1); 
-        }
-        .month-block.visible { opacity: 1; transform: translateY(0); }
-        
-        .month-title-wrap { 
-            display: flex; align-items: baseline; gap: 25px; 
-            border-bottom: 3px solid var(--bridge-green); 
-            padding-bottom: 20px; margin-bottom: 60px; 
-        }
-        
-        .month-name { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 900; line-height: 1; color: var(--bridge-charcoal); }
-        .month-meta { font-size: 14px; font-weight: 900; color: var(--bridge-gold); letter-spacing: 5px; text-transform: uppercase; }
+        .month-anchor { display: flex; align-items: baseline; gap: 30px; border-bottom: 4px solid var(--bridge-green); padding-bottom: 25px; margin-bottom: 70px; }
+        .anchor-name { font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 900; line-height: 1; color: var(--bridge-charcoal); }
+        .anchor-badge { font-size: 15px; font-weight: 900; color: var(--bridge-gold); letter-spacing: 6px; text-transform: uppercase; }
 
-        /* Unit Container (A1 ~ B6) */
-        .theme-unit { 
-            margin-bottom: 80px; background: #FFFFFF; padding: 60px; 
-            border-radius: 50px; box-shadow: var(--luxury-shadow); 
-            border: 1px solid rgba(0,0,0,0.02); position: relative; overflow: hidden; 
+        /* [THEME UNIT CARD] - Clicking this leads to 17p Workbook */
+        .inquiry-theme-card { 
+            margin-bottom: 100px; background: #FFFFFF; border-radius: 60px; 
+            box-shadow: var(--luxury-shadow); border: 1px solid rgba(0,0,0,0.02); 
+            position: relative; overflow: hidden; transition: var(--transition-master);
+            cursor: pointer; /* Makes the entire theme clickable */
         }
         
-        .theme-unit::before { content: ""; position: absolute; top: 0; left: 0; width: 15px; height: 100%; }
-        .theme-unit.series-a::before { background: var(--bridge-green); }
-        .theme-unit.level-b::before { background: var(--bridge-gold); }
+        .inquiry-theme-card:hover { transform: translateY(-15px); box-shadow: var(--theme-hover-shadow); }
+        .inquiry-theme-card::before { content: ""; position: absolute; top: 0; left: 0; width: 18px; height: 100%; }
+        .inquiry-theme-card.A-track::before { background: var(--bridge-green); }
+        .inquiry-theme-card.B-track::before { background: var(--bridge-gold); }
 
-        .unit-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 50px; }
-        .unit-info h3 { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 800; margin-bottom: 15px; color: var(--bridge-charcoal); }
-        .unit-question { font-size: 20px; font-weight: 400; color: var(--bridge-taupe); font-style: italic; }
-        
-        /* --------------------------------------------------
-         * [Book Grid System] 5 Books per Unit
-         * -------------------------------------------------- */
-        .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 40px; }
-        
-        .book-card { 
-            background: var(--bridge-bg); border-radius: 35px; overflow: hidden; 
-            border: 2px solid transparent; transition: var(--transition-hq); position: relative; 
+        .theme-content-wrap { padding: 80px; }
+        .theme-header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 60px; }
+        .theme-meta-id { font-size: 12px; font-weight: 900; color: var(--bridge-gold); text-transform: uppercase; letter-spacing: 4px; margin-bottom: 15px; display: block; }
+        .theme-title-h3 { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 900; margin-bottom: 20px; color: var(--bridge-charcoal); }
+        .theme-driving-q { font-size: 22px; font-weight: 500; color: var(--bridge-taupe); font-style: italic; border-left: 3px solid var(--bridge-green); padding-left: 25px; }
+
+        /* [Curated Gallery] - 5 Recommended Books as Visual Context */
+        .curated-reading-gallery { 
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 30px; 
+            margin-top: 60px; border-top: 1px solid #F0F0F0; padding-top: 60px;
         }
         
-        /* Workbook (Inquiry Lab) Styling */
-        .book-card.is-lab { background: #FFFFFF; border-color: rgba(140, 198, 159, 0.3); cursor: pointer; }
-        .book-card.is-lab:hover { 
-            transform: translateY(-15px); 
-            box-shadow: var(--card-hover-shadow); 
-            border-color: var(--bridge-green); 
-        }
+        .recommend-book-item { text-align: center; position: relative; }
+        .recommend-thumb { width: 100%; height: 220px; background: #F8F9F8; border-radius: 20px; overflow: hidden; margin-bottom: 20px; transition: var(--transition-smooth); }
+        .recommend-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: var(--transition-smooth); }
+        .recommend-book-item:hover img { opacity: 1; transform: scale(1.08); }
+        .recommend-book-title { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: #999; line-height: 1.4; height: 40px; overflow: hidden; }
+        .lab-status-dot { position: absolute; top: -10px; right: 10px; background: var(--bridge-green); color: #FFF; font-size: 9px; font-weight: 900; padding: 4px 10px; border-radius: 50px; opacity: 0; transition: 0.3s; }
+        .recommend-book-item.is-core .lab-status-dot { opacity: 1; }
 
-        .badge-type { 
-            position: absolute; top: 22px; right: 22px; font-size: 10px; 
-            font-weight: 900; padding: 8px 18px; border-radius: 50px; 
-            z-index: 10; letter-spacing: 2px; 
-        }
-        
-        .badge-lab { background: var(--bridge-green); color: #FFFFFF; box-shadow: 0 5px 15px rgba(140, 198, 159, 0.3); }
-        .badge-read { background: #E8E8E8; color: #888888; }
-
-        .book-thumb { width: 100%; height: 220px; background: #F5F5F5; overflow: hidden; position: relative; }
-        .book-thumb img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition-hq); }
-        .book-card.is-lab:hover img { transform: scale(1.1); filter: brightness(0.95); }
-
-        .book-info { padding: 35px; }
-        .book-title { 
-            font-family: 'Playfair Display', serif; font-size: 22px; 
-            font-weight: 700; color: var(--bridge-charcoal); line-height: 1.4; 
-            height: 60px; overflow: hidden; display: -webkit-box; 
-            -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
-        }
-
-        /* --------------------------------------------------
-         * [AI Magic Scanner UI] V25.1 System
-         * -------------------------------------------------- */
-        #scanner-modal { 
+        /* [AI Vision Scanner UI] */
+        #vision-scanner-overlay { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(247, 249, 248, 0.98); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            background: rgba(247, 249, 248, 0.99); backdrop-filter: blur(50px); -webkit-backdrop-filter: blur(50px);
             z-index: 3000; flex-direction: column; align-items: center; justify-content: center; 
         }
-        
-        .scanner-frame { 
-            width: 100%; max-width: 600px; border-radius: 60px; overflow: hidden; 
-            border: 15px solid #FFFFFF; box-shadow: 0 80px 200px rgba(0,0,0,0.15); 
+        .scanner-viewport { 
+            width: 100%; max-width: 600px; border-radius: 70px; overflow: hidden; 
+            border: 18px solid #FFFFFF; box-shadow: 0 80px 200px rgba(0,0,0,0.18); 
             position: relative; background: #000;
         }
-        
-        #scan-video { width: 100%; height: auto; display: block; object-fit: cover; }
-        
-        .scan-laser { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 8px; 
-            background: var(--bridge-green); box-shadow: 0 0 40px var(--bridge-green); 
-            animation: laserAnim 3s ease-in-out infinite; 
-        }
-        
-        @keyframes laserAnim { 
-            0%, 100% { top: 0; opacity: 0; } 
-            50% { top: 100%; opacity: 1; } 
-        }
+        #scanner-v-feed { width: 100%; height: auto; display: block; object-fit: cover; }
+        .scanner-beam { position: absolute; top: 0; left: 0; width: 100%; height: 10px; background: var(--bridge-green); box-shadow: 0 0 50px var(--bridge-green); animation: beamAnim 3.2s ease-in-out infinite; }
+        @keyframes beamAnim { 0%, 100% { top: 0; opacity: 0; } 50% { top: 100%; opacity: 1; } }
 
-        .scanner-controls { display: flex; gap: 25px; margin-top: 50px; }
-        
-        .btn-action-large {
-            padding: 24px 75px; border-radius: 100px; background: var(--bridge-charcoal); 
-            color: #FFFFFF; border: none; font-weight: 900; cursor: pointer; 
-            letter-spacing: 4px; transition: var(--transition-hq); font-size: 16px;
-        }
-        
-        .btn-action-large:hover { background: var(--bridge-green); box-shadow: var(--green-glow); transform: translateY(-3px); }
-        .btn-cancel { background: transparent; border: none; color: #AAAAAA; font-weight: 900; cursor: pointer; font-size: 16px; letter-spacing: 2px; transition: 0.3s; padding: 24px 30px; }
-        .btn-cancel:hover { color: var(--bridge-charcoal); }
+        .scanner-btn-row { display: flex; gap: 30px; margin-top: 60px; }
+        .btn-vision-main { padding: 25px 85px; border-radius: 100px; background: var(--bridge-charcoal); color: #FFFFFF; border: none; font-weight: 900; cursor: pointer; letter-spacing: 5px; transition: var(--transition-master); font-size: 16px; text-transform: uppercase; }
+        .btn-vision-main:hover { background: var(--bridge-green); box-shadow: 0 20px 40px rgba(140, 198, 159, 0.4); transform: translateY(-5px); }
+        .btn-vision-cancel { background: transparent; border: none; color: #BBB; font-weight: 900; cursor: pointer; font-size: 16px; letter-spacing: 3px; transition: 0.3s; padding: 25px 40px; }
 
-        /* --------------------------------------------------
-         * [Footer] Elite Branding
-         * -------------------------------------------------- */
-        footer { background: var(--bridge-charcoal); padding: 150px 8%; text-align: center; }
-        .footer-logo { max-width: 200px; opacity: 0.2; margin-bottom: 50px; }
-        .copyright { font-size: 13px; color: rgba(255,255,255,0.3); letter-spacing: 5px; text-transform: uppercase; font-weight: 300; }
+        /* [Footer] Institutional Branding */
+        footer { background: var(--bridge-charcoal); padding: 180px 8%; text-align: center; }
+        .f-logo-heritage { max-width: 210px; opacity: 0.25; margin-bottom: 60px; }
+        .f-copyright-elite { font-size: 13px; color: rgba(255,255,255,0.25); letter-spacing: 6px; text-transform: uppercase; font-weight: 300; }
 
-        /* --------------------------------------------------
-         * [Responsive Design] Professional Mobile Tuning
-         * -------------------------------------------------- */
+        /* [Mobile Resilience] */
         @media (max-width: 1200px) {
-            .hero h1 { font-size: 60px; }
-            .book-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
+            .hero h1 { font-size: 58px; }
+            .theme-content-wrap { padding: 50px; }
+            .curated-reading-gallery { grid-template-columns: repeat(3, 1fr); }
+            .theme-title-h3 { font-size: 42px; }
         }
-
-        @media (max-width: 900px) {
-            header { padding: 25px 5%; }
-            .logo-img { max-width: 150px; }
-            .nav-meta { display: none; }
-            
-            .hero { padding: 100px 5% 60px; }
-            .hero h1 { font-size: 44px; }
-            .private-dashboard { grid-template-columns: 1fr; padding: 0 5% 60px; }
-            
-            .filter-section { overflow-x: auto; justify-content: flex-start; padding: 15px 5%; }
-            .filter-btn { white-space: nowrap; padding: 14px 30px; }
-            
-            .curriculum-roadmap { padding: 0 5% 100px; }
-            .month-name { font-size: 48px; }
-            .theme-unit { padding: 40px 30px; border-radius: 35px; }
-            .unit-info h3 { font-size: 32px; }
-            
-            .scanner-frame { border-radius: 40px; border-width: 8px; }
-            .scanner-controls { flex-direction: column; gap: 15px; width: 100%; max-width: 300px; }
-            .btn-action-large { width: 100%; padding: 20px; }
+        @media (max-width: 768px) {
+            header { padding: 30px 5%; }
+            .hero h1 { font-size: 42px; }
+            .private-dashboard { grid-template-columns: 1fr; padding: 0 5% 80px; }
+            .tab-btn { padding: 15px 35px; font-size: 12px; }
+            .curated-reading-gallery { grid-template-columns: repeat(2, 1fr); }
+            .month-header { flex-direction: column; align-items: center; }
+            .theme-title-h3 { font-size: 32px; }
         }
     </style>
 </head>
 <body>
 
     <!-- ==========================================
-         [Component 1] Private Access Gateway
+         [GATEWAY] Entry Protection
          ========================================== -->
     <div id="access-gateway">
-        <img src="logo.png" alt="Bridge Academy" class="gateway-logo">
-        <div class="gateway-text">PRIVATE MEMBERSHIP ONLY</div>
-        <button class="btn-enter" onclick="EliteApp.unlock()">ENTER CAMPUS</button>
+        <img src="logo.png" alt="Bridge Academy Heritage" class="gateway-logo">
+        <div class="gateway-text">PRIVATE HERITAGE ACCESS</div>
+        <button class="btn-enter-campus" onclick="HeritageApp.unlock()">ENTER CAMPUS</button>
     </div>
 
     <!-- ==========================================
-         [Component 2] Heritage Navigation
+         [HEADER] Campus Navigation
          ========================================== -->
     <header>
-        <div class="logo-box" onclick="EliteApp.refresh()">
+        <div class="heritage-logo" onclick="HeritageApp.refresh()">
             <img src="logo.png" alt="Bridge Academy" class="logo-img">
         </div>
-        <div class="nav-meta">
-            <div class="campus-id">ACADEMY HERITAGE 2026</div>
-        </div>
+        <div class="campus-access-code">AUTHENTICATED HERITAGE 2026</div>
     </header>
 
-    <!-- Main Content Wrapped for Gateway Effect -->
-    <main id="main-campus" style="display: none;">
+    <!-- [Main Application Stage] -->
+    <main id="campus-view" style="display: none;">
         
-        <!-- ==========================================
-             [Component 3] Strategy Hero
-             ========================================== -->
+        <!-- [HERO] Strategic Inquiry Entrance -->
         <section class="hero">
-            <h1>Where Inquiry Meets <span>Excellence</span></h1>
-            <p>Experience the most sophisticated English Inquiry curriculum, meticulously designed for the future leaders of the global society.</p>
-            <button class="btn-magic-scan" onclick="EliteScanner.open()">
+            <h1>Heritage <span>Inquiry</span> Mastery</h1>
+            <p>Direct from North American Private Boarding Education Excellence. Explore 24 Independent Inquiry Themes across 120 Curated Global Masterpieces.</p>
+            <button class="btn-magic-scan" onclick="HeritageScanner.open()">
                 ✨ MAGIC BOOK IDENTIFIER
             </button>
         </section>
 
-        <!-- ==========================================
-             [Component 4] Parent Insights Dashboard
-             ========================================== -->
+        <!-- [DASHBOARD] Elite Insight Area -->
         <section class="private-dashboard">
             <div class="dashboard-card">
-                <span class="card-label">Director's Insight</span>
-                <h3 class="card-title">The Power of Inquiry-Based Learning</h3>
-                <p class="card-content">
-                    브릿지 아카데미의 IBL 커리큘럼은 단순한 지식 습득을 넘어, 아이들이 스스로 질문을 던지고 시각적 증거를 찾아가는 '사고의 근육'을 길러줍니다. 북미 명문 사립학교의 표준을 넘어선 깊이 있는 교육을 직접 경험하십시오.
+                <span class="insight-label">Director Lee's Insight</span>
+                <h3 class="insight-title">The Depth of Questioning</h3>
+                <p class="insight-text">
+                    브릿지 아카데미의 인쿼리 테마는 아이들이 세상을 바라보는 24개의 서로 다른 창(Window)입니다. 추천된 120권의 도서는 이 창을 더 밝게 비춰주는 도구이며, 아이들은 각 주제의 마스터 랩을 통해 자신만의 답변을 건축해 나갑니다. 북미 사립학교의 깊이를 직접 경험하십시오.
                 </p>
             </div>
             <div class="dashboard-card status-card">
-                <span class="card-label" style="color: var(--bridge-gold); margin-bottom: 30px;">Master Library</span>
-                <div class="status-number">120</div>
-                <p class="status-desc">Curated Global Books<br>24 Inquiry Themes</p>
+                <span class="insight-label" style="color: var(--bridge-gold);">Campus Inventory</span>
+                <div class="status-digit">24</div>
+                <p class="status-sub">Master Themes<br>120 Curated Books</p>
             </div>
         </section>
 
-        <!-- ==========================================
-             [Component 5] Category Filtration
-             ========================================== -->
-        <div class="filter-section">
-            <button id="btn-all" class="filter-btn active" onclick="EliteUI.filter('ALL')">ALL JOURNEYS</button>
-            <button id="btn-a" class="filter-btn" onclick="EliteUI.filter('A')">SERIES A: FOUNDATIONS</button>
-            <button id="btn-b" class="filter-btn" onclick="EliteUI.filter('B')">LEVEL B: GLOBAL PERSPECTIVES</button>
+        <!-- [TABS] Inquiry Track Selection -->
+        <div class="curriculum-tabs">
+            <button id="tab-all" class="tab-btn active" onclick="HeritageUI.filter('ALL')">FULL ROADMAP</button>
+            <button id="tab-a" class="tab-btn" onclick="HeritageUI.filter('A')">SERIES A: FOUNDATIONS</button>
+            <button id="tab-b" class="tab-btn" onclick="HeritageUI.filter('B')">LEVEL B: GLOBAL PERSPECTIVES</button>
         </div>
 
-        <!-- ==========================================
-             [Component 6] Master Roadmap Container
-             ========================================== -->
-        <section id="master-roadmap" class="curriculum-roadmap">
-            <!-- JavaScript Renders the 24 Heritage Themes dynamically -->
+        <!-- [ROADMAP] Dynamic Theme Master Engine -->
+        <section id="heritage-roadmap" class="heritage-roadmap">
+            <!-- JavaScript Renders the Clickable Themes here -->
         </section>
     </main>
 
-    <!-- ==========================================
-         [Component 7] AI Vision Scanner Modal (V25.1)
-         ========================================== -->
-    <div id="scanner-modal">
-        <div style="font-size: 13px; letter-spacing: 8px; font-weight: 900; color: var(--bridge-green); margin-bottom: 35px; text-transform: uppercase;">AI Vision Scanner Active</div>
-        <div class="scanner-frame">
-            <video id="scan-video" autoplay playsinline></video>
-            <div class="scan-laser"></div>
+    <!-- [SCANNER] Vision API Integration -->
+    <div id="vision-scanner-overlay">
+        <div style="font-size: 13px; letter-spacing: 10px; font-weight: 900; color: var(--bridge-green); margin-bottom: 40px; text-transform: uppercase;">Inquiry Vision Active</div>
+        <div class="scanner-viewport">
+            <video id="scanner-v-feed" autoplay playsinline></video>
+            <div class="scanner-beam"></div>
         </div>
-        <div id="scan-status" style="margin-top: 50px; font-weight: 800; font-size: 24px; color: var(--bridge-charcoal);">Scan Book Cover to Unlock Digital Lab</div>
-        <div class="scanner-controls">
-            <button class="btn-action-large" onclick="EliteScanner.identify()">IDENTIFY BOOK</button>
-            <button class="btn-cancel" onclick="EliteScanner.close()">CANCEL</button>
+        <div id="v-scan-status" style="margin-top: 55px; font-weight: 800; font-size: 24px; color: var(--bridge-charcoal);">Scan Book to Unlock Master Lab</div>
+        <div class="scanner-btn-row">
+            <button class="btn-vision-main" onclick="HeritageScanner.identify()">IDENTIFY</button>
+            <button class="btn-vision-cancel" onclick="HeritageScanner.close()">CANCEL</button>
         </div>
     </div>
 
-    <!-- ==========================================
-         [Component 8] Luxury Footer
-         ========================================== -->
+    <!-- [FOOTER] Institutional Identity -->
     <footer>
-        <img src="logo.png" alt="Bridge Academy" class="footer-logo">
-        <div class="copyright">© 2026 BRIDGE ACADEMY. PRESERVING ELITE INQUIRY STANDARDS GLOBALLY.</div>
+        <img src="logo.png" alt="Bridge Academy" class="f-logo-heritage">
+        <div class="f-copyright-elite">© 2026 BRIDGE ACADEMY HERITAGE. ALL RIGHTS RESERVED.</div>
     </footer>
 
     <!-- ======================================================================
-         [JavaScript Core Engine V25.1]
-         Data, Rendering, AI Vision, and Interactions
+         [CORE SCRIPT ENGINE V26.0]
+         Unified Management of Data, UI, and AI Vision
          ====================================================================== -->
     <script>
         /**
-         * [Library Database V25.1 Integrated]
-         * 24 Units (A1-A6, B1-B6 for 12 months) / 120 Books
+         * [Library Master Database V26.0]
+         * Theme-Centric Structure: Each Unit holds 5 books.
          */
-        const BRIDGE_LIBRARY = [
-            // --- SERIES A: FOUNDATION ---
-            { id: "JAN-A1-1", month: "Jan", unit: "A1", type: "workbook", title: "I Like Myself!", theme: "All About Me", question: "나는 누구일까요?", words: "Me, Special, Happy" },
-            { id: "JAN-A1-2", month: "Jan", unit: "A1", type: "workbook", title: "The Color Monster", theme: "All About Me", question: "나는 누구일까요?", words: "Feelings, Emotion" },
-            { id: "JAN-A1-3", month: "Jan", unit: "A1", type: "reading",  title: "My Five Senses", theme: "All About Me", question: "나는 누구일까요?", words: "Eyes, Senses" },
-            { id: "JAN-A1-4", month: "Jan", unit: "A1", type: "reading",  title: "The Family Book", theme: "All About Me", question: "나는 누구일까요?", words: "Family, Home" },
-            { id: "JAN-A1-5", month: "Jan", unit: "A1", type: "reading",  title: "From Head to Toe", theme: "All About Me", question: "나는 누구일까요?", words: "Body, Movement" },
-            
-            { id: "FEB-A2-1", month: "Feb", unit: "A2", type: "workbook", title: "The Very Hungry Caterpillar", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", words: "Caterpillar, Butterfly" },
-            { id: "FEB-A2-2", month: "Feb", unit: "A2", type: "workbook", title: "The Very Busy Spider", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", words: "Spider, Web" },
-            { id: "FEB-A2-3", month: "Feb", unit: "A2", type: "reading",  title: "The Grouchy Ladybug", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", words: "Ladybug, Time" },
-            { id: "FEB-A2-4", month: "Feb", unit: "A2", type: "reading",  title: "Waiting for Wings", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", words: "Wings, Grow" },
-            { id: "FEB-A2-5", month: "Feb", unit: "A2", type: "reading",  title: "The Honeybee", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", words: "Bee, Honey" },
-
-            { id: "MAR-A3-1", month: "Mar", unit: "A3", type: "workbook", title: "My Mom", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", words: "Mom, Super" },
-            { id: "MAR-A3-2", month: "Mar", unit: "A3", type: "workbook", title: "My Dad", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", words: "Dad, Strong" },
-            { id: "MAR-A3-3", month: "Mar", unit: "A3", type: "reading",  title: "Love You Forever", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", words: "Love, Forever" },
-            { id: "MAR-A3-4", month: "Mar", unit: "A3", type: "reading",  title: "Guess How Much I Love You", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", words: "Rabbit, Big" },
-            { id: "MAR-A3-5", month: "Mar", unit: "A3", type: "reading",  title: "The Night Before Mother's Day", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", words: "Present, Card" },
-
-            { id: "APR-A4-1", month: "Apr", unit: "A4", type: "workbook", title: "The Pout-Pout Fish", theme: "Under the Sea", question: "바다 밑에는 누가 살고 있을까?", words: "Fish, Ocean" },
-            { id: "APR-A4-2", month: "Apr", unit: "A4", type: "workbook", title: "Commotion in the Ocean", theme: "Under the Sea", question: "바다 밑에는 누가 살고 있을까?", words: "Whale, Crab" },
-            { id: "APR-A4-3", month: "Apr", unit: "A4", type: "reading",  title: "The Rainbow Fish", theme: "Under the Sea", question: "바다 밑에는 누가 살고 있을까?", words: "Scale, Share" },
-            { id: "APR-A4-4", month: "Apr", unit: "A4", type: "reading",  title: "I'm the Biggest Thing in the Ocean", theme: "Under the Sea", question: "바다 밑에는 누가 살고 있을까?", words: "Big, Giant" },
-            { id: "APR-A4-5", month: "Apr", unit: "A4", type: "reading",  title: "Swimmy", theme: "Under the Sea", question: "바다 밑에는 누가 살고 있을까?", words: "Together, Fish" },
-
-            { id: "MAY-A5-1", month: "May", unit: "A5", type: "workbook", title: "Rain", theme: "Colors of Weather", question: "날씨에도 색깔이 있을까?", words: "Rain, Umbrella" },
-            { id: "MAY-A5-2", month: "May", unit: "A5", type: "workbook", title: "The Little Raindrop", theme: "Colors of Weather", question: "날씨에도 색깔이 있을까?", words: "Cloud, Fall" },
-            { id: "MAY-A5-3", month: "May", unit: "A5", type: "reading",  title: "Cloudy with a Chance of Meatballs", theme: "Colors of Weather", question: "날씨에도 색깔이 있을까?", words: "Food, Storm" },
-            { id: "MAY-A5-4", month: "May", unit: "A5", type: "reading",  title: "Elmer and the Rainbow", theme: "Colors of Weather", question: "날씨에도 색깔이 있을까?", words: "Colors, Elephant" },
-            { id: "MAY-A5-5", month: "May", unit: "A5", type: "reading",  title: "Worm Weather", theme: "Colors of Weather", question: "날씨에도 색깔이 있을까?", words: "Mud, Puddle" },
-
-            { id: "JUN-A6-1", month: "Jun", unit: "A6", type: "workbook", title: "There's No Place Like Space", theme: "Space Adventure", question: "달나라로 소풍을 가면 무엇이 필요할까?", words: "Space, Rocket" },
-            { id: "JUN-A6-2", month: "Jun", unit: "A6", type: "workbook", title: "Roaring Rockets", theme: "Space Adventure", question: "달나라로 소풍을 가면 무엇이 필요할까?", words: "Engine, Moon" },
-            { id: "JUN-A6-3", month: "Jun", unit: "A6", type: "reading",  title: "How to Catch a Star", theme: "Space Adventure", question: "달나라로 소풍을 가면 무엇이 필요할까?", words: "Star, Sky" },
-            { id: "JUN-A6-4", month: "Jun", unit: "A6", type: "reading",  title: "Papa, Please Get the Moon for Me", theme: "Space Adventure", question: "달나라로 소풍을 가면 무엇이 필요할까?", words: "Moon, Ladder" },
-            { id: "JUN-A6-5", month: "Jun", unit: "A6", type: "reading",  title: "Blast Off!", theme: "Space Adventure", question: "달나라로 소풍을 가면 무엇이 필요할까?", words: "Suit, Ship" },
-
-            { id: "JUL-A7-1", month: "Jul", unit: "A7", type: "workbook", title: "How Do Dinosaurs Say Good Night?", theme: "Dinos Rule!", question: "공룡들은 어떻게 친구가 되었을까?", words: "Dino, Sleep" },
-            { id: "JUL-A7-2", month: "Jul", unit: "A7", type: "workbook", title: "Dinosaurs, Dinosaurs", theme: "Dinos Rule!", question: "공룡들은 어떻게 친구가 되었을까?", words: "Tail, Big" },
-            { id: "JUL-A7-3", month: "Jul", unit: "A7", type: "reading",  title: "Danny and the Dinosaur", theme: "Dinos Rule!", question: "공룡들은 어떻게 친구가 되었을까?", words: "Friend, Dino" },
-            { id: "JUL-A7-4", month: "Jul", unit: "A7", type: "reading",  title: "If the Dinosaurs Came Back", theme: "Dinos Rule!", question: "공룡들은 어떻게 친구가 되었을까?", words: "City, Dino" },
-            { id: "JUL-A7-5", month: "Jul", unit: "A7", type: "reading",  title: "Stomp, Dinosaur, Stomp!", theme: "Dinos Rule!", question: "공룡들은 어떻게 친구가 되었을까?", words: "Stomp, Run" },
-
-            { id: "AUG-A8-1", month: "Aug", unit: "A8", type: "workbook", title: "Eating the Alphabet", theme: "My Five Senses & Food", question: "맛있는 소리는 어떤 느낌일까?", words: "Food, Eat" },
-            { id: "AUG-A8-2", month: "Aug", unit: "A8", type: "workbook", title: "Green Eggs and Ham", theme: "My Five Senses & Food", question: "맛있는 소리는 어떤 느낌일까?", words: "Green, Taste" },
-            { id: "AUG-A8-3", month: "Aug", unit: "A8", type: "reading",  title: "Stone Soup", theme: "My Five Senses & Food", question: "맛있는 소리는 어떤 느낌일까?", words: "Soup, Share" },
-            { id: "AUG-A8-4", month: "Aug", unit: "A8", type: "reading",  title: "Growing Vegetable Soup", theme: "My Five Senses & Food", question: "맛있는 소리는 어떤 느낌일까?", words: "Grow, Veggie" },
-            { id: "AUG-A8-5", month: "Aug", unit: "A8", type: "reading",  title: "Yummy Yucky", theme: "My Five Senses & Food", question: "맛있는 소리는 어떤 느낌일까?", words: "Yummy, Taste" },
-
-            { id: "SEP-A9-1", month: "Sep", unit: "A9", type: "workbook", title: "Clothesline Clues to Jobs People Do", theme: "Who are the Helpers?", question: "우리 마을을 돕는 영웅은 누구일까?", words: "Job, Help" },
-            { id: "SEP-A9-2", month: "Sep", unit: "A9", type: "workbook", title: "Whose Hat Is This?", theme: "Who are the Helpers?", question: "우리 마을을 돕는 영웅은 누구일까?", words: "Hat, Hero" },
-            { id: "SEP-A9-3", month: "Sep", unit: "A9", type: "reading",  title: "Fire Truck", theme: "Who are the Helpers?", question: "우리 마을을 돕는 영웅은 누구일까?", words: "Fire, Ladder" },
-            { id: "SEP-A9-4", month: "Sep", unit: "A9", type: "reading",  title: "Doctor De Soto", theme: "Who are the Helpers?", question: "우리 마을을 돕는 영웅은 누구일까?", words: "Doctor, Teeth" },
-            { id: "SEP-A9-5", month: "Sep", unit: "A9", type: "reading",  title: "Officer Buckle and Gloria", theme: "Who are the Helpers?", question: "우리 마을을 돕는 영웅은 누구일까?", words: "Police, Dog" },
-
-            { id: "OCT-A10-1", month: "Oct", unit: "A10", type: "workbook", title: "Go, Dog. Go!", theme: "How do we Go?", question: "하늘, 땅, 바다 어디든 갈 수 있다면?", words: "Dog, Travel" },
-            { id: "OCT-A10-2", month: "Oct", unit: "A10", type: "workbook", title: "Freight Train", theme: "How do we Go?", question: "하늘, 땅, 바다 어디든 갈 수 있다면?", words: "Train, Tracks" },
-            { id: "OCT-A10-3", month: "Oct", unit: "A10", type: "reading",  title: "Don't Let the Pigeon Drive the Bus!", theme: "How do we Go?", question: "하늘, 땅, 바다 어디든 갈 수 있다면?", words: "Bus, Drive" },
-            { id: "OCT-A10-4", month: "Oct", unit: "A10", type: "reading",  title: "The Little Engine That Could", theme: "How do we Go?", question: "하늘, 땅, 바다 어디든 갈 수 있다면?", words: "Engine, Hill" },
-            { id: "OCT-A10-5", month: "Oct", unit: "A10", type: "reading",  title: "Cars and Trucks and Things That Go", theme: "How do we Go?", question: "하늘, 땅, 바다 어디든 갈 수 있다면?", words: "Cars, Go" },
-
-            { id: "NOV-A11-1", month: "Nov", unit: "A11", type: "workbook", title: "Dear Zoo", theme: "Wild Animals", question: "정글 속 동물들은 무엇을 좋아할까?", words: "Zoo, Animal" },
-            { id: "NOV-A11-2", month: "Nov", unit: "A11", type: "workbook", title: "Brown Bear, What Do You See?", theme: "Wild Animals", question: "정글 속 동물들은 무엇을 좋아할까?", words: "Bear, Color" },
-            { id: "NOV-A11-3", month: "Nov", unit: "A11", type: "reading",  title: "Walking Through the Jungle", theme: "Wild Animals", question: "정글 속 동물들은 무엇을 좋아할까?", words: "Jungle, Walk" },
-            { id: "NOV-A11-4", month: "Nov", unit: "A11", type: "reading",  title: "The Mixed-Up Chameleon", theme: "Wild Animals", question: "정글 속 동물들은 무엇을 좋아할까?", words: "Change, Shape" },
-            { id: "NOV-A11-5", month: "Nov", unit: "A11", type: "reading",  title: "Polar Bear, What Do You Hear?", theme: "Wild Animals", question: "정글 속 동물들은 무엇을 좋아할까?", words: "Hear, Sound" },
-
-            { id: "DEC-A12-1", month: "Dec", unit: "A12", type: "workbook", title: "The Snowy Day", theme: "Winter & Holidays", question: "겨울은 왜 따뜻한 계절일까?", words: "Snow, Winter" },
-            { id: "DEC-A12-2", month: "Dec", unit: "A12", type: "workbook", title: "The Giving Tree", theme: "Winter & Holidays", question: "겨울은 왜 따뜻한 계절일까?", words: "Tree, Give" },
-            { id: "DEC-A12-3", month: "Dec", unit: "A12", type: "reading",  title: "Bear Stays Up for Christmas", theme: "Winter & Holidays", question: "겨울은 왜 따뜻한 계절일까?", words: "Bear, Gift" },
-            { id: "DEC-A12-4", month: "Dec", unit: "A12", type: "reading",  title: "Little Tree", theme: "Winter & Holidays", question: "겨울은 왜 따뜻한 계절일까?", words: "Tree, Grow" },
-            { id: "DEC-A12-5", month: "Dec", unit: "A12", type: "reading",  title: "How the Grinch Stole Christmas", theme: "Winter & Holidays", question: "겨울은 왜 따뜻한 계절일까?", words: "Grinch, Share" },
-
-            // --- LEVEL B: GLOBAL PERSPECTIVE ---
-            { id: "JAN-B1-1", month: "Jan", unit: "B1", type: "workbook", title: "Me on the Map", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", words: "Map, World, Earth" },
-            { id: "JAN-B1-2", month: "Jan", unit: "B1", type: "workbook", title: "This Is How We Do It", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", words: "Culture, School" },
-            { id: "JAN-B1-3", month: "Jan", unit: "B1", type: "reading",  title: "Whoever You Are", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", words: "Global, Heart" },
-            { id: "JAN-B1-4", month: "Jan", unit: "B1", type: "reading",  title: "Madeline", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", words: "Paris, City" },
-            { id: "JAN-B1-5", month: "Jan", unit: "B1", type: "reading",  title: "We're All Wonders", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", words: "Kind, Wonder" },
-
-            { id: "FEB-B2-1", month: "Feb", unit: "B2", type: "workbook", title: "The Tiny Seed", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", words: "Seed, Wind, Flower" },
-            { id: "FEB-B2-2", month: "Feb", unit: "B2", type: "workbook", title: "From Caterpillar to Butterfly", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", words: "Change, Fly" },
-            { id: "FEB-B2-3", month: "Feb", unit: "B2", type: "reading",  title: "Planting a Rainbow", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", words: "Garden, Colors" },
-            { id: "FEB-B2-4", month: "Feb", unit: "B2", type: "reading",  title: "A Seed Is Sleepy", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", words: "Water, Sprout" },
-            { id: "FEB-B2-5", month: "Feb", unit: "B2", type: "reading",  title: "Up in the Garden and Down in the Dirt", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", words: "Roots, Dirt" },
-
-            { id: "MAR-B3-1", month: "Mar", unit: "B3", type: "workbook", title: "A House is a House for Me", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", words: "House, Shell" },
-            { id: "MAR-B3-2", month: "Mar", unit: "B3", type: "workbook", title: "Welcome Home, Bear", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", words: "Forest, Bear" },
-            { id: "MAR-B3-3", month: "Mar", unit: "B3", type: "reading",  title: "The Great Kapok Tree", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", words: "Tree, Jungle" },
-            { id: "MAR-B3-4", month: "Mar", unit: "B3", type: "reading",  title: "Over in the Meadow", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", words: "Meadow, Sun" },
-            { id: "MAR-B3-5", month: "Mar", unit: "B3", type: "reading",  title: "Who Lives Here?", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", words: "Animal, Cave" },
-
-            { id: "APR-B4-1", month: "Apr", unit: "B4", type: "workbook", title: "Who Sank the Boat?", theme: "Water Wonders", question: "무거운 배는 어떻게 물에 뜰까?", words: "Boat, Water, Sink" },
-            { id: "APR-B4-2", month: "Apr", unit: "B4", type: "workbook", title: "Hey, Water!", theme: "Water Wonders", question: "무거운 배는 어떻게 물에 뜰까?", words: "Drop, Rain" },
-            { id: "APR-B4-3", month: "Apr", unit: "B4", type: "reading",  title: "A Drop Around the World", theme: "Water Wonders", question: "무거운 배는 어떻게 물에 뜰까?", words: "Cycle, Travel" },
-            { id: "APR-B4-4", month: "Apr", unit: "B4", type: "reading",  title: "The Water Princess", theme: "Water Wonders", question: "무거운 배는 어떻게 물에 뜰까?", words: "Clean, Well" },
-            { id: "APR-B4-5", month: "Apr", unit: "B4", type: "reading",  title: "All the Water in the World", theme: "Water Wonders", question: "무거운 배는 어떻게 물에 뜰까?", words: "Earth, Flow" },
-
-            { id: "MAY-B5-1", month: "May", unit: "B5", type: "workbook", title: "Me and My Amazing Body", theme: "Inside My Body", question: "우리가 밥을 먹으면 배 속에서 무슨 일이 생길까?", words: "Body, Skin" },
-            { id: "MAY-B5-2", month: "May", unit: "B5", type: "workbook", title: "Look Inside Your Body", theme: "Inside My Body", question: "우리가 밥을 먹으면 배 속에서 무슨 일이 생길까?", words: "Inside, Muscle" },
-            { id: "MAY-B5-3", month: "May", unit: "B5", type: "reading",  title: "The Magic School Bus Inside the Human Body", theme: "Inside My Body", question: "우리가 밥을 먹으면 배 속에서 무슨 일이 생길까?", words: "Bus, Organs" },
-            { id: "MAY-B5-4", month: "May", unit: "B5", type: "reading",  title: "Hear Your Heart", theme: "Inside My Body", question: "우리가 밥을 먹으면 배 속에서 무슨 일이 생길까?", words: "Heart, Beat" },
-            { id: "MAY-B5-5", month: "May", unit: "B5", type: "reading",  title: "Parts", theme: "Inside My Body", question: "우리가 밥을 먹으면 배 속에서 무슨 일이 생길까?", words: "Health, Care" },
-
-            { id: "JUN-B6-1", month: "Jun", unit: "B6", type: "workbook", title: "Rosie Revere, Engineer", theme: "Little Inventors", question: "내 머릿속 아이디어를 어떻게 진짜로 만들까?", words: "Build, Fix" },
-            { id: "JUN-B6-2", month: "Jun", unit: "B6", type: "workbook", title: "What Do You Do With an Idea?", theme: "Little Inventors", question: "내 머릿속 아이디어를 어떻게 진짜로 만들까?", words: "Idea, Dream" },
-            { id: "JUN-B6-3", month: "Jun", unit: "B6", type: "reading",  title: "The Most Magnificent Thing", theme: "Little Inventors", question: "내 머릿속 아이디어를 어떻게 진짜로 만들까?", words: "Design, Tool" },
-            { id: "JUN-B6-4", month: "Jun", unit: "B6", type: "reading",  title: "Iggy Peck, Architect", theme: "Little Inventors", question: "내 머릿속 아이디어를 어떻게 진짜로 만들까?", words: "Bridge, Plan" },
-            { id: "JUN-B6-5", month: "Jun", unit: "B6", type: "reading",  title: "Boxitects", theme: "Little Inventors", question: "내 머릿속 아이디어를 어떻게 진짜로 만들까?", words: "Box, Create" },
-
-            { id: "JUL-B7-1", month: "Jul", unit: "B7", type: "workbook", title: "Moon! Earth's Best Friend", theme: "Earth and Beyond", question: "태양계 행성들은 왜 다르게 생겼을까?", words: "Moon, Earth" },
-            { id: "JUL-B7-2", month: "Jul", unit: "B7", type: "workbook", title: "Our Stars", theme: "Earth and Beyond", question: "태양계 행성들은 왜 다르게 생겼을까?", words: "Stars, Sky" },
-            { id: "JUL-B7-3", month: "Jul", unit: "B7", type: "reading",  title: "Sun! One in a Billion", theme: "Earth and Beyond", question: "태양계 행성들은 왜 다르게 생겼을까?", words: "Sun, Fire" },
-            { id: "JUL-B7-4", month: "Jul", unit: "B7", type: "reading",  title: "If You Decide to Go to the Moon", theme: "Earth and Beyond", question: "태양계 행성들은 왜 다르게 생겼을까?", words: "Travel, Space" },
-            { id: "JUL-B7-5", month: "Jul", unit: "B7", type: "reading",  title: "Little Kids First Big Book of Space", theme: "Earth and Beyond", question: "태양계 행성들은 왜 다르게 생겼을까?", words: "Planet, System" },
-
-            { id: "AUG-B8-1", month: "Aug", unit: "B8", type: "workbook", title: "The Dot", theme: "Colors & Masterpieces", question: "색깔을 섞으면 어떤 감정이 될까?", words: "Dot, Draw" },
-            { id: "AUG-B8-2", month: "Aug", unit: "B8", type: "workbook", title: "Mix It Up!", theme: "Colors & Masterpieces", question: "색깔을 섞으면 어떤 감정이 될까?", words: "Mix, Color" },
-            { id: "AUG-B8-3", month: "Aug", unit: "B8", type: "reading",  title: "Ish", theme: "Colors & Masterpieces", question: "색깔을 섞으면 어떤 감정이 될까?", words: "Mind, Art" },
-            { id: "AUG-B8-4", month: "Aug", unit: "B8", type: "reading",  title: "Beautiful Oops!", theme: "Colors & Masterpieces", question: "색깔을 섞으면 어떤 감정이 될까?", words: "Error, Beautiful" },
-            { id: "AUG-B8-5", month: "Aug", unit: "B8", type: "reading",  title: "Swatch: The Girl Who Loved Color", theme: "Colors & Masterpieces", question: "색깔을 섞으면 어떤 감정이 될까?", words: "Girl, Colors" },
-
-            { id: "SEP-B9-1", month: "Sep", unit: "B9", type: "workbook", title: "Stick and Stone", theme: "Let's Be Friends", question: "진짜 좋은 친구란 어떤 걸까?", words: "Stick, Friend" },
-            { id: "SEP-B9-2", month: "Sep", unit: "B9", type: "workbook", title: "A Sick Day for Amos McGee", theme: "Let's Be Friends", question: "진짜 좋은 친구란 어떤 걸까?", words: "Care, Sick" },
-            { id: "SEP-B9-3", month: "Sep", unit: "B9", type: "reading",  title: "Enemy Pie", theme: "Let's Be Friends", question: "진짜 좋은 친구란 어떤 걸까?", words: "Pie, Enemy" },
-            { id: "SEP-B9-4", month: "Sep", unit: "B9", type: "reading",  title: "Peanut Butter & Cupcake", theme: "Let's Be Friends", question: "진짜 좋은 친구란 어떤 걸까?", words: "Play, Together" },
-            { id: "SEP-B9-5", month: "Sep", unit: "B9", type: "reading",  title: "Strictly No Elephants", theme: "Let's Be Friends", question: "진짜 좋은 친구란 어떤 걸까?", words: "Welcome, All" },
-
-            { id: "OCT-B10-1", month: "Oct", unit: "B10", type: "workbook", title: "The Little House", theme: "Time Travelers", question: "공룡 시대부터 지금까지 세상은 어떻게 변했을까?", words: "House, Time" },
-            { id: "OCT-B10-2", month: "Oct", unit: "B10", type: "workbook", title: "Window", theme: "Time Travelers", question: "공룡 시대부터 지금까지 세상은 어떻게 변했을까?", words: "View, Change" },
-            { id: "OCT-B10-3", month: "Oct", unit: "B10", type: "reading",  title: "First the Egg", theme: "Time Travelers", question: "공룡 시대부터 지금까지 세상은 어떻게 변했을까?", words: "Egg, Grow" },
-            { id: "OCT-B10-4", month: "Oct", unit: "B10", type: "reading",  title: "Once Upon a Time", theme: "Time Travelers", question: "공룡 시대부터 지금까지 세상은 어떻게 변했을까?", words: "Story, Old" },
-            { id: "OCT-B10-5", month: "Oct", unit: "B10", type: "reading",  title: "A Street Through Time", theme: "Time Travelers", question: "공룡 시대부터 지금까지 세상은 어떻게 변했을까?", words: "Street, History" },
-
-            { id: "NOV-B11-1", month: "Nov", unit: "B11", type: "workbook", title: "Michael Recycle", theme: "Earth Heroes", question: "우리가 사는 지구를 어떻게 지켜줄 수 있을까?", words: "Recycle, Save" },
-            { id: "NOV-B11-2", month: "Nov", unit: "B11", type: "workbook", title: "10 Things I Can Do to Help My World", theme: "Earth Heroes", question: "우리가 사는 지구를 어떻게 지켜줄 수 있을까?", words: "Help, World" },
-            { id: "NOV-B11-3", month: "Nov", unit: "B11", type: "reading",  title: "The Lorax", theme: "Earth Heroes", question: "우리가 사는 지구를 어떻게 지켜줄 수 있을까?", words: "Tree, Protect" },
-            { id: "NOV-B11-4", month: "Nov", unit: "B11", type: "reading",  title: "Compost Stew", theme: "Earth Heroes", question: "우리가 사는 지구를 어떻게 지켜줄 수 있을까?", words: "Dirt, Compost" },
-            { id: "NOV-B11-5", month: "Nov", unit: "B11", type: "reading",  title: "Here We Are", theme: "Earth Heroes", question: "우리가 사는 지구를 어떻게 지켜줄 수 있을까?", words: "Earth, Note" },
-
-            { id: "DEC-B12-1", month: "Dec", unit: "B12", type: "workbook", title: "Lights of Winter", theme: "Festivals of Light", question: "세계의 친구들은 겨울을 어떻게 기념할까?", words: "Light, Dark" },
-            { id: "DEC-B12-2", month: "Dec", unit: "B12", type: "workbook", title: "Let's Celebrate!", theme: "Festivals of Light", question: "세계의 친구들은 겨울을 어떻게 기념할까?", words: "Party, World" },
-            { id: "DEC-B12-3", month: "Dec", unit: "B12", type: "reading",  title: "The Polar Express", theme: "Festivals of Light", question: "세계의 친구들은 겨울을 어떻게 기념할까?", words: "Train, Bell" },
-            { id: "DEC-B12-4", month: "Dec", unit: "B12", type: "reading",  title: "Lucia Morning in Sweden", theme: "Festivals of Light", question: "세계의 친구들은 겨울을 어떻게 기념할까?", words: "Crown, Light" },
-            { id: "DEC-B12-5", month: "Dec", unit: "B12", type: "reading",  title: "Seven Spools of Thread", theme: "Festivals of Light", question: "세계의 친구들은 겨울을 어떻게 기념할까?", words: "Thread, Color" }
+        const BRIDGE_DATABASE = [
+            // --- JANUARY ---
+            { month: "Jan", unit: "A1", theme: "All About Me", question: "나는 누구일까요?", books: [
+                { id: "JAN-A1-1", title: "I Like Myself!", type: "workbook" },
+                { id: "JAN-A1-2", title: "The Color Monster", type: "workbook" },
+                { id: "JAN-A1-3", title: "My Five Senses", type: "reading" },
+                { id: "JAN-A1-4", title: "The Family Book", type: "reading" },
+                { id: "JAN-A1-5", title: "From Head to Toe", type: "reading" }
+            ]},
+            { month: "Jan", unit: "B1", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", books: [
+                { id: "JAN-B1-1", title: "Me on the Map", type: "workbook" },
+                { id: "JAN-B1-2", title: "This Is How We Do It", type: "workbook" },
+                { id: "JAN-B1-3", title: "Whoever You Are", type: "reading" },
+                { id: "JAN-B1-4", title: "Madeline", type: "reading" },
+                { id: "JAN-B1-5", title: "We're All Wonders", type: "reading" }
+            ]},
+            // --- FEBRUARY ---
+            { month: "Feb", unit: "A2", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", books: [
+                { id: "FEB-A2-1", title: "The Very Hungry Caterpillar", type: "workbook" },
+                { id: "FEB-A2-2", title: "The Very Busy Spider", type: "workbook" },
+                { id: "FEB-A2-3", title: "The Grouchy Ladybug", type: "reading" },
+                { id: "FEB-A2-4", title: "Waiting for Wings", type: "reading" },
+                { id: "FEB-A2-5", title: "The Honeybee", type: "reading" }
+            ]},
+            { month: "Feb", unit: "B2", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", books: [
+                { id: "FEB-B2-1", title: "The Tiny Seed", type: "workbook" },
+                { id: "FEB-B2-2", title: "From Caterpillar to Butterfly", type: "workbook" },
+                { id: "FEB-B2-3", title: "Planting a Rainbow", type: "reading" },
+                { id: "FEB-B2-4", title: "A Seed Is Sleepy", type: "reading" },
+                { id: "FEB-B2-5", title: "Up in the Garden", type: "reading" }
+            ]},
+            // --- MARCH ---
+            { month: "Mar", unit: "A3", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", books: [
+                { id: "MAR-A3-1", title: "My Mom", type: "workbook" },
+                { id: "MAR-A3-2", title: "My Dad", type: "workbook" },
+                { id: "MAR-A3-3", title: "Love You Forever", type: "reading" },
+                { id: "MAR-A3-4", title: "Guess How Much I Love You", type: "reading" },
+                { id: "MAR-A3-5", title: "Mother's Day", type: "reading" }
+            ]},
+            { month: "Mar", unit: "B3", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", books: [
+                { id: "MAR-B3-1", title: "A House for Me", type: "workbook" },
+                { id: "MAR-B3-2", title: "Welcome Home, Bear", type: "workbook" },
+                { id: "MAR-B3-3", title: "The Kapok Tree", type: "reading" },
+                { id: "MAR-B3-4", title: "Over in the Meadow", type: "reading" },
+                { id: "MAR-B3-5", title: "Who Lives Here?", type: "reading" }
+            ]},
+            // --- APRIL ---
+            { month: "Apr", unit: "A4", theme: "Under the Sea", question: "바다 밑에는 누가 살고 있을까?", books: [
+                { id: "APR-A4-1", title: "The Pout-Pout Fish", type: "workbook" },
+                { id: "APR-A4-2", title: "Commotion in the Ocean", type: "workbook" },
+                { id: "APR-A4-3", title: "The Rainbow Fish", type: "reading" },
+                { id: "APR-A4-4", title: "I'm the Biggest", type: "reading" },
+                { id: "APR-A4-5", title: "Swimmy", type: "reading" }
+            ]},
+            { month: "Apr", unit: "B4", theme: "Water Wonders", question: "무거운 배는 어떻게 물에 뜰까?", books: [
+                { id: "APR-B4-1", title: "Who Sank the Boat?", type: "workbook" },
+                { id: "APR-B4-2", title: "Hey, Water!", type: "workbook" },
+                { id: "APR-B4-3", title: "A Drop", type: "reading" },
+                { id: "APR-B4-4", title: "Water Princess", type: "reading" },
+                { id: "APR-B4-5", title: "All the Water", type: "reading" }
+            ]},
+            // --- MAY ---
+            { month: "May", unit: "A5", theme: "Colors of Weather", question: "날씨에도 색깔이 있을까?", books: [
+                { id: "MAY-A5-1", title: "Rain", type: "workbook" },
+                { id: "MAY-A5-2", title: "Little Raindrop", type: "workbook" },
+                { id: "MAY-A5-3", title: "Meatballs", type: "reading" },
+                { id: "MAY-A5-4", title: "Elmer and Rainbow", type: "reading" },
+                { id: "MAY-A5-5", title: "Worm Weather", type: "reading" }
+            ]},
+            { month: "May", unit: "B5", theme: "Inside My Body", question: "우리가 밥을 먹으면 배 속에서 무슨 일이 생길까?", books: [
+                { id: "MAY-B5-1", title: "Amazing Body", type: "workbook" },
+                { id: "MAY-B5-2", title: "Look Inside", type: "workbook" },
+                { id: "MAY-B5-3", title: "Magic School Bus", type: "reading" },
+                { id: "MAY-B5-4", title: "Hear Your Heart", type: "reading" },
+                { id: "MAY-B5-5", title: "Parts", type: "reading" }
+            ]},
+            // --- JUNE ---
+            { month: "Jun", unit: "A6", theme: "Space Adventure", question: "달나라로 소풍을 가면 무엇이 필요할까?", books: [
+                { id: "JUN-A6-1", title: "Like Space", type: "workbook" },
+                { id: "JUN-A6-2", title: "Rockets", type: "workbook" },
+                { id: "JUN-A6-3", title: "Catch a Star", type: "reading" },
+                { id: "JUN-A6-4", title: "Moon for Me", type: "reading" },
+                { id: "JUN-A6-5", title: "Blast Off!", type: "reading" }
+            ]},
+            { month: "Jun", unit: "B6", theme: "Little Inventors", question: "내 머릿속 아이디어를 어떻게 진짜로 만들까?", books: [
+                { id: "JUN-B6-1", title: "Rosie Revere", type: "workbook" },
+                { id: "JUN-B6-2", title: "Idea", type: "workbook" },
+                { id: "JUN-B6-3", title: "Magnificent Thing", type: "reading" },
+                { id: "JUN-B6-4", title: "Iggy Peck", type: "reading" },
+                { id: "JUN-B6-5", title: "Boxitects", type: "reading" }
+            ]},
+            // --- JULY ---
+            { month: "Jul", unit: "A7", theme: "Dinos Rule!", question: "공룡들은 어떻게 친구가 되었을까?", books: [
+                { id: "JUL-A7-1", title: "Good Night?", type: "workbook" },
+                { id: "JUL-A7-2", title: "Dinosaurs", type: "workbook" },
+                { id: "JUL-A7-3", title: "Danny", type: "reading" },
+                { id: "JUL-A7-4", title: "Dinosaurs Back", type: "reading" },
+                { id: "JUL-A7-5", title: "Stomp!", type: "reading" }
+            ]},
+            { month: "Jul", unit: "B7", theme: "Earth and Beyond", question: "태양계 행성들은 왜 다르게 생겼을까?", books: [
+                { id: "JUL-B7-1", title: "Moon!", type: "workbook" },
+                { id: "JUL-B7-2", title: "Our Stars", type: "workbook" },
+                { id: "JUL-B7-3", title: "Sun!", type: "reading" },
+                { id: "JUL-B7-4", title: "Go to Moon", type: "reading" },
+                { id: "JUL-B7-5", title: "Space Book", type: "reading" }
+            ]},
+            // --- AUGUST ---
+            { month: "Aug", unit: "A8", theme: "Five Senses & Food", question: "맛있는 소리는 어떤 느낌일까?", books: [
+                { id: "AUG-A8-1", title: "Alphabet", type: "workbook" },
+                { id: "AUG-A8-2", title: "Green Eggs", type: "workbook" },
+                { id: "AUG-A8-3", title: "Stone Soup", type: "reading" },
+                { id: "AUG-A8-4", title: "Vegetable Soup", type: "reading" },
+                { id: "AUG-A8-5", title: "Yummy Yucky", type: "reading" }
+            ]},
+            { month: "Aug", unit: "B8", theme: "Colors & Masterpieces", question: "색깔을 섞으면 어떤 감정이 될까?", books: [
+                { id: "AUG-B8-1", title: "The Dot", type: "workbook" },
+                { id: "AUG-B8-2", title: "Mix It Up!", type: "workbook" },
+                { id: "AUG-B8-3", title: "Ish", type: "reading" },
+                { id: "AUG-B8-4", title: "Oops!", type: "reading" },
+                { id: "AUG-B8-5", title: "Swatch", type: "reading" }
+            ]},
+            // --- SEPTEMBER ---
+            { month: "Sep", unit: "A9", theme: "Who are Helpers?", question: "우리 마을을 돕는 영웅은 누구일까?", books: [
+                { id: "SEP-A9-1", title: "Clues to Jobs", type: "workbook" },
+                { id: "SEP-A9-2", title: "Whose Hat?", type: "workbook" },
+                { id: "SEP-A9-3", title: "Fire Truck", type: "reading" },
+                { id: "SEP-A9-4", title: "Doctor", type: "reading" },
+                { id: "SEP-A9-5", title: "Officer", type: "reading" }
+            ]},
+            { month: "Sep", unit: "B9", theme: "Let's Be Friends", question: "진짜 좋은 친구란 어떤 걸까?", books: [
+                { id: "SEP-B9-1", title: "Stick and Stone", type: "workbook" },
+                { id: "SEP-B9-2", title: "Amos McGee", type: "workbook" },
+                { id: "SEP-B9-3", title: "Enemy Pie", type: "reading" },
+                { id: "SEP-B9-4", title: "Peanut Butter", type: "reading" },
+                { id: "SEP-B9-5", title: "No Elephants", type: "reading" }
+            ]},
+            // --- OCTOBER ---
+            { month: "Oct", unit: "A10", theme: "How do we Go?", question: "하늘, 땅, 바다 어디든 갈 수 있다면?", books: [
+                { id: "OCT-A10-1", title: "Go, Dog. Go!", type: "workbook" },
+                { id: "OCT-A10-2", title: "Freight Train", type: "workbook" },
+                { id: "OCT-A10-3", title: "Pigeon", type: "reading" },
+                { id: "OCT-A10-4", title: "Engine", type: "reading" },
+                { id: "OCT-A10-5", title: "Cars", type: "reading" }
+            ]},
+            { month: "Oct", unit: "B10", theme: "Time Travelers", question: "공룡 시대부터 지금까지 세상은 어떻게 변했을까?", books: [
+                { id: "OCT-B10-1", title: "Little House", type: "workbook" },
+                { id: "OCT-B10-2", title: "Window", type: "workbook" },
+                { id: "OCT-B10-3", title: "First Egg", type: "reading" },
+                { id: "OCT-B10-4", title: "Once Upon Time", type: "reading" },
+                { id: "OCT-B10-5", title: "Street Time", type: "reading" }
+            ]},
+            // --- NOVEMBER ---
+            { month: "Nov", unit: "A11", theme: "Wild Animals", question: "정글 속 동물들은 무엇을 좋아할까?", books: [
+                { id: "NOV-A11-1", title: "Dear Zoo", type: "workbook" },
+                { id: "NOV-A11-2", title: "Brown Bear", type: "workbook" },
+                { id: "NOV-A11-3", title: "Walking Jungle", type: "reading" },
+                { id: "NOV-A11-4", title: "Chameleon", type: "reading" },
+                { id: "NOV-A11-5", title: "Hear Polar Bear", type: "reading" }
+            ]},
+            { month: "Nov", unit: "B11", theme: "Earth Heroes", question: "우리가 사는 지구를 어떻게 지켜줄 수 있을까?", books: [
+                { id: "NOV-B11-1", title: "Michael Recycle", type: "workbook" },
+                { id: "NOV-B11-2", title: "10 Things", type: "workbook" },
+                { id: "NOV-B11-3", title: "Lorax", type: "reading" },
+                { id: "NOV-B11-4", title: "Compost Stew", type: "reading" },
+                { id: "NOV-B11-5", title: "Here We Are", type: "reading" }
+            ]},
+            // --- DECEMBER ---
+            { month: "Dec", unit: "A12", theme: "Winter & Holidays", question: "겨울은 왜 따뜻한 계절일까?", books: [
+                { id: "DEC-A12-1", title: "Snowy Day", type: "workbook" },
+                { id: "DEC-A12-2", title: "Giving Tree", type: "workbook" },
+                { id: "DEC-A12-3", title: "Christmas Bear", type: "reading" },
+                { id: "DEC-A12-4", title: "Little Tree", type: "reading" },
+                { id: "DEC-A12-5", title: "Grinch", type: "reading" }
+            ]},
+            { month: "Dec", unit: "B12", theme: "Festivals of Light", question: "세계의 친구들은 겨울을 어떻게 기념할까?", books: [
+                { id: "DEC-B12-1", title: "Lights Winter", type: "workbook" },
+                { id: "DEC-B12-2", title: "Let's Celebrate", type: "workbook" },
+                { id: "DEC-B12-3", title: "Polar Express", type: "reading" },
+                { id: "DEC-B12-4", title: "Lucia Morning", type: "reading" },
+                { id: "DEC-B12-5", title: "Seven Spools", type: "reading" }
+            ]}
         ];
 
         // System Configuration
-        const APP_CONFIG = {
+        const HERITAGE_CONFIG = {
             API_KEY: "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4",
             MODEL: "gemini-1.5-flash",
             MONTHS: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         };
 
         // Gateway Engine
-        const EliteApp = {
+        const HeritageApp = {
             unlock() {
                 const gateway = document.getElementById('access-gateway');
-                const main = document.getElementById('main-campus');
+                const main = document.getElementById('campus-view');
                 gateway.classList.add('unlocked');
                 main.style.display = 'block';
-                setTimeout(() => EliteUI.init(), 600);
+                setTimeout(() => HeritageUI.init(), 600);
             },
             refresh() { window.location.reload(); }
         };
 
-        // User Interface Engine
-        const EliteUI = {
+        // Master UI Controller
+        const HeritageUI = {
             currentFilter: 'ALL',
 
             init() {
-                this.render();
-                this.observeScroll();
+                this.renderRoadmap();
+                this.observeAnimations();
             },
 
             filter(type) {
                 this.currentFilter = type;
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                document.getElementById(`btn-${type.toLowerCase()}`).classList.add('active');
-                this.render();
-                // Re-apply observers to new DOM elements
-                setTimeout(() => this.observeScroll(), 100);
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.getElementById(`tab-${type.toLowerCase()}`).classList.add('active');
+                this.renderRoadmap();
+                setTimeout(() => this.observeAnimations(), 100);
             },
 
-            render() {
-                const roadmap = document.getElementById('master-roadmap');
+            renderRoadmap() {
+                const roadmap = document.getElementById('heritage-roadmap');
                 roadmap.innerHTML = ""; 
 
-                APP_CONFIG.MONTHS.forEach(month => {
-                    const monthBooks = BRIDGE_LIBRARY.filter(b => b.month === month);
-                    if (monthBooks.length === 0) return;
+                HERITAGE_CONFIG.MONTHS.forEach(monthName => {
+                    const monthData = BRIDGE_DATABASE.filter(d => d.month === monthName);
+                    if (monthData.length === 0) return;
 
-                    const block = document.createElement('div');
-                    block.className = 'month-block';
-                    block.innerHTML = `
-                        <div class="month-title-wrap">
-                            <h2 class="month-name">${month.toUpperCase()}</h2>
-                            <span class="month-meta">Premium Inquiry Cycle</span>
+                    const segment = document.createElement('div');
+                    segment.className = 'month-segment';
+                    segment.innerHTML = `
+                        <div class="month-anchor">
+                            <h2 class="anchor-name">${monthName.toUpperCase()}</h2>
+                            <span class="anchor-badge">Private Inquiry Cycle</span>
                         </div>
                     `;
 
-                    // Handle Series A and Level B uniquely per month
-                    const unitsInMonth = [...new Set(monthBooks.map(b => b.unit))];
-
-                    unitsInMonth.forEach(unitId => {
-                        const isSeriesA = unitId.includes('A');
+                    monthData.forEach(themeObj => {
+                        const isA = themeObj.unit.includes('A');
                         
                         // Tab Filter Logic
                         if (this.currentFilter !== 'ALL') {
-                            if (this.currentFilter === 'A' && !isSeriesA) return;
-                            if (this.currentFilter === 'B' && isSeriesA) return;
+                            if (this.currentFilter === 'A' && !isA) return;
+                            if (this.currentFilter === 'B' && isA) return;
                         }
 
-                        const themeBooks = monthBooks.filter(b => b.unit === unitId);
-                        const unitCard = this.createThemeUnit(unitId, themeBooks);
-                        block.appendChild(unitCard);
+                        const themeCard = this.createThemeCard(themeObj);
+                        segment.appendChild(themeCard);
                     });
 
-                    if (block.children.length > 1) {
-                        roadmap.appendChild(block);
+                    if (segment.children.length > 1) {
+                        roadmap.appendChild(segment);
                     }
                 });
             },
 
-            createThemeUnit(unitId, books) {
-                const isSeriesA = unitId.includes('A');
-                const unit = document.createElement('div');
-                unit.className = `theme-unit ${isSeriesA ? 'series-a' : 'level-b'}`;
+            createThemeCard(themeObj) {
+                const isA = themeObj.unit.includes('A');
+                const card = document.createElement('div');
+                card.className = `inquiry-theme-card ${isA ? 'A-track' : 'B-track'}`;
                 
-                unit.innerHTML = `
-                    <div class="unit-header">
-                        <div class="unit-info">
-                            <span class="card-label">${unitId}: ${isSeriesA ? 'Series A Foundations' : 'Level B Perspectives'}</span>
-                            <h3>${books[0].theme}</h3>
-                            <p class="unit-question">"${books[0].question}"</p>
+                // Clicking the card leads to the workbook.
+                // We use the first workbook-type book ID as the entry point.
+                const entryId = themeObj.books.find(b => b.type === 'workbook').id;
+                card.onclick = () => window.location.href = `workbook.html?id=${entryId}`;
+                
+                card.innerHTML = `
+                    <div class="theme-content-wrap">
+                        <div class="theme-header-row">
+                            <div class="theme-info-box">
+                                <span class="theme-meta-id">Inquiry Unit ${themeObj.unit}: ${isA ? 'Foundations' : 'Perspectives'}</span>
+                                <h3 class="theme-title-h3">${themeObj.theme}</h3>
+                                <p class="theme-driving-q">"${themeObj.question}"</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="book-grid">
-                        ${books.map(book => this.createBookCard(book)).join('')}
-                    </div>
-                `;
-                return unit;
-            },
-
-            createBookCard(book) {
-                const isLab = (book.type === 'workbook');
-                return `
-                    <div class="book-card ${isLab ? 'is-lab' : ''}" 
-                         ${isLab ? `onclick="window.location.href='workbook.html?id=${book.id}'"` : ''}>
-                        <span class="badge-type ${isLab ? 'badge-lab' : 'badge-read'}">
-                            ${isLab ? 'INQUIRY LAB' : 'READING'}
-                        </span>
-                        <div class="book-thumb">
-                            <img src="${book.id}.png" onerror="this.src='placeholder.png'">
-                        </div>
-                        <div class="book-info">
-                            <h4 class="book-title">${book.title}</h4>
+                        <div class="curated-reading-gallery">
+                            ${themeObj.books.map(book => `
+                                <div class="recommend-book-item ${book.type === 'workbook' ? 'is-core' : ''}">
+                                    <div class="lab-status-dot">CORE</div>
+                                    <div class="recommend-thumb">
+                                        <img src="${book.id}.png" onerror="this.src='placeholder.png'">
+                                    </div>
+                                    <div class="recommend-book-title">${book.title}</div>
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
                 `;
+                return card;
             },
 
-            observeScroll() {
+            observeAnimations() {
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
-                        if (entry.isIntersecting) entry.target.classList.add('visible');
+                        if (entry.isIntersecting) entry.target.classList.add('active-view');
                     });
                 }, { threshold: 0.1 });
 
-                document.querySelectorAll('.month-block').forEach(b => observer.observe(b));
+                document.querySelectorAll('.month-segment').forEach(m => observer.observe(m));
             }
         };
 
-        // AI Vision Scanner Engine (V25.1 with Regex Normalization)
-        const EliteScanner = {
+        // AI Vision Scanner Module
+        const HeritageScanner = {
             stream: null,
-            isProcessing: false,
-
             async open() {
-                if (this.isProcessing) return;
-                
-                const modal = document.getElementById('scanner-modal');
-                const status = document.getElementById('scan-status');
-                modal.style.display = 'flex';
-                status.innerText = "Initializing Elite Vision System...";
-
+                const overlay = document.getElementById('vision-scanner-overlay');
+                overlay.style.display = 'flex';
                 try {
-                    if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-                        console.warn("Camera API requires HTTPS environment.");
-                    }
-
                     this.stream = await navigator.mediaDevices.getUserMedia({ 
-                        video: { facingMode: "environment", width: { ideal: 1920 }, height: { ideal: 1080 } } 
+                        video: { facingMode: "environment", width: { ideal: 1280 } } 
                     });
-                    document.getElementById('scan-video').srcObject = this.stream;
-                    status.innerText = "Align the Book Cover with the Frame";
+                    document.getElementById('scanner-v-feed').srcObject = this.stream;
                 } catch(e) { 
-                    status.innerText = "Exclusive Camera Access Denied. Check Permissions.";
-                    console.error("Scanner Error:", e);
+                    alert("Elite camera access is required."); 
+                    this.close(); 
                 }
             },
-
             close() { 
-                if(this.stream) {
-                    this.stream.getTracks().forEach(track => track.stop());
-                    this.stream = null;
-                }
-                document.getElementById('scanner-modal').style.display = 'none'; 
-                this.isProcessing = false;
+                if(this.stream) this.stream.getTracks().forEach(t => t.stop()); 
+                document.getElementById('vision-scanner-overlay').style.display = 'none'; 
             },
-
-            // Normalization to prevent matching errors (e.g., "The Dot." vs "The Dot")
-            normalize(text) {
-                return text.toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
-            },
-
             async identify() {
-                if (this.isProcessing) return;
-                this.isProcessing = true;
-
-                const video = document.getElementById('scan-video');
-                const status = document.getElementById('scan-status');
-                status.innerHTML = `<span style="color:var(--bridge-gold);">Verifying Heritage Asset...</span>`;
+                const video = document.getElementById('scanner-v-feed');
+                const status = document.getElementById('v-scan-status');
+                status.innerText = "Analyzing Digital Blueprint...";
                 
-                const canvas = document.createElement('canvas'); 
-                canvas.width = 1280; canvas.height = 720;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                const base64Data = canvas.toDataURL("image/jpeg", 0.8).split(',')[1];
+                const canvas = document.createElement('canvas'); canvas.width = 640; canvas.height = 480;
+                canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
+                const b64 = canvas.toDataURL("image/jpeg", 0.7).split(',')[1];
                 
                 try {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${APP_CONFIG.MODEL}:generateContent?key=${APP_CONFIG.KEY}`, {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${HERITAGE_CONFIG.MODEL}:generateContent?key=${HERITAGE_CONFIG.API_KEY}`, {
                         method: 'POST', headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ contents: [{ parts: [
-                            { text: "Examine this book cover. Identify and return ONLY the book title. If multiple versions exist, return the most common title." }, 
-                            { inline_data: { mime_type: "image/jpeg", data: base64Data } }
+                            { text: "Identity this book cover. Return ONLY the title." }, 
+                            { inline_data: { mime_type: "image/jpeg", data: b64 } }
                         ] }] })
                     });
-                    
                     const d = await res.json(); 
-                    const rawTitle = d.candidates[0].content.parts[0].text;
-                    const cleanAiTitle = this.normalize(rawTitle);
+                    const title = d.candidates[0].content.parts[0].text.trim().toLowerCase().replace(/[^a-z0-9 ]/g, "");
                     
-                    const matchedBook = BRIDGE_LIBRARY.find(book => {
-                        const cleanDbTitle = this.normalize(book.title);
-                        return cleanAiTitle.includes(cleanDbTitle) || cleanDbTitle.includes(cleanAiTitle);
+                    // Match against all books in the database
+                    let foundId = null;
+                    BRIDGE_DATABASE.forEach(unit => {
+                        unit.books.forEach(book => {
+                            const libT = book.title.toLowerCase().replace(/[^a-z0-9 ]/g, "");
+                            if (title.includes(libT) || libT.includes(title)) foundId = book.id;
+                        });
                     });
                     
-                    if (matchedBook && matchedBook.type === 'workbook') {
-                        status.innerHTML = `<span style="color:var(--bridge-green);">Access Granted: ${matchedBook.title}</span>`;
-                        setTimeout(() => window.location.href = `workbook.html?id=${matchedBook.id}`, 1000);
+                    if (foundId) {
+                        status.innerText = "Access Granted. Opening Lab...";
+                        setTimeout(() => window.location.href = `workbook.html?id=${foundId}`, 800);
                     } else {
-                        status.innerHTML = `<span style="color:var(--bridge-danger);">Restricted: Book not in Lab Series.</span>`;
-                        this.isProcessing = false;
+                        status.innerText = "Entry Restricted. Book not in Heritage Library.";
                     }
-                } catch(e) { 
-                    status.innerText = "System Latency Detected. Check Network."; 
-                    this.isProcessing = false; 
-                }
+                } catch(e) { status.innerText = "Cloud Connection Integrity Error."; }
             }
         };
-
-        // Initialize on load
-        window.addEventListener('DOMContentLoaded', () => {
-            console.log("Bridge Academy Private Heritage Campus Core Loaded.");
-        });
     </script>
 </body>
 </html>

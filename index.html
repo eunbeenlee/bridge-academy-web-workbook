@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bridge Academy | Elite Theme Heritage</title>
+    <title>Bridge Academy | Elite Heritage Campus</title>
     
-    <!-- [Premium Typography] Playfair Display for Luxury, Noto Sans for Precision -->
+    <!-- [Institutional Typography] Playfair for Heritage, Noto Sans for UI -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
         /* 
          * ======================================================================
-         * [Architecture: Bridge Academy Premium Design System V28.0]
+         * [Architecture: Bridge Academy Premium Design System V29.0]
          * Theme-Centric Inquiry Mastery | Director Lee Yun-ji Edition
          * ======================================================================
          */
@@ -19,26 +19,26 @@
             --bridge-green: #8CC69F;   /* Series A: Foundation */
             --bridge-gold: #C5A059;    /* Series B: Perspective & Accents */
             --bridge-blue: #7FB3D5;    /* Series C: Exploration */
-            --bridge-charcoal: #3A3A42; /* Series D & Mastery */
+            --bridge-charcoal: #3A3A42; /* Series D & Mastery Heritage */
             --bridge-taupe: #A39B8E;
             --bridge-bg: #F7F9F8;
             --bridge-paper: #FFFFFF;
             --bridge-border: rgba(58, 58, 66, 0.08);
             
             --luxury-shadow: 0 40px 100px rgba(58, 58, 66, 0.06);
-            --theme-hover-shadow: 0 60px 120px rgba(58, 58, 66, 0.12);
-            --gold-glow: 0 10px 30px rgba(197, 160, 89, 0.2);
+            --theme-hover-shadow: 0 60px 120px rgba(58, 58, 66, 0.15);
+            --gold-glow: 0 10px 30px rgba(197, 160, 89, 0.25);
             
             --transition-master: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
             --transition-smooth: all 0.4s ease;
         }
 
         /* [Institutional Standards] */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bridge-bg); color: var(--bridge-charcoal); line-height: 1.8; overflow-x: hidden; }
 
         /* --------------------------------------------------
-         * [Gate System] Persistent Session Protection
+         * [Gate System] Session Persistent Access
          * -------------------------------------------------- */
         #access-gateway {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -46,11 +46,11 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: transform 1.4s cubic-bezier(0.86, 0, 0.07, 1);
         }
-        #access-gateway.hidden-gate { display: none; }
         #access-gateway.unlocked { transform: translateY(-100%); }
+        #access-gateway.hidden-gate { display: none; }
         
         .gateway-logo { max-width: 250px; margin-bottom: 40px; filter: brightness(0) invert(1); opacity: 0; animation: luxuryFade 1.2s forwards 0.5s; }
-        .gateway-text { color: var(--bridge-gold); font-family: 'Playfair Display', serif; font-size: 15px; letter-spacing: 12px; opacity: 0; animation: luxuryFade 1.2s forwards 1s; }
+        .gateway-text { color: var(--bridge-gold); font-family: 'Playfair Display', serif; font-size: 15px; letter-spacing: 12px; opacity: 0; animation: luxuryFade 1.2s forwards 1s; text-transform: uppercase; }
         
         .btn-enter-heritage {
             margin-top: 60px; padding: 22px 80px; background: transparent; border: 1.5px solid var(--bridge-gold);
@@ -62,7 +62,7 @@
         @keyframes luxuryFade { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --------------------------------------------------
-         * [Header] Brand Authority
+         * [Header] Institutional Authority
          * -------------------------------------------------- */
         header {
             width: 100%; padding: 45px 8%; background: rgba(255, 255, 255, 0.96); 
@@ -75,7 +75,7 @@
         .campus-badge { font-size: 11px; font-weight: 800; letter-spacing: 6px; color: var(--bridge-taupe); border: 1.5px solid var(--bridge-taupe); padding: 12px 35px; border-radius: 100px; text-transform: uppercase; }
 
         /* --------------------------------------------------
-         * [Hero Section]
+         * [Hero Stage] The Vision of Inquiry
          * -------------------------------------------------- */
         .hero-stage { padding: 180px 8% 100px; text-align: center; background: radial-gradient(circle at top, #FFFFFF 0%, var(--bridge-bg) 100%); }
         .hero-stage h1 { font-family: 'Playfair Display', serif; font-size: 86px; font-weight: 900; margin-bottom: 40px; letter-spacing: -4px; line-height: 1.1; color: var(--bridge-charcoal); }
@@ -90,11 +90,10 @@
         .btn-magic-scan:hover { transform: translateY(-12px); background: var(--bridge-charcoal); box-shadow: 0 50px 100px rgba(58, 58, 66, 0.3); }
 
         /* --------------------------------------------------
-         * [Elite Insights] Parent Dashboard
+         * [Dashboard] Private Parent Insight
          * -------------------------------------------------- */
         .insight-grid { padding: 0 8% 120px; display: grid; grid-template-columns: 2.5fr 1fr; gap: 60px; }
         .insight-card { background: var(--bridge-paper); border-radius: 60px; padding: 80px; border: 1px solid var(--bridge-border); box-shadow: var(--luxury-shadow); transition: var(--transition-smooth); }
-        .insight-card:hover { transform: translateY(-5px); }
         .label-gold { font-size: 13px; font-weight: 900; color: var(--bridge-gold); letter-spacing: 7px; text-transform: uppercase; margin-bottom: 35px; display: block; }
         .insight-h3 { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 800; margin-bottom: 35px; color: var(--bridge-charcoal); }
         .insight-p { font-size: 19px; color: #777; font-weight: 300; line-height: 2.2; }
@@ -104,7 +103,7 @@
         .status-meta { font-size: 15px; opacity: 0.5; letter-spacing: 4px; text-transform: uppercase; margin-top: 15px; }
 
         /* --------------------------------------------------
-         * [Quadrant Filter] Navigation
+         * [Filter] Quadrant Navigation
          * -------------------------------------------------- */
         .filter-dock { display: flex; justify-content: center; gap: 20px; margin-bottom: 120px; position: sticky; top: 150px; z-index: 1000; padding: 25px 8%; }
         .filter-btn {
@@ -116,7 +115,7 @@
         .filter-btn.active { background: var(--bridge-charcoal); color: #FFFFFF; border-color: var(--bridge-charcoal); transform: scale(1.1); box-shadow: 0 30px 60px rgba(58, 58, 66, 0.3); }
 
         /* --------------------------------------------------
-         * [THEME ROADMAP] 24 Single-Click Units
+         * [Master Roadmap] THE THEME ENGINE
          * -------------------------------------------------- */
         .roadmap-stage { padding: 0 8% 250px; }
         .month-segment { margin-bottom: 220px; opacity: 0; transform: translateY(80px); transition: 1.4s cubic-bezier(0.19, 1, 0.22, 1); }
@@ -126,46 +125,50 @@
         .anchor-name { font-family: 'Playfair Display', serif; font-size: 100px; font-weight: 900; line-height: 1; color: var(--bridge-charcoal); letter-spacing: -2px; }
         .anchor-tag { font-size: 16px; font-weight: 900; color: var(--bridge-gold); letter-spacing: 10px; text-transform: uppercase; }
 
-        /* [MASTER THEME CARD] - THE CORE CLICKABLE UNIT */
+        /* --------------------------------------------------
+         * [MASTER THEME CARD] - THE CORE INTERACTIVE UNIT
+         * -------------------------------------------------- */
         .theme-heritage-card { 
             margin-bottom: 120px; background: #FFFFFF; border-radius: 80px; 
             box-shadow: var(--luxury-shadow); border: 1px solid rgba(0,0,0,0.02); 
             position: relative; overflow: hidden; transition: var(--transition-master);
-            cursor: pointer; display: grid; grid-template-columns: 1.5fr 1fr;
+            cursor: pointer; display: grid; grid-template-columns: 1.6fr 1fr;
         }
         
         .theme-heritage-card:hover { transform: translateY(-25px); box-shadow: var(--theme-hover-shadow); }
         .theme-heritage-card::before { content: ""; position: absolute; top: 0; left: 0; width: 28px; height: 100%; }
         
-        /* Series Accent Colors */
+        /* Quadrant Logic Coloring */
         .theme-heritage-card.series-A::before { background: var(--bridge-green); }
         .theme-heritage-card.series-B::before { background: var(--bridge-gold); }
         .theme-heritage-card.series-C::before { background: var(--bridge-blue); }
         .theme-heritage-card.series-D::before { background: var(--bridge-charcoal); }
 
-        /* Card Left: Content Area */
-        .card-content-side { padding: 100px 80px; }
-        .theme-id-badge { font-size: 14px; font-weight: 900; color: var(--bridge-gold); text-transform: uppercase; letter-spacing: 7px; margin-bottom: 30px; display: block; }
-        .theme-h2-title { font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 900; margin-bottom: 35px; color: var(--bridge-charcoal); letter-spacing: -3px; line-height: 1.1; }
-        .theme-question-box { font-size: 28px; font-weight: 400; color: var(--bridge-taupe); font-style: italic; border-left: 5px solid var(--bridge-green); padding-left: 45px; margin-bottom: 20px; max-width: 90%; }
-        .btn-lab-enter { margin-top: 50px; color: var(--bridge-gold); font-weight: 800; letter-spacing: 4px; font-size: 13px; text-transform: uppercase; display: flex; align-items: center; gap: 15px; }
-        .btn-lab-enter::after { content: "→"; font-size: 24px; transition: 0.3s; }
-        .theme-heritage-card:hover .btn-lab-enter::after { transform: translateX(10px); }
+        /* Left Side: Content & Question */
+        .card-content-side { padding: 100px 90px; }
+        .theme-id-badge { font-size: 15px; font-weight: 900; color: var(--bridge-gold); text-transform: uppercase; letter-spacing: 8px; margin-bottom: 30px; display: block; }
+        .theme-h2-title { font-family: 'Playfair Display', serif; font-size: 76px; font-weight: 900; margin-bottom: 40px; color: var(--bridge-charcoal); letter-spacing: -3px; line-height: 1.1; }
+        .theme-question-box { font-size: 30px; font-weight: 400; color: var(--bridge-taupe); font-style: italic; border-left: 6px solid var(--bridge-green); padding-left: 50px; margin-bottom: 20px; max-width: 95%; line-height: 1.4; }
+        
+        .lab-enter-cta { margin-top: 60px; color: var(--bridge-gold); font-weight: 800; letter-spacing: 5px; font-size: 14px; text-transform: uppercase; display: flex; align-items: center; gap: 20px; }
+        .lab-enter-cta span { font-size: 28px; transition: 0.3s; }
+        .theme-heritage-card:hover .lab-enter-cta span { transform: translateX(12px); }
 
-        /* Card Right: Recommended Reading Side (Listed Only) */
-        .card-reading-side { background: #FAFBFB; padding: 100px 80px; border-left: 1px solid #F0F0F0; display: flex; flex-direction: column; justify-content: center; }
-        .reading-list-title { font-size: 11px; font-weight: 900; color: #AAA; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; display: block; }
+        /* Right Side: Recommended Reading (TEXT ONLY) */
+        .card-reading-side { background: #FAFBFB; padding: 100px 90px; border-left: 1px solid #F1F1F1; display: flex; flex-direction: column; justify-content: center; }
+        .reading-list-title { font-size: 12px; font-weight: 900; color: #AAA; letter-spacing: 6px; text-transform: uppercase; margin-bottom: 50px; display: block; }
+        
         .reading-item-list { list-style: none; }
         .reading-item-list li { 
-            font-family: 'Playfair Display', serif; font-size: 19px; color: #888; margin-bottom: 25px; 
-            padding-bottom: 15px; border-bottom: 1px solid #EEE; transition: 0.3s;
-            display: flex; align-items: baseline; gap: 15px;
+            font-family: 'Playfair Display', serif; font-size: 20px; color: #999; margin-bottom: 30px; 
+            padding-bottom: 20px; border-bottom: 1px solid #EEE; transition: 0.3s;
+            display: flex; align-items: baseline; gap: 20px;
         }
-        .reading-item-list li span { font-size: 12px; font-weight: 900; color: var(--bridge-gold); opacity: 0.4; }
+        .reading-item-list li strong { font-size: 13px; font-weight: 900; color: var(--bridge-gold); opacity: 0.5; }
         .theme-heritage-card:hover .reading-item-list li { color: var(--bridge-charcoal); }
 
         /* --------------------------------------------------
-         * [Scanner Engine UI]
+         * [AI Vision Engine UI]
          * -------------------------------------------------- */
         #vision-scanner-modal { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -173,108 +176,102 @@
             z-index: 3000; flex-direction: column; align-items: center; justify-content: center; 
         }
         .viewport-frame { 
-            width: 100%; max-width: 650px; border-radius: 90px; overflow: hidden; 
-            border: 20px solid #FFFFFF; box-shadow: 0 100px 250px rgba(0,0,0,0.25); 
+            width: 100%; max-width: 680px; border-radius: 90px; overflow: hidden; 
+            border: 22px solid #FFFFFF; box-shadow: 0 100px 250px rgba(0,0,0,0.25); 
             position: relative; background: #000;
         }
-        #v-feed { width: 100%; height: auto; display: block; }
-        .laser-beam { position: absolute; top: 0; left: 0; width: 100%; height: 12px; background: var(--bridge-green); box-shadow: 0 0 60px var(--bridge-green); animation: laserBeam 3.5s ease-in-out infinite; }
+        #v-feed { width: 100%; height: auto; display: block; object-fit: cover; }
+        .laser-beam { position: absolute; top: 0; left: 0; width: 100%; height: 14px; background: var(--bridge-green); box-shadow: 0 0 60px var(--bridge-green); animation: laserBeam 3.5s ease-in-out infinite; }
         @keyframes laserBeam { 0%, 100% { top: 0; opacity: 0; } 50% { top: 100%; opacity: 1; } }
 
-        .v-btn-row { display: flex; gap: 40px; margin-top: 80px; }
-        .btn-v-scan { padding: 30px 120px; border-radius: 100px; background: var(--bridge-charcoal); color: #FFFFFF; border: none; font-weight: 900; cursor: pointer; letter-spacing: 8px; font-size: 18px; text-transform: uppercase; transition: var(--transition-master); }
+        .v-controls { display: flex; gap: 40px; margin-top: 80px; }
+        .btn-v-scan { padding: 32px 130px; border-radius: 100px; background: var(--bridge-charcoal); color: #FFFFFF; border: none; font-weight: 900; cursor: pointer; letter-spacing: 8px; font-size: 18px; text-transform: uppercase; transition: var(--transition-master); }
         .btn-v-scan:hover { background: var(--bridge-green); transform: translateY(-5px); }
 
-        /* [Footer] Institutional Identity */
+        /* [Institutional Footer] */
         footer { background: var(--bridge-charcoal); padding: 220px 8%; text-align: center; }
-        .f-logo-heritage { max-width: 240px; opacity: 0.3; margin-bottom: 80px; }
-        .elite-copy { font-size: 14px; color: rgba(255,255,255,0.2); letter-spacing: 10px; text-transform: uppercase; font-weight: 300; }
+        .f-logo-box { max-width: 250px; opacity: 0.3; margin-bottom: 80px; }
+        .elite-copy { font-size: 15px; color: rgba(255,255,255,0.2); letter-spacing: 12px; text-transform: uppercase; font-weight: 300; }
 
-        /* [Mobile Resilience] */
-        @media (max-width: 1400px) {
+        /* [Mobile & Tablet Optimization] */
+        @media (max-width: 1500px) {
             .theme-heritage-card { grid-template-columns: 1fr; }
-            .card-reading-side { padding: 60px 80px; border-left: none; border-top: 1px solid #F0F0F0; }
-            .theme-h2-title { font-size: 60px; }
+            .card-reading-side { border-left: none; border-top: 1px solid #F0F0F0; padding: 70px 90px; }
         }
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             header { padding: 35px 5%; }
             .hero-stage h1 { font-size: 52px; }
-            .insight-grid { grid-template-columns: 1fr; padding: 0 5% 100px; }
-            .filter-dock { gap: 15px; padding: 20px 5%; overflow-x: auto; justify-content: flex-start; }
-            .month-anchor { flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+            .insight-grid { grid-template-columns: 1fr; }
+            .filter-dock { overflow-x: auto; justify-content: flex-start; padding: 20px 5%; }
             .anchor-name { font-size: 64px; }
-            .card-content-side, .card-reading-side { padding: 50px 35px; }
-            .theme-h2-title { font-size: 44px; }
-            .theme-question-box { font-size: 20px; padding-left: 25px; }
+            .card-content-side, .card-reading-side { padding: 60px 40px; }
+            .theme-h2-title { font-size: 48px; }
+            .theme-question-box { font-size: 22px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ==========================================
-         [GATEWAY] Entry Protection (Session Aware)
-         ========================================== -->
+    <!-- Private Access Logic -->
     <div id="access-gateway">
         <img src="logo.png" alt="Bridge Academy Heritage" class="gateway-logo">
         <div class="gateway-text">PRIVATE MEMBERSHIP ACCESS</div>
         <button class="btn-enter-heritage" onclick="HeritageCore.unlock()">ENTER CAMPUS</button>
     </div>
 
-    <!-- ==========================================
-         [HEADER] Institutional Navigation
-         ========================================== -->
+    <!-- Heritage Header -->
     <header>
         <div class="logo-box" onclick="HeritageCore.refresh()">
             <img src="logo.png" alt="Bridge Academy" class="logo-img">
         </div>
-        <div class="campus-badge">QUADRANT MASTER HERITAGE 2026</div>
+        <div class="campus-badge">QUADRANT MASTER 2026</div>
     </header>
 
-    <!-- [Main Application Stage] -->
+    <!-- [Main Hub Root] -->
     <main id="campus-root" style="display: none;">
         
-        <!-- [HERO] Strategic Inquiry Introduction -->
+        <!-- Strategy Entrance -->
         <section class="hero-stage">
             <h1>Quadrants of <span>Excellence</span></h1>
-            <p>Experience the Pinnacle of North American Private Inquiry Education. 24 Modular Themes, 120 Curated Global Masterpieces for Global Leaders.</p>
-            <button class="btn-magic-scan" onclick="VisionEngine.open()">
+            <p>Direct from North American Private Boarding Excellence. Explore 24 Modular Themes and 120 Curated Global Book Experiences.</p>
+            <button class="btn-magic-scan" onclick="VisionCore.open()">
                 ✨ MAGIC BOOK IDENTIFIER
             </button>
         </section>
 
-        <!-- [DASHBOARD] Elite Insight Dashboard -->
+        <!-- Director's Dashboard -->
         <section class="insight-grid">
             <div class="insight-card">
-                <span class="label-gold">Director's Quadrant Insight</span>
-                <h3 class="insight-h3">Structured Inquiry Mastery</h3>
+                <span class="label-gold">Director Lee's Visionary Insight</span>
+                <h3 class="insight-h3">Structured Curiosity Architecture</h3>
                 <p class="insight-p">
-                    브릿지 아카데미의 인쿼리 프로그램은 24가지의 독립된 '탐구 가이드'를 통해 아이들의 지적 세계를 확장합니다. 추천된 도서들은 지식의 풍성함을 더하고, 아이들은 마스터 랩의 17개 과정을 거치며 자신만의 창의적이고 논리적인 답변을 완성합니다. 120권의 방대한 커리큘럼을 테마별로 경험하십시오.
+                    브릿지 아카데미의 24개 유닛은 아이들이 세상을 탐구하는 가장 우아한 로드맵입니다. 단순한 독서를 넘어 주제별 핵심 질문을 스스로 해결하며 사고의 근육을 기릅니다. 테마 카드를 클릭하여 17단계의 심화 인쿼리 과정을 시작하십시오.
                 </p>
             </div>
             <div class="insight-card status-box">
                 <div class="status-digit">24</div>
                 <p class="status-meta">Master Themes</p>
-                <div style="width: 50px; height: 1.5px; background: var(--bridge-gold); margin: 35px 0;"></div>
-                <p style="font-size: 15px; opacity: 0.7;">120 Curated Assets</p>
+                <div style="width: 60px; height: 2px; background: var(--bridge-gold); margin: 40px 0;"></div>
+                <p style="font-size: 16px; opacity: 0.7;">120 Curated Assets</p>
             </div>
         </section>
 
-        <!-- [FILTERS] Category Switcher -->
+        <!-- Quadrant Filters -->
         <nav class="filter-dock">
             <button id="q-all" class="filter-btn active" onclick="HeritageUI.filter('ALL')">Full Roadmap</button>
-            <button id="q-a" class="filter-btn" onclick="HeritageUI.filter('A')">Series A: Foundation</button>
-            <button id="q-b" class="filter-btn" onclick="HeritageUI.filter('B')">Series B: Perspective</button>
-            <button id="q-c" class="filter-btn" onclick="HeritageUI.filter('C')">Series C: Exploration</button>
-            <button id="q-d" class="filter-btn" onclick="HeritageUI.filter('D')">Series D: Innovation</button>
+            <button id="q-A" class="filter-btn" onclick="HeritageUI.filter('A')">Series A</button>
+            <button id="q-B" class="filter-btn" onclick="HeritageUI.filter('B')">Series B</button>
+            <button id="q-C" class="filter-btn" onclick="HeritageUI.filter('C')">Series C</button>
+            <button id="q-D" class="filter-btn" onclick="HeritageUI.filter('D')">Series D</button>
         </nav>
 
-        <!-- [ROADMAP] Theme Master Engine -->
+        <!-- Master Theme Container -->
         <section id="roadmap-master" class="roadmap-stage">
-            <!-- JavaScript Renders the Clickable Themes here -->
+            <!-- Rendered via JavaScript Engine -->
         </section>
     </main>
 
-    <!-- [VISION] AI Scanner Integration -->
+    <!-- Vision Scanner Overlay -->
     <div id="vision-scanner-modal">
         <div style="font-size: 15px; letter-spacing: 15px; font-weight: 900; color: var(--bridge-green); margin-bottom: 50px; text-transform: uppercase;">Inquiry Vision Active</div>
         <div class="viewport-frame">
@@ -283,100 +280,125 @@
         </div>
         <div id="v-status-msg" style="margin-top: 60px; font-weight: 800; font-size: 28px; color: var(--bridge-charcoal);">Scan Book to Unlock Master Lab</div>
         <div class="v-btn-row">
-            <button class="btn-v-scan" onclick="VisionEngine.identify()">IDENTIFY</button>
-            <button onclick="VisionEngine.close()" style="background:none; border:none; color:#BBB; font-weight:900; cursor:pointer; font-size:18px; letter-spacing:6px;">CANCEL</button>
+            <button class="btn-v-scan" onclick="VisionCore.identify()">IDENTIFY</button>
+            <button onclick="VisionCore.close()" style="background:none; border:none; color:#BBB; font-weight:900; cursor:pointer; font-size:18px; letter-spacing:6px;">CANCEL</button>
         </div>
     </div>
 
-    <!-- [FOOTER] Institutional Footer -->
     <footer>
-        <img src="logo.png" alt="Bridge Academy" class="f-logo-heritage">
+        <img src="logo.png" alt="Bridge Academy" class="f-logo-box">
         <div class="elite-copy">© 2026 BRIDGE ACADEMY HERITAGE. ALL RIGHTS RESERVED.</div>
     </footer>
 
     <!-- ======================================================================
-         [CORE MASTER ENGINE V28.0]
+         [CORE MASTER ENGINE V29.0]
+         Quadrant Database & Logic Integrated
          ====================================================================== -->
     <script>
         /**
-         * [Quadrant Master Database V28.0]
-         * 24 Theme-Based Master Units / 120 Total Assets
+         * [Library Quadrant Database V29.0]
+         * Perfect Data Mapping for 24 Master Units
          */
         const QUADRANT_MASTER_DB = [
-            // JAN
-            { month: "Jan", unit: "A1", series: "A", theme: "All About Me", question: "나는 누구일까요?", books: ["I Like Myself!", "The Color Monster", "My Five Senses", "The Family Book", "From Head to Toe"], coreId: "JAN-A1-1" },
-            { month: "Jan", unit: "B1", series: "B", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", books: ["Me on the Map", "This Is How We Do It", "Whoever You Are", "Madeline", "We're All Wonders"], coreId: "JAN-B1-1" },
-            // FEB
-            { month: "Feb", unit: "A2", series: "A", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", books: ["Very Hungry Caterpillar", "Very Busy Spider", "Grouchy Ladybug", "Waiting for Wings", "The Honeybee"], coreId: "FEB-A2-1" },
-            { month: "Feb", unit: "B2", series: "B", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", books: ["The Tiny Seed", "Caterpillar to Butterfly", "Planting a Rainbow", "A Seed Is Sleepy", "Up in the Garden"], coreId: "FEB-B2-1" },
-            // MAR
-            { month: "Mar", unit: "A3", series: "A", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", books: ["My Mom", "My Dad", "Love You Forever", "How Much I Love", "Mother's Day"], coreId: "MAR-A3-1" },
-            { month: "Mar", unit: "B3", series: "B", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", books: ["A House for Me", "Welcome Home, Bear", "The Kapok Tree", "Over in Meadow", "Who Lives Here?"], coreId: "MAR-B3-1" },
-            // [JAN-JUN (A1-6, B1-6) 데이터 확장 완료로 가정]
-            // JUL-DEC (C1-6, D1-6)
-            { month: "Jul", unit: "C1", series: "C", theme: "Dinos Rule!", question: "공룡들은 어떻게 친구가 되었을까?", books: ["Good Night?", "Dinosaurs", "Danny Dino", "If Dinos Back", "Stomp!"], coreId: "JUL-C1-1" },
-            { month: "Jul", unit: "D1", series: "D", theme: "Earth & Beyond", question: "태양계 행성들은 왜 다르게 생겼을까?", books: ["Moon Friend", "Our Stars", "Sun One Billion", "Go to Moon", "Big Space Book"], coreId: "JUL-D1-1" }
-            // ... [12개월 24개 유닛 셋팅 유지]
+            // --- SERIES A: FOUNDATION (1-6) ---
+            { month: "Jan", unit: "A1", series: "A", theme: "All About Me", question: "나는 누구일까요?", coreId: "JAN-A1-1", books: ["I Like Myself!", "The Color Monster", "My Five Senses", "The Family Book", "From Head to Toe"] },
+            { month: "Feb", unit: "A2", series: "A", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", coreId: "FEB-A2-1", books: ["The Very Hungry Caterpillar", "The Very Busy Spider", "The Grouchy Ladybug", "Waiting for Wings", "The Honeybee"] },
+            { month: "Mar", unit: "A3", series: "A", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", coreId: "MAR-A3-1", books: ["My Mom", "My Dad", "Love You Forever", "Guess How Much I Love You", "Night Before Mother's Day"] },
+            { month: "Apr", unit: "A4", series: "A", theme: "Under the Sea", question: "바다 밑에는 누가 살고 있을까?", coreId: "APR-A4-1", books: ["The Pout-Pout Fish", "Ocean Commotion", "The Rainbow Fish", "I'm the Biggest Thing", "Swimmy"] },
+            { month: "May", unit: "A5", series: "A", theme: "Colors of Weather", question: "날씨에도 색깔이 있을까?", coreId: "MAY-A5-1", books: ["Rain", "Little Raindrop", "Chance of Meatballs", "Elmer and Rainbow", "Worm Weather"] },
+            { month: "Jun", unit: "A6", series: "A", theme: "Space Adventure", question: "달나라 소풍을 가면 무엇이 필요할까?", coreId: "JUN-A6-1", books: ["No Place Like Space", "Roaring Rockets", "Catch a Star", "Moon for Me", "Blast Off!"] },
+
+            // --- SERIES B: PERSPECTIVE (1-6) ---
+            { month: "Jan", unit: "B1", series: "B", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", coreId: "JAN-B1-1", books: ["Me on the Map", "This Is How We Do It", "Whoever You Are", "Madeline", "We're All Wonders"] },
+            { month: "Feb", unit: "B2", series: "B", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", coreId: "FEB-B2-1", books: ["The Tiny Seed", "Butterfly Cycle", "Planting a Rainbow", "Seed is Sleepy", "In the Garden"] },
+            { month: "Mar", unit: "B3", series: "B", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", coreId: "MAR-B3-1", books: ["A House for Me", "Welcome Home Bear", "Great Kapok Tree", "Over in Meadow", "Who Lives Here?"] },
+            { month: "Apr", unit: "B4", series: "B", theme: "Water Wonders", question: "무거운 배는 어떻게 물에 뜰까?", coreId: "APR-B4-1", books: ["Who Sank Boat?", "Hey, Water!", "Drop Around World", "Water Princess", "All the Water"] },
+            { month: "May", unit: "B5", series: "B", theme: "Inside My Body", question: "밥을 먹으면 배 속에서 무슨 일이 생길까?", coreId: "MAY-B5-1", books: ["Amazing Body", "Look Inside Body", "Magic School Bus", "Hear Your Heart", "Parts"] },
+            { month: "Jun", unit: "B6", series: "B", theme: "Little Inventors", question: "머릿속 아이디어를 어떻게 진짜로 만들까?", coreId: "JUN-B6-1", books: ["Rosie Revere", "The Idea", "Magnificent Thing", "Iggy Peck", "Boxitects"] },
+
+            // --- SERIES C: EXPLORATION (7-12 Mapping) ---
+            { month: "Jul", unit: "C1", series: "C", theme: "Dinos Rule!", question: "공룡들은 어떻게 친구가 되었을까?", coreId: "JUL-C1-1", books: ["Dino Good Night?", "Dinosaurs", "Danny Dinosaur", "If Dinos Back", "Stomp!"] },
+            { month: "Aug", unit: "C2", series: "C", theme: "Senses & Food", question: "맛있는 소리는 어떤 느낌일까?", coreId: "AUG-C2-1", books: ["Alphabet", "Green Eggs", "Stone Soup", "Vegetable Soup", "Yummy Yucky"] },
+            { month: "Sep", unit: "C3", series: "C", theme: "Helper Heroes", question: "우리 마을을 돕는 영웅은 누구일까?", coreId: "SEP-C3-1", books: ["Jobs People Do", "Whose Hat?", "Fire Truck", "Dr De Soto", "Police Dog"] },
+            { month: "Oct", unit: "C4", series: "C", theme: "How do we Go?", question: "하늘, 땅, 바다 어디든 갈 수 있다면?", coreId: "OCT-C4-1", books: ["Go Dog Go", "Freight Train", "Pigeon Bus", "Little Engine", "Cars & Trucks"] },
+            { month: "Nov", unit: "C5", series: "C", theme: "Wild Animals", question: "정글 속 동물들은 무엇을 좋아할까?", coreId: "NOV-C5-1", books: ["Dear Zoo", "Brown Bear", "Walking Jungle", "Mixed Chameleon", "Polar Bear"] },
+            { month: "Dec", unit: "C6", series: "C", theme: "Winter Warmth", question: "겨울은 왜 따뜻한 계절일까?", coreId: "DEC-C6-1", books: ["Snowy Day", "Giving Tree", "Bear Christmas", "Little Tree", "Grinch"] },
+
+            // --- SERIES D: INNOVATION (7-12 Mapping) ---
+            { month: "Jul", unit: "D1", series: "D", theme: "Earth & Beyond", question: "태양계 행성들은 왜 다르게 생겼을까?", coreId: "JUL-D1-1", books: ["Moon Friend", "Our Stars", "Sun! One Billion", "Go to Moon", "First Space"] },
+            { month: "Aug", unit: "D2", series: "D", theme: "Colors & Art", question: "색깔을 섞으면 어떤 감정이 될까?", coreId: "AUG-D2-1", books: ["The Dot", "Mix It Up!", "Ish", "Oops!", "Swatch"] },
+            { month: "Sep", unit: "D3", series: "D", theme: "Elite Friends", question: "진짜 좋은 친구란 어떤 걸까?", coreId: "SEP-D3-1", books: ["Stick and Stone", "Amos McGee", "Enemy Pie", "PB Cupcake", "No Elephants"] },
+            { month: "Oct", unit: "D4", series: "D", theme: "Time Travel", question: "세상은 어떻게 변했을까?", coreId: "OCT-D4-1", books: ["Little House", "Window", "First the Egg", "Once Upon Time", "Street Time"] },
+            { month: "Nov", unit: "D5", series: "D", theme: "Earth Heroes", question: "지구를 어떻게 지켜줄 수 있을까?", coreId: "NOV-D5-1", books: ["Michael Recycle", "10 Things World", "The Lorax", "Compost Stew", "Here We Are"] },
+            { month: "Dec", unit: "D6", series: "D", theme: "Festival Lights", question: "겨울을 어떻게 기념할까?", coreId: "DEC-D6-1", books: ["Lights Winter", "Celebrate!", "Polar Express", "Sweden Light", "Seven Spools"] }
         ];
 
-        const APP_CONFIG = {
-            API_KEY: "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4",
+        const CONFIG = {
+            KEY: "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4",
             MODEL: "gemini-1.5-flash",
             MONTHS: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         };
 
-        // Heritage Core System
+        // Persistent Session Controller
         const HeritageCore = {
             init() {
-                if (sessionStorage.getItem('bridge_heritage_access') === 'active') {
+                if (sessionStorage.getItem('quadrant_heritage_access') === 'granted') {
                     document.getElementById('access-gateway').classList.add('hidden-gate');
                     document.getElementById('campus-root').style.display = 'block';
                     HeritageUI.init();
                 }
             },
             unlock() {
-                sessionStorage.setItem('bridge_heritage_access', 'active');
-                const g = document.getElementById('access-gateway');
-                const r = document.getElementById('campus-root');
-                g.classList.add('unlocked');
-                r.style.display = 'block';
-                setTimeout(() => HeritageUI.init(), 600);
+                sessionStorage.setItem('quadrant_heritage_access', 'granted');
+                const gate = document.getElementById('access-gateway');
+                const root = document.getElementById('campus-root');
+                gate.classList.add('unlocked');
+                root.style.display = 'block';
+                setTimeout(() => {
+                    HeritageUI.init();
+                    gate.classList.add('hidden-gate');
+                }, 1400);
             },
             refresh() { window.location.reload(); }
         };
 
-        // UI Management
+        // Master UI Controller
         const HeritageUI = {
-            filterType: 'ALL',
+            currentFilter: 'ALL',
 
             init() {
-                this.render();
-                this.observe();
+                this.renderRoadmap();
+                this.observeScroll();
             },
 
-            filter(t) {
-                this.filterType = t;
+            filter(f) {
+                this.currentFilter = f;
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                document.getElementById(`q-${t.toLowerCase()}`).classList.add('active');
-                this.render();
-                setTimeout(() => this.observe(), 100);
+                document.getElementById(`q-${f}`).classList.add('active');
+                this.renderRoadmap();
+                setTimeout(() => this.observeScroll(), 100);
             },
 
-            render() {
+            renderRoadmap() {
                 const roadmap = document.getElementById('roadmap-master');
                 roadmap.innerHTML = ""; 
 
-                APP_CONFIG.MONTHS.forEach(m => {
-                    const themes = QUADRANT_MASTER_DB.filter(d => d.month === m);
+                CONFIG.MONTHS.forEach(mName => {
+                    const themes = QUADRANT_MASTER_DB.filter(d => d.month === mName);
                     if (themes.length === 0) return;
 
                     const segment = document.createElement('div');
                     segment.className = 'month-segment';
-                    segment.innerHTML = `<div class="month-anchor"><h2 class="anchor-name">${m.toUpperCase()}</h2><span class="anchor-tag">Heritage Inquiry Cycle</span></div>`;
+                    segment.innerHTML = `
+                        <div class="month-anchor">
+                            <h2 class="anchor-name">${mName.toUpperCase()}</h2>
+                            <span class="anchor-tag">Heritage Cycle</span>
+                        </div>
+                    `;
 
-                    themes.forEach(t => {
-                        if (this.filterType !== 'ALL' && t.series !== this.filterType) return;
-                        segment.appendChild(this.createThemeHeritageCard(t));
+                    themes.forEach(themeObj => {
+                        if (this.currentFilter !== 'ALL' && themeObj.series !== this.currentFilter) return;
+                        segment.appendChild(this.createThemeHeritageCard(themeObj));
                     });
 
                     if (segment.children.length > 1) roadmap.appendChild(segment);
@@ -387,36 +409,40 @@
                 const card = document.createElement('div');
                 card.className = `theme-heritage-card series-${t.series}`;
                 
-                // Entry points to the 17p Workbook based on coreId
-                card.onclick = () => window.location.href = `workbook.html?id=${t.coreId}`;
+                // CRITICAL: Force navigation to workbook.html with correct ID
+                // Card is the ONLY clickable element. No internal <a> or conflicting listeners.
+                card.addEventListener('click', (e) => {
+                    e.preventDefault(); e.stopPropagation();
+                    window.location.href = `workbook.html?id=${t.coreId}`;
+                });
                 
                 card.innerHTML = `
                     <div class="card-content-side">
                         <span class="theme-id-badge">Series ${t.series} Unit ${t.unit}</span>
                         <h2 class="theme-h2-title">${t.theme}</h2>
                         <div class="theme-question-box">"${t.question}"</div>
-                        <div class="btn-lab-enter">Enter Master Inquiry Lab</div>
+                        <div class="lab-enter-cta">Enter Master Inquiry Lab <span>→</span></div>
                     </div>
                     <div class="card-reading-side">
                         <span class="reading-list-title">Curated Reading List</span>
                         <ul class="reading-item-list">
-                            ${t.books.map((b, idx) => `<li><span>0${idx+1}</span> ${b}</li>`).join('')}
+                            ${t.books.map((b, idx) => `<li><strong>0${idx+1}</strong> ${b}</li>`).join('')}
                         </ul>
                     </div>
                 `;
                 return card;
             },
 
-            observe() {
-                const obs = new IntersectionObserver((entries) => {
-                    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); });
+            observeScroll() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('revealed'); });
                 }, { threshold: 0.1 });
-                document.querySelectorAll('.month-segment').forEach(s => obs.observe(s));
+                document.querySelectorAll('.month-segment').forEach(s => observer.observe(s));
             }
         };
 
-        // Vision Scanner System (Regex Normalized)
-        const VisionEngine = {
+        // Vision Scanner Engine (V29.0 Regex Sync)
+        const VisionCore = {
             stream: null,
             open() {
                 document.getElementById('vision-scanner-modal').style.display = 'flex';
@@ -430,30 +456,32 @@
             },
             async identify() {
                 const status = document.getElementById('v-status-msg');
-                status.innerText = "Analyzing Digital Blueprint...";
+                status.innerText = "Analyzing Digital Quadrant...";
                 const canvas = document.createElement('canvas'); canvas.width = 640; canvas.height = 480;
                 canvas.getContext('2d').drawImage(document.getElementById('v-feed'), 0, 0, 640, 480);
                 const b64 = canvas.toDataURL("image/jpeg", 0.7).split(',')[1];
                 
                 try {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${APP_CONFIG.MODEL}:generateContent?key=${APP_CONFIG.API_KEY}`, {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.MODEL}:generateContent?key=${CONFIG.KEY}`, {
                         method: 'POST', headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: "Identity book cover title ONLY." }, { inline_data: { mime_type: "image/jpeg", data: b64 } }] }] })
+                        body: JSON.stringify({ contents: [{ parts: [{ text: "Identity this book cover title ONLY." }, { inline_data: { mime_type: "image/jpeg", data: b64 } }] }] })
                     });
                     const d = await res.json(); 
-                    const title = d.candidates[0].content.parts[0].text.trim().toLowerCase().replace(/[^a-z0-9 ]/g, "");
+                    const t = d.candidates[0].content.parts[0].text.trim().toLowerCase().replace(/[^a-z0-9 ]/g, "");
                     
-                    // Cross-check with DB core titles
-                    let foundId = null;
-                    if (title.includes("myself")) foundId = "JAN-A1-1";
-                    if (title.includes("map")) foundId = "JAN-B1-1";
-                    // [기존 매칭 로직 유지]
-
-                    if (foundId) {
-                        status.innerText = "Heritage Asset Verified. Entering...";
-                        setTimeout(() => window.location.href = `workbook.html?id=${foundId}`, 800);
-                    } else { status.innerText = "Asset Not Found in Library."; }
-                } catch(e) { status.innerText = "Vision Sync Error."; }
+                    let matchedId = null;
+                    QUADRANT_MASTER_DB.forEach(unit => {
+                        unit.books.forEach(bookTitle => {
+                            const libT = bookTitle.toLowerCase().replace(/[^a-z0-9 ]/g, "");
+                            if (t.includes(libT) || libT.includes(t)) matchedId = unit.coreId;
+                        });
+                    });
+                    
+                    if (matchedId) {
+                        status.innerText = "Access Granted! Redirecting to Lab...";
+                        setTimeout(() => window.location.href = `workbook.html?id=${matchedId}`, 800);
+                    } else { status.innerText = "Asset Not Found in Heritage Library."; }
+                } catch(e) { status.innerText = "Cloud System Sync Error."; }
             }
         };
 

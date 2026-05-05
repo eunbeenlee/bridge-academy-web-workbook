@@ -6,42 +6,43 @@
     <title>Bridge Academy | Elite Heritage Campus</title>
     
     <!-- ======================================================================
-         [Premium Typography] Playfair Display for Luxury, Noto Sans for UI
+         [Premium Typography] 
+         Playfair Display for Heritage/Luxury, Noto Sans for UI Precision
          ====================================================================== -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
         /* 
          * ======================================================================
-         * [Architecture: Bridge Academy Premium Design System V32.0]
-         * Designed exclusively for Director Lee Yun-ji
+         * [Architecture: Bridge Academy Premium Design System V33.0]
+         * Single-Focus Theme Engine | Designed for Director Lee Yun-ji
          * ======================================================================
          */
         :root {
-            /* Quadrant Series Colors */
+            /* Quadrant Series Identity Colors */
             --bridge-green: #8CC69F;    /* Series A: Foundation */
             --bridge-gold: #C5A059;     /* Series B: Perspective */
             --bridge-blue: #7FB3D5;     /* Series C: Exploration */
-            --bridge-charcoal: #3A3A42; /* Series D: Innovation */
+            --bridge-charcoal: #3A3A42; /* Series D: Innovation & Heritage */
             
-            /* Base Colors */
+            /* Universal Base Colors */
             --bridge-taupe: #A39B8E;
             --bridge-bg: #F7F9F8;
             --bridge-paper: #FFFFFF;
             --bridge-border: rgba(58, 58, 66, 0.08);
             
-            /* Shadows & Effects */
-            --luxury-shadow: 0 40px 100px rgba(58, 58, 66, 0.06);
-            --theme-hover-shadow: 0 60px 120px rgba(58, 58, 66, 0.15);
-            --gold-glow: 0 10px 30px rgba(197, 160, 89, 0.25);
+            /* Spatial Shadows & Effects */
+            --luxury-shadow: 0 40px 100px rgba(58, 58, 66, 0.05);
+            --theme-hover-shadow: 0 50px 120px rgba(58, 58, 66, 0.12);
+            --gold-glow: 0 10px 30px rgba(197, 160, 89, 0.2);
             
-            /* Transitions */
-            --transition-master: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+            /* Motion Dynamics */
+            --transition-master: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
             --transition-smooth: all 0.4s ease;
         }
 
         /* --------------------------------------------------
-         * [Global Reset & Base Styles]
+         * [Global Reset & Standards]
          * -------------------------------------------------- */
         * { 
             margin: 0; 
@@ -60,7 +61,7 @@
         }
 
         /* --------------------------------------------------
-         * [Gate System] Persistent Session Protection
+         * [Gate System] Elite Membership Gateway
          * -------------------------------------------------- */
         #access-gateway {
             position: fixed; 
@@ -123,7 +124,7 @@
         }
 
         /* --------------------------------------------------
-         * [Header] Brand Authority & Branch Logo Integration
+         * [Header] Institutional Branding
          * -------------------------------------------------- */
         header {
             width: 100%; 
@@ -148,9 +149,8 @@
             transition: 0.3s;
         }
         .brand-container:hover { opacity: 0.7; }
-        
         .logo-img { max-width: 200px; }
-        .branch-logo { height: 35px; border-left: 1px solid #E0E0E0; padding-left: 20px; } /* 지역 지점 로고 공간 */
+        .branch-logo { height: 35px; border-left: 1px solid #E0E0E0; padding-left: 20px; }
 
         .campus-badge { 
             font-size: 11px; 
@@ -164,7 +164,7 @@
         }
 
         /* --------------------------------------------------
-         * [Hero Stage] The Vision of Inquiry
+         * [Hero Stage] Strategy Entrance
          * -------------------------------------------------- */
         .hero-stage { 
             padding: 180px 8% 100px; 
@@ -214,7 +214,7 @@
         }
 
         /* --------------------------------------------------
-         * [Dashboard] Private Parent Insight
+         * [Dashboard] Insight Display
          * -------------------------------------------------- */
         .insight-grid { 
             padding: 0 8% 120px; 
@@ -278,7 +278,7 @@
         }
 
         /* --------------------------------------------------
-         * [Filter] Quadrant Navigation
+         * [Filters] Series Navigation
          * -------------------------------------------------- */
         .filter-dock { 
             display: flex; 
@@ -315,7 +315,7 @@
         }
 
         /* --------------------------------------------------
-         * [Master Roadmap] THE THEME ENGINE
+         * [ROADMAP STAGE]
          * -------------------------------------------------- */
         .roadmap-stage { padding: 0 8% 250px; }
         .month-segment { 
@@ -351,7 +351,8 @@
         }
 
         /* --------------------------------------------------
-         * [MASTER THEME CARD] - CORE INTERACTIVE UNIT
+         * [SINGLE-FOCUS THEME CARD]
+         * NO BOOK IMAGES, ONE MASSIVE CLICKABLE BLOCK
          * -------------------------------------------------- */
         .theme-heritage-card { 
             margin-bottom: 120px; 
@@ -362,13 +363,13 @@
             position: relative; 
             overflow: hidden; 
             transition: var(--transition-master);
-            cursor: pointer; 
-            display: grid; 
-            grid-template-columns: 1.6fr 1fr;
+            cursor: pointer; /* THE ENTIRE CARD IS ONE BUTTON */
+            display: flex; 
+            flex-direction: row;
         }
         
         .theme-heritage-card:hover { 
-            transform: translateY(-25px); 
+            transform: translateY(-20px); 
             box-shadow: var(--theme-hover-shadow); 
         }
         .theme-heritage-card::before { 
@@ -376,18 +377,24 @@
             position: absolute; 
             top: 0; 
             left: 0; 
-            width: 28px; 
+            width: 30px; 
             height: 100%; 
         }
         
-        /* Quadrant Logic Coloring */
+        /* Series Accent Colors */
         .theme-heritage-card.series-A::before { background: var(--bridge-green); }
         .theme-heritage-card.series-B::before { background: var(--bridge-gold); }
         .theme-heritage-card.series-C::before { background: var(--bridge-blue); }
         .theme-heritage-card.series-D::before { background: var(--bridge-charcoal); }
 
-        /* Left Side: Content & Question */
-        .card-content-side { padding: 100px 90px; }
+        /* Left Side: Massive Theme Info */
+        .card-main-focus { 
+            flex: 6.5; 
+            padding: 100px 90px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
         .theme-id-badge { 
             font-size: 15px; 
             font-weight: 900; 
@@ -399,15 +406,15 @@
         }
         .theme-h2-title { 
             font-family: 'Playfair Display', serif; 
-            font-size: 76px; 
+            font-size: 80px; 
             font-weight: 900; 
-            margin-bottom: 40px; 
+            margin-bottom: 30px; 
             color: var(--bridge-charcoal); 
             letter-spacing: -3px; 
             line-height: 1.1; 
         }
         .theme-question-box { 
-            font-size: 30px; 
+            font-size: 32px; 
             font-weight: 400; 
             color: var(--bridge-taupe); 
             font-style: italic; 
@@ -417,7 +424,6 @@
             max-width: 95%; 
             line-height: 1.4; 
         }
-        
         .lab-enter-cta { 
             margin-top: 60px; 
             color: var(--bridge-gold); 
@@ -430,50 +436,53 @@
             gap: 20px; 
         }
         .lab-enter-cta span { font-size: 28px; transition: 0.3s; }
-        .theme-heritage-card:hover .lab-enter-cta span { transform: translateX(12px); }
+        .theme-heritage-card:hover .lab-enter-cta span { transform: translateX(15px); }
 
-        /* Right Side: Recommended Reading (TEXT ONLY) */
+        /* Right Side: Text-Only Recommended Reading */
         .card-reading-side { 
+            flex: 3.5;
             background: #FAFBFB; 
-            padding: 100px 90px; 
+            padding: 100px 80px; 
             border-left: 1px solid #F1F1F1; 
             display: flex; 
             flex-direction: column; 
             justify-content: center; 
         }
         .reading-list-title { 
-            font-size: 12px; 
+            font-size: 13px; 
             font-weight: 900; 
-            color: #AAA; 
-            letter-spacing: 6px; 
+            color: var(--bridge-charcoal); 
+            opacity: 0.4;
+            letter-spacing: 8px; 
             text-transform: uppercase; 
-            margin-bottom: 50px; 
+            margin-bottom: 40px; 
             display: block; 
+            border-bottom: 2px solid #EAEAEA;
+            padding-bottom: 20px;
         }
-        
-        .reading-item-list { list-style: none; }
+        .reading-item-list { 
+            list-style: none; 
+        }
         .reading-item-list li { 
             font-family: 'Playfair Display', serif; 
-            font-size: 20px; 
-            color: #999; 
-            margin-bottom: 30px; 
-            padding-bottom: 20px; 
-            border-bottom: 1px solid #EEE; 
+            font-size: 19px; 
+            color: #888; 
+            margin-bottom: 25px; 
             transition: 0.3s;
             display: flex; 
             align-items: baseline; 
             gap: 20px;
         }
         .reading-item-list li strong { 
-            font-size: 13px; 
+            font-size: 12px; 
             font-weight: 900; 
             color: var(--bridge-gold); 
-            opacity: 0.5; 
+            opacity: 0.6; 
         }
         .theme-heritage-card:hover .reading-item-list li { color: var(--bridge-charcoal); }
 
         /* --------------------------------------------------
-         * [AI Vision Engine UI]
+         * [Vision Scanner Overlay]
          * -------------------------------------------------- */
         #vision-scanner-modal { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -494,26 +503,27 @@
         .btn-v-scan:hover { background: var(--bridge-green); transform: translateY(-5px); }
 
         /* --------------------------------------------------
-         * [Institutional Footer]
+         * [Footer]
          * -------------------------------------------------- */
         footer { background: var(--bridge-charcoal); padding: 220px 8%; text-align: center; }
         .f-logo-box { max-width: 250px; opacity: 0.3; margin-bottom: 80px; }
         .elite-copy { font-size: 15px; color: rgba(255,255,255,0.2); letter-spacing: 12px; text-transform: uppercase; font-weight: 300; }
 
         /* --------------------------------------------------
-         * [Mobile & Tablet Optimization]
+         * [Responsive Breakpoints]
          * -------------------------------------------------- */
-        @media (max-width: 1500px) {
-            .theme-heritage-card { grid-template-columns: 1fr; }
+        @media (max-width: 1300px) {
+            .theme-heritage-card { flex-direction: column; }
             .card-reading-side { border-left: none; border-top: 1px solid #F0F0F0; padding: 70px 90px; }
+            .theme-h2-title { font-size: 64px; }
         }
-        @media (max-width: 900px) {
+        @media (max-width: 768px) {
             header { padding: 35px 5%; }
             .hero-stage h1 { font-size: 52px; }
             .insight-grid { grid-template-columns: 1fr; }
             .filter-dock { overflow-x: auto; justify-content: flex-start; padding: 20px 5%; }
             .anchor-name { font-size: 64px; }
-            .card-content-side, .card-reading-side { padding: 60px 40px; }
+            .card-main-focus, .card-reading-side { padding: 60px 40px; }
             .theme-h2-title { font-size: 48px; }
             .theme-question-box { font-size: 22px; }
         }
@@ -521,59 +531,49 @@
 </head>
 <body>
 
-    <!-- ======================================================================
-         [GATEWAY] Private Access Logic
-         ====================================================================== -->
+    <!-- [GATEWAY] -->
     <div id="access-gateway">
         <img src="logo.png" alt="Bridge Academy Heritage" class="gateway-logo">
         <div class="gateway-text">PRIVATE MEMBERSHIP ACCESS</div>
         <button class="btn-enter-heritage" onclick="HeritageCore.unlock()">ENTER CAMPUS</button>
     </div>
 
-    <!-- ======================================================================
-         [HEADER] Heritage Navigation with Branch Logo Space
-         ====================================================================== -->
+    <!-- [HEADER] -->
     <header>
         <div class="brand-container" onclick="HeritageCore.refresh()">
             <img src="logo.png" alt="Bridge Academy" class="logo-img">
-            <!-- 브릿지 아카데미 지점(부산/캐나다 등) 브랜드 일관성을 위한 로고 공간 -->
-            <img src="logo_branch.png" alt="Bridge Academy Branch" class="branch-logo" onerror="this.style.display='none'">
+            <img src="logo_branch.png" alt="Branch" class="branch-logo" onerror="this.style.display='none'">
         </div>
         <div class="campus-badge">QUADRANT MASTER 2026</div>
     </header>
 
-    <!-- ======================================================================
-         [MAIN HUB]
-         ====================================================================== -->
+    <!-- [MAIN HUB] -->
     <main id="campus-root" style="display: none;">
         
-        <!-- Strategy Entrance -->
         <section class="hero-stage">
             <h1>Quadrants of <span>Excellence</span></h1>
-            <p>Direct from North American Private Boarding Excellence. Explore 24 Modular Themes and 120 Curated Global Book Experiences.</p>
+            <p>Direct from North American Private Boarding Excellence. Explore 24 Modular Themes focusing purely on the essence of inquiry.</p>
             <button class="btn-magic-scan" onclick="VisionCore.open()">
                 ✨ MAGIC BOOK IDENTIFIER
             </button>
         </section>
 
-        <!-- Director's Dashboard -->
         <section class="insight-grid">
             <div class="insight-card">
                 <span class="label-gold">Director Lee's Visionary Insight</span>
                 <h3 class="insight-h3">Structured Curiosity Architecture</h3>
                 <p class="insight-p">
-                    브릿지 아카데미의 24개 유닛은 아이들이 세상을 탐구하는 가장 우아한 로드맵입니다. 단순한 독서를 넘어 주제별 핵심 질문을 스스로 해결하며 사고의 근육을 기릅니다. 테마 카드를 클릭하여 심화 인쿼리 과정을 시작하십시오.
+                    브릿지 아카데미의 24개 유닛은 세상을 탐구하는 가장 우아한 로드맵입니다. 시각적인 방해 없이 오직 '질문'과 '주제'에 집중하십시오. 아래의 테마 카드를 클릭하여 17단계의 심화 인쿼리 워크북을 시작하십시오.
                 </p>
             </div>
             <div class="insight-card status-box">
                 <div class="status-digit">24</div>
                 <p class="status-meta">Master Themes</p>
                 <div style="width: 60px; height: 2px; background: var(--bridge-gold); margin: 40px 0;"></div>
-                <p style="font-size: 16px; opacity: 0.7;">120 Curated Assets</p>
+                <p style="font-size: 16px; opacity: 0.7;">Single-Focus Engine</p>
             </div>
         </section>
 
-        <!-- Quadrant Filters -->
         <nav class="filter-dock">
             <button id="q-all" class="filter-btn active" onclick="HeritageUI.filter('ALL')">Full Roadmap</button>
             <button id="q-A" class="filter-btn" onclick="HeritageUI.filter('A')">Series A</button>
@@ -588,9 +588,7 @@
         </section>
     </main>
 
-    <!-- ======================================================================
-         [VISION SCANNER]
-         ====================================================================== -->
+    <!-- [VISION SCANNER] -->
     <div id="vision-scanner-modal">
         <div style="font-size: 15px; letter-spacing: 15px; font-weight: 900; color: var(--bridge-green); margin-bottom: 50px; text-transform: uppercase;">Inquiry Vision Active</div>
         <div class="viewport-frame">
@@ -610,14 +608,14 @@
     </footer>
 
     <!-- ======================================================================
-         [CORE MASTER ENGINE V32.0]
+         [CORE MASTER ENGINE V33.0]
          Complete 24-Unit Data & Linkage Logic
          ====================================================================== -->
     <script>
         /**
-         * [Library Quadrant Database V32.0]
+         * [Library Quadrant Database V33.0]
          * Perfect Data Mapping for 24 Master Units.
-         * The 'id' field strictly matches the GitHub folder names (e.g., A-1, B-2).
+         * The 'id' field matches exactly the GitHub folder names (e.g., A-1, B-2).
          */
         const QUADRANT_MASTER_DB = [
             // --- SERIES A: FOUNDATION (1-6) ---
@@ -654,24 +652,24 @@
         ];
 
         const CONFIG = {
-            KEY: "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4", // Vision API Key
+            KEY: "AIzaSyA49lQJey_oVBlgMv6hBN9Ncp1Vo1PbKa4", 
             MODEL: "gemini-1.5-flash",
             MONTHS: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         };
 
         // ==========================================
-        // 1. Persistent Session Controller
+        // 1. Session Persistence
         // ==========================================
         const HeritageCore = {
             init() {
-                if (sessionStorage.getItem('quadrant_heritage_access') === 'granted') {
+                if (sessionStorage.getItem('bridge_access_v33') === 'granted') {
                     document.getElementById('access-gateway').classList.add('hidden-gate');
                     document.getElementById('campus-root').style.display = 'block';
                     HeritageUI.init();
                 }
             },
             unlock() {
-                sessionStorage.setItem('quadrant_heritage_access', 'granted');
+                sessionStorage.setItem('bridge_access_v33', 'granted');
                 const gate = document.getElementById('access-gateway');
                 const root = document.getElementById('campus-root');
                 gate.classList.add('unlocked');
@@ -729,11 +727,16 @@
                 });
             },
 
+            /* 
+             * V33.0 핵심 로직: 
+             * 어떠한 이미지 태그(<img>)도 렌더링하지 않습니다.
+             * 카드 전체가 버튼 역할을 하며 클릭 시 workbook.html로 이동합니다. 
+             */
             createThemeHeritageCard(t) {
                 const card = document.createElement('div');
                 card.className = `theme-heritage-card series-${t.series}`;
                 
-                // [핵심 연동 로직] 카드 클릭 시 워크북으로 완벽하게 이동 (예: workbook.html?id=A-1)
+                // 카드 전체 영역 클릭 시 해당 유닛 워크북으로 이동
                 card.addEventListener('click', (e) => {
                     e.preventDefault(); 
                     e.stopPropagation();
@@ -741,14 +744,14 @@
                 });
                 
                 card.innerHTML = `
-                    <div class="card-content-side">
-                        <span class="theme-id-badge">Series ${t.series} Unit ${t.unit}</span>
+                    <div class="card-main-focus">
+                        <span class="theme-id-badge">UNIT ${t.id}</span>
                         <h2 class="theme-h2-title">${t.theme}</h2>
                         <div class="theme-question-box">"${t.question}"</div>
                         <div class="lab-enter-cta">Enter Master Inquiry Lab <span>→</span></div>
                     </div>
                     <div class="card-reading-side">
-                        <span class="reading-list-title">Curated Reading List</span>
+                        <span class="reading-list-title">권장 도서 목록 (Curated Reading)</span>
                         <ul class="reading-item-list">
                             ${t.books.map((b, idx) => `<li><strong>0${idx+1}</strong> ${b}</li>`).join('')}
                         </ul>

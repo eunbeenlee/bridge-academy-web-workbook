@@ -9,8 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <!-- Visual AI (OCR) 엔진 -->
+    <!-- 1. Visual AI (OCR) 엔진 -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <!-- 2. 낙서 인식(Doodle Recognition) 구동을 위한 ml5.js 엔진 탑재 -->
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
 
     <style>
         :root {
@@ -53,7 +55,6 @@
         .unit-info { font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 5px; }
         .page-info { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: var(--br-charcoal); margin-top: 5px; }
         
-        /* [Stage Wrapper] */
         .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px; position: relative; overflow: hidden; pointer-events: auto !important; }
         .drawing-board { position: relative; display: inline-flex; line-height: 0; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); background: var(--br-paper); max-width: 100%; max-height: 100%; pointer-events: auto !important; }
         
@@ -86,19 +87,22 @@
         #color-wheel { border-radius: 50%; cursor: crosshair; touch-action: none; }
         .rgb-close { text-align: center; font-size: 11px; font-weight: 900; color: var(--br-muted); margin-top: 15px; cursor: pointer; letter-spacing: 2px; padding: 10px; }
 
-        /* [English AI Teacher Panel] */
-        .ai-panel { position: absolute; top: 0; right: -450px; width: 420px; height: 100%; background: #FFF; box-shadow: -10px 0 30px rgba(0,0,0,0.1); z-index: 10001; transition: right 0.5s ease; display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
+        /* [Multi-Turn AI Teacher Panel] */
+        .ai-panel { position: absolute; top: 0; right: -450px; width: 450px; height: 100%; background: #FFF; box-shadow: -10px 0 30px rgba(0,0,0,0.1); z-index: 10001; transition: right 0.5s ease; display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
         .ai-panel.open { right: 0; }
         .ai-header { padding: 25px; background: var(--br-ai); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); flex-shrink: 0; }
         .ai-title { font-size: 18px; font-weight: 900; color: var(--br-green); display: flex; align-items: center; gap: 10px; }
         .btn-close-ai { font-size: 32px; color: var(--br-muted); line-height: 1; cursor: pointer; }
         
-        .ai-content { padding: 25px; flex: 1; overflow-y: auto; }
-        .transcript-box { background: #F4F8F5; padding: 15px; border-radius: 12px; border-left: 4px solid var(--br-green); margin-bottom: 20px; font-size: 14px; font-style: italic; color: var(--br-charcoal); font-weight: 700; line-height: 1.5; }
-        .analytics-box { background: #FAFAFA; border: 1px solid var(--br-border); border-radius: 20px; padding: 20px; margin-bottom: 25px; }
-        .analytics-title { font-size: 11px; font-weight: 900; color: var(--br-muted); letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
+        .ai-content { padding: 25px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
         
-        /* 🚨 V81.0 3대 지표 Progress Bar CSS */
+        /* 🚨 V82.0 멀티 턴 채팅 말풍선 UI */
+        .chat-bubble { max-width: 85%; padding: 18px; border-radius: 20px; font-size: 15px; line-height: 1.6; font-weight: 500; word-break: keep-all; }
+        .chat-bubble.ai { align-self: flex-start; background: #F8F9FA; border: 1px solid var(--br-border); border-bottom-left-radius: 5px; color: var(--br-text); }
+        .chat-bubble.user { align-self: flex-end; background: var(--br-green); color: #FFF; border-bottom-right-radius: 5px; box-shadow: 0 5px 15px rgba(137,191,160,0.2); }
+        
+        .analytics-box { background: #FAFAFA; border: 1px solid var(--br-border); border-radius: 20px; padding: 20px; margin-bottom: 10px; align-self: stretch; }
+        .analytics-title { font-size: 11px; font-weight: 900; color: var(--br-muted); letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
         .stat-row { margin-bottom: 12px; }
         .stat-label { font-size: 12px; font-weight: 900; display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--br-charcoal); }
         .stat-bar-bg { width: 100%; height: 8px; background: #E0E0E0; border-radius: 10px; overflow: hidden; }
@@ -106,8 +110,11 @@
         .stat-bar-fill.green { background: var(--br-green); }
         .stat-bar-fill.blue { background: var(--br-blue); }
         
-        .visual-intent { font-size: 13px; background: #FFF; padding: 15px; border-radius: 12px; border: 1px dashed var(--br-border); margin-top: 15px; line-height: 1.6; color: var(--br-text); }
-        .ai-bubble { background: #F8F9FA; padding: 20px; border-radius: 20px; border-bottom-left-radius: 5px; border: 1px solid var(--br-border); font-size: 15px; line-height: 1.7; font-weight: 500; margin-bottom: 15px; }
+        /* 채팅 입력 영역 */
+        .chat-input-area { padding: 20px 25px; border-top: 1px solid var(--br-border); background: #FFF; display: flex; align-items: center; gap: 15px; }
+        .btn-chat-record { flex: 1; height: 55px; background: var(--br-charcoal); color: #FFF; border-radius: 15px; font-weight: 900; font-size: 15px; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: 0.3s; }
+        .btn-chat-record.recording { background: var(--br-error); animation: pulse 1.5s infinite; }
+
         .ai-name-input { width: 100%; padding: 15px; border: 2px dashed var(--br-green); border-radius: 12px; margin-top: 15px; font-size: 16px; text-align: center; font-weight: 800; outline: none; }
         .ai-name-btn { width: 100%; background: var(--br-green); color: #fff; padding: 15px; border-radius: 12px; margin-top: 10px; font-weight: 900; cursor: pointer; font-size: 14px; }
         .ai-btn-secondary { background: #EEE; color: #333; margin-top: 5px; }
@@ -181,7 +188,12 @@
                 <div class="tool-group">
                     <div class="color-preview" id="btn-color" onclick="RGBRingEngine.toggle()"></div>
                     <input type="range" class="brush-slider" id="brush-size" min="2" max="40" value="6">
-                    <button class="btn-erase" id="btn-eraser" onclick="CanvasEngine.toggleEraser()">ERASER</button>
+                    
+                    <!-- 🚨 V82.0 히스토리 스택 (Undo / Redo) UI 연동 -->
+                    <button class="btn-erase" onclick="CanvasEngine.undo()" title="Undo">↺</button>
+                    <button class="btn-erase" onclick="CanvasEngine.redo()" title="Redo">↻</button>
+                    
+                    <button class="btn-erase" id="btn-eraser" style="margin-left: 10px;" onclick="CanvasEngine.toggleEraser()">ERASER</button>
                     <button class="btn-erase-all" onclick="CanvasEngine.clearAll()">[CLEAR ALL]</button>
                 </div>
                 
@@ -201,12 +213,19 @@
             <div class="rgb-close" onclick="RGBRingEngine.toggle()">[ CLOSE ]</div>
         </div>
 
+        <!-- 멀티 턴 챗을 위한 패널 구조 변경 -->
         <div class="ai-panel" id="ai-panel">
             <div class="ai-header">
                 <div class="ai-title">Bridge AI Tutor</div>
                 <button class="btn-close-ai" onclick="AITutor.close()">×</button>
             </div>
             <div class="ai-content" id="ai-content"></div>
+            <!-- 실시간 대화 입력창 -->
+            <div class="chat-input-area" id="chat-input-area" style="display:none;">
+                <button class="btn-chat-record" id="btn-chat-record" onclick="AudioEngine.toggleChat()">
+                    🎤 <span>Hold to Reply</span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -215,12 +234,12 @@
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/"
         };
 
-        // 🚨 V81.0 추가: 음성 분석을 위한 시간 기록 변수 세팅
         const STATE = {
             studentName: "", isNameRegistered: false,
             id: new URLSearchParams(window.location.search).get('id') || "A-1",
             currentPage: 1, isRecording: false, lastTranscript: "",
-            audioStartTime: 0, audioDurationSec: 0, sttConfidence: 0
+            audioStartTime: 0, audioDurationSec: 0, sttConfidence: 0,
+            isChatMode: false // 채팅 모드인지 여부
         };
 
         const UIEngine = {
@@ -345,20 +364,25 @@
                     CanvasEngine.setColor(hex);
                     this.toggle(); 
                 };
-
                 this.cvs.addEventListener('mousedown', pickColor, { passive: false });
                 this.cvs.addEventListener('touchstart', pickColor, { passive: false });
             },
-            toggle() {
-                this.modal.classList.toggle('active');
-            }
+            toggle() { this.modal.classList.toggle('active'); }
         };
 
+        /* ======================================================================
+         * [V82.0 CanvasEngine w/ History Stack (Undo/Redo)]
+         * ====================================================================== */
         const CanvasEngine = {
             isDrawing: false,
+            hasMoved: false,
             isErasing: false,
             lastColor: "#363431",
             dpr: window.devicePixelRatio || 1,
+            
+            // 🚨 History Stack (Undo/Redo 변수)
+            historyStack: [],
+            historyIndex: -1,
 
             init() {
                 this.cvs = document.getElementById('draw-layer');
@@ -371,6 +395,7 @@
                     this.setupCanvas();
                     setTimeout(() => {
                         this.setupCanvas();
+                        this.saveState(); // 초기 빈 화면 저장
                     }, 50);
                 });
                 
@@ -401,9 +426,7 @@
 
             setupResizeObserver() {
                 const ro = new ResizeObserver(() => {
-                    requestAnimationFrame(() => {
-                        this.resizeCanvas();
-                    });
+                    requestAnimationFrame(() => { this.resizeCanvas(); });
                 });
                 ro.observe(this.board);
             },
@@ -426,21 +449,14 @@
                 if(temp.width > 0 && temp.height > 0) {
                     this.ctx.save();
                     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-                    this.ctx.drawImage(
-                        temp,
-                        0, 0, temp.width, temp.height,
-                        0, 0, this.cvs.width, this.cvs.height
-                    );
+                    this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, this.cvs.width, this.cvs.height);
                     this.ctx.restore();
                 }
             },
 
             getPos(e) {
                 const rect = this.cvs.getBoundingClientRect();
-                return {
-                    x: e.clientX - rect.left,
-                    y: e.clientY - rect.top
-                };
+                return { x: e.clientX - rect.left, y: e.clientY - rect.top };
             },
 
             bindEvents() {
@@ -449,6 +465,7 @@
                 this.cvs.addEventListener('pointerdown', (e) => {
                     e.preventDefault(); 
                     this.isDrawing = true;
+                    this.hasMoved = false; // 이동 여부 체크
                     try { this.cvs.setPointerCapture(e.pointerId); } catch(err){}
 
                     const p = this.getPos(e);
@@ -459,6 +476,7 @@
                 this.cvs.addEventListener('pointermove', (e) => {
                     if (!this.isDrawing) return;
                     e.preventDefault();
+                    this.hasMoved = true; // 그렸음 표시
 
                     const p = this.getPos(e);
                     this.ctx.lineTo(p.x, p.y);
@@ -468,6 +486,9 @@
                 this.cvs.addEventListener('pointerup', (e) => {
                     this.isDrawing = false;
                     try { this.cvs.releasePointerCapture(e.pointerId); } catch(err){}
+                    
+                    // 🚨 그리기 동작이 끝났을 때 히스토리에 스냅샷 저장
+                    if(this.hasMoved) { this.saveState(); }
                 });
 
                 this.cvs.addEventListener('pointercancel', (e) => {
@@ -475,23 +496,54 @@
                     try { this.cvs.releasePointerCapture(e.pointerId); } catch(err){}
                 });
 
-                this.cvs.addEventListener('pointerleave', () => {
-                    this.isDrawing = false;
-                });
+                this.cvs.addEventListener('pointerleave', () => { this.isDrawing = false; });
+            },
+
+            // 🚨 History Stack 로직 구현
+            saveState() {
+                this.historyIndex++;
+                // 만약 Undo를 한 상태에서 새로 그리면, 그 이후의 미래(Redo 가능 기록)는 삭제
+                if (this.historyIndex < this.historyStack.length) {
+                    this.historyStack.length = this.historyIndex;
+                }
+                this.historyStack.push(this.cvs.toDataURL());
+            },
+
+            undo() {
+                if (this.historyIndex > 0) {
+                    this.historyIndex--;
+                    this.restoreState();
+                }
+            },
+
+            redo() {
+                if (this.historyIndex < this.historyStack.length - 1) {
+                    this.historyIndex++;
+                    this.restoreState();
+                }
+            },
+
+            restoreState() {
+                const img = new Image();
+                img.onload = () => {
+                    this.ctx.save();
+                    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
+                    this.ctx.drawImage(img, 0, 0);
+                    this.ctx.restore();
+                };
+                img.src = this.historyStack[this.historyIndex];
             },
 
             setColor(hex) {
                 this.lastColor = hex;
                 document.getElementById('btn-color').style.background = hex;
-                if (!this.isErasing) {
-                    this.ctx.strokeStyle = this.lastColor;
-                }
+                if (!this.isErasing) { this.ctx.strokeStyle = this.lastColor; }
             },
 
             setupUI() {
                 const colorBtn = document.getElementById('btn-color');
                 colorBtn.style.background = this.lastColor;
-                
                 document.getElementById('brush-size').oninput = (e) => {
                     const size = e.target.value;
                     this.ctx.lineWidth = this.isErasing ? size * 2 : size;
@@ -522,6 +574,34 @@
                 this.ctx.setTransform(1, 0, 0, 1, 0, 0);
                 this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
                 this.ctx.restore();
+                this.saveState(); // 클리어 후 상태도 저장하여 언두 가능하게 함
+            }
+        };
+
+        /* ======================================================================
+         * [V82.0 Vision AI Engine - ml5.js DoodleNet]
+         * 구글 Quick Draw 데이터를 기반으로 낙서를 인식합니다.
+         * ====================================================================== */
+        const VisionAI = {
+            classifier: null,
+            isReady: false,
+            init() {
+                try {
+                    // ml5.js의 DoodleNet 모델 로드
+                    this.classifier = ml5.imageClassifier('DoodleNet', () => {
+                        this.isReady = true;
+                        console.log("DoodleNet is loaded and ready.");
+                    });
+                } catch(e) { console.warn("Vision AI failed to initialize."); }
+            },
+            async classifyCanvas(canvas) {
+                if(!this.isReady || !this.classifier) return null;
+                return new Promise((resolve) => {
+                    this.classifier.classify(canvas, (err, results) => {
+                        if(err) resolve(null);
+                        else resolve(results[0].label); // 가장 확률이 높은 라벨 반환
+                    });
+                });
             }
         };
 
@@ -537,61 +617,87 @@
                     
                     this.recognition.onresult = (event) => { 
                         STATE.lastTranscript = event.results[0][0].transcript;
-                        // 🚨 실제 AI STT 엔진의 발음 정확도(Confidence) 데이터 획득
                         STATE.sttConfidence = Math.round(event.results[0][0].confidence * 100);
                     };
-                    this.recognition.onend = () => { if (STATE.isRecording) this.toggle(); };
-                    this.recognition.onerror = () => { if (STATE.isRecording) this.toggle(); };
+                    this.recognition.onend = () => { 
+                        if (STATE.isRecording) {
+                            STATE.isChatMode ? this.toggleChat() : this.toggle(); 
+                        }
+                    };
+                    this.recognition.onerror = () => { 
+                        if (STATE.isRecording) {
+                            STATE.isChatMode ? this.toggleChat() : this.toggle(); 
+                        }
+                    };
                 }
             },
             toggle() {
-                const btn = document.getElementById('btn-record'); 
-                const text = document.getElementById('record-text');
-                
+                const btn = document.getElementById('btn-record'); const text = document.getElementById('record-text');
                 if(!STATE.isRecording) { 
-                    STATE.isRecording = true; 
-                    STATE.lastTranscript = ""; 
-                    STATE.sttConfidence = 0;
-                    
-                    // 🚨 시간 측정 시작 (말하기 유창성 WPM 계산용)
+                    STATE.isRecording = true; STATE.isChatMode = false; STATE.lastTranscript = ""; STATE.sttConfidence = 0;
                     STATE.audioStartTime = Date.now();
-                    
-                    btn.classList.add('recording'); 
-                    text.innerText = "Listening..."; 
-                    
+                    btn.classList.add('recording'); text.innerText = "Listening..."; 
                     if(this.recognition) { try { this.recognition.start(); } catch(e) {} }
                 } else { 
                     STATE.isRecording = false; 
-                    
-                    // 🚨 시간 측정 종료
-                    const endTime = Date.now();
-                    STATE.audioDurationSec = (endTime - STATE.audioStartTime) / 1000;
-                    
-                    btn.classList.remove('recording'); 
-                    text.innerText = "Audio Log"; 
-                    
+                    STATE.audioDurationSec = (Date.now() - STATE.audioStartTime) / 1000;
+                    btn.classList.remove('recording'); text.innerText = "Audio Log"; 
                     if(this.recognition) { this.recognition.stop(); }
                     setTimeout(() => { AITutor.submitWork(); }, 500);
+                }
+            },
+            // 🚨 멀티 턴 챗 전용 녹음 토글
+            toggleChat() {
+                const btn = document.getElementById('btn-chat-record');
+                if(!STATE.isRecording) { 
+                    STATE.isRecording = true; STATE.isChatMode = true; STATE.lastTranscript = "";
+                    btn.classList.add('recording'); btn.innerHTML = "🎤 <span>Listening...</span>"; 
+                    if(this.recognition) { try { this.recognition.start(); } catch(e) {} }
+                } else { 
+                    STATE.isRecording = false; 
+                    btn.classList.remove('recording'); btn.innerHTML = "🎤 <span>Hold to Reply</span>"; 
+                    if(this.recognition) { this.recognition.stop(); }
+                    setTimeout(() => { AITutor.processChatReply(); }, 500);
                 }
             }
         };
 
+        /* ======================================================================
+         * [V82.0 Multi-Turn AI Tutor Integration]
+         * ====================================================================== */
         const AITutor = {
-            submitWork() {
+            async submitWork() {
                 if(STATE.isRecording) { AudioEngine.toggle(); return; }
                 
-                // OCR Visual AI 트리거
                 if (STATE.currentPage === 1 && !STATE.isNameRegistered) { 
                     this.scanHandwritingForName(); 
                     return; 
                 }
-                this.provideFeedback();
+                
+                const panel = document.getElementById('ai-panel'); 
+                const content = document.getElementById('ai-content'); 
+                panel.classList.add('open');
+                
+                // 제출 시마다 기존 채팅창을 리셋하고 새로 분석
+                content.innerHTML = `<div style="text-align:center; padding: 50px 0;"><div style="width:50px; height:50px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px;"></div><p style="font-size:13px; color:var(--br-muted); font-weight:900; letter-spacing:3px; animation: pulse 1.5s infinite;">ANALYZING AUDIO & DRAWING...</p></div>`;
+                document.getElementById('chat-input-area').style.display = "none";
+
+                // 🚨 1. Doodle Recognition (낙서 인식) 실행
+                let doodleLabel = await VisionAI.classifyCanvas(CanvasEngine.cvs);
+                if (doodleLabel) doodleLabel = doodleLabel.replace(/_/g, ' '); // ex: 'hot_dog' -> 'hot dog'
+
+                // 2. 피드백 렌더링
+                setTimeout(() => {
+                    this.provideFeedback(false, doodleLabel);
+                }, 800);
             },
             
+            // ... (Visual AI (OCR) 이름 스캔 코드는 동일하게 유지) ...
             scanHandwritingForName() {
                 const panel = document.getElementById('ai-panel'); 
                 const content = document.getElementById('ai-content');
                 panel.classList.add('open'); 
+                document.getElementById('chat-input-area').style.display = "none";
                 
                 content.innerHTML = `
                     <div style="text-align:center; padding: 50px 0;">
@@ -600,23 +706,16 @@
                     </div>
                 `;
 
-                // 캔버스 추출 및 Tesseract 적용
                 const tempCvs = document.createElement('canvas');
-                tempCvs.width = CanvasEngine.cvs.width;
-                tempCvs.height = CanvasEngine.cvs.height;
+                tempCvs.width = CanvasEngine.cvs.width; tempCvs.height = CanvasEngine.cvs.height;
                 const tCtx = tempCvs.getContext('2d');
-                tCtx.fillStyle = '#FFFFFF';
-                tCtx.fillRect(0, 0, tempCvs.width, tempCvs.height);
+                tCtx.fillStyle = '#FFFFFF'; tCtx.fillRect(0, 0, tempCvs.width, tempCvs.height);
                 tCtx.drawImage(CanvasEngine.cvs, 0, 0);
-                
                 const imgData = tempCvs.toDataURL('image/jpeg', 1.0);
 
                 if(window.Tesseract) {
                     setTimeout(() => { document.getElementById('ocr-status').innerText = "READING HANDWRITING..."; }, 800);
-                    
-                    Tesseract.recognize(imgData, 'eng', {
-                        logger: m => console.log("Visual AI:", m.status, Math.round(m.progress * 100) + "%")
-                    }).then(({ data: { text } }) => {
+                    Tesseract.recognize(imgData, 'eng').then(({ data: { text } }) => {
                         let cleanedName = text.replace(/[^a-zA-Z]/g, '').trim();
                         if (cleanedName.length >= 2) {
                             cleanedName = cleanedName.charAt(0).toUpperCase() + cleanedName.slice(1).toLowerCase();
@@ -625,7 +724,6 @@
                             this.showManualInput("I couldn't quite read that. What is your name?");
                         }
                     }).catch(err => {
-                        console.error(err);
                         this.showManualInput("Visual AI failed. Please type your name.");
                     });
                 } else {
@@ -636,7 +734,7 @@
             confirmScannedName(scannedName) {
                 const content = document.getElementById('ai-content');
                 content.innerHTML = `
-                    <div class="ai-bubble">
+                    <div class="chat-bubble ai">
                         <b>Bridge Visual AI</b><br><br>
                         Wow! I read your handwriting. Is your name <b style="color:var(--br-green); font-size:20px;">${scannedName}</b>?<br><br>
                         <button class="ai-name-btn" onclick="AITutor.saveName('${scannedName}')">YES, THAT'S ME!</button>
@@ -648,7 +746,7 @@
             showManualInput(message) {
                 const content = document.getElementById('ai-content');
                 content.innerHTML = `
-                    <div class="ai-bubble">
+                    <div class="chat-bubble ai">
                         <b>Bridge Visual AI</b><br><br>
                         ${message}<br>
                         <input type="text" id="ai-name-verify" class="ai-name-input" placeholder="e.g. Elena" autocomplete="off" onkeypress="if(event.key === 'Enter') AITutor.saveName()">
@@ -663,7 +761,6 @@
 
             saveName(providedName = null) {
                 const nameInput = providedName || document.getElementById('ai-name-verify').value.trim();
-                
                 if(nameInput) {
                     STATE.studentName = nameInput; STATE.isNameRegistered = true;
                     document.getElementById('profile-box').classList.add('registered'); 
@@ -672,94 +769,102 @@
                     document.querySelector('.profile-role').innerText = "Bridge Inquirer";
                     
                     this.provideFeedback(true);
-                } else { 
-                    alert("Please enter your name."); 
-                }
+                } else { alert("Please enter your name."); }
             },
 
-            provideFeedback(isFirstGreeting = false) {
-                const panel = document.getElementById('ai-panel'); 
+            provideFeedback(isFirstGreeting = false, doodleLabel = null) {
                 const content = document.getElementById('ai-content'); 
-                panel.classList.add('open');
-                
                 const contextData = getPageContext(STATE.id, STATE.currentPage); 
                 const callName = STATE.studentName ? STATE.studentName : "my friend";
                 
-                let transcriptHtml = ""; 
-                let analysisMod = contextData.analysis; 
-                
-                // 🚨 V81.0 3대 핵심 지표 초기화
-                let scorePronunciation = 0;
-                let scoreAccuracy = 0;
-                let scoreSpeedWPM = 0;
-                let speedPercentage = 0;
+                let transcriptHtml = ""; let analysisMod = contextData.analysis; 
+                let scorePronunciation = 0; let scoreAccuracy = 0; let scoreSpeedWPM = 0; let speedPercentage = 0;
                 
                 if (STATE.lastTranscript) {
                     transcriptHtml = `<div class="transcript-box">" ${STATE.lastTranscript} "</div>`;
-                    
-                    // 1. 발음 (Pronunciation) - STT 엔진에서 추출한 실제 신뢰도
                     scorePronunciation = STATE.sttConfidence || 85;
-
-                    // 2. 정확도 (Accuracy) - 타겟 키워드 포함 비율 계산
                     const spokenWords = STATE.lastTranscript.toLowerCase(); 
                     const targetKeywords = contextData.keywords;
                     const hitKeywords = targetKeywords.filter(kw => spokenWords.includes(kw));
                     scoreAccuracy = targetKeywords.length > 0 ? Math.round((hitKeywords.length / targetKeywords.length) * 100) : 100;
                     
-                    // 3. 말하기 유창성 (Speed/Fluency - WPM 계산)
                     const wordCount = STATE.lastTranscript.trim().split(/\s+/).length;
-                    if (STATE.audioDurationSec > 0) {
-                        scoreSpeedWPM = Math.round((wordCount / STATE.audioDurationSec) * 60);
-                    }
-                    // WPM을 UI 프로그레스 바(0~100%)로 표현하기 위한 환산 (아이들 기준 120 WPM을 100%로 설정)
+                    if (STATE.audioDurationSec > 0) scoreSpeedWPM = Math.round((wordCount / STATE.audioDurationSec) * 60);
                     speedPercentage = Math.min(Math.round((scoreSpeedWPM / 120) * 100), 100);
 
-                    // 피드백 문구 세팅
-                    if (hitKeywords.length > 0) {
-                        analysisMod = `<b style="color:var(--br-green);">Excellent Accuracy!</b> You used ${hitKeywords.length} key words perfectly. ${contextData.analysis}`;
-                    } else {
-                        analysisMod = `<b>Great Speaking!</b> I heard your voice clearly. ${contextData.analysis}`;
-                    }
-                } else { 
-                    transcriptHtml = `<div class="transcript-empty">(No voice log detected. Try using the Audio Log!)</div>`; 
-                }
+                    if (hitKeywords.length > 0) analysisMod = `<b style="color:var(--br-green);">Excellent Accuracy!</b> You used ${hitKeywords.length} key words perfectly.`;
+                    else analysisMod = `<b>Great Speaking!</b> I heard your voice clearly.`;
+                } else { transcriptHtml = `<div class="transcript-empty">(No voice log detected)</div>`; }
                 
-                let introText = isFirstGreeting ? `<b>Nice to meet you, ${callName}!</b><br><br>I scanned your beautiful name. Now let's explore together.<br><br>` : `<b>Hello, ${callName}!</b><br><br>I analyzed your speech using 3 metrics.<br><br>`;
+                // 🚨 Doodle Recognition 문구 조합
+                let doodleMsg = "";
+                if (doodleLabel) {
+                    doodleMsg = `<br><br>🖍️ I also looked at your drawing! It looks like a <b>${doodleLabel}</b>. Is that right?`;
+                }
 
-                // 🚨 3대 지표를 모두 출력하는 Analytics Box
+                let introText = isFirstGreeting ? `<b>Nice to meet you, ${callName}!</b><br><br>I scanned your beautiful name.` : `<b>Hello, ${callName}!</b><br><br>I analyzed your speech and your drawing.`;
+
+                // 🚨 채팅 UI 구조로 렌더링
                 content.innerHTML = `
                     <div class="analytics-box">
                         <div class="analytics-title">Advanced Speech Analytics</div>
                         ${transcriptHtml}
-                        
-                        <!-- 1. Pronunciation -->
-                        <div class="stat-row">
-                            <div class="stat-label"><span>Pronunciation (Clarity)</span> <span>${scorePronunciation}%</span></div>
-                            <div class="stat-bar-bg"><div class="stat-bar-fill blue" style="width: ${scorePronunciation}%;"></div></div>
-                        </div>
-
-                        <!-- 2. Accuracy -->
-                        <div class="stat-row">
-                            <div class="stat-label"><span>Accuracy (Keywords)</span> <span>${scoreAccuracy}%</span></div>
-                            <div class="stat-bar-bg"><div class="stat-bar-fill green" style="width: ${scoreAccuracy}%;"></div></div>
-                        </div>
-
-                        <!-- 3. Fluency (Speed) -->
-                        <div class="stat-row">
-                            <div class="stat-label"><span>Fluency (Speed)</span> <span>${scoreSpeedWPM} WPM</span></div>
-                            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: ${speedPercentage}%;"></div></div>
-                        </div>
-
-                        <div class="visual-intent"><b>🎯 Intent Analysis: ${contextData.intent}</b><br><br>${analysisMod}</div>
+                        <div class="stat-row"><div class="stat-label"><span>Pronunciation (Clarity)</span> <span>${scorePronunciation}%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill blue" style="width: ${scorePronunciation}%;"></div></div></div>
+                        <div class="stat-row"><div class="stat-label"><span>Accuracy (Keywords)</span> <span>${scoreAccuracy}%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill green" style="width: ${scoreAccuracy}%;"></div></div></div>
+                        <div class="stat-row"><div class="stat-label"><span>Fluency (Speed)</span> <span>${scoreSpeedWPM} WPM</span></div><div class="stat-bar-bg"><div class="stat-bar-fill" style="width: ${speedPercentage}%;"></div></div></div>
+                        <div class="visual-intent"><b>🎯 AI Analysis:</b><br>${analysisMod}</div>
                     </div>
-                    <div class="ai-bubble">${introText}<b style="font-size:18px; color:var(--br-green);">${contextData.question}</b></div>
+                    <div class="chat-bubble ai">${introText}${doodleMsg}<br><br><b style="font-size:16px; color:var(--br-green);">${contextData.question}</b></div>
                 `;
                 
+                // 채팅 입력창(Reply) 활성화
+                document.getElementById('chat-input-area').style.display = "flex";
+                
                 if ('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(isFirstGreeting ? `Nice to meet you, ${callName}. ${contextData.question}` : `Hello, ${callName}. ${contextData.question}`);
+                    window.speechSynthesis.cancel(); 
+                    let speechTxt = isFirstGreeting ? `Nice to meet you, ${callName}. ${contextData.question}` : `Hello, ${callName}. ${doodleLabel ? `Your drawing looks like a ${doodleLabel}. ` : ''}${contextData.question}`;
+                    const utterance = new SpeechSynthesisUtterance(speechTxt);
                     utterance.lang = 'en-US'; utterance.rate = 0.85; utterance.pitch = 1.2; window.speechSynthesis.speak(utterance);
                 }
             },
+
+            // 🚨 멀티 턴 챗 응답 처리 (IBL 꼬리물기 대화)
+            processChatReply() {
+                if(!STATE.lastTranscript) return;
+                
+                const content = document.getElementById('ai-content');
+                
+                // 아이의 대답을 User 말풍선으로 추가
+                const userBubble = document.createElement('div');
+                userBubble.className = "chat-bubble user";
+                userBubble.innerText = STATE.lastTranscript;
+                content.appendChild(userBubble);
+                content.scrollTop = content.scrollHeight;
+
+                // AI의 꼬리물기 질문 (Follow-up) 생성
+                const followUps = [
+                    "That is so interesting! Can you tell me more about that?",
+                    "Wow! Why do you think that is?",
+                    "That's a great thought. What else comes to your mind?",
+                    "I love that answer! How does that make you feel?"
+                ];
+                const replyText = followUps[Math.floor(Math.random() * followUps.length)];
+
+                setTimeout(() => {
+                    const aiBubble = document.createElement('div');
+                    aiBubble.className = "chat-bubble ai";
+                    aiBubble.innerHTML = `<b style="color:var(--br-green); font-size:16px;">${replyText}</b>`;
+                    content.appendChild(aiBubble);
+                    content.scrollTop = content.scrollHeight;
+
+                    if ('speechSynthesis' in window) {
+                        const utterance = new SpeechSynthesisUtterance(replyText);
+                        utterance.lang = 'en-US'; utterance.rate = 0.85; utterance.pitch = 1.2; 
+                        window.speechSynthesis.speak(utterance);
+                    }
+                }, 1000);
+            },
+
             close() { document.getElementById('ai-panel').classList.remove('open'); if('speechSynthesis' in window) window.speechSynthesis.cancel(); }
         };
 
@@ -768,6 +873,7 @@
             RGBRingEngine.init(); 
             PageEngine.init(); 
             AudioEngine.init(); 
+            VisionAI.init(); // 낙서 인식 모델 초기화
             
             setTimeout(() => {
                 CanvasEngine.resizeCanvas();

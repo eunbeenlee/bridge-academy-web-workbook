@@ -11,129 +11,140 @@
     
     <style>
         /* ======================================================================
-         * [Architecture: Bridge EdTech System V46.0]
-         * Feature: Zero-UI Handwriting Authentication
+         * [Architecture: Bridge EdTech System V47.0]
+         * Feature: Context-Aware AI & Child-Centric Chunky UI
          * ====================================================================== */
         :root {
             --br-green: #89BFA0; --br-gold: #CBAE75; --br-blue: #7CA6C1; --br-charcoal: #363431;
             --br-bg: #FCFBF9; --br-paper: #FFFFFF; --br-text: #2A2825; --br-muted: #8C8985;
             --br-border: #F0EFEB; --br-error: #E74C3C; --br-ai: #F4F8F5;
             --ease-lux: cubic-bezier(0.19, 1, 0.22, 1);
-            --sidebar-width: 340px;
-            --dock-height: 120px;
+            --sidebar-width: 320px;
+            --dock-height: 140px; /* 아이들을 위해 컨트롤 독 높이 대폭 확대 */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; overscroll-behavior-y: none; }
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
         
-        /* [Main App Layout] */
         .app-container { display: flex; width: 100vw; height: 100vh; position: relative; }
         
-        /* [Sidebar] */
+        /* --------------------------------------------------
+         * [Sidebar]
+         * -------------------------------------------------- */
         .sidebar { width: var(--sidebar-width); background: var(--br-paper); border-right: 1px solid var(--br-border); display: flex; flex-direction: column; z-index: 1000; }
         .sidebar-header { padding: 40px 30px; text-align: center; border-bottom: 1px solid var(--br-border); cursor: pointer; }
-        .brand-logo { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: var(--br-charcoal); }
+        .brand-logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; color: var(--br-charcoal); }
         .brand-logo span { color: var(--br-green); font-style: italic; }
         
-        .student-profile { padding: 20px 30px; border-bottom: 1px solid var(--br-border); display: flex; align-items: center; gap: 15px; background: #FAFAFA; transition: 0.5s; }
+        .student-profile { padding: 25px 30px; border-bottom: 1px solid var(--br-border); display: flex; align-items: center; gap: 15px; background: #FAFAFA; transition: 0.5s; }
         .student-profile.registered { background: #F4F8F5; }
-        .profile-avatar { width: 45px; height: 45px; border-radius: 50%; background: var(--br-border); color: var(--br-muted); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 20px; transition: 0.5s; }
-        .student-profile.registered .profile-avatar { background: var(--br-gold); color: #FFF; }
+        .profile-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--br-border); color: var(--br-muted); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 22px; transition: 0.5s; }
+        .student-profile.registered .profile-avatar { background: var(--br-gold); color: #FFF; box-shadow: 0 10px 20px rgba(203,174,117,0.3); }
         .profile-info { display: flex; flex-direction: column; }
-        .profile-name { font-size: 16px; font-weight: 800; }
-        .profile-role { font-size: 11px; color: var(--br-muted); letter-spacing: 1px; }
+        .profile-name { font-size: 18px; font-weight: 800; }
+        .profile-role { font-size: 12px; color: var(--br-muted); letter-spacing: 1px; }
 
-        .nav-list { flex: 1; overflow-y: auto; padding: 25px; }
-        .nav-item { padding: 20px; margin-bottom: 12px; border-radius: 18px; background: #FAFAFA; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; cursor: pointer; border: 1px solid transparent; }
-        .nav-item.active { background: var(--br-ai); border-left: 6px solid var(--br-green); font-weight: 700; }
+        .nav-list { flex: 1; overflow-y: auto; padding: 20px; }
+        .nav-item { padding: 20px; margin-bottom: 12px; border-radius: 20px; background: #FAFAFA; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; cursor: pointer; border: 1px solid transparent; }
+        .nav-item.active { background: var(--br-ai); border-left: 6px solid var(--br-green); font-weight: 800; }
         
-        /* [Workspace & Canvas] */
+        /* --------------------------------------------------
+         * [Workspace & Canvas]
+         * -------------------------------------------------- */
         .workspace { flex: 1; display: flex; flex-direction: column; position: relative; background: var(--br-bg); }
-        .top-bar { padding: 25px 50px; display: flex; justify-content: space-between; align-items: center; }
+        .top-bar { padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
         .unit-info { font-size: 14px; font-weight: 900; color: var(--br-gold); letter-spacing: 5px; }
-        .page-info { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; color: var(--br-charcoal); }
+        .page-info { font-family: 'Playfair Display', serif; font-size: 46px; font-weight: 700; color: var(--br-charcoal); }
         
-        .soundscape-ui { display: flex; align-items: center; gap: 10px; background: #FFF; padding: 10px 20px; border-radius: 100px; border: 1px solid var(--br-border); font-size: 12px; font-weight: 700; color: var(--br-muted); cursor: pointer; transition: 0.3s; }
+        .soundscape-ui { display: flex; align-items: center; gap: 10px; background: #FFF; padding: 12px 25px; border-radius: 100px; border: 1px solid var(--br-border); font-size: 13px; font-weight: 800; color: var(--br-muted); cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.02); }
         .soundscape-ui.active { color: var(--br-blue); border-color: var(--br-blue); }
 
-        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 0 50px 30px; position: relative; }
-        .canvas-container { position: relative; background: var(--br-paper); border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); width: 100%; max-width: 900px; line-height: 0; border: 1px solid var(--br-border); }
-        #worksheet-img { width: 100%; height: auto; border-radius: 30px; opacity: 0; transition: 0.5s; user-select: none; -webkit-user-drag: none; }
-        #draw-layer { position: absolute; top: 0; left: 0; border-radius: 30px; cursor: crosshair; touch-action: none; z-index: 50; }
+        /* [Tablet Optimization] 캔버스가 한눈에 다 보이도록 Max Height 설정 */
+        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 0 40px 20px; position: relative; overflow: hidden; }
+        .canvas-container { position: relative; background: var(--br-paper); border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); border: 1px solid var(--br-border); display: inline-block; max-height: calc(100vh - 280px); }
+        
+        /* V47.0 펜 커서 연출 (SVG 데이터를 사용한 고화질 펜 커서) */
+        .canvas-container.drawing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='none' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/></svg>") 0 36, crosshair; }
+        
+        #worksheet-img { max-height: calc(100vh - 280px); width: auto; max-width: 100%; border-radius: 30px; opacity: 0; transition: 0.5s; user-select: none; -webkit-user-drag: none; display: block; }
+        #draw-layer { position: absolute; top: 0; left: 0; border-radius: 30px; touch-action: none; z-index: 50; }
 
-        /* [Dynamic Scaffolding Hint] */
-        .scaffolding-hint { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,255,255,0.95); padding: 30px 40px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 2px dashed var(--br-gold); text-align: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.8s; }
-        .scaffolding-hint.show { opacity: 1; }
-        .hint-icon { font-size: 40px; margin-bottom: 15px; }
-        .hint-text { font-size: 16px; font-weight: 700; color: var(--br-charcoal); }
-
-        /* [Bottom Control Dock] */
-        .bottom-dock { height: var(--dock-height); background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 50px; z-index: 500; }
-        .tool-group { display: flex; align-items: center; gap: 20px; background: #F8FAF9; padding: 15px 30px; border-radius: 100px; border: 1px solid var(--br-border); }
-        .color-preview { width: 40px; height: 40px; border-radius: 50%; border: 3px solid #FFF; cursor: pointer; background: var(--br-charcoal); }
-        .brush-slider { width: 150px; accent-color: var(--br-green); cursor: pointer; }
-        .btn-erase { font-size: 12px; font-weight: 800; color: var(--br-muted); letter-spacing: 2px; }
-        
-        .action-group { display: flex; gap: 15px; align-items: center; }
-        .btn-nav { width: 60px; height: 60px; border-radius: 20px; border: 1px solid var(--br-border); font-size: 20px; background: #FFF; cursor: pointer; }
-        .btn-core { height: 60px; padding: 0 35px; border-radius: 20px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; transition: 0.3s; }
-        .btn-record { background: #FFF; color: var(--br-charcoal); border: 1px solid var(--br-border); }
-        .btn-record .dot { width: 10px; height: 10px; background: var(--br-error); border-radius: 50%; opacity: 0; }
-        .btn-record.recording { background: #FFF0F0; color: var(--br-error); border-color: #FADBD8; }
-        .btn-record.recording .dot { opacity: 1; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
-        .btn-submit { background: var(--br-charcoal); color: #FFF; }
-        .btn-submit:hover { background: var(--br-green); transform: translateY(-3px); }
-
-        /* [AI Teacher Panel] */
-        .ai-panel { position: absolute; top: 0; right: -450px; width: 420px; height: 100%; background: #FFF; box-shadow: -10px 0 30px rgba(0,0,0,0.05); z-index: 2000; transition: 0.6s var(--ease-lux); display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
-        .ai-panel.open { right: 0; }
-        .ai-header { padding: 30px; background: var(--br-ai); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); }
-        .ai-title { font-size: 16px; font-weight: 900; color: var(--br-green); }
-        
-        .ai-content { padding: 30px; flex: 1; overflow-y: auto; }
-        
-        .analytics-box { background: #FAFAFA; border: 1px solid var(--br-border); border-radius: 15px; padding: 20px; margin-bottom: 25px; }
-        .analytics-title { font-size: 11px; font-weight: 800; color: var(--br-muted); letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
-        
-        .stat-row { margin-bottom: 15px; }
-        .stat-label { font-size: 13px; font-weight: 700; display: flex; justify-content: space-between; margin-bottom: 8px; }
-        .stat-bar-bg { width: 100%; height: 8px; background: #E0E0E0; border-radius: 10px; overflow: hidden; }
-        .stat-bar-fill { height: 100%; background: var(--br-gold); width: 0%; transition: width 1.5s var(--ease-lux); }
-        
-        .visual-intent { font-size: 13px; background: #FFF; padding: 15px; border-radius: 10px; border: 1px dashed var(--br-border); margin-top: 15px; line-height: 1.6; }
-
-        .ai-bubble { background: #F8F9FA; padding: 25px; border-radius: 20px; border-bottom-left-radius: 5px; border: 1px solid var(--br-border); font-size: 15px; line-height: 1.7; font-weight: 500; }
-        
-        /* [AI Name Registration UI] */
-        .ai-name-input { width: 100%; padding: 15px; border: 2px dashed var(--br-green); border-radius: 12px; margin-top: 15px; font-size: 16px; text-align: center; font-weight: 800; outline: none; transition: 0.3s; font-family: inherit; }
-        .ai-name-input:focus { background: #F4F8F5; border-style: solid; }
-        .ai-name-btn { width: 100%; background: var(--br-green); color: #fff; padding: 15px; border-radius: 12px; margin-top: 10px; font-weight: 800; cursor: pointer; transition: 0.3s; letter-spacing: 2px; }
-        .ai-name-btn:hover { background: var(--br-charcoal); }
-
-        /* Scanning Animation */
-        .scan-line { width: 100%; height: 3px; background: var(--br-green); position: absolute; top: 0; left: 0; box-shadow: 0 0 10px var(--br-green); animation: scan 2s linear infinite; z-index: 100; display: none; }
+        .scan-line { width: 100%; height: 4px; background: var(--br-green); position: absolute; top: 0; left: 0; box-shadow: 0 0 15px var(--br-green); animation: scan 2s linear infinite; z-index: 100; display: none; }
         @keyframes scan { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
 
-        audio { display: none; }
+        /* --------------------------------------------------
+         * [Child-Centric Bottom Dock V47.0]
+         * -------------------------------------------------- */
+        .bottom-dock { height: var(--dock-height); background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; }
+        
+        .tool-group { display: flex; align-items: center; gap: 25px; background: #FAFAFA; padding: 20px 40px; border-radius: 100px; border: 1px solid var(--br-border); }
+        .color-preview { width: 50px; height: 50px; border-radius: 50%; border: 4px solid #FFF; cursor: pointer; background: var(--br-charcoal); box-shadow: 0 10px 20px rgba(0,0,0,0.08); transition: 0.3s; }
+        .color-preview:hover { transform: scale(1.1); }
+        .brush-slider { width: 180px; accent-color: var(--br-green); cursor: pointer; height: 10px; }
+        .btn-erase { font-size: 14px; font-weight: 900; color: var(--br-muted); letter-spacing: 2px; }
+        
+        .action-group { display: flex; gap: 20px; align-items: center; }
+        
+        /* V47.0 몰입감과 편의성을 극대화한 거대한 네비게이션 버튼 */
+        .btn-nav { width: 90px; height: 90px; border-radius: 30px; border: 1px solid var(--br-border); font-size: 32px; background: #FFF; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.02); color: var(--br-charcoal); display: flex; justify-content: center; align-items: center; }
+        .btn-nav:hover { background: #F5F5F5; transform: translateY(-3px); }
+        
+        .btn-core { height: 90px; padding: 0 45px; border-radius: 30px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; display: flex; align-items: center; gap: 15px; cursor: pointer; font-size: 18px; transition: 0.3s; box-shadow: 0 15px 30px rgba(0,0,0,0.04); }
+        .btn-record { background: #FFF; color: var(--br-charcoal); border: 1px solid var(--br-border); }
+        .btn-record .dot { width: 14px; height: 14px; background: var(--br-error); border-radius: 50%; opacity: 0; }
+        .btn-record.recording { background: #FFF0F0; color: var(--br-error); border-color: #FADBD8; }
+        .btn-record.recording .dot { opacity: 1; animation: blink 1s infinite; }
+        
+        .btn-submit { background: var(--br-charcoal); color: #FFF; border: none; }
+        .btn-submit:hover { background: var(--br-green); box-shadow: 0 20px 40px rgba(137, 191, 160, 0.3); transform: translateY(-5px); }
+
+        /* --------------------------------------------------
+         * [AI Teacher Panel]
+         * -------------------------------------------------- */
+        .ai-panel { position: absolute; top: 0; right: -500px; width: 450px; height: 100%; background: #FFF; box-shadow: -15px 0 40px rgba(0,0,0,0.08); z-index: 2000; transition: 0.6s var(--ease-lux); display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
+        .ai-panel.open { right: 0; }
+        .ai-header { padding: 35px; background: var(--br-ai); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); }
+        .ai-title { font-size: 18px; font-weight: 900; color: var(--br-green); display: flex; align-items: center; gap: 10px; }
+        .ai-title::before { content: '✨'; font-size: 24px; }
+        
+        .ai-content { padding: 35px; flex: 1; overflow-y: auto; }
+        
+        .analytics-box { background: #FAFAFA; border: 1px solid var(--br-border); border-radius: 20px; padding: 25px; margin-bottom: 30px; }
+        .analytics-title { font-size: 12px; font-weight: 900; color: var(--br-muted); letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; }
+        
+        .stat-row { margin-bottom: 20px; }
+        .stat-label { font-size: 14px; font-weight: 800; display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--br-charcoal); }
+        .stat-bar-bg { width: 100%; height: 10px; background: #E0E0E0; border-radius: 10px; overflow: hidden; }
+        .stat-bar-fill { height: 100%; background: var(--br-gold); width: 0%; transition: width 1.5s var(--ease-lux); }
+        
+        .visual-intent { font-size: 14px; background: #FFF; padding: 20px; border-radius: 15px; border: 1px dashed var(--br-border); margin-top: 20px; line-height: 1.7; color: var(--br-text); }
+        .ai-bubble { background: #F8F9FA; padding: 30px; border-radius: 25px; border-bottom-left-radius: 5px; border: 1px solid var(--br-border); font-size: 16px; line-height: 1.8; font-weight: 500; }
+        
+        .ai-name-input { width: 100%; padding: 20px; border: 2px dashed var(--br-green); border-radius: 15px; margin-top: 20px; font-size: 18px; text-align: center; font-weight: 800; outline: none; transition: 0.3s; font-family: inherit; }
+        .ai-name-input:focus { background: #F4F8F5; border-style: solid; }
+        .ai-name-btn { width: 100%; background: var(--br-green); color: #fff; padding: 20px; border-radius: 15px; margin-top: 15px; font-weight: 900; cursor: pointer; transition: 0.3s; letter-spacing: 2px; font-size: 16px; border: none; }
+        .ai-name-btn:hover { background: var(--br-charcoal); }
+
+        @media (max-width: 1200px) {
+            .bottom-dock { padding: 0 20px; height: auto; padding-top: 20px; padding-bottom: 20px; flex-wrap: wrap; justify-content: center; gap: 20px; }
+            .action-group { width: 100%; justify-content: space-between; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Main App -->
     <div class="app-container" id="main-app">
         
         <nav class="sidebar">
             <div class="sidebar-header" onclick="location.href='index.html'">
                 <div class="brand-logo">Bridge<span>Academy</span></div>
             </div>
-            <!-- Student Profile -->
             <div class="student-profile" id="profile-box">
                 <div class="profile-avatar" id="avatar-char">?</div>
                 <div class="profile-info">
                     <span class="profile-name" id="display-student-name">Inquirer</span>
-                    <span class="profile-role">Awaiting Name...</span>
+                    <span class="profile-role">Awaiting P.01 Name</span>
                 </div>
             </div>
             <div class="nav-list" id="nav-list"></div>
@@ -151,23 +162,20 @@
             </div>
 
             <main class="stage-wrapper">
-                <div class="canvas-container">
+                <!-- V47.0 펜 커서가 적용되는 영역 -->
+                <div class="canvas-container drawing-mode" id="canvas-container">
                     <img src="" id="worksheet-img" crossorigin="anonymous">
                     <canvas id="draw-layer"></canvas>
                     <div class="scan-line" id="canvas-scan-line"></div>
-                    
-                    <div class="scaffolding-hint" id="scaffold-hint">
-                        <div class="hint-icon">💡</div>
-                        <div class="hint-text" id="hint-text">자유롭게 생각하고 마음껏 그려보세요!</div>
-                    </div>
                 </div>
             </main>
 
+            <!-- V47.0 Child-Centric 거대한 컨트롤 독 -->
             <div class="bottom-dock">
                 <div class="tool-group">
                     <div class="color-preview" id="btn-color"></div>
                     <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;">
-                    <input type="range" class="brush-slider" id="brush-size" min="2" max="30" value="6">
+                    <input type="range" class="brush-slider" id="brush-size" min="2" max="40" value="6">
                     <button class="btn-erase" onclick="CanvasEngine.clear()">ERASE ALL</button>
                 </div>
                 
@@ -182,22 +190,19 @@
             </div>
         </div>
 
-        <!-- AI Teacher Panel -->
         <div class="ai-panel" id="ai-panel">
             <div class="ai-header">
                 <div class="ai-title">Bridge AI Tutor</div>
-                <button onclick="AITutor.close()" style="font-size:24px; color:#888;">×</button>
+                <button onclick="AITutor.close()" style="font-size:28px; color:#888;">×</button>
             </div>
-            <div class="ai-content" id="ai-content">
-                <!-- AI Content Injected Here -->
-            </div>
+            <div class="ai-content" id="ai-content"></div>
         </div>
 
         <audio id="bgm-ambient" loop crossorigin="anonymous"></audio>
     </div>
 
     <!-- ======================================================================
-         [Enterprise JavaScript Architecture V46.0]
+         [Enterprise JavaScript Architecture V47.0]
          ====================================================================== -->
     <script>
         /**
@@ -218,9 +223,48 @@
             isNameRegistered: false,
             id: new URLSearchParams(window.location.search).get('id') || "A-1",
             currentPage: 1,
-            isRecording: false,
-            scaffoldTimer: null
+            isRecording: false
         };
+
+        /**
+         * [V47.0 Context-Aware AI DB]
+         * 각 유닛의 페이지별 학습 목표와 AI 피드백을 매핑합니다.
+         */
+        const AI_CONTEXT_DB = {
+            "A-1": {
+                theme: "All About Me",
+                pages: {
+                    1: {
+                        intent: "자신의 이름과 정체성 표현",
+                        analysis: "학생이 캔버스에 자신의 이름을 쓰고 꾸민 형태를 스캔했습니다. 획의 흐름에서 강한 자기 효능감과 긍정적인 자아 인식이 돋보입니다.",
+                        question: "What makes your name so special and beautiful?"
+                    },
+                    2: {
+                        intent: "얼굴 및 감정 묘사",
+                        analysis: "얼굴의 주요 특징(눈, 코, 입)을 배치한 방식에서 높은 관찰력이 보입니다. 표정을 통해 오늘의 감정을 창의적으로 표현했습니다.",
+                        question: "What is your favorite part of your face, and why?"
+                    },
+                    3: {
+                        intent: "신체 부위 기능 탐구",
+                        analysis: "손과 발의 움직임을 선으로 역동적으로 연결했습니다. 자신의 몸이 할 수 있는 일에 대한 이해도가 높습니다.",
+                        question: "What fun things can you do with your strong hands?"
+                    }
+                }
+            }
+        };
+
+        function getPageContext(unitId, pageNum) {
+            const unitData = AI_CONTEXT_DB[unitId];
+            if (unitData && unitData.pages[pageNum]) {
+                return unitData.pages[pageNum];
+            }
+            // Fallback for pages without specific DB entries
+            return {
+                intent: "북미식 창의 탐구 진행",
+                analysis: "학생이 그린 선의 패턴과 색상 조합에서 강한 호기심과 자신감이 관찰됩니다. 주제를 깊이 있게 탐구하며 비판적 사고를 확장하고 있습니다.",
+                question: "Can you tell me more about the wonderful things you drew here?"
+            };
+        }
 
         /**
          * [Page Navigation]
@@ -232,7 +276,7 @@
                 for(let i=1; i<=17; i++) {
                     const item = document.createElement('div');
                     item.className = 'nav-item'; item.id = `nav-${i}`;
-                    item.innerHTML = `<span class="nav-title">Inquiry Entry</span> <span class="nav-badge">P.${String(i).padStart(2,'0')}</span>`;
+                    item.innerHTML = `<span style="font-size:15px; letter-spacing:-0.2px;">Inquiry Entry</span> <span style="font-size:12px; opacity:0.4; font-weight:900;">P.${String(i).padStart(2,'0')}</span>`;
                     item.onclick = () => this.load(i);
                     list.appendChild(item);
                 }
@@ -248,7 +292,6 @@
                 img.onload = () => {
                     img.style.opacity = '1';
                     CanvasEngine.sync();
-                    ScaffoldingEngine.reset();
                 };
 
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
@@ -294,7 +337,6 @@
 
                 const start = (e) => {
                     this.isDrawing = true;
-                    ScaffoldingEngine.stop();
                     const p = getPos(e);
                     this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y);
                 };
@@ -323,25 +365,11 @@
                 this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
                 this.ctx.beginPath();
                 HapticEngine.trigger('light');
-                ScaffoldingEngine.reset();
             }
         };
 
         /**
-         * [Dynamic Scaffolding Engine]
-         */
-        const ScaffoldingEngine = {
-            hintEl: document.getElementById('scaffold-hint'),
-            reset() {
-                this.stop();
-                this.hintEl.classList.remove('show');
-                STATE.scaffoldTimer = setTimeout(() => { this.hintEl.classList.add('show'); }, 15000); 
-            },
-            stop() { clearTimeout(STATE.scaffoldTimer); this.hintEl.classList.remove('show'); }
-        };
-
-        /**
-         * [Ambient Soundscape & Haptic Engines]
+         * [Ambient Soundscape & Haptic]
          */
         const AmbientEngine = {
             isPlaying: false, audio: document.getElementById('bgm-ambient'),
@@ -353,6 +381,7 @@
             }
         };
         const HapticEngine = { trigger(type) { if(navigator.vibrate) navigator.vibrate(type === 'light' ? 20 : [30, 50, 30]); } };
+        
         const AudioEngine = {
             toggle() {
                 const btn = document.getElementById('btn-record'); const text = document.getElementById('record-text');
@@ -362,46 +391,44 @@
         };
 
         /**
-         * [Socratic AI Tutor & Handwriting Recognition Simulation]
+         * [V47.0 Socratic AI Tutor & Context Processor]
          */
         const AITutor = {
             submitWork() {
                 HapticEngine.trigger('heavy');
-                ScaffoldingEngine.stop();
                 
-                // [V46.0 기능] 만약 이름 등록이 안 되어 있다면 '필기 인식 모드' 실행
-                if (!STATE.isNameRegistered) {
+                // 1페이지이고 이름 등록이 안 된 상태라면 -> 필기 인식 프로세스
+                if (STATE.currentPage === 1 && !STATE.isNameRegistered) {
                     this.scanHandwritingForName();
                     return;
                 }
                 
-                // 이름이 등록되어 있다면 일반적인 소크라테스 피드백 실행
+                // 그 외의 경우 정규 AI 피드백
                 this.provideFeedback();
             },
             
-            // 1. 이름 필기 인식 시뮬레이션
             scanHandwritingForName() {
                 const panel = document.getElementById('ai-panel');
                 const content = document.getElementById('ai-content');
                 const scanLine = document.getElementById('canvas-scan-line');
                 
                 panel.classList.add('open');
-                scanLine.style.display = 'block'; // 캔버스 위에 스캔 라인 애니메이션 작동
+                scanLine.style.display = 'block'; 
                 
                 content.innerHTML = `
-                    <div style="text-align:center; padding: 40px 0;">
-                        <div class="loader-ring" style="border-top-color:var(--br-green); width:40px; height:40px; margin: 0 auto 20px;"></div>
-                        <p style="font-size:13px; color:var(--br-muted); font-weight:700; letter-spacing:2px;">SCANNING HANDWRITING...</p>
+                    <div style="text-align:center; padding: 60px 0;">
+                        <div style="width:50px; height:50px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px;"></div>
+                        <p style="font-size:14px; color:var(--br-muted); font-weight:800; letter-spacing:3px;">SCANNING HANDWRITING...</p>
                     </div>
                 `;
 
                 setTimeout(() => {
-                    scanLine.style.display = 'none'; // 스캔 종료
+                    scanLine.style.display = 'none'; 
                     content.innerHTML = `
                         <div class="ai-bubble">
                             <b>Bridge Visual AI</b><br><br>
-                            멋진 필체네요! 캔버스에 적은 영어 이름의 철자를 정확하게 확인해 주세요. 등록 후 1:1 보이스 튜터링이 시작됩니다.
-                            <input type="text" id="ai-name-verify" class="ai-name-input" placeholder="이름을 입력하세요" autocomplete="off" onkeypress="if(event.key === 'Enter') AITutor.saveName()">
+                            멋진 필체네요! 캔버스에 그린 영어 이름의 철자를 확인해 주세요. 확인이 완료되면 1:1 보이스 튜터링이 시작됩니다.
+                            <input type="text" id="ai-name-verify" class="ai-name-input" placeholder="e.g. Olivia" autocomplete="off" onkeypress="if(event.key === 'Enter') AITutor.saveName()">
                             <button class="ai-name-btn" onclick="AITutor.saveName()">CONFIRM NAME</button>
                         </div>
                     `;
@@ -409,39 +436,38 @@
                 }, 2000);
             },
 
-            // 2. 이름 저장 및 등록
             saveName() {
                 const nameInput = document.getElementById('ai-name-verify').value.trim();
                 if(nameInput) {
                     STATE.studentName = nameInput;
                     STATE.isNameRegistered = true;
                     
-                    // 사이드바 프로필 업데이트
                     document.getElementById('profile-box').classList.add('registered');
                     document.getElementById('display-student-name').innerText = nameInput;
                     document.getElementById('avatar-char').innerText = nameInput.charAt(0).toUpperCase();
                     document.querySelector('.profile-role').innerText = "Bridge Inquirer";
 
-                    // 음성으로 환영 인사 및 첫 피드백 바로 연결
                     this.provideFeedback(true);
                 } else {
                     alert("이름 철자를 입력해 주세요.");
                 }
             },
 
-            // 3. 정규 피드백 및 음성
             provideFeedback(isFirstGreeting = false) {
                 const panel = document.getElementById('ai-panel');
                 const content = document.getElementById('ai-content');
                 panel.classList.add('open');
                 
-                const confidenceLvl = Math.floor(Math.random() * 20) + 75; // 75~95%
-                let question = `Why do you think the caterpillar was so hungry, ${STATE.studentName}?`;
-                if(STATE.id.startsWith("B")) question = `Where in the world would you like to build your house, ${STATE.studentName}?`;
+                // V47.0 Context 데이터 가져오기
+                const contextData = getPageContext(STATE.id, STATE.currentPage);
+                const confidenceLvl = Math.floor(Math.random() * 15) + 85; 
+                
+                // 이름 처리 (등록 전이면 친구야, 등록 후면 이름)
+                const callName = STATE.studentName ? STATE.studentName : "my friend";
                 
                 let introText = isFirstGreeting 
-                    ? `<b>Nice to meet you, ${STATE.studentName}!</b><br><br>I scanned your beautiful name. Now let's look at your inquiry page.<br><br>` 
-                    : `<b>Hello, ${STATE.studentName}!</b><br><br>I looked at your drawing and listened to your voice. You did a fantastic job exploring this topic.<br><br>`;
+                    ? `<b>Nice to meet you, ${callName}!</b><br><br>I scanned your beautiful name. Now let's explore together.<br><br>` 
+                    : `<b>Hello, ${callName}!</b><br><br>I looked at your drawing and listened to your voice. You did a fantastic job!<br><br>`;
 
                 content.innerHTML = `
                     <div class="analytics-box">
@@ -451,18 +477,18 @@
                             <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: ${confidenceLvl}%;"></div></div>
                         </div>
                         <div class="visual-intent">
-                            <b>Visual AI Analysis:</b><br>
-                            학생이 그린 선의 패턴과 속도에서 강한 호기심과 자신감이 관찰됩니다. 북미식 탐구 과정을 훌륭하게 수행했습니다.
+                            <b>🎯 의도 분석: ${contextData.intent}</b><br><br>
+                            ${contextData.analysis}
                         </div>
                     </div>
                     <div class="ai-bubble">
                         ${introText}
-                        <b>${question}</b>
+                        <b style="font-size:18px; color:var(--br-green);">${contextData.question}</b>
                     </div>
                 `;
                 
-                // 음성 합성 (TTS)
-                let speechText = isFirstGreeting ? `Nice to meet you, ${STATE.studentName}. ${question}` : `Hello, ${STATE.studentName}. ${question}`;
+                // TTS 발화
+                let speechText = isFirstGreeting ? `Nice to meet you, ${callName}. ${contextData.question}` : `Hello, ${callName}. ${contextData.question}`;
                 this.speak(speechText);
             },
             
@@ -471,8 +497,8 @@
                     window.speechSynthesis.cancel();
                     const utterance = new SpeechSynthesisUtterance(text);
                     utterance.lang = 'en-US';
-                    utterance.rate = 0.9;
-                    utterance.pitch = 1.1;
+                    utterance.rate = 0.85; // 아이들을 위해 조금 더 천천히
+                    utterance.pitch = 1.2;  // 밝은 톤
                     window.speechSynthesis.speak(utterance);
                 }
             },
@@ -483,7 +509,6 @@
             }
         };
 
-        // Window Init
         window.onload = () => {
             PageEngine.init();
             CanvasEngine.init();

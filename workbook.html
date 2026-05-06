@@ -11,7 +11,8 @@
     
     <style>
         /* ======================================================================
-         * [Architecture: Bridge EdTech System V45.0]
+         * [Architecture: Bridge EdTech System V46.0]
+         * Feature: Zero-UI Handwriting Authentication
          * ====================================================================== */
         :root {
             --br-green: #89BFA0; --br-gold: #CBAE75; --br-blue: #7CA6C1; --br-charcoal: #363431;
@@ -26,19 +27,8 @@
         body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; overscroll-behavior-y: none; }
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
         
-        /* [Student Login Modal] */
-        .auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(252, 251, 249, 0.95); backdrop-filter: blur(10px); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
-        .auth-box { background: #FFF; padding: 60px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.05); text-align: center; border: 1px solid var(--br-border); max-width: 400px; width: 90%; }
-        .auth-logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: var(--br-charcoal); margin-bottom: 20px; }
-        .auth-logo span { color: var(--br-green); font-style: italic; }
-        .auth-desc { font-size: 14px; color: var(--br-muted); margin-bottom: 40px; }
-        .auth-input { width: 100%; padding: 20px; border-radius: 15px; border: 2px solid var(--br-border); font-size: 18px; text-align: center; margin-bottom: 20px; outline: none; font-family: inherit; font-weight: 700; transition: 0.3s; }
-        .auth-input:focus { border-color: var(--br-green); box-shadow: 0 0 15px rgba(137, 191, 160, 0.2); }
-        .auth-btn { width: 100%; padding: 20px; border-radius: 15px; background: var(--br-charcoal); color: #FFF; font-weight: 800; letter-spacing: 2px; font-size: 16px; transition: 0.3s; }
-        .auth-btn:hover { background: var(--br-green); }
-
         /* [Main App Layout] */
-        .app-container { display: flex; width: 100vw; height: 100vh; position: relative; opacity: 0; transition: opacity 1s ease; }
+        .app-container { display: flex; width: 100vw; height: 100vh; position: relative; }
         
         /* [Sidebar] */
         .sidebar { width: var(--sidebar-width); background: var(--br-paper); border-right: 1px solid var(--br-border); display: flex; flex-direction: column; z-index: 1000; }
@@ -46,8 +36,10 @@
         .brand-logo { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: var(--br-charcoal); }
         .brand-logo span { color: var(--br-green); font-style: italic; }
         
-        .student-profile { padding: 20px 30px; border-bottom: 1px solid var(--br-border); display: flex; align-items: center; gap: 15px; background: #FAFAFA; }
-        .profile-avatar { width: 45px; height: 45px; border-radius: 50%; background: var(--br-gold); color: #FFF; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 20px; }
+        .student-profile { padding: 20px 30px; border-bottom: 1px solid var(--br-border); display: flex; align-items: center; gap: 15px; background: #FAFAFA; transition: 0.5s; }
+        .student-profile.registered { background: #F4F8F5; }
+        .profile-avatar { width: 45px; height: 45px; border-radius: 50%; background: var(--br-border); color: var(--br-muted); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 20px; transition: 0.5s; }
+        .student-profile.registered .profile-avatar { background: var(--br-gold); color: #FFF; }
         .profile-info { display: flex; flex-direction: column; }
         .profile-name { font-size: 16px; font-weight: 800; }
         .profile-role { font-size: 11px; color: var(--br-muted); letter-spacing: 1px; }
@@ -62,7 +54,7 @@
         .unit-info { font-size: 14px; font-weight: 900; color: var(--br-gold); letter-spacing: 5px; }
         .page-info { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; color: var(--br-charcoal); }
         
-        .soundscape-ui { display: flex; align-items: center; gap: 10px; background: #FFF; padding: 10px 20px; border-radius: 100px; border: 1px solid var(--br-border); font-size: 12px; font-weight: 700; color: var(--br-muted); cursor: pointer; }
+        .soundscape-ui { display: flex; align-items: center; gap: 10px; background: #FFF; padding: 10px 20px; border-radius: 100px; border: 1px solid var(--br-border); font-size: 12px; font-weight: 700; color: var(--br-muted); cursor: pointer; transition: 0.3s; }
         .soundscape-ui.active { color: var(--br-blue); border-color: var(--br-blue); }
 
         .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 0 50px 30px; position: relative; }
@@ -85,14 +77,14 @@
         
         .action-group { display: flex; gap: 15px; align-items: center; }
         .btn-nav { width: 60px; height: 60px; border-radius: 20px; border: 1px solid var(--br-border); font-size: 20px; background: #FFF; cursor: pointer; }
-        .btn-core { height: 60px; padding: 0 35px; border-radius: 20px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; }
+        .btn-core { height: 60px; padding: 0 35px; border-radius: 20px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; transition: 0.3s; }
         .btn-record { background: #FFF; color: var(--br-charcoal); border: 1px solid var(--br-border); }
         .btn-record .dot { width: 10px; height: 10px; background: var(--br-error); border-radius: 50%; opacity: 0; }
         .btn-record.recording { background: #FFF0F0; color: var(--br-error); border-color: #FADBD8; }
         .btn-record.recording .dot { opacity: 1; animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
         .btn-submit { background: var(--br-charcoal); color: #FFF; }
-        .btn-submit:hover { background: var(--br-green); }
+        .btn-submit:hover { background: var(--br-green); transform: translateY(-3px); }
 
         /* [AI Teacher Panel] */
         .ai-panel { position: absolute; top: 0; right: -450px; width: 420px; height: 100%; background: #FFF; box-shadow: -10px 0 30px rgba(0,0,0,0.05); z-index: 2000; transition: 0.6s var(--ease-lux); display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
@@ -102,7 +94,6 @@
         
         .ai-content { padding: 30px; flex: 1; overflow-y: auto; }
         
-        /* AI Analytics UI */
         .analytics-box { background: #FAFAFA; border: 1px solid var(--br-border); border-radius: 15px; padding: 20px; margin-bottom: 25px; }
         .analytics-title { font-size: 11px; font-weight: 800; color: var(--br-muted); letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
         
@@ -115,34 +106,34 @@
 
         .ai-bubble { background: #F8F9FA; padding: 25px; border-radius: 20px; border-bottom-left-radius: 5px; border: 1px solid var(--br-border); font-size: 15px; line-height: 1.7; font-weight: 500; }
         
-        /* Audio Player hidden */
+        /* [AI Name Registration UI] */
+        .ai-name-input { width: 100%; padding: 15px; border: 2px dashed var(--br-green); border-radius: 12px; margin-top: 15px; font-size: 16px; text-align: center; font-weight: 800; outline: none; transition: 0.3s; font-family: inherit; }
+        .ai-name-input:focus { background: #F4F8F5; border-style: solid; }
+        .ai-name-btn { width: 100%; background: var(--br-green); color: #fff; padding: 15px; border-radius: 12px; margin-top: 10px; font-weight: 800; cursor: pointer; transition: 0.3s; letter-spacing: 2px; }
+        .ai-name-btn:hover { background: var(--br-charcoal); }
+
+        /* Scanning Animation */
+        .scan-line { width: 100%; height: 3px; background: var(--br-green); position: absolute; top: 0; left: 0; box-shadow: 0 0 10px var(--br-green); animation: scan 2s linear infinite; z-index: 100; display: none; }
+        @keyframes scan { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+
         audio { display: none; }
     </style>
 </head>
 <body>
 
-    <!-- 1. Student Auth Modal -->
-    <div class="auth-overlay" id="auth-modal">
-        <div class="auth-box">
-            <div class="auth-logo">Bridge<span>Academy</span></div>
-            <div class="auth-desc">프리미엄 탐구 랩에 오신 것을 환영합니다.<br>학생의 영어 이름을 입력해 주세요.</div>
-            <input type="text" id="student-name-input" class="auth-input" placeholder="e.g. Olivia" autocomplete="off" onkeypress="if(event.key === 'Enter') AppCore.login()">
-            <button class="auth-btn" onclick="AppCore.login()">ENTER LAB</button>
-        </div>
-    </div>
-
-    <!-- 2. Main App -->
+    <!-- Main App -->
     <div class="app-container" id="main-app">
         
         <nav class="sidebar">
             <div class="sidebar-header" onclick="location.href='index.html'">
                 <div class="brand-logo">Bridge<span>Academy</span></div>
             </div>
-            <div class="student-profile">
-                <div class="profile-avatar" id="avatar-char">S</div>
+            <!-- Student Profile -->
+            <div class="student-profile" id="profile-box">
+                <div class="profile-avatar" id="avatar-char">?</div>
                 <div class="profile-info">
-                    <span class="profile-name" id="display-student-name">Student</span>
-                    <span class="profile-role">Bridge Inquirer</span>
+                    <span class="profile-name" id="display-student-name">Inquirer</span>
+                    <span class="profile-role">Awaiting Name...</span>
                 </div>
             </div>
             <div class="nav-list" id="nav-list"></div>
@@ -163,11 +154,11 @@
                 <div class="canvas-container">
                     <img src="" id="worksheet-img" crossorigin="anonymous">
                     <canvas id="draw-layer"></canvas>
+                    <div class="scan-line" id="canvas-scan-line"></div>
                     
-                    <!-- Dynamic Hint Overlay -->
                     <div class="scaffolding-hint" id="scaffold-hint">
                         <div class="hint-icon">💡</div>
-                        <div class="hint-text" id="hint-text">Let's try drawing your favorite part!</div>
+                        <div class="hint-text" id="hint-text">자유롭게 생각하고 마음껏 그려보세요!</div>
                     </div>
                 </div>
             </main>
@@ -202,12 +193,11 @@
             </div>
         </div>
 
-        <!-- Ambient Audio Elements -->
         <audio id="bgm-ambient" loop crossorigin="anonymous"></audio>
     </div>
 
     <!-- ======================================================================
-         [Enterprise JavaScript Architecture V45.0]
+         [Enterprise JavaScript Architecture V46.0]
          ====================================================================== -->
     <script>
         /**
@@ -218,47 +208,18 @@
             REPO: "bridge-heritage",
             get STORAGE() { return `https://${this.GITHUB_ID}.github.io/${this.REPO}/assets/`; },
             SOUNDSCAPES: {
-                "A": "https://cdn.freesound.org/previews/407/407519_5121236-lq.mp3", // Foundation (Nature/Calm)
-                "B": "https://cdn.freesound.org/previews/515/515822_10984905-lq.mp3", // Perspective (Water/Sea)
-                "C": "https://cdn.freesound.org/previews/360/360322_5121236-lq.mp3", // Exploration (Jungle)
-                "D": "https://cdn.freesound.org/previews/333/333333_5121236-lq.mp3"  // Innovation (Space/Synth) - Placeholders
+                "A": "https://cdn.freesound.org/previews/407/407519_5121236-lq.mp3",
+                "B": "https://cdn.freesound.org/previews/515/515822_10984905-lq.mp3"
             }
         };
 
         const STATE = {
-            studentName: "Student",
+            studentName: "",
+            isNameRegistered: false,
             id: new URLSearchParams(window.location.search).get('id') || "A-1",
             currentPage: 1,
             isRecording: false,
             scaffoldTimer: null
-        };
-
-        /**
-         * [App Initializer & Auth]
-         */
-        const AppCore = {
-            login() {
-                const nameInput = document.getElementById('student-name-input').value.trim();
-                if(nameInput) {
-                    STATE.studentName = nameInput;
-                    document.getElementById('display-student-name').innerText = nameInput;
-                    document.getElementById('avatar-char').innerText = nameInput.charAt(0).toUpperCase();
-                    
-                    // Hide Modal & Show App
-                    document.getElementById('auth-modal').style.opacity = '0';
-                    setTimeout(() => {
-                        document.getElementById('auth-modal').style.display = 'none';
-                        document.getElementById('main-app').style.opacity = '1';
-                        
-                        // Initialize Modules
-                        PageEngine.init();
-                        CanvasEngine.init();
-                        AmbientEngine.init();
-                    }, 500);
-                } else {
-                    alert("이름을 입력해 주세요.");
-                }
-            }
         };
 
         /**
@@ -275,6 +236,7 @@
                     item.onclick = () => this.load(i);
                     list.appendChild(item);
                 }
+                this.load(1);
             },
             load(n) {
                 STATE.currentPage = n;
@@ -286,7 +248,7 @@
                 img.onload = () => {
                     img.style.opacity = '1';
                     CanvasEngine.sync();
-                    ScaffoldingEngine.reset(); // 페이지 로드 시 힌트 타이머 시작
+                    ScaffoldingEngine.reset();
                 };
 
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
@@ -304,7 +266,7 @@
         };
 
         /**
-         * [Precision Canvas Engine & Haptics Fix]
+         * [Precision Canvas Engine]
          */
         const CanvasEngine = {
             isDrawing: false,
@@ -313,66 +275,47 @@
                 this.ctx = this.cvs.getContext('2d');
                 this.img = document.getElementById('worksheet-img');
                 
-                // Native Color Picker Link
                 document.getElementById('btn-color').onclick = () => document.getElementById('native-color-picker').click();
                 document.getElementById('native-color-picker').onchange = (e) => {
                     document.getElementById('btn-color').style.background = e.target.value;
                     this.ctx.strokeStyle = e.target.value;
                 };
-
                 this.bind();
             },
             bind() {
-                // 핵심 픽스: 좌표계를 캔버스의 실제 해상도와 화면 표시 해상도 비율로 계산
                 const getPos = (e) => {
                     const rect = this.cvs.getBoundingClientRect();
                     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
                     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                    // Scale x/y to match actual canvas internal size
                     const scaleX = this.cvs.width / rect.width;
                     const scaleY = this.cvs.height / rect.height;
-                    return {
-                        x: (clientX - rect.left) * scaleX,
-                        y: (clientY - rect.top) * scaleY
-                    };
+                    return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
                 };
 
                 const start = (e) => {
                     this.isDrawing = true;
-                    ScaffoldingEngine.stop(); // 그리기 시작하면 힌트 숨김
+                    ScaffoldingEngine.stop();
                     const p = getPos(e);
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(p.x, p.y);
+                    this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y);
                 };
 
                 const move = (e) => {
                     if(!this.isDrawing) return;
                     if(e.cancelable) e.preventDefault();
                     const p = getPos(e);
-                    this.ctx.lineTo(p.x, p.y);
-                    this.ctx.stroke();
+                    this.ctx.lineTo(p.x, p.y); this.ctx.stroke();
                 };
 
-                const stop = () => {
-                    if(this.isDrawing) {
-                        this.isDrawing = false;
-                        HapticEngine.trigger('light'); // 그리기 완료 시 가벼운 진동
-                    }
-                };
+                const stop = () => { if(this.isDrawing) { this.isDrawing = false; HapticEngine.trigger('light'); } };
 
                 this.cvs.onmousedown = start; this.cvs.onmousemove = move; window.onmouseup = stop;
                 this.cvs.ontouchstart = start; this.cvs.ontouchmove = move; window.ontouchend = stop;
-
                 document.getElementById('brush-size').oninput = (e) => this.ctx.lineWidth = e.target.value;
             },
             sync() {
-                // 해상도 왜곡 방지를 위해 이미지의 렌더링된 크기 기반 설정
                 const rect = this.img.getBoundingClientRect();
-                // 캔버스 내부 해상도를 이미지 화면 크기와 1:1로 맞춤 (DPR 제거하여 오차 방지)
-                this.cvs.width = rect.width;
-                this.cvs.height = rect.height;
-                this.ctx.lineCap = 'round';
-                this.ctx.lineJoin = 'round';
+                this.cvs.width = rect.width; this.cvs.height = rect.height;
+                this.ctx.lineCap = 'round'; this.ctx.lineJoin = 'round';
                 this.ctx.strokeStyle = document.getElementById('native-color-picker').value || "#363431";
                 this.ctx.lineWidth = document.getElementById('brush-size').value;
             },
@@ -392,138 +335,144 @@
             reset() {
                 this.stop();
                 this.hintEl.classList.remove('show');
-                // 15초 동안 캔버스에 액션이 없으면 힌트 표시 (데모용 15초, 실제 60초)
-                STATE.scaffoldTimer = setTimeout(() => {
-                    this.hintEl.classList.add('show');
-                }, 15000); 
+                STATE.scaffoldTimer = setTimeout(() => { this.hintEl.classList.add('show'); }, 15000); 
             },
-            stop() {
-                clearTimeout(STATE.scaffoldTimer);
-                this.hintEl.classList.remove('show');
-            }
+            stop() { clearTimeout(STATE.scaffoldTimer); this.hintEl.classList.remove('show'); }
         };
 
         /**
-         * [Ambient Soundscape Engine]
+         * [Ambient Soundscape & Haptic Engines]
          */
         const AmbientEngine = {
-            isPlaying: false,
-            audio: document.getElementById('bgm-ambient'),
-            init() {
-                const seriesChar = STATE.id.charAt(0);
-                this.audio.src = CONFIG.SOUNDSCAPES[seriesChar] || CONFIG.SOUNDSCAPES["A"];
-                this.audio.volume = 0.2;
-            },
+            isPlaying: false, audio: document.getElementById('bgm-ambient'),
+            init() { this.audio.src = CONFIG.SOUNDSCAPES[STATE.id.charAt(0)] || CONFIG.SOUNDSCAPES["A"]; this.audio.volume = 0.2; },
             toggle() {
                 const btn = document.getElementById('soundscape-btn');
-                if(!this.isPlaying) {
-                    this.audio.play().catch(e => console.log("Audio play blocked by browser"));
-                    this.isPlaying = true;
-                    btn.classList.add('active');
-                    btn.innerText = "🎵 Soundscape: ON";
-                } else {
-                    this.audio.pause();
-                    this.isPlaying = false;
-                    btn.classList.remove('active');
-                    btn.innerText = "🎵 Soundscape: OFF";
-                }
+                if(!this.isPlaying) { this.audio.play().catch(e=>{}); this.isPlaying = true; btn.classList.add('active'); btn.innerText = "🎵 Soundscape: ON"; }
+                else { this.audio.pause(); this.isPlaying = false; btn.classList.remove('active'); btn.innerText = "🎵 Soundscape: OFF"; }
             }
         };
-
-        /**
-         * [Haptic Feedback Engine]
-         */
-        const HapticEngine = {
-            trigger(type) {
-                if(navigator.vibrate) {
-                    if(type === 'light') navigator.vibrate(20);
-                    if(type === 'heavy') navigator.vibrate([30, 50, 30]);
-                }
-            }
-        };
-
-        /**
-         * [Audio Recording Simulation]
-         */
+        const HapticEngine = { trigger(type) { if(navigator.vibrate) navigator.vibrate(type === 'light' ? 20 : [30, 50, 30]); } };
         const AudioEngine = {
             toggle() {
-                const btn = document.getElementById('btn-record');
-                const text = document.getElementById('record-text');
-                if(!STATE.isRecording) {
-                    STATE.isRecording = true;
-                    btn.classList.add('recording');
-                    text.innerText = "Recording...";
-                    HapticEngine.trigger('light');
-                } else {
-                    STATE.isRecording = false;
-                    btn.classList.remove('recording');
-                    text.innerText = "Audio Log";
-                    HapticEngine.trigger('heavy');
-                }
+                const btn = document.getElementById('btn-record'); const text = document.getElementById('record-text');
+                if(!STATE.isRecording) { STATE.isRecording = true; btn.classList.add('recording'); text.innerText = "Recording..."; HapticEngine.trigger('light'); }
+                else { STATE.isRecording = false; btn.classList.remove('recording'); text.innerText = "Audio Log"; HapticEngine.trigger('heavy'); }
             }
         };
 
         /**
-         * [Socratic AI Tutor Engine]
+         * [Socratic AI Tutor & Handwriting Recognition Simulation]
          */
         const AITutor = {
             submitWork() {
                 HapticEngine.trigger('heavy');
                 ScaffoldingEngine.stop();
                 
+                // [V46.0 기능] 만약 이름 등록이 안 되어 있다면 '필기 인식 모드' 실행
+                if (!STATE.isNameRegistered) {
+                    this.scanHandwritingForName();
+                    return;
+                }
+                
+                // 이름이 등록되어 있다면 일반적인 소크라테스 피드백 실행
+                this.provideFeedback();
+            },
+            
+            // 1. 이름 필기 인식 시뮬레이션
+            scanHandwritingForName() {
+                const panel = document.getElementById('ai-panel');
+                const content = document.getElementById('ai-content');
+                const scanLine = document.getElementById('canvas-scan-line');
+                
+                panel.classList.add('open');
+                scanLine.style.display = 'block'; // 캔버스 위에 스캔 라인 애니메이션 작동
+                
+                content.innerHTML = `
+                    <div style="text-align:center; padding: 40px 0;">
+                        <div class="loader-ring" style="border-top-color:var(--br-green); width:40px; height:40px; margin: 0 auto 20px;"></div>
+                        <p style="font-size:13px; color:var(--br-muted); font-weight:700; letter-spacing:2px;">SCANNING HANDWRITING...</p>
+                    </div>
+                `;
+
+                setTimeout(() => {
+                    scanLine.style.display = 'none'; // 스캔 종료
+                    content.innerHTML = `
+                        <div class="ai-bubble">
+                            <b>Bridge Visual AI</b><br><br>
+                            멋진 필체네요! 캔버스에 적은 영어 이름의 철자를 정확하게 확인해 주세요. 등록 후 1:1 보이스 튜터링이 시작됩니다.
+                            <input type="text" id="ai-name-verify" class="ai-name-input" placeholder="이름을 입력하세요" autocomplete="off" onkeypress="if(event.key === 'Enter') AITutor.saveName()">
+                            <button class="ai-name-btn" onclick="AITutor.saveName()">CONFIRM NAME</button>
+                        </div>
+                    `;
+                    document.getElementById('ai-name-verify').focus();
+                }, 2000);
+            },
+
+            // 2. 이름 저장 및 등록
+            saveName() {
+                const nameInput = document.getElementById('ai-name-verify').value.trim();
+                if(nameInput) {
+                    STATE.studentName = nameInput;
+                    STATE.isNameRegistered = true;
+                    
+                    // 사이드바 프로필 업데이트
+                    document.getElementById('profile-box').classList.add('registered');
+                    document.getElementById('display-student-name').innerText = nameInput;
+                    document.getElementById('avatar-char').innerText = nameInput.charAt(0).toUpperCase();
+                    document.querySelector('.profile-role').innerText = "Bridge Inquirer";
+
+                    // 음성으로 환영 인사 및 첫 피드백 바로 연결
+                    this.provideFeedback(true);
+                } else {
+                    alert("이름 철자를 입력해 주세요.");
+                }
+            },
+
+            // 3. 정규 피드백 및 음성
+            provideFeedback(isFirstGreeting = false) {
                 const panel = document.getElementById('ai-panel');
                 const content = document.getElementById('ai-content');
                 panel.classList.add('open');
                 
-                // Analysis Loading UI
+                const confidenceLvl = Math.floor(Math.random() * 20) + 75; // 75~95%
+                let question = `Why do you think the caterpillar was so hungry, ${STATE.studentName}?`;
+                if(STATE.id.startsWith("B")) question = `Where in the world would you like to build your house, ${STATE.studentName}?`;
+                
+                let introText = isFirstGreeting 
+                    ? `<b>Nice to meet you, ${STATE.studentName}!</b><br><br>I scanned your beautiful name. Now let's look at your inquiry page.<br><br>` 
+                    : `<b>Hello, ${STATE.studentName}!</b><br><br>I looked at your drawing and listened to your voice. You did a fantastic job exploring this topic.<br><br>`;
+
                 content.innerHTML = `
-                    <div style="text-align:center; padding: 40px 0;">
-                        <div class="loader-ring" style="border-top-color:var(--br-gold); width:40px; height:40px; margin: 0 auto 20px;"></div>
-                        <p style="font-size:13px; color:var(--br-muted); font-weight:700; letter-spacing:2px;">ANALYZING INQUIRY DATA...</p>
+                    <div class="analytics-box">
+                        <div class="analytics-title">Inquiry Analytics</div>
+                        <div class="stat-row">
+                            <div class="stat-label"><span>Voice Confidence</span> <span>${confidenceLvl}%</span></div>
+                            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: ${confidenceLvl}%;"></div></div>
+                        </div>
+                        <div class="visual-intent">
+                            <b>Visual AI Analysis:</b><br>
+                            학생이 그린 선의 패턴과 속도에서 강한 호기심과 자신감이 관찰됩니다. 북미식 탐구 과정을 훌륭하게 수행했습니다.
+                        </div>
+                    </div>
+                    <div class="ai-bubble">
+                        ${introText}
+                        <b>${question}</b>
                     </div>
                 `;
-
-                // Generate Response after 1.5s
-                setTimeout(() => {
-                    const confidenceLvl = Math.floor(Math.random() * 20) + 75; // 75~95%
-                    const isAudioUsed = document.getElementById('record-text').innerText === "Audio Log" && STATE.isRecording === false; // Simplified check
-                    
-                    // Socratic Question based on unit
-                    let question = `Why do you think the caterpillar was so hungry, ${STATE.studentName}?`;
-                    if(STATE.id.startsWith("B")) question = `Where in the world would you like to build your house, ${STATE.studentName}?`;
-                    
-                    content.innerHTML = `
-                        <div class="analytics-box">
-                            <div class="analytics-title">Inquiry Analytics</div>
-                            <div class="stat-row">
-                                <div class="stat-label"><span>Voice Confidence</span> <span>${confidenceLvl}%</span></div>
-                                <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: ${confidenceLvl}%;"></div></div>
-                            </div>
-                            <div class="visual-intent">
-                                <b>Visual AI Analysis:</b><br>
-                                학생이 그린 패턴에서 강한 호기심이 관찰됩니다. 주제와 연관된 상상력 포인트를 훌륭하게 표현했습니다.
-                            </div>
-                        </div>
-                        <div class="ai-bubble">
-                            <b>Hello, ${STATE.studentName}!</b><br><br>
-                            I looked at your drawing and listened to your voice. You did a fantastic job exploring this topic.<br><br>
-                            <b>${question}</b>
-                        </div>
-                    `;
-                    
-                    // Trigger TTS (Web Speech API)
-                    this.speak(question);
-                    
-                }, 1500);
+                
+                // 음성 합성 (TTS)
+                let speechText = isFirstGreeting ? `Nice to meet you, ${STATE.studentName}. ${question}` : `Hello, ${STATE.studentName}. ${question}`;
+                this.speak(speechText);
             },
             
             speak(text) {
                 if ('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel(); // Stop current speech
+                    window.speechSynthesis.cancel();
                     const utterance = new SpeechSynthesisUtterance(text);
                     utterance.lang = 'en-US';
-                    utterance.rate = 0.9; // Slightly slower for kids
-                    utterance.pitch = 1.1; // Friendly pitch
+                    utterance.rate = 0.9;
+                    utterance.pitch = 1.1;
                     window.speechSynthesis.speak(utterance);
                 }
             },
@@ -534,12 +483,17 @@
             }
         };
 
-        // Window Resize Binding
-        window.addEventListener('resize', () => {
-            if(document.getElementById('worksheet-img').style.opacity === '1') {
-                setTimeout(() => CanvasEngine.sync(), 200);
-            }
-        });
+        // Window Init
+        window.onload = () => {
+            PageEngine.init();
+            CanvasEngine.init();
+            AmbientEngine.init();
+            window.addEventListener('resize', () => {
+                if(document.getElementById('worksheet-img').style.opacity === '1') {
+                    setTimeout(() => CanvasEngine.sync(), 200);
+                }
+            });
+        };
     </script>
 </body>
 </html>

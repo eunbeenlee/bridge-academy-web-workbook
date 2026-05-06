@@ -13,8 +13,8 @@
     
     <style>
         /* ======================================================================
-         * [Architecture: Bridge Universal System V50.0]
-         * Feature: Dynamic AI-Context Navigation Sidebar
+         * [Architecture: Bridge Universal System V52.0]
+         * Feature: STT Audio Evaluation & Socratic Context Verification
          * ====================================================================== */
         :root {
             --br-green: #89BFA0; --br-gold: #CBAE75; --br-blue: #7CA6C1; --br-charcoal: #363431;
@@ -24,18 +24,16 @@
             --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
             
             --sidebar-width: 320px;
-            --dock-height-pc: 130px;
-            --stage-max-height: calc(100dvh - var(--dock-height-pc) - 100px);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-        body, html { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; overscroll-behavior: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; overscroll-behavior: none; position: fixed; }
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
         
-        .app-container { display: flex; width: 100vw; height: 100dvh; position: relative; }
+        .app-container { display: flex; width: 100vw; height: 100vh; position: relative; }
         
         /* [Sidebar] */
-        .sidebar { width: var(--sidebar-width); height: 100dvh; background: var(--br-paper); border-right: 1px solid var(--br-border); display: flex; flex-direction: column; z-index: 1000; transition: transform 0.4s var(--ease-lux); }
+        .sidebar { width: var(--sidebar-width); height: 100vh; background: var(--br-paper); border-right: 1px solid var(--br-border); display: flex; flex-direction: column; z-index: 1000; transition: transform 0.4s var(--ease-lux); flex-shrink: 0; }
         .sidebar-header { padding: 40px 30px 30px; text-align: center; border-bottom: 1px solid var(--br-border); cursor: pointer; }
         .brand-logo { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: var(--br-charcoal); }
         .brand-logo span { color: var(--br-green); font-style: italic; }
@@ -53,39 +51,39 @@
         .nav-list::-webkit-scrollbar-thumb { background: #E0E0E0; border-radius: 10px; }
         .nav-item { padding: 18px 20px; margin-bottom: 10px; border-radius: 16px; background: #FAFAFA; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; cursor: pointer; border: 1px solid transparent; }
         .nav-item.active { background: var(--br-ai); border-left: 6px solid var(--br-green); font-weight: 900; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
-        
-        /* V50.0 사이드바 텍스트 길이 제어 (말줄임표) */
         .nav-title { font-size: 14px; font-weight: 800; letter-spacing: -0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
         .nav-badge { font-size: 11px; font-weight: 900; opacity: 0.3; letter-spacing: 1px; flex-shrink: 0; }
-
+        
         /* [Workspace] */
-        .workspace { flex: 1; display: flex; flex-direction: column; position: relative; background: var(--br-bg); height: 100dvh; overflow: hidden; }
-        .top-bar { padding: 20px 40px; display: flex; justify-content: space-between; align-items: flex-end; z-index: 10; flex-shrink: 0; }
+        .workspace { flex: 1; display: flex; flex-direction: column; background: var(--br-bg); height: 100vh; overflow: hidden; min-width: 0; }
+        
+        .top-bar { padding: 20px 40px; display: flex; justify-content: space-between; align-items: flex-end; flex-shrink: 0; z-index: 10; }
         .unit-info { font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 5px; }
         .page-info { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; color: var(--br-charcoal); line-height: 1; margin-top: 5px; }
         
         .soundscape-ui { display: flex; align-items: center; gap: 8px; background: #FFF; padding: 12px 20px; border-radius: 100px; border: 1px solid var(--br-border); font-size: 12px; font-weight: 900; color: var(--br-muted); cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
         .soundscape-ui.active { color: var(--br-blue); border-color: var(--br-blue); }
 
-        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px 20px; position: relative; overflow: hidden; }
-        .canvas-container { position: relative; background: var(--br-paper); border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.06); border: 1px solid var(--br-border); max-width: 100%; max-height: var(--stage-max-height); display: flex; justify-content: center; align-items: center; }
+        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px; overflow: hidden; min-height: 0; position: relative; }
         
+        .canvas-container { position: relative; display: inline-block; max-width: 100%; max-height: 100%; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); border: 1px solid var(--br-border); background: var(--br-paper); line-height: 0; }
         .canvas-container.drawing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='%23CBAE75' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/></svg>") 0 20, crosshair; }
         
-        #worksheet-img { max-width: 100%; max-height: var(--stage-max-height); border-radius: 30px; opacity: 0; transition: opacity 0.5s; user-select: none; -webkit-user-drag: none; display: block; object-fit: contain; }
-        #draw-layer { position: absolute; top: 0; left: 0; border-radius: 30px; touch-action: none; z-index: 50; }
+        #worksheet-img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; border-radius: 20px; opacity: 0; transition: opacity 0.5s; object-fit: contain; pointer-events: none; }
+        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 20px; touch-action: none; z-index: 50; }
 
-        .scan-line { width: 100%; height: 5px; background: var(--br-green); position: absolute; top: 0; left: 0; box-shadow: 0 0 20px var(--br-green); animation: scan 2s linear infinite; z-index: 100; display: none; border-radius: 5px; }
+        .scan-line { width: 100%; height: 4px; background: var(--br-green); position: absolute; top: 0; left: 0; box-shadow: 0 0 15px var(--br-green); animation: scan 2s linear infinite; z-index: 100; display: none; border-radius: 4px; }
         @keyframes scan { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
 
         /* [Bottom Dock] */
-        .bottom-dock { height: var(--dock-height-pc); background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(25px); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; flex-shrink: 0; }
+        .bottom-dock { flex-shrink: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(25px); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 25px 40px; z-index: 500; }
         
         .tool-group { display: flex; align-items: center; gap: 20px; background: #FAFAFA; padding: 15px 30px; border-radius: 100px; border: 1px solid var(--br-border); }
         .color-preview { width: 50px; height: 50px; border-radius: 50%; border: 4px solid #FFF; cursor: pointer; background: var(--br-charcoal); box-shadow: 0 10px 20px rgba(0,0,0,0.08); transition: transform 0.2s var(--ease-bounce); flex-shrink: 0; }
         .color-preview:active { transform: scale(0.9); }
         .brush-slider { width: 150px; accent-color: var(--br-green); cursor: pointer; height: 8px; }
-        .btn-erase { font-size: 13px; font-weight: 900; color: var(--br-muted); letter-spacing: 1px; padding: 10px; }
+        .btn-erase { font-size: 13px; font-weight: 900; color: var(--br-muted); letter-spacing: 1px; padding: 10px; transition: 0.3s; }
+        .btn-erase:hover { color: var(--br-charcoal); }
         
         .action-group { display: flex; gap: 15px; align-items: center; }
         .btn-nav { width: 80px; height: 80px; border-radius: 25px; border: 1px solid var(--br-border); font-size: 28px; background: #FFF; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.02); color: var(--br-charcoal); display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
@@ -98,13 +96,12 @@
         .btn-record .dot { width: 12px; height: 12px; background: var(--br-error); border-radius: 50%; opacity: 0; transition: 0.3s; }
         .btn-record.recording { background: #FFF0F0; color: var(--br-error); border-color: #FADBD8; }
         .btn-record.recording .dot { opacity: 1; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
         
         .btn-submit { background: var(--br-charcoal); color: #FFF; border: none; }
         .btn-submit:hover { background: var(--br-green); box-shadow: 0 20px 40px rgba(137, 191, 160, 0.3); }
 
         /* [English AI Teacher Panel] */
-        .ai-panel { position: absolute; top: 0; right: -500px; width: 420px; height: 100dvh; background: #FFF; box-shadow: -20px 0 50px rgba(0,0,0,0.1); z-index: 2000; transition: right 0.6s var(--ease-bounce); display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
+        .ai-panel { position: absolute; top: 0; right: -500px; width: 420px; height: 100vh; background: #FFF; box-shadow: -20px 0 50px rgba(0,0,0,0.1); z-index: 2000; transition: right 0.6s var(--ease-bounce); display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
         .ai-panel.open { right: 0; }
         .ai-header { padding: 30px; background: var(--br-ai); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); flex-shrink: 0; }
         .ai-title { font-size: 18px; font-weight: 900; color: var(--br-green); display: flex; align-items: center; gap: 10px; }
@@ -112,6 +109,11 @@
         .btn-close-ai { font-size: 32px; color: var(--br-muted); line-height: 1; padding: 0 10px; }
         
         .ai-content { padding: 30px; flex: 1; overflow-y: auto; }
+        
+        /* V52.0 Transcript UI Box */
+        .transcript-box { background: #F4F8F5; padding: 20px; border-radius: 15px; border-left: 4px solid var(--br-green); margin-bottom: 20px; font-size: 15px; font-style: italic; color: var(--br-charcoal); font-weight: 700; line-height: 1.5; }
+        .transcript-empty { background: #FFF9F0; padding: 15px; border-radius: 10px; border: 1px dashed var(--br-gold); margin-bottom: 20px; font-size: 12px; color: var(--br-muted); text-align: center; }
+
         .analytics-box { background: #FAFAFA; border: 1px solid var(--br-border); border-radius: 20px; padding: 25px; margin-bottom: 25px; }
         .analytics-title { font-size: 12px; font-weight: 900; color: var(--br-muted); letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; }
         .stat-row { margin-bottom: 20px; }
@@ -130,24 +132,25 @@
         /* [Responsive Breakpoints] */
         @media (max-width: 1200px) {
             :root { --sidebar-width: 280px; }
-            .top-bar { padding: 20px; }
-            .stage-wrapper { padding: 10px 20px 20px; }
-            .bottom-dock { padding: 0 20px; }
+            .top-bar { padding: 15px 30px; }
+            .stage-wrapper { padding: 10px 30px; }
+            .bottom-dock { padding: 20px 30px; }
             .btn-nav, .btn-core { height: 70px; }
             .btn-nav { width: 70px; font-size: 24px; }
         }
 
         @media (max-width: 992px) {
-            :root { --stage-max-height: calc(100dvh - 160px - 80px); } 
             .mobile-menu-btn { display: block; }
             .sidebar { position: absolute; left: calc(var(--sidebar-width) * -1); top: 0; box-shadow: none; }
             .sidebar.open { left: 0; box-shadow: 20px 0 50px rgba(0,0,0,0.1); }
             
-            .top-bar { padding: 15px 20px 10px; }
+            .top-bar { padding: 15px 20px; }
             .top-bar-left { display: flex; align-items: center; gap: 15px; }
             .page-info { font-size: 32px; margin-top: 0; }
             
-            .bottom-dock { height: auto; flex-direction: column; padding: 15px; gap: 15px; border-radius: 30px 30px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.05); }
+            .stage-wrapper { padding: 10px 20px; }
+            
+            .bottom-dock { flex-direction: column; padding: 20px; gap: 15px; border-radius: 30px 30px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.05); }
             .tool-group { width: 100%; justify-content: center; padding: 12px 20px; }
             .action-group { width: 100%; justify-content: space-between; }
             
@@ -157,22 +160,17 @@
         }
 
         @media (max-width: 600px) {
-            :root { --sidebar-width: 85vw; --stage-max-height: calc(100dvh - 200px); }
+            :root { --sidebar-width: 85vw; }
             .page-info { font-size: 26px; }
             .soundscape-ui { padding: 10px 15px; font-size: 11px; }
             .soundscape-ui span { display: none; }
+            
             .tool-group { gap: 15px; }
             .brush-slider { width: 100px; }
             .btn-nav, .btn-core { height: 60px; font-size: 13px; letter-spacing: 1px; }
             .btn-nav { width: 60px; }
             
-            .ai-panel { 
-                width: 100vw; height: 90dvh; 
-                top: auto; bottom: -100dvh; right: 0; left: 0; 
-                border-left: none; border-top: 1px solid var(--br-border);
-                border-radius: 30px 30px 0 0;
-                transition: bottom 0.5s var(--ease-bounce);
-            }
+            .ai-panel { width: 100vw; height: 90vh; top: auto; bottom: -100vh; right: 0; left: 0; border-left: none; border-top: 1px solid var(--br-border); border-radius: 30px 30px 0 0; transition: bottom 0.5s var(--ease-bounce); }
             .ai-panel.open { bottom: 0; right: 0; }
             .ai-header { padding: 25px; border-radius: 30px 30px 0 0; }
             .ai-content { padding: 25px; }
@@ -265,7 +263,8 @@
             isNameRegistered: false,
             id: new URLSearchParams(window.location.search).get('id') || "A-1",
             currentPage: 1,
-            isRecording: false
+            isRecording: false,
+            lastTranscript: "" // V52.0: Stores the STT result
         };
 
         const UIEngine = {
@@ -273,16 +272,16 @@
             closeSidebarOnMobile() { if(window.innerWidth <= 992) document.getElementById('sidebar').classList.remove('open'); }
         };
 
-        // [V50.0] 100% English AI Context Database with Navigation Titles
+        // [V52.0] Context DB with Keyword Evaluation Logic added
         const AI_CONTEXT_DB = {
             "A-1": {
                 theme: "All About Me",
                 pages: {
-                    1: { navTitle: "👑 My Special Name", intent: "Expressing name and identity", analysis: "The student's strokes show positive self-perception and great confidence in writing their name.", question: "What makes your name so special and beautiful?" },
-                    2: { navTitle: "👀 My Beautiful Face", intent: "Depicting face and emotions", analysis: "High observation skills shown in facial feature placement. The student expressed today's emotion creatively.", question: "What is your favorite part of your face, and why?" },
-                    3: { navTitle: "🖐️ My Strong Hands", intent: "Exploring body functions", analysis: "Connected hands and feet dynamically. Shows a great understanding of body capabilities.", question: "What fun things can you do with your strong hands?" },
-                    4: { navTitle: "👨‍👩‍👧 My Family Tree", intent: "Understanding family connections", analysis: "Clear depiction of family members, showing strong emotional bonds and spatial relationships.", question: "Who did you draw here, and what do you love about them?" },
-                    5: { navTitle: "🎨 My Favorite Colors", intent: "Expressing personal preferences", analysis: "Vibrant color choices reflect a highly energetic and positive mood today.", question: "Why did you choose these beautiful colors?" }
+                    1: { navTitle: "👑 My Special Name", keywords: ["name", "am", "is", "my", "hello"], intent: "Expressing name and identity", analysis: "The strokes show positive self-perception and confidence.", question: "What makes your name so special and beautiful?" },
+                    2: { navTitle: "👀 My Beautiful Face", keywords: ["face", "eyes", "nose", "mouth", "happy", "smile"], intent: "Depicting face and emotions", analysis: "High observation skills shown in facial feature placement.", question: "What is your favorite part of your face, and why?" },
+                    3: { navTitle: "🖐️ My Strong Hands", keywords: ["hands", "feet", "touch", "clap", "fingers"], intent: "Exploring body functions", analysis: "Shows a great understanding of body capabilities and motion.", question: "What fun things can you do with your strong hands?" },
+                    4: { navTitle: "👨‍👩‍👧 My Family Tree", keywords: ["mom", "dad", "family", "brother", "sister", "love"], intent: "Understanding family connections", analysis: "Clear depiction of family members, showing strong emotional bonds.", question: "Who did you draw here, and what do you love about them?" },
+                    5: { navTitle: "🎨 My Favorite Colors", keywords: ["color", "red", "blue", "green", "yellow", "favorite"], intent: "Expressing personal preferences", analysis: "Vibrant color choices reflect a highly energetic and positive mood.", question: "Why did you choose these beautiful colors?" }
                 }
             }
         };
@@ -290,8 +289,7 @@
         function getPageContext(unitId, pageNum) {
             const unitData = AI_CONTEXT_DB[unitId];
             if (unitData && unitData.pages[pageNum]) return unitData.pages[pageNum];
-            // V50.0 Fallback for pages without explicit mappings
-            return { navTitle: "✨ Inquiry Lab", intent: "Creative problem-solving", analysis: "Approaches the question from multiple angles, showing excellent inquiry and critical thinking skills.", question: "Can you tell me more about the wonderful things you drew here?" };
+            return { navTitle: "✨ Inquiry Lab", keywords: ["wow", "beautiful", "look", "this"], intent: "Creative problem-solving", analysis: "Approaches the question from multiple angles, showing critical thinking.", question: "Can you tell me more about the wonderful things you drew here?" };
         }
 
         const PageEngine = {
@@ -299,11 +297,9 @@
                 document.getElementById('unit-info').innerText = `MASTER LAB: ${STATE.id}`;
                 const list = document.getElementById('nav-list');
                 for(let i=1; i<=17; i++) {
-                    const ctx = getPageContext(STATE.id, i); // DB에서 동적으로 제목 가져오기
+                    const ctx = getPageContext(STATE.id, i);
                     const item = document.createElement('div');
                     item.className = 'nav-item'; item.id = `nav-${i}`;
-                    
-                    // V50.0: 하드코딩된 'Inquiry Entry' 대신 DB의 'navTitle' 표시
                     item.innerHTML = `<span class="nav-title" title="${ctx.navTitle}">${ctx.navTitle}</span> <span class="nav-badge">P.${String(i).padStart(2,'0')}</span>`;
                     item.onclick = () => { this.load(i); UIEngine.closeSidebarOnMobile(); };
                     list.appendChild(item);
@@ -312,6 +308,7 @@
             },
             load(n) {
                 STATE.currentPage = n;
+                STATE.lastTranscript = ""; // 페이지 이동 시 트랜스크립트 초기화
                 const seriesChar = STATE.id.charAt(0);
                 const imgPath = `${CONFIG.STORAGE}${seriesChar}/${STATE.id}/${STATE.id}-${n}.png`;
                 
@@ -320,7 +317,7 @@
                 img.src = imgPath;
                 img.onload = () => {
                     img.style.opacity = '1';
-                    CanvasEngine.sync();
+                    setTimeout(() => CanvasEngine.sync(), 50);
                 };
 
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
@@ -341,7 +338,7 @@
             isDrawing: false,
             init() {
                 this.cvs = document.getElementById('draw-layer');
-                this.ctx = this.cvs.getContext('2d');
+                this.ctx = this.cvs.getContext('2d', { willReadFrequently: true });
                 this.img = document.getElementById('worksheet-img');
                 
                 document.getElementById('btn-color').onclick = () => document.getElementById('native-color-picker').click();
@@ -354,62 +351,53 @@
             bind() {
                 const getPos = (e) => {
                     const rect = this.cvs.getBoundingClientRect();
-                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                    return { x: clientX - rect.left, y: clientY - rect.top };
+                    let clientX, clientY;
+                    if (e.touches && e.touches.length > 0) {
+                        clientX = e.touches[0].clientX; clientY = e.touches[0].clientY;
+                    } else if (e.changedTouches && e.changedTouches.length > 0) {
+                        clientX = e.changedTouches[0].clientX; clientY = e.changedTouches[0].clientY;
+                    } else {
+                        clientX = e.clientX; clientY = e.clientY;
+                    }
+                    const dpr = window.devicePixelRatio || 1;
+                    return { x: (clientX - rect.left) * dpr, y: (clientY - rect.top) * dpr };
                 };
 
-                const start = (e) => {
-                    this.isDrawing = true;
-                    const p = getPos(e);
-                    this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y);
-                };
+                const start = (e) => { e.preventDefault(); this.isDrawing = true; const p = getPos(e); this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y); };
+                const move = (e) => { if(!this.isDrawing) return; e.preventDefault(); const p = getPos(e); this.ctx.lineTo(p.x, p.y); this.ctx.stroke(); };
+                const stop = (e) => { if(this.isDrawing) { e.preventDefault(); this.isDrawing = false; HapticEngine.trigger('light'); } };
 
-                const move = (e) => {
-                    if(!this.isDrawing) return;
-                    if(e.cancelable && e.touches) e.preventDefault();
-                    const p = getPos(e);
-                    this.ctx.lineTo(p.x, p.y); this.ctx.stroke();
-                };
-
-                const stop = () => { if(this.isDrawing) { this.isDrawing = false; HapticEngine.trigger('light'); } };
-
-                this.cvs.addEventListener('mousedown', start);
-                this.cvs.addEventListener('mousemove', move);
+                this.cvs.addEventListener('mousedown', start, { passive: false });
+                this.cvs.addEventListener('mousemove', move, { passive: false });
                 window.addEventListener('mouseup', stop);
                 
-                this.cvs.addEventListener('touchstart', start, {passive: false});
-                this.cvs.addEventListener('touchmove', move, {passive: false});
-                window.addEventListener('touchend', stop);
+                this.cvs.addEventListener('touchstart', start, { passive: false });
+                this.cvs.addEventListener('touchmove', move, { passive: false });
+                this.cvs.addEventListener('touchend', stop, { passive: false });
+                this.cvs.addEventListener('touchcancel', stop, { passive: false });
                 
-                document.getElementById('brush-size').oninput = (e) => this.ctx.lineWidth = e.target.value;
+                document.getElementById('brush-size').oninput = (e) => { this.ctx.lineWidth = e.target.value * (window.devicePixelRatio || 1); };
             },
             sync() {
                 const rect = this.img.getBoundingClientRect();
                 if(rect.width === 0) return; 
                 
+                const dpr = window.devicePixelRatio || 1;
                 const tempCvs = document.createElement('canvas');
                 tempCvs.width = this.cvs.width; tempCvs.height = this.cvs.height;
                 if(this.cvs.width > 0) tempCvs.getContext('2d').drawImage(this.cvs, 0, 0);
 
-                this.cvs.width = rect.width; 
-                this.cvs.height = rect.height;
-                this.cvs.style.width = rect.width + 'px';
-                this.cvs.style.height = rect.height + 'px';
+                this.cvs.width = rect.width * dpr; 
+                this.cvs.height = rect.height * dpr;
+                this.cvs.style.width = '100%'; this.cvs.style.height = '100%';
                 
                 this.ctx.lineCap = 'round'; this.ctx.lineJoin = 'round';
                 this.ctx.strokeStyle = document.getElementById('native-color-picker').value || "#363431";
-                this.ctx.lineWidth = document.getElementById('brush-size').value;
+                this.ctx.lineWidth = document.getElementById('brush-size').value * dpr;
                 
-                if(tempCvs.width > 0) {
-                    this.ctx.drawImage(tempCvs, 0, 0, tempCvs.width, tempCvs.height, 0, 0, this.cvs.width, this.cvs.height);
-                }
+                if(tempCvs.width > 0) { this.ctx.drawImage(tempCvs, 0, 0, tempCvs.width, tempCvs.height, 0, 0, this.cvs.width, this.cvs.height); }
             },
-            clear() {
-                this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
-                this.ctx.beginPath();
-                HapticEngine.trigger('light');
-            }
+            clear() { this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); this.ctx.beginPath(); HapticEngine.trigger('light'); }
         };
 
         const AmbientEngine = {
@@ -422,17 +410,68 @@
             }
         };
         const HapticEngine = { trigger(type) { if(navigator.vibrate) navigator.vibrate(type === 'light' ? 20 : [30, 50, 30]); } };
+
+        /* ======================================================================
+         * [V52.0 Speech-To-Text (STT) Audio Engine]
+         * ====================================================================== */
         const AudioEngine = {
+            recognition: null,
+            init() {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (SpeechRecognition) {
+                    this.recognition = new SpeechRecognition();
+                    this.recognition.lang = 'en-US';
+                    this.recognition.interimResults = false;
+                    this.recognition.continuous = false;
+
+                    this.recognition.onresult = (event) => {
+                        STATE.lastTranscript = event.results[0][0].transcript;
+                        console.log("[Bridge STT Log] Heard:", STATE.lastTranscript);
+                    };
+                    this.recognition.onend = () => {
+                        if (STATE.isRecording) this.toggle(); // Auto-stop UI when speaking stops
+                    };
+                    this.recognition.onerror = (e) => {
+                        console.error("[Bridge STT Log] Error:", e);
+                        if (STATE.isRecording) this.toggle();
+                    };
+                }
+            },
             toggle() {
                 const btn = document.getElementById('btn-record'); const text = document.getElementById('record-text');
-                if(!STATE.isRecording) { STATE.isRecording = true; btn.classList.add('recording'); text.innerText = "Recording..."; HapticEngine.trigger('light'); }
-                else { STATE.isRecording = false; btn.classList.remove('recording'); text.innerText = "Audio Log"; HapticEngine.trigger('heavy'); }
+                if(!STATE.isRecording) { 
+                    STATE.isRecording = true; 
+                    STATE.lastTranscript = ""; // Reset old transcript
+                    btn.classList.add('recording'); 
+                    text.innerText = "Listening..."; 
+                    HapticEngine.trigger('light'); 
+                    
+                    if(this.recognition) {
+                        try { this.recognition.start(); } catch(e) {}
+                    }
+                } else { 
+                    STATE.isRecording = false; 
+                    btn.classList.remove('recording'); 
+                    text.innerText = "Audio Log"; 
+                    HapticEngine.trigger('heavy'); 
+                    
+                    if(this.recognition) {
+                        this.recognition.stop();
+                    }
+                }
             }
         };
 
+        /* ======================================================================
+         * [V52.0 Socratic AI Tutor with STT Verification]
+         * ====================================================================== */
         const AITutor = {
             submitWork() {
                 HapticEngine.trigger('heavy');
+                
+                // 음성 인식 중이었으면 종료
+                if(STATE.isRecording) AudioEngine.toggle(); 
+                
                 if (STATE.currentPage === 1 && !STATE.isNameRegistered) {
                     this.scanHandwritingForName();
                     return;
@@ -492,23 +531,49 @@
                 panel.classList.add('open');
                 
                 const contextData = getPageContext(STATE.id, STATE.currentPage);
-                const confidenceLvl = Math.floor(Math.random() * 15) + 85; 
                 const callName = STATE.studentName ? STATE.studentName : "my friend";
+                
+                // V52.0: Audio Evaluation Logic
+                let transcriptHtml = "";
+                let analysisMod = contextData.analysis;
+                let confidenceLvl = Math.floor(Math.random() * 15) + 65; // Base 65~80% if no audio
+                
+                if (STATE.lastTranscript) {
+                    // Show what the child said
+                    transcriptHtml = `<div class="transcript-box">" ${STATE.lastTranscript} "</div>`;
+                    
+                    // Verify against Context DB keywords
+                    const spokenWords = STATE.lastTranscript.toLowerCase();
+                    const hitKeywords = contextData.keywords.filter(kw => spokenWords.includes(kw));
+                    
+                    if (hitKeywords.length > 0) {
+                        confidenceLvl = Math.floor(Math.random() * 5) + 95; // 95~100%
+                        analysisMod = `<b style="color:var(--br-green);">Perfect Audio Match!</b> I heard you mention words like '<b>${hitKeywords.join(", ")}</b>'. ${contextData.analysis}`;
+                    } else {
+                        confidenceLvl = Math.floor(Math.random() * 10) + 85; // 85~95%
+                        analysisMod = `<b>Great Speaking!</b> I heard your voice clearly. ${contextData.analysis}`;
+                    }
+                } else {
+                    transcriptHtml = `<div class="transcript-empty">(No voice log detected. Try using the Audio Log!)</div>`;
+                }
                 
                 let introText = isFirstGreeting 
                     ? `<b>Nice to meet you, ${callName}!</b><br><br>I scanned your beautiful name. Now let's explore together.<br><br>` 
-                    : `<b>Hello, ${callName}!</b><br><br>I looked at your drawing and listened to your voice. You did a fantastic job!<br><br>`;
+                    : `<b>Hello, ${callName}!</b><br><br>I looked at your drawing and listened to your voice.<br><br>`;
 
                 content.innerHTML = `
                     <div class="analytics-box">
                         <div class="analytics-title">Inquiry Analytics</div>
+                        
+                        ${transcriptHtml}
+                        
                         <div class="stat-row">
                             <div class="stat-label"><span>Voice Confidence</span> <span>${confidenceLvl}%</span></div>
                             <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: ${confidenceLvl}%;"></div></div>
                         </div>
                         <div class="visual-intent">
                             <b>🎯 Intent Analysis: ${contextData.intent}</b><br><br>
-                            ${contextData.analysis}
+                            ${analysisMod}
                         </div>
                     </div>
                     <div class="ai-bubble">
@@ -543,6 +608,7 @@
             PageEngine.init();
             CanvasEngine.init();
             AmbientEngine.init();
+            AudioEngine.init(); // Initialize STT
             
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer);

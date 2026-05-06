@@ -32,10 +32,10 @@
         .brand-logo { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: var(--br-charcoal); }
         .brand-logo span { color: var(--br-green); font-style: italic; }
         
-        .student-profile { padding: 20px 30px; border-bottom: 1px solid var(--br-border); display: flex; align-items: center; gap: 15px; background: #FAFAFA; }
+        .student-profile { padding: 20px 30px; border-bottom: 1px solid var(--br-border); display: flex; align-items: center; gap: 15px; background: #FAFAFA; transition: 0.3s; }
         .student-profile.registered { background: #F4F8F5; }
-        .profile-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--br-border); color: var(--br-muted); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 22px; flex-shrink: 0; }
-        .student-profile.registered .profile-avatar { background: var(--br-gold); color: #FFF; }
+        .profile-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--br-border); color: var(--br-muted); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 22px; flex-shrink: 0; transition: 0.3s; }
+        .student-profile.registered .profile-avatar { background: var(--br-gold); color: #FFF; box-shadow: 0 10px 20px rgba(203,174,117,0.3); }
         .profile-info { display: flex; flex-direction: column; overflow: hidden; }
         .profile-name { font-size: 16px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .profile-role { font-size: 11px; color: var(--br-muted); letter-spacing: 1px; }
@@ -59,7 +59,7 @@
         .drawing-board.fade-out { opacity: 0; transform: scale(0.95) translateY(10px); pointer-events: none !important; }
 
         #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; user-select: none; pointer-events: none !important; }
-        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; cursor: crosshair; }
+        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; }
 
         /* [Bottom Dock] */
         .bottom-dock { height: 120px; flex-shrink: 0; background: rgba(255, 255, 255, 0.95); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; }
@@ -190,6 +190,7 @@
             <div class="bottom-dock">
                 <div class="tool-group">
                     <div class="color-preview" id="btn-color" onclick="RGBRingEngine.toggle()"></div>
+                    <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;">
                     <input type="range" class="brush-slider" id="brush-size" min="2" max="40" value="6">
                     
                     <button class="btn-erase" onclick="CanvasEngine.undo()" title="Undo">↺</button>
@@ -237,12 +238,59 @@
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/"
         };
 
+        // 🚨 V86.0 글로벌 스테이트 (LocalStorage와 매칭될 변수들)
         const STATE = {
-            studentName: "", isNameRegistered: false,
+            studentName: "", 
+            isNameRegistered: false,
             id: new URLSearchParams(window.location.search).get('id') || "A-1",
-            currentPage: 1, isRecording: false, lastTranscript: "",
+            currentPage: 1, 
+            isRecording: false, lastTranscript: "",
             audioStartTime: 0, audioDurationSec: 0, sttConfidence: 0,
             isChatMode: false 
+        };
+
+        /* ======================================================================
+         * [V86.0 Storage Engine - 브라우저 영구 보존(Persistence) 로직]
+         * 페이지 번호, 학생 이름, 캔버스 그림을 F5 새로고침으로부터 보호합니다.
+         * ====================================================================== */
+        const StorageEngine = {
+            saveState() {
+                try {
+                    localStorage.setItem(`bridge_state_${STATE.id}`, JSON.stringify({
+                        studentName: STATE.studentName,
+                        isNameRegistered: STATE.isNameRegistered,
+                        currentPage: STATE.currentPage
+                    }));
+                } catch(e) {}
+            },
+            loadState() {
+                try {
+                    const saved = JSON.parse(localStorage.getItem(`bridge_state_${STATE.id}`) || "{}");
+                    if (saved.currentPage) STATE.currentPage = saved.currentPage;
+                    if (saved.studentName) STATE.studentName = saved.studentName;
+                    if (saved.isNameRegistered) STATE.isNameRegistered = saved.isNameRegistered;
+                } catch(e) {}
+            },
+            saveCanvas() {
+                try {
+                    if(CanvasEngine.cvs) {
+                        localStorage.setItem(`bridge_cvs_${STATE.id}_${STATE.currentPage}`, CanvasEngine.cvs.toDataURL());
+                    }
+                } catch(e) {}
+            },
+            loadCanvas() {
+                try {
+                    const data = localStorage.getItem(`bridge_cvs_${STATE.id}_${STATE.currentPage}`);
+                    if (data) {
+                        const img = new Image();
+                        img.onload = () => {
+                            CanvasEngine.ctx.drawImage(img, 0, 0);
+                            CanvasEngine.saveState(); // 히스토리 스택(Undo용)에도 복원
+                        };
+                        img.src = data;
+                    }
+                } catch(e) {}
+            }
         };
 
         const AppEngine = {
@@ -290,13 +338,24 @@
                     const item = document.createElement('div');
                     item.className = 'nav-item'; item.id = `nav-${i}`;
                     item.innerHTML = `<span class="nav-title">${ctx.navTitle}</span> <span class="nav-badge">P.${String(i).padStart(2,'0')}</span>`;
-                    item.onclick = () => { AppEngine.smoothPageTransition(i - STATE.currentPage); UIEngine.closeSidebarOnMobile(); };
+                    
+                    item.onclick = () => { 
+                        AppEngine.smoothPageTransition(i - STATE.currentPage); 
+                        UIEngine.closeSidebarOnMobile(); 
+                    };
                     list.appendChild(item);
                 }
-                this.load(1);
+                
+                // 🚨 V86.0 무조건 1페이지가 아닌, LocalStorage에 기억된 페이지로 렌더링
+                this.load(STATE.currentPage);
             },
             load(n) {
-                STATE.currentPage = n; STATE.lastTranscript = ""; STATE.sttConfidence = 0; STATE.audioDurationSec = 0;
+                STATE.currentPage = n; 
+                STATE.lastTranscript = ""; STATE.sttConfidence = 0; STATE.audioDurationSec = 0;
+                
+                // 🚨 페이지가 바뀔 때마다 번호 저장
+                StorageEngine.saveState();
+
                 const seriesChar = STATE.id.charAt(0);
                 const imgPath = `${CONFIG.STORAGE_URL}${seriesChar}/${STATE.id}/${STATE.id}-${n}.png?t=${new Date().getTime()}`;
                 
@@ -307,6 +366,8 @@
                 img.onload = () => { 
                     img.style.opacity = '1'; 
                     CanvasEngine.resizeCanvas();
+                    // 🚨 도화지가 깔리면 이전 그림 복구
+                    StorageEngine.loadCanvas(); 
                 };
 
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
@@ -407,17 +468,14 @@
                 
                 this.bindEvents();
                 this.setupResizeObserver();
-                this.updateCursor(); // 🚨 V85.0 커서 적용
+                this.updateCursor();
             },
 
-            // 🚨 V85.0 초경량(Lightweight) & 정밀 타겟팅 커서 업데이트
             updateCursor() {
                 if (this.isErasing) {
-                    // 크기를 20x20으로 줄이고, 지우개 끝부분(0, 20)에 클릭 판정(Hotspot)을 맞춤
                     const eraserSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="%23FFB6C1" stroke="%23363431" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11C23 12 23 14 22 15L20 20Z"/><path d="M17 17L7 7"/></svg>`;
                     this.cvs.style.cursor = `url('data:image/svg+xml;utf8,${eraserSvg}') 0 20, cell`;
                 } else {
-                    // 크기를 20x20으로 줄이고, 연필 심 부분(0, 20)에 클릭 판정을 완벽히 맞춤
                     const colorEncoded = this.lastColor.replace('#', '%23');
                     const penSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="${colorEncoded}" stroke="%23363431" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/><path d="M15 5l4 4"/><circle cx="2" cy="22" r="1.5" fill="${colorEncoded}" stroke="none"/></svg>`;
                     this.cvs.style.cursor = `url('data:image/svg+xml;utf8,${penSvg}') 0 20, crosshair`;
@@ -494,7 +552,11 @@
                 this.cvs.addEventListener('pointerup', (e) => {
                     this.isDrawing = false;
                     try { this.cvs.releasePointerCapture(e.pointerId); } catch(err){}
-                    if(this.hasMoved) { this.saveState(); }
+                    
+                    if(this.hasMoved) { 
+                        this.saveState(); 
+                        StorageEngine.saveCanvas(); // 🚨 로컬스토리지 그림 저장 연동
+                    }
                 });
 
                 this.cvs.addEventListener('pointercancel', (e) => {
@@ -535,6 +597,7 @@
                     this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
                     this.ctx.drawImage(img, 0, 0);
                     this.ctx.restore();
+                    StorageEngine.saveCanvas(); // 🚨 Undo/Redo 결과도 로컬스토리지에 동기화
                 };
                 img.src = this.historyStack[this.historyIndex];
             },
@@ -581,10 +644,10 @@
                 this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
                 this.ctx.restore();
                 this.saveState(); 
+                StorageEngine.saveCanvas(); // 🚨 클리어 결과 동기화
             }
         };
 
-        // 🚨 V85.0 초고속 OCR Worker 글로벌 초기화 (딜레이 제로화)
         const VisualAI_OCR = {
             worker: null,
             async init() {
@@ -690,7 +753,6 @@
                 content.innerHTML = `<div style="text-align:center; padding: 50px 0;"><div style="width:50px; height:50px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px;"></div><p style="font-size:13px; color:var(--br-muted); font-weight:900; letter-spacing:3px; animation: pulse 1.5s infinite;">ANALYZING AUDIO & DRAWING...</p></div>`;
                 document.getElementById('chat-input-area').style.display = "none";
 
-                // 🚨 V85.0 비동기 최적화: 대기 시간 없이 즉각 결과 도출
                 let doodleLabel = await VisionAI_Doodle.classifyCanvas(CanvasEngine.cvs);
                 if (doodleLabel) doodleLabel = doodleLabel.replace(/_/g, ' '); 
 
@@ -770,6 +832,10 @@
                 const nameInput = providedName || document.getElementById('ai-name-verify').value.trim();
                 if(nameInput) {
                     STATE.studentName = nameInput; STATE.isNameRegistered = true;
+                    
+                    // 🚨 이름 등록 완료 시 즉각 로컬스토리지 저장
+                    StorageEngine.saveState();
+
                     document.getElementById('profile-box').classList.add('registered'); 
                     document.getElementById('display-student-name').innerText = nameInput; 
                     document.getElementById('avatar-char').innerText = nameInput.charAt(0).toUpperCase(); 
@@ -869,18 +935,28 @@
             close() { document.getElementById('ai-panel').classList.remove('open'); if('speechSynthesis' in window) window.speechSynthesis.cancel(); }
         };
 
+        // 🚨 V86.0 실행 순서 재정립: 가장 먼저 저장된 상태(이름, 페이지)를 불러온 뒤 나머지 모듈 활성화
         window.onload = () => {
+            StorageEngine.loadState(); 
+            
+            // 🚨 저장된 이름이 있으면 좌측 프로필 즉시 갱신
+            if(STATE.isNameRegistered) {
+                document.getElementById('profile-box').classList.add('registered'); 
+                document.getElementById('display-student-name').innerText = STATE.studentName; 
+                document.getElementById('avatar-char').innerText = STATE.studentName.charAt(0).toUpperCase(); 
+                document.querySelector('.profile-role').innerText = "Bridge Inquirer";
+            }
+
             CanvasEngine.init(); 
             RGBRingEngine.init(); 
-            PageEngine.init(); 
+            PageEngine.init(); // 여기서 내부적으로 StorageEngine에 저장된 STATE.currentPage를 호출합니다.
             AudioEngine.init(); 
-            
-            // 🚨 V85.0 글로벌 백그라운드 AI 엔진 사전 로드 (딜레이 제거)
             VisualAI_OCR.init(); 
             VisionAI_Doodle.init(); 
             
             setTimeout(() => {
                 CanvasEngine.resizeCanvas();
+                StorageEngine.loadCanvas(); // 만약을 대비한 타임아웃 캔버스 복구
             }, 300);
         };
     </script>

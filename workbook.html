@@ -59,7 +59,7 @@
         .drawing-board.fade-out { opacity: 0; transform: scale(0.95) translateY(10px); pointer-events: none !important; }
 
         #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; user-select: none; pointer-events: none !important; }
-        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; }
+        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; cursor: crosshair; }
 
         /* [Bottom Dock] */
         .bottom-dock { height: 120px; flex-shrink: 0; background: rgba(255, 255, 255, 0.95); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; }
@@ -238,7 +238,6 @@
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/"
         };
 
-        // 🚨 V86.0 글로벌 스테이트 (LocalStorage와 매칭될 변수들)
         const STATE = {
             studentName: "", 
             isNameRegistered: false,
@@ -249,10 +248,6 @@
             isChatMode: false 
         };
 
-        /* ======================================================================
-         * [V86.0 Storage Engine - 브라우저 영구 보존(Persistence) 로직]
-         * 페이지 번호, 학생 이름, 캔버스 그림을 F5 새로고침으로부터 보호합니다.
-         * ====================================================================== */
         const StorageEngine = {
             saveState() {
                 try {
@@ -285,7 +280,7 @@
                         const img = new Image();
                         img.onload = () => {
                             CanvasEngine.ctx.drawImage(img, 0, 0);
-                            CanvasEngine.saveState(); // 히스토리 스택(Undo용)에도 복원
+                            CanvasEngine.saveState(); 
                         };
                         img.src = data;
                     }
@@ -346,14 +341,12 @@
                     list.appendChild(item);
                 }
                 
-                // 🚨 V86.0 무조건 1페이지가 아닌, LocalStorage에 기억된 페이지로 렌더링
                 this.load(STATE.currentPage);
             },
             load(n) {
                 STATE.currentPage = n; 
                 STATE.lastTranscript = ""; STATE.sttConfidence = 0; STATE.audioDurationSec = 0;
                 
-                // 🚨 페이지가 바뀔 때마다 번호 저장
                 StorageEngine.saveState();
 
                 const seriesChar = STATE.id.charAt(0);
@@ -366,7 +359,6 @@
                 img.onload = () => { 
                     img.style.opacity = '1'; 
                     CanvasEngine.resizeCanvas();
-                    // 🚨 도화지가 깔리면 이전 그림 복구
                     StorageEngine.loadCanvas(); 
                 };
 
@@ -555,7 +547,7 @@
                     
                     if(this.hasMoved) { 
                         this.saveState(); 
-                        StorageEngine.saveCanvas(); // 🚨 로컬스토리지 그림 저장 연동
+                        StorageEngine.saveCanvas(); 
                     }
                 });
 
@@ -597,7 +589,7 @@
                     this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
                     this.ctx.drawImage(img, 0, 0);
                     this.ctx.restore();
-                    StorageEngine.saveCanvas(); // 🚨 Undo/Redo 결과도 로컬스토리지에 동기화
+                    StorageEngine.saveCanvas(); 
                 };
                 img.src = this.historyStack[this.historyIndex];
             },
@@ -644,7 +636,7 @@
                 this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
                 this.ctx.restore();
                 this.saveState(); 
-                StorageEngine.saveCanvas(); // 🚨 클리어 결과 동기화
+                StorageEngine.saveCanvas(); 
             }
         };
 
@@ -674,13 +666,28 @@
                     });
                 } catch(e) { console.warn("Vision AI failed to initialize."); }
             },
+            
+            // 🚨 V87.0 강제 타임아웃 방어막 적용 (무한 로딩 100% 방지)
             async classifyCanvas(canvas) {
                 if(!this.isReady || !this.classifier) return null;
+                
                 return new Promise((resolve) => {
-                    this.classifier.classify(canvas, (err, results) => {
-                        if(err) resolve(null);
-                        else resolve(results[0].label); 
-                    });
+                    // 2초 내에 응답이 없으면 에러로 간주하고 무시함
+                    const timeout = setTimeout(() => {
+                        console.warn("DoodleNet processing timeout.");
+                        resolve(null);
+                    }, 2000);
+                    
+                    try {
+                        this.classifier.classify(canvas, (err, results) => {
+                            clearTimeout(timeout);
+                            if(err || !results || results.length === 0) resolve(null);
+                            else resolve(results[0].label); 
+                        });
+                    } catch(e) {
+                        clearTimeout(timeout);
+                        resolve(null);
+                    }
                 });
             }
         };
@@ -753,10 +760,18 @@
                 content.innerHTML = `<div style="text-align:center; padding: 50px 0;"><div style="width:50px; height:50px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px;"></div><p style="font-size:13px; color:var(--br-muted); font-weight:900; letter-spacing:3px; animation: pulse 1.5s infinite;">ANALYZING AUDIO & DRAWING...</p></div>`;
                 document.getElementById('chat-input-area').style.display = "none";
 
-                let doodleLabel = await VisionAI_Doodle.classifyCanvas(CanvasEngine.cvs);
-                if (doodleLabel) doodleLabel = doodleLabel.replace(/_/g, ' '); 
+                // 🚨 V87.0 Try-Catch로 비동기 에러가 발생해도 무한 로딩 탈출 보장
+                try {
+                    let doodleLabel = await VisionAI_Doodle.classifyCanvas(CanvasEngine.cvs);
+                    if (doodleLabel) doodleLabel = doodleLabel.replace(/_/g, ' '); 
 
-                this.provideFeedback(false, doodleLabel);
+                    setTimeout(() => {
+                        this.provideFeedback(false, doodleLabel);
+                    }, 500);
+                } catch (err) {
+                    console.error("AI Tutor Sync Error:", err);
+                    this.provideFeedback(false, null);
+                }
             },
             
             async scanHandwritingForName() {
@@ -833,7 +848,6 @@
                 if(nameInput) {
                     STATE.studentName = nameInput; STATE.isNameRegistered = true;
                     
-                    // 🚨 이름 등록 완료 시 즉각 로컬스토리지 저장
                     StorageEngine.saveState();
 
                     document.getElementById('profile-box').classList.add('registered'); 
@@ -935,11 +949,9 @@
             close() { document.getElementById('ai-panel').classList.remove('open'); if('speechSynthesis' in window) window.speechSynthesis.cancel(); }
         };
 
-        // 🚨 V86.0 실행 순서 재정립: 가장 먼저 저장된 상태(이름, 페이지)를 불러온 뒤 나머지 모듈 활성화
         window.onload = () => {
             StorageEngine.loadState(); 
             
-            // 🚨 저장된 이름이 있으면 좌측 프로필 즉시 갱신
             if(STATE.isNameRegistered) {
                 document.getElementById('profile-box').classList.add('registered'); 
                 document.getElementById('display-student-name').innerText = STATE.studentName; 
@@ -949,14 +961,14 @@
 
             CanvasEngine.init(); 
             RGBRingEngine.init(); 
-            PageEngine.init(); // 여기서 내부적으로 StorageEngine에 저장된 STATE.currentPage를 호출합니다.
+            PageEngine.init(); 
             AudioEngine.init(); 
             VisualAI_OCR.init(); 
             VisionAI_Doodle.init(); 
             
             setTimeout(() => {
                 CanvasEngine.resizeCanvas();
-                StorageEngine.loadCanvas(); // 만약을 대비한 타임아웃 캔버스 복구
+                StorageEngine.loadCanvas(); 
             }, 300);
         };
     </script>

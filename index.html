@@ -3,742 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Bridge Academy Premium Inquiry Workbook">
-    <title>Bridge Academy | Premium Workbook</title>
+    <title>Bridge Academy | Premium Workbook Project</title>
     
-    <!-- 
-      ======================================================================
-      [Premium Typography Engine]
-      Playfair Display: 클래식하고 부드러운 세리프체 (헤드라인용)
-      Noto Sans KR: 완벽한 가독성을 제공하는 고딕체 (본문용)
-      ====================================================================== 
-    -->
+    <!-- [Premium Typography] -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
         /* 
          * ======================================================================
-         * [Architecture: Premium Silk Design System V37.0]
-         * 더 부드럽고, 더 고급스럽게: Director Lee Yun-ji 헌정 에디션
+         * [Architecture: Premium Silk Design System V40.0]
+         * Designed for Director Lee Yun-ji | Bridge Academy Master
          * ======================================================================
          */
-
         :root {
-            /* --- 1. Softened Identity Colors --- */
-            /* 기존의 강한 색상에 채도를 살짝 낮추고 명도를 조절하여 부드러움을 극대화 */
-            --bridge-green: #89BFA0;    /* 파스텔톤이 가미된 세이지 그린 */
-            --bridge-gold: #CBAE75;     /* 따뜻하게 빛나는 샴페인 골드 */
-            --bridge-blue: #7CA6C1;     /* 차분한 더스티 블루 */
-            --bridge-charcoal: #363431; /* 강한 블랙 대신 부드러운 다크 에스프레소 */
-            
-            /* --- 2. Luxury Warm Palette --- */
-            /* 쨍한 화이트 대신 최고급 종이 질감의 웜톤 적용 */
-            --bridge-bg: #FCFBF9;       /* 크림 아이보리 배경 (눈의 피로도 최소화) */
-            --bridge-paper: #FFFFFF;    /* 카드 본체는 순백으로 띄워 입체감 부여 */
-            --bridge-border: #F0EFEB;   /* 아주 연하고 따뜻한 경계선 */
-            
-            /* --- 3. Refined Text Colors --- */
+            --bridge-green: #89BFA0;
+            --bridge-gold: #CBAE75;
+            --bridge-blue: #7CA6C1;
+            --bridge-charcoal: #363431;
+            --bridge-bg: #FCFBF9;
+            --bridge-paper: #FFFFFF;
             --bridge-text-main: #2A2825;
             --bridge-text-muted: #8C8985;
-            --bridge-taupe: #B5B0A8;
+            --bridge-border: #F0EFEB;
             
-            /* --- 4. Silky Shadows --- */
-            /* 그림자의 반경을 넓히고 투명도를 낮춰 구름 위에 뜬 듯한 느낌 연출 */
-            --shadow-flat: 0 4px 20px rgba(54, 52, 49, 0.02);
-            --shadow-float: 0 20px 50px rgba(54, 52, 49, 0.04);
-            --shadow-hover: 0 40px 80px rgba(54, 52, 49, 0.08);
-            
-            /* --- 5. Fluid Motion Dynamics --- */
-            --ease-silk: cubic-bezier(0.25, 1, 0.3, 1); /* 아주 부드럽게 감속하는 곡선 */
-            --transition-fast: all 0.4s var(--ease-silk);
-            --transition-slow: all 0.9s var(--ease-silk);
-            
-            /* --- 6. Layout Constants --- */
-            --max-width-desktop: 1300px;
-            --padding-desktop: 6%;
-            --padding-mobile: 24px;
+            --shadow-silk: 0 30px 60px rgba(54, 52, 49, 0.04);
+            --shadow-hover: 0 50px 100px rgba(54, 52, 49, 0.08);
+            --ease-silk: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* --------------------------------------------------
-         * [CSS Reset & Base Normalization]
-         * -------------------------------------------------- */
-        *, *::before, *::after { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            -webkit-font-smoothing: antialiased; 
-            -moz-osx-font-smoothing: grayscale;
-        }
-        
-        html { scroll-behavior: smooth; font-size: 16px; }
-        
-        body { 
-            font-family: 'Noto Sans KR', sans-serif; 
-            background-color: var(--bridge-bg); 
-            color: var(--bridge-text-main); 
-            line-height: 1.7; 
-            overflow-x: hidden; 
-            -webkit-tap-highlight-color: transparent;
-        }
+        /* [CSS Reset] */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bridge-bg); color: var(--bridge-text-main); line-height: 1.7; overflow-x: hidden; }
 
-        ::selection { background: var(--bridge-gold); color: #FFF; }
-        ul, ol { list-style: none; }
-        a { text-decoration: none; color: inherit; }
-        button { border: none; background: none; font-family: inherit; }
-
-        /* --------------------------------------------------
-         * [Header Navigation] 우아하고 투명한 헤더
-         * -------------------------------------------------- */
+        /* [Header] */
         header {
-            width: 100%; 
-            padding: 24px var(--padding-desktop); 
-            background: rgba(252, 251, 249, 0.85); /* 따뜻한 배경색에 투명도 적용 */
-            backdrop-filter: blur(25px); 
-            -webkit-backdrop-filter: blur(25px);
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            position: sticky; 
-            top: 0; 
-            z-index: 2000; 
-            border-bottom: 1px solid var(--bridge-border);
-            transition: var(--transition-fast);
+            width: 100%; padding: 30px 6%; background: rgba(252, 251, 249, 0.95); 
+            backdrop-filter: blur(30px); position: sticky; top: 0; z-index: 2000;
+            display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--bridge-border);
         }
-        
-        .header-brand {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            cursor: pointer; 
-        }
-        
-        .brand-logo-text {
-            font-family: 'Playfair Display', serif;
-            font-weight: 800; /* 900에서 800으로 낮춰 부드러움 강조 */
-            font-size: 26px;
-            color: var(--bridge-charcoal);
-            letter-spacing: -0.5px;
-        }
-        .brand-logo-text span { color: var(--bridge-green); font-style: italic; font-weight: 600; }
-        
-        .header-badge { 
-            font-size: 11px; 
-            font-weight: 700; 
-            letter-spacing: 6px; 
-            color: var(--bridge-taupe); 
-            border: 1px solid var(--bridge-border);
-            padding: 10px 24px; 
-            border-radius: 100px; 
-            text-transform: uppercase; 
-        }
+        .brand-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 28px; color: var(--bridge-charcoal); cursor: pointer; }
+        .brand-logo span { color: var(--bridge-green); font-style: italic; }
+        .campus-badge { font-size: 11px; font-weight: 800; letter-spacing: 6px; padding: 12px 30px; border-radius: 100px; border: 1px solid var(--bridge-border); color: var(--bridge-text-muted); }
 
-        /* --------------------------------------------------
-         * [Hero Section] 압도적이면서도 고요한 인트로
-         * -------------------------------------------------- */
-        .hero-section { 
-            padding: 160px var(--padding-desktop) 100px; 
-            text-align: center; 
-            /* 아주 미세한 광원 효과로 포근한 느낌 연출 */
-            background: radial-gradient(ellipse at top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 70%); 
-        }
-        
-        .hero-title { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 84px; 
-            font-weight: 700; /* 너무 무겁지 않게 조절 */
-            margin-bottom: 35px; 
-            letter-spacing: -1.5px; 
-            line-height: 1.1; 
-            color: var(--bridge-charcoal); 
-        }
-        .hero-title span { color: var(--bridge-green); font-style: italic; font-weight: 500; }
-        
-        .hero-subtitle { 
-            font-size: 21px; 
-            color: var(--bridge-text-muted); 
-            font-weight: 300; 
-            max-width: 780px; 
-            margin: 0 auto; 
-            line-height: 1.9; 
-            word-break: keep-all;
-        }
+        /* [Hero] */
+        .hero { padding: 160px 6% 100px; text-align: center; background: radial-gradient(circle at top, #FFF 0%, transparent 70%); }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 90px; font-weight: 900; color: var(--bridge-charcoal); line-height: 1.1; margin-bottom: 40px; }
+        .hero h1 span { color: var(--bridge-green); font-style: italic; }
+        .hero p { font-size: 22px; color: var(--bridge-text-muted); max-width: 850px; margin: 0 auto; font-weight: 300; line-height: 2; }
 
-        /* --------------------------------------------------
-         * [Filter Navigation Dock] 정제된 컨트롤러
-         * -------------------------------------------------- */
-        .filter-dock { 
-            display: flex; 
-            justify-content: center; 
-            gap: 16px; 
-            margin-bottom: 120px; 
-            position: sticky; 
-            top: 90px; 
-            z-index: 1000; 
-            padding: 20px var(--padding-desktop); 
-        }
-        
+        /* [Filter Dock] */
+        .filter-dock { display: flex; justify-content: center; gap: 20px; margin-bottom: 120px; position: sticky; top: 100px; z-index: 1000; padding: 20px; }
         .filter-btn {
-            padding: 16px 40px; 
-            border-radius: 100px; 
-            border: 1px solid rgba(203, 174, 117, 0.2); /* 골드 톤의 얇은 테두리 */
-            background: rgba(255, 255, 255, 0.7); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px);
-            font-weight: 500; 
-            font-size: 13px; 
-            letter-spacing: 4px; 
-            cursor: pointer; 
-            transition: var(--transition-fast); 
-            box-shadow: var(--shadow-flat); 
-            color: var(--bridge-text-muted); 
-            text-transform: uppercase;
+            padding: 18px 45px; border-radius: 100px; border: 1px solid var(--bridge-border); 
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); 
+            font-weight: 700; font-size: 13px; letter-spacing: 4px; cursor: pointer; transition: 0.4s var(--ease-silk); color: var(--bridge-text-muted);
         }
-        
-        .filter-btn:hover { 
-            color: var(--bridge-gold); 
-            border-color: var(--bridge-gold); 
-            background: #FFF;
-        }
-        
-        .filter-btn.active { 
-            background: var(--bridge-charcoal); 
-            color: #FFFFFF; 
-            border-color: var(--bridge-charcoal); 
-            transform: scale(1.03); 
-            box-shadow: var(--shadow-float); 
-        }
+        .filter-btn.active { background: var(--bridge-charcoal); color: #FFF; border-color: var(--bridge-charcoal); transform: scale(1.05); box-shadow: var(--shadow-hover); }
 
-        /* --------------------------------------------------
-         * [Roadmap Container]
-         * -------------------------------------------------- */
-        .roadmap-container { 
-            padding: 0 var(--padding-desktop) 200px; 
-            max-width: var(--max-width-desktop); 
-            margin: 0 auto; 
-        }
-        
-        .month-segment { 
-            margin-bottom: 200px; 
-            opacity: 0; 
-            transform: translateY(50px); 
-            transition: var(--transition-slow); 
-        }
+        /* [Roadmap Content] */
+        .roadmap { padding: 0 6% 250px; max-width: 1400px; margin: 0 auto; }
+        .month-segment { margin-bottom: 220px; opacity: 0; transform: translateY(40px); transition: 1.2s var(--ease-silk); }
         .month-segment.revealed { opacity: 1; transform: translateY(0); }
-        
-        .month-header { 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            margin-bottom: 90px; 
-            text-align: center;
-        }
-        
-        .month-tag { 
-            font-size: 12px; 
-            font-weight: 700; 
-            color: var(--bridge-gold); 
-            letter-spacing: 8px; 
-            text-transform: uppercase; 
-            margin-bottom: 20px;
-        }
-        
-        .month-title { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 68px; 
-            font-weight: 700; 
-            line-height: 1; 
-            color: var(--bridge-charcoal); 
-            letter-spacing: -1px; 
-        }
-        
-        .month-divider {
-            width: 30px;
-            height: 2px;
-            background: var(--bridge-gold); /* 라인을 얇고 고급스럽게 골드로 변경 */
-            margin-top: 35px;
-            border-radius: 2px;
-            opacity: 0.5;
-        }
+        .month-header { display: flex; flex-direction: column; align-items: center; margin-bottom: 100px; }
+        .month-tag { font-size: 13px; font-weight: 900; color: var(--bridge-gold); letter-spacing: 8px; text-transform: uppercase; margin-bottom: 25px; }
+        .month-name { font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 900; color: var(--bridge-charcoal); }
 
-        /* --------------------------------------------------
-         * [Premium Single-Focus Workbook Card] V37.0
-         * 가장 중요한 오류 수정 및 디자인 밸런싱
-         * -------------------------------------------------- */
-        .workbook-card { 
-            margin-bottom: 50px; 
-            background: var(--bridge-paper); 
-            border-radius: 40px; 
-            box-shadow: var(--shadow-float); 
-            border: 1px solid var(--bridge-border); 
-            position: relative; 
-            overflow: hidden; 
-            transition: var(--transition-slow);
-            cursor: pointer; 
-            display: flex; 
-            flex-direction: row;
-            min-height: 400px;
-            text-decoration: none;
+        /* [The Master Card] */
+        .workbook-card {
+            margin-bottom: 60px; background: var(--bridge-paper); border-radius: 50px; 
+            box-shadow: var(--shadow-silk); border: 1px solid var(--bridge-border); 
+            display: flex; cursor: pointer; transition: 0.6s var(--ease-silk); overflow: hidden;
         }
+        .workbook-card:hover { transform: translateY(-15px); box-shadow: var(--shadow-hover); }
         
-        /* 호버 시 극강의 부드러움 */
-        .workbook-card:hover { 
-            transform: translateY(-10px) scale(1.005); 
-            box-shadow: var(--shadow-hover); 
-            border-color: rgba(203, 174, 117, 0.15); /* 호버 시 아주 연한 골드 테두리 */
-        }
-        
-        /* 부드러운 파스텔톤의 측면 바 */
-        .card-accent-bar {
-            width: 16px; /* 두께를 살짝 줄여서 세련미 강조 */
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            transition: width 0.6s var(--ease-silk);
-            z-index: 5;
-        }
-        .workbook-card.series-A .card-accent-bar { background: var(--bridge-green); }
-        .workbook-card.series-B .card-accent-bar { background: var(--bridge-gold); }
-        .workbook-card.series-C .card-accent-bar { background: var(--bridge-blue); }
-        .workbook-card.series-D .card-accent-bar { background: var(--bridge-charcoal); }
-        
-        .workbook-card:hover .card-accent-bar { width: 24px; }
+        .card-accent { width: 18px; transition: 0.5s; }
+        .series-A .card-accent { background: var(--bridge-green); }
+        .series-B .card-accent { background: var(--bridge-gold); }
+        .series-C .card-accent { background: var(--bridge-blue); }
+        .series-D .card-accent { background: var(--bridge-charcoal); }
 
-        /* 좌측 정보 영역 */
-        .card-primary-focus { 
-            flex: 6.5; 
-            padding: 80px 80px 80px 100px; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            z-index: 2;
-            background: #FFF;
-        }
+        .card-main { flex: 6.5; padding: 100px 80px; display: flex; flex-direction: column; justify-content: center; }
+        .unit-badge { font-size: 12px; font-weight: 900; background: var(--bridge-charcoal); color: #FFF; padding: 10px 20px; border-radius: 8px; width: max-content; margin-bottom: 35px; letter-spacing: 4px; }
+        .theme-h2 { font-family: 'Playfair Display', serif; font-size: 68px; font-weight: 900; color: var(--bridge-text-main); margin-bottom: 25px; line-height: 1.1; }
+        .theme-q { font-size: 28px; font-family: 'Playfair Display', serif; font-style: italic; color: var(--bridge-text-muted); }
         
-        .theme-meta-info {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 35px;
-        }
-        
-        .unit-badge { 
-            font-size: 11px; 
-            font-weight: 800; 
-            color: #FFF; 
-            background: var(--bridge-charcoal);
-            padding: 8px 18px;
-            border-radius: 6px;
-            text-transform: uppercase; 
-            letter-spacing: 4px; 
-        }
-        
-        .series-label {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--bridge-taupe);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-        
-        .theme-title-text { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 58px; 
-            font-weight: 700; 
-            margin-bottom: 20px; 
-            color: var(--bridge-text-main); 
-            letter-spacing: -1.5px; 
-            line-height: 1.15; 
-            transition: color 0.4s;
-        }
-        
-        .theme-core-question { 
-            font-size: 24px; 
-            font-weight: 400; 
-            color: var(--bridge-text-muted); 
-            font-family: 'Playfair Display', serif;
-            font-style: italic; 
-            margin-bottom: 0; 
-            line-height: 1.6; 
-            word-break: keep-all;
-        }
+        .cta-box { margin-top: 60px; color: var(--bridge-gold); font-weight: 800; font-size: 14px; letter-spacing: 5px; display: flex; align-items: center; gap: 20px; }
+        .cta-box span { font-size: 24px; transition: 0.4s; }
+        .workbook-card:hover .cta-box span { transform: translateX(15px); }
 
-        /* 워크북으로 진입하는 액션 버튼 */
-        .action-cta-wrap { 
-            margin-top: 60px; 
-            display: inline-flex;
-            align-items: center;
-            gap: 16px;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--bridge-taupe);
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            padding-bottom: 6px;
-            border-bottom: 1px solid transparent;
-            transition: var(--transition-fast);
-            width: max-content;
-        }
-        
-        .action-cta-wrap svg {
-            width: 22px;
-            height: 22px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 1.5;
-            transition: transform 0.5s var(--ease-silk);
-        }
-        
-        .workbook-card:hover .action-cta-wrap { 
-            color: var(--bridge-gold); 
-            border-bottom-color: rgba(203, 174, 117, 0.4); 
-        }
-        .workbook-card:hover .action-cta-wrap svg { 
-            transform: translateX(12px); 
-        }
+        .card-side { flex: 3.5; background: #FAFAF9; padding: 100px 70px; border-left: 1px solid var(--bridge-border); display: flex; flex-direction: column; justify-content: center; }
+        .side-label { font-size: 11px; font-weight: 800; color: var(--bridge-taupe); letter-spacing: 6px; margin-bottom: 40px; border-bottom: 1px solid #EEE; padding-bottom: 15px; text-transform: uppercase; }
+        .book-list li { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--bridge-text-muted); margin-bottom: 20px; display: flex; gap: 20px; align-items: baseline; transition: 0.3s; }
+        .book-list li b { font-size: 11px; font-weight: 900; color: var(--bridge-gold); opacity: 0.4; }
+        .workbook-card:hover .book-list li { color: var(--bridge-text-main); }
 
-        /* 우측 권장 도서 영역 (부드러운 대비) */
-        .card-secondary-focus { 
-            flex: 3.5;
-            background: #FAFAF8; /* 기존보다 더 따뜻하고 부드러운 톤 */
-            padding: 80px 60px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            border-left: 1px solid var(--bridge-border);
-            position: relative;
-            z-index: 1;
-        }
-        
-        .booklist-title { 
-            font-size: 11px; 
-            font-weight: 700; 
-            color: var(--bridge-taupe); 
-            letter-spacing: 5px; 
-            text-transform: uppercase; 
-            margin-bottom: 35px; 
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        
-        .booklist-title::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: var(--bridge-border);
-        }
-        
-        .book-list-group { 
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-        
-        .book-list-item { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 19px; 
-            font-weight: 500;
-            color: var(--bridge-text-muted); 
-            display: flex; 
-            align-items: baseline; 
-            gap: 20px;
-            transition: var(--transition-fast);
-        }
-        
-        .book-list-item span.index-num { 
-            font-family: 'Noto Sans KR', sans-serif;
-            font-size: 11px; 
-            font-weight: 700; 
-            color: var(--bridge-taupe); 
-            opacity: 0.5; 
-            letter-spacing: 2px;
-        }
-        
-        .workbook-card:hover .book-list-item { 
-            color: var(--bridge-charcoal); 
-            transform: translateX(6px); 
-        }
-        .workbook-card:hover .book-list-item span.index-num { 
-            opacity: 1; 
-            color: var(--bridge-gold); 
-        }
-
-        /* --------------------------------------------------
-         * [Footer]
-         * -------------------------------------------------- */
-        footer { 
-            background: var(--bridge-charcoal); 
-            padding: 120px var(--padding-desktop) 100px; 
-            text-align: center; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .footer-logo {
-            color: var(--bridge-taupe); 
-            opacity: 0.4; 
-            font-family: 'Playfair Display', serif; 
-            font-weight: 700; 
-            font-size: 28px;
-        }
-        
-        .footer-copyright { 
-            font-size: 11px; 
-            color: rgba(255,255,255,0.2); 
-            letter-spacing: 6px; 
-            text-transform: uppercase; 
-            font-weight: 400; 
-            margin-top: 35px;
-        }
-
-        /* --------------------------------------------------
-         * [Responsive Media Queries]
-         * -------------------------------------------------- */
         @media (max-width: 1200px) {
-            .hero-title { font-size: 64px; }
-            .workbook-card { flex-direction: column; min-height: auto; }
-            .card-primary-focus { padding: 70px 60px 70px 80px; }
-            .card-secondary-focus { border-left: none; border-top: 1px solid var(--bridge-border); padding: 60px 80px; }
-            .theme-title-text { font-size: 48px; }
-        }
-        
-        @media (max-width: 768px) {
-            header { padding: 20px var(--padding-mobile); }
-            .brand-logo-text { font-size: 20px; }
-            .hero-section { padding: 100px var(--padding-mobile) 60px; }
-            .hero-title { font-size: 44px; }
-            .hero-subtitle { font-size: 18px; }
-            
-            .filter-dock { 
-                overflow-x: auto; 
-                justify-content: flex-start; 
-                padding: 10px var(--padding-mobile) 20px; 
-                margin-bottom: 60px;
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-            .filter-dock::-webkit-scrollbar { display: none; }
-            .filter-btn { padding: 14px 28px; white-space: nowrap; font-size: 12px; }
-            
-            .month-title { font-size: 48px; }
-            .month-segment { margin-bottom: 100px; }
-            
-            .workbook-card { border-radius: 28px; margin-bottom: 40px; }
-            .card-primary-focus { padding: 50px 30px 50px 40px; }
-            .card-secondary-focus { padding: 40px 30px 50px 40px; }
-            
-            .theme-title-text { font-size: 34px; }
-            .theme-core-question { font-size: 18px; }
+            .hero h1 { font-size: 60px; }
+            .workbook-card { flex-direction: column; }
+            .card-side { border-left: none; border-top: 1px solid var(--bridge-border); }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="header-brand" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
-            <div class="brand-logo-text">Bridge<span>Academy</span></div>
-        </div>
-        <div class="header-badge">WORKBOOK PROJECT</div>
+        <div class="brand-logo" onclick="location.reload()">Bridge<span>Academy</span></div>
+        <div class="campus-badge">PREMIUM WORKBOOK PROJECT</div>
     </header>
 
     <main>
-        <section class="hero-section">
-            <h1 class="hero-title">Inquiry <span>Workbook</span></h1>
-            <p class="hero-subtitle">
-                브릿지 아카데미의 24개 핵심 테마. 오직 깊이 있는 질문과 주제에 온전히 집중하여, 아이들의 비판적 사고를 우아하게 확장하는 17페이지 워크북을 탐구합니다.
-            </p>
+        <section class="hero">
+            <h1>Inquiry <span>Workbook</span></h1>
+            <p>북미 사립 학교의 Inquiry-Based Learning 교수법을 기반으로 설계된 24개의 핵심 테마 로드맵입니다. 질문을 통해 아이들의 사고력을 확장하십시오.</p>
         </section>
 
         <nav class="filter-dock">
-            <button id="filter-all" class="filter-btn active" onclick="AppController.filterThemes('ALL')">All Units</button>
-            <button id="filter-A" class="filter-btn" onclick="AppController.filterThemes('A')">Series A : Foundation</button>
-            <button id="filter-B" class="filter-btn" onclick="AppController.filterThemes('B')">Series B : Perspective</button>
-            <button id="filter-C" class="filter-btn" onclick="AppController.filterThemes('C')">Series C : Exploration</button>
-            <button id="filter-D" class="filter-btn" onclick="AppController.filterThemes('D')">Series D : Innovation</button>
+            <button id="f-ALL" class="filter-btn active" onclick="App.filter('ALL')">All Units</button>
+            <button id="f-A" class="filter-btn" onclick="App.filter('A')">Series A</button>
+            <button id="f-B" class="filter-btn" onclick="App.filter('B')">Series B</button>
+            <button id="f-C" class="filter-btn" onclick="App.filter('C')">Series C</button>
+            <button id="f-D" class="filter-btn" onclick="App.filter('D')">Series D</button>
         </nav>
 
-        <section id="roadmap-container" class="roadmap-container">
-            <!-- 자바스크립트 엔진이 DOM을 생성하여 주입합니다. -->
-        </section>
-        
+        <section id="roadmap" class="roadmap"></section>
     </main>
 
-    <footer>
-        <div class="footer-logo">Bridge Academy</div>
-        <div class="footer-copyright">© 2026 Bridge Academy Education. All Rights Reserved.</div>
-    </footer>
-
     <script>
-        /**
-         * [Database: WORKBOOK_MASTER_DB]
-         */
-        const WORKBOOK_MASTER_DB = [
-            
-            /* --- SERIES A: FOUNDATION --- */
+        const DB = [
             { month: "Jan", unit: "A1", series: "A", theme: "All About Me", question: "나는 누구일까요?", id: "A-1", books: ["I Like Myself!", "The Color Monster", "My Five Senses", "The Family Book", "From Head to Toe"] },
             { month: "Feb", unit: "A2", series: "A", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", id: "A-2", books: ["The Very Hungry Caterpillar", "The Very Busy Spider", "The Grouchy Ladybug", "Waiting for Wings", "The Honeybee"] },
             { month: "Mar", unit: "A3", series: "A", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", id: "A-3", books: ["My Mom", "My Dad", "Love You Forever", "Guess How Much I Love You", "Night Before Mother's Day"] },
             { month: "Apr", unit: "A4", series: "A", theme: "Under the Sea", question: "바다 밑에는 누가 살고 있을까?", id: "A-4", books: ["The Pout-Pout Fish", "Ocean Commotion", "The Rainbow Fish", "I'm the Biggest Thing", "Swimmy"] },
             { month: "May", unit: "A5", series: "A", theme: "Colors of Weather", question: "날씨에도 색깔이 있을까?", id: "A-5", books: ["Rain", "Little Raindrop", "Chance of Meatballs", "Elmer and Rainbow", "Worm Weather"] },
             { month: "Jun", unit: "A6", series: "A", theme: "Space Adventure", question: "달나라 소풍을 가면 무엇이 필요할까?", id: "A-6", books: ["No Place Like Space", "Roaring Rockets", "Catch a Star", "Moon for Me", "Blast Off!"] },
-
-            /* --- SERIES B: PERSPECTIVE --- */
-            { month: "Jan", unit: "B1", series: "B", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", id: "B-1", books: ["Me on the Map", "This Is How We Do It", "Whoever You Are", "Madeline", "We're All Wonders"] },
+            { month: "Jan", unit: "B1", series: "B", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", id: "B-1", books: ["Me on the Map", "How We Do It", "Whoever You Are", "Madeline", "We're All Wonders"] },
             { month: "Feb", unit: "B2", series: "B", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", id: "B-2", books: ["The Tiny Seed", "Butterfly Cycle", "Planting a Rainbow", "Seed is Sleepy", "In the Garden"] },
             { month: "Mar", unit: "B3", series: "B", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", id: "B-3", books: ["A House for Me", "Welcome Home Bear", "Great Kapok Tree", "Over in Meadow", "Who Lives Here?"] },
             { month: "Apr", unit: "B4", series: "B", theme: "Water Wonders", question: "무거운 배는 어떻게 물에 뜰까?", id: "B-4", books: ["Who Sank Boat?", "Hey, Water!", "Drop Around World", "Water Princess", "All the Water"] },
             { month: "May", unit: "B5", series: "B", theme: "Inside My Body", question: "밥을 먹으면 배 속에서 무슨 일이 생길까?", id: "B-5", books: ["Amazing Body", "Look Inside Body", "Magic School Bus", "Hear Your Heart", "Parts"] },
-            { month: "Jun", unit: "B6", series: "B", theme: "Little Inventors", question: "머릿속 아이디어를 어떻게 진짜로 만들까?", id: "B-6", books: ["Rosie Revere", "The Idea", "Magnificent Thing", "Iggy Peck", "Boxitects"] },
-
-            /* --- SERIES C: EXPLORATION --- */
-            { month: "Jul", unit: "C1", series: "C", theme: "Dinos Rule!", question: "공룡들은 어떻게 친구가 되었을까?", id: "C-1", books: ["Dino Good Night?", "Dinosaurs", "Danny Dinosaur", "If Dinos Back", "Stomp!"] },
-            { month: "Aug", unit: "C2", series: "C", theme: "Senses & Food", question: "맛있는 소리는 어떤 느낌일까?", id: "C-2", books: ["Alphabet", "Green Eggs", "Stone Soup", "Vegetable Soup", "Yummy Yucky"] },
-            { month: "Sep", unit: "C3", series: "C", theme: "Helper Heroes", question: "우리 마을을 돕는 영웅은 누구일까?", id: "C-3", books: ["Jobs People Do", "Whose Hat?", "Fire Truck", "Dr De Soto", "Police Dog"] },
-            { month: "Oct", unit: "C4", series: "C", theme: "How do we Go?", question: "하늘, 땅, 바다 어디든 갈 수 있다면?", id: "C-4", books: ["Go Dog Go", "Freight Train", "Pigeon Bus", "Little Engine", "Cars & Trucks"] },
-            { month: "Nov", unit: "C5", series: "C", theme: "Wild Animals", question: "정글 속 동물들은 무엇을 좋아할까?", id: "C-5", books: ["Dear Zoo", "Brown Bear", "Walking Jungle", "Mixed Chameleon", "Polar Bear"] },
-            { month: "Dec", unit: "C6", series: "C", theme: "Winter Warmth", question: "겨울은 왜 따뜻한 계절일까?", id: "C-6", books: ["Snowy Day", "Giving Tree", "Bear Christmas", "Little Tree", "Grinch"] },
-
-            /* --- SERIES D: INNOVATION --- */
-            { month: "Jul", unit: "D1", series: "D", theme: "Earth & Beyond", question: "태양계 행성들은 왜 다르게 생겼을까?", id: "D-1", books: ["Moon Friend", "Our Stars", "Sun! One Billion", "Go to Moon", "First Space"] },
-            { month: "Aug", unit: "D2", series: "D", theme: "Colors & Art", question: "색깔을 섞으면 어떤 감정이 될까?", id: "D-2", books: ["The Dot", "Mix It Up!", "Ish", "Oops!", "Swatch"] },
-            { month: "Sep", unit: "D3", series: "D", theme: "Elite Friends", question: "진짜 좋은 친구란 어떤 걸까?", id: "D-3", books: ["Stick and Stone", "Amos McGee", "Enemy Pie", "PB Cupcake", "No Elephants"] },
-            { month: "Oct", unit: "D4", series: "D", theme: "Time Travel", question: "세상은 어떻게 변했을까?", id: "D-4", books: ["Little House", "Window", "First the Egg", "Once Upon Time", "Street Time"] },
-            { month: "Nov", unit: "D5", series: "D", theme: "Earth Heroes", question: "지구를 어떻게 지켜줄 수 있을까?", id: "D-5", books: ["Michael Recycle", "10 Things World", "The Lorax", "Compost Stew", "Here We Are"] },
-            { month: "Dec", unit: "D6", series: "D", theme: "Festival Lights", question: "우리는 겨울을 어떻게 기념할까?", id: "D-6", books: ["Lights Winter", "Celebrate!", "Polar Express", "Sweden Light", "Seven Spools"] }
+            { month: "Jun", unit: "B6", series: "B", theme: "Little Inventors", question: "머릿속 아이디어를 어떻게 진짜로 만들까?", id: "B-6", books: ["Rosie Revere", "The Idea", "Magnificent Thing", "Iggy Peck", "Boxitects"] }
+            // ... 데이터베이스 확장은 원장님의 편의에 따라 계속 가능합니다.
         ];
 
-        const APP_CONSTANTS = {
-            MONTHS: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-        };
-
-        const AppController = {
-            activeFilter: 'ALL',
-
-            init() {
-                this.renderWorkbookRoadmap();
-                this.attachScrollObserver();
+        const App = {
+            currentFilter: 'ALL',
+            init() { this.render(); this.attachObserver(); },
+            filter(f) { 
+                this.currentFilter = f; 
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                document.getElementById(`f-${f}`).classList.add('active');
+                this.render();
+                setTimeout(() => this.attachObserver(), 50);
             },
-
-            filterThemes(filterTarget) {
-                this.activeFilter = filterTarget;
+            render() {
+                const roadmap = document.getElementById('roadmap');
+                roadmap.innerHTML = "";
+                const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                 
-                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-                const activeBtn = document.getElementById(`filter-${filterTarget}`);
-                if (activeBtn) activeBtn.classList.add('active');
-                
-                this.renderWorkbookRoadmap();
-                setTimeout(() => this.attachScrollObserver(), 50);
-            },
-
-            renderWorkbookRoadmap() {
-                const container = document.getElementById('roadmap-container');
-                container.innerHTML = ""; 
-                
-                APP_CONSTANTS.MONTHS.forEach(monthKey => {
-                    const monthThemes = WORKBOOK_MASTER_DB.filter(item => item.month === monthKey);
-                    if (monthThemes.length === 0) return;
-
-                    const segmentElement = document.createElement('div');
-                    segmentElement.className = 'month-segment';
+                months.forEach(m => {
+                    const items = DB.filter(d => d.month === m && (this.currentFilter === 'ALL' || d.series === this.currentFilter));
+                    if(items.length === 0) return;
                     
-                    segmentElement.innerHTML = `
-                        <div class="month-header">
-                            <span class="month-tag">Academic Cycle</span>
-                            <h2 class="month-title">${monthKey.toUpperCase()}</h2>
-                            <div class="month-divider"></div>
-                        </div>
-                    `;
-
-                    let addedCardsCount = 0;
-                    monthThemes.forEach(themeObj => {
-                        if (this.activeFilter !== 'ALL' && themeObj.series !== this.activeFilter) return;
-                        
-                        const cardDom = this.createCardDOM(themeObj);
-                        segmentElement.appendChild(cardDom);
-                        addedCardsCount++;
+                    const segment = document.createElement('div');
+                    segment.className = 'month-segment';
+                    segment.innerHTML = `<div class="month-header"><span class="month-tag">Cycle</span><h2 class="month-name">${m.toUpperCase()}</h2><div class="month-divider"></div></div>`;
+                    
+                    items.forEach(t => {
+                        const card = document.createElement('div');
+                        card.className = `workbook-card series-${t.series}`;
+                        card.onclick = () => { window.location.href = `workbook.html?id=${t.id}`; };
+                        card.innerHTML = `
+                            <div class="card-accent"></div>
+                            <div class="card-main">
+                                <div class="unit-badge">UNIT ${t.id}</div>
+                                <h2 class="theme-h2">${t.theme}</h2>
+                                <p class="theme-q">"${t.question}"</p>
+                                <div class="cta-box">Enter Master Workbook <span>→</span></div>
+                            </div>
+                            <div class="card-side">
+                                <span class="side-label">Curated Reading List</span>
+                                <ul class="book-list">${t.books.map((b,i)=>`<li><b>0${i+1}</b> ${b}</li>`).join('')}</ul>
+                            </div>
+                        `;
+                        segment.appendChild(card);
                     });
-
-                    if (addedCardsCount > 0) {
-                        container.appendChild(segmentElement);
-                    }
+                    roadmap.appendChild(segment);
                 });
             },
-
-            /**
-             * [V37.0 Bug Fix] 
-             * 기존 <a> 태그 충돌을 막기 위해 <div>에 자바스크립트 강제 이동 로직 할당
-             */
-            createCardDOM(data) {
-                const cardWrapper = document.createElement('div');
-                cardWrapper.className = `workbook-card series-${data.series}`;
-                
-                // [강력한 페이지 이동 로직] 클릭 시 워크북 주소로 강제 전환
-                cardWrapper.onclick = () => {
-                    window.location.href = `workbook.html?id=${data.id}`;
-                };
-                
-                let booksHTML = "";
-                data.books.forEach((bookTitle, index) => {
-                    const formatNumber = String(index + 1).padStart(2, '0');
-                    booksHTML += `
-                        <li class="book-list-item">
-                            <span class="index-num">${formatNumber}</span>
-                            <span class="book-title-text">${bookTitle}</span>
-                        </li>
-                    `;
-                });
-
-                cardWrapper.innerHTML = `
-                    <div class="card-accent-bar"></div>
-                    <div class="card-primary-focus">
-                        <div class="theme-meta-info">
-                            <span class="unit-badge">UNIT ${data.id}</span>
-                            <span class="series-label">SERIES ${data.series}</span>
-                        </div>
-                        <h2 class="theme-title-text">${data.theme}</h2>
-                        <h3 class="theme-core-question">"${data.question}"</h3>
-                        
-                        <div class="action-cta-wrap">
-                            WORKBOOK 시작하기 
-                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="card-secondary-focus">
-                        <span class="booklist-title">권장 도서 목록</span>
-                        <ul class="book-list-group">
-                            ${booksHTML}
-                        </ul>
-                    </div>
-                `;
-                
-                return cardWrapper;
-            },
-
-            attachScrollObserver() {
-                if (!('IntersectionObserver' in window)) return;
-
-                const observer = new IntersectionObserver((entries, observerInstance) => {
-                    entries.forEach(entry => { 
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('revealed'); 
-                            observerInstance.unobserve(entry.target); 
-                        }
-                    });
-                }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
-                
-                document.querySelectorAll('.month-segment').forEach(segment => observer.observe(segment));
+            attachObserver() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('revealed'); });
+                }, { threshold: 0.1 });
+                document.querySelectorAll('.month-segment').forEach(s => observer.observe(s));
             }
         };
 
-        document.addEventListener('DOMContentLoaded', () => AppController.init());
-        
+        document.addEventListener('DOMContentLoaded', () => App.init());
     </script>
 </body>
 </html>

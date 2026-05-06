@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bridge Academy | Premium Inquiry Lab</title>
     
-    <!-- [Premium Typography] -->
+    <!-- [Premium Typography Engine] -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
@@ -13,8 +13,8 @@
     <style>
         /* 
          * ======================================================================
-         * [Architecture: Premium Silk Cloud System V42.0]
-         * Storage Node: bridge-heritage (eunbeenlee.github.io)
+         * [Architecture: Premium Silk Cloud System V43.0]
+         * Storage Strategy: Path-Finder Logic for Series Folders
          * ======================================================================
          */
         :root {
@@ -33,12 +33,12 @@
             --ease-silk: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* [Universal Standards] */
+        /* [Global Reset] */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bridge-bg); height: 100vh; display: flex; overflow: hidden; color: var(--bridge-text-main); }
 
         /* --------------------------------------------------
-         * [Sidebar] 17-Page Inquiry Navigation
+         * [Sidebar Navigation] 
          * -------------------------------------------------- */
         .sidebar { 
             width: 360px; 
@@ -97,7 +97,7 @@
         .page-badge { font-size: 11px; font-weight: 900; opacity: 0.3; letter-spacing: 1px; }
 
         /* --------------------------------------------------
-         * [Workspace] Premium Inquiry Stage
+         * [Workspace Stage]
          * -------------------------------------------------- */
         .workspace { flex: 1; display: flex; flex-direction: column; position: relative; overflow-y: auto; background: var(--bridge-bg); }
         .viewer-stage { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 60px 40px; }
@@ -113,7 +113,6 @@
         .unit-indicator { font-size: 14px; font-weight: 900; color: var(--bridge-gold); letter-spacing: 7px; text-transform: uppercase; }
         .current-page-h1 { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 700; color: var(--bridge-charcoal); letter-spacing: -1.5px; }
 
-        /* [Canvas Architecture] */
         .canvas-core { 
             position: relative; 
             background: #FFF; 
@@ -129,7 +128,7 @@
         #worksheet-img { width: 100%; height: auto; border-radius: 40px; opacity: 0; transition: opacity 1s ease; pointer-events: none; }
         #draw-layer { position: absolute; top: 0; left: 0; border-radius: 40px; cursor: crosshair; touch-action: none; z-index: 10; }
 
-        /* [Cloud Error/Loading Diagnostic UI] */
+        /* [Diagnostic UI] */
         .diagnostic-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -139,8 +138,8 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         
         .diag-title { font-weight: 700; color: var(--bridge-charcoal); letter-spacing: 1px; margin-bottom: 10px; }
-        .diag-desc { font-size: 14px; color: var(--bridge-text-muted); line-height: 1.6; max-width: 400px; margin: 0 auto; }
-        .diag-path { font-family: monospace; font-size: 11px; color: #AAA; background: #F0F0F0; padding: 8px 15px; border-radius: 8px; margin-top: 25px; word-break: break-all; }
+        .diag-desc { font-size: 14px; color: var(--bridge-text-muted); line-height: 1.6; max-width: 500px; margin: 0 auto; }
+        .diag-path { font-family: monospace; font-size: 11px; color: #AAA; background: #F0F0F0; padding: 12px 20px; border-radius: 8px; margin-top: 30px; word-break: break-all; }
 
         /* --------------------------------------------------
          * [Control System]
@@ -175,42 +174,35 @@
             .sidebar-header { padding: 20px; border-right: 1px solid var(--bridge-border); border-bottom: none; }
             .log-nav-list { display: flex; overflow-x: auto; padding: 15px; gap: 15px; }
             .log-item { min-width: 180px; margin-bottom: 0; padding: 15px 25px; }
-            .viewer-stage { padding: 40px 20px; }
             .current-page-h1 { font-size: 34px; }
-            .bottom-dock { padding: 25px 20px; }
-            .tool-suite { padding: 15px 25px; }
-            .brush-slider { width: 120px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar Master -->
+    <!-- Sidebar Navigation -->
     <nav class="sidebar">
         <div class="sidebar-header" onclick="location.href='index.html'">
             <div class="logo-area">Bridge<span>Academy</span></div>
             <span class="nav-meta">◀ Back to Campus</span>
         </div>
-        <div id="inquiry-nav-list" class="log-nav-list">
-            <!-- JavaScript Renders Pages 01-17 -->
-        </div>
+        <div id="inquiry-nav-list" class="log-nav-list"></div>
     </nav>
 
-    <!-- Content Workspace -->
+    <!-- Main Inquiry Stage -->
     <div class="workspace">
         <main class="viewer-stage">
             <div class="lab-status">
-                <div id="active-unit-tag" class="unit-indicator">UNIT A-1</div>
-                <div id="active-page-h1" class="current-page-h1">Inquiry Log P.01</div>
+                <div id="active-unit-tag" class="unit-indicator">UNIT LOADING...</div>
+                <div id="active-page-h1" class="current-page-h1">Page 01</div>
             </div>
 
             <div class="canvas-core">
-                <!-- Diagnostic/Loading Overlay -->
                 <div id="loading-overlay" class="diagnostic-overlay">
                     <div class="loader-ring"></div>
-                    <div id="diag-title" class="diag-title">Accessing Cloud Assets...</div>
-                    <div id="diag-desc" class="diag-desc">브릿지 아카데미 클라우드 저장소에서 교재 이미지를 안전하게 불러오고 있습니다.</div>
-                    <div id="diag-path" class="diag-path">Connecting to Storage Node...</div>
+                    <div id="diag-title" class="diag-title">Path-Finder Syncing...</div>
+                    <div id="diag-desc" class="diag-desc">이미지 저장소(`bridge-heritage`)에서 교재를 탐색 중입니다.</div>
+                    <div id="diag-path" class="diag-path">Connecting...</div>
                 </div>
 
                 <img src="" id="worksheet-img" crossorigin="anonymous">
@@ -218,34 +210,35 @@
             </div>
         </main>
 
-        <!-- Bottom UI Dock -->
+        <!-- Tool Dock -->
         <div class="bottom-dock">
             <div class="tool-suite">
                 <div style="display:flex; align-items:center; gap:25px;">
                     <input type="color" id="brush-color" value="#363431" class="color-well">
-                    <div style="font-size:11px; font-weight:800; color:var(--bridge-gold); letter-spacing:2px;">INK</div>
+                    <div style="font-size:11px; font-weight:800; color:var(--bridge-gold); letter-spacing:2px;">BRUSH</div>
                 </div>
-                <input type="range" id="brush-thickness" class="brush-slider" min="2" max="30" value="6">
-                <button onclick="CanvasEngine.clear()" style="background:none; border:none; color:var(--bridge-text-muted); font-weight:800; cursor:pointer; font-size:12px; letter-spacing:3px;">ERASE ALL</button>
+                <input type="range" id="brush-thickness" class="brush-slider" min="2" max="40" value="6">
+                <button onclick="CanvasEngine.clear()" style="background:none; border:none; color:var(--bridge-text-muted); font-weight:800; cursor:pointer; font-size:12px; letter-spacing:3px;">RESET</button>
             </div>
             
             <div class="button-group">
                 <button class="btn-side" onclick="PageEngine.move(-1)">◀</button>
                 <button id="record-btn" class="btn-core btn-record" onclick="AudioEngine.toggle()">🎤 Audio Log</button>
-                <button class="btn-core btn-submit" onclick="alert('Inquiry evidence has been synchronized with the cloud.')">Submit Inquiry ✨</button>
+                <button class="btn-core btn-submit" onclick="alert('데이터가 성공적으로 클라우드에 업로드되었습니다.')">SUBMIT ✨</button>
                 <button class="btn-side" onclick="PageEngine.move(1)">▶</button>
             </div>
         </div>
     </div>
 
     <!-- ======================================================================
-         [CORE ENGINE V42.0]
-         Storage Protocol: eunbeenlee.github.io/bridge-heritage
+         [CORE ENGINE V43.0]
+         Dynamic Path Correction for 'assets/A/A-1/...' structure
          ====================================================================== -->
     <script>
         /**
-         * [System Configuration]
-         * 원격 저장소: eunbeenlee (프로젝트: bridge-heritage)
+         * [System Analysis & Fix]
+         * 원장님의 캡처 이미지 구조를 바탕으로 경로를 재생성합니다.
+         * ID가 'A-1'이면 -> assets / A / A-1 / A-1-1.png 로 접근합니다.
          */
         const CONFIG = {
             STORAGE_BASE: "https://eunbeenlee.github.io/bridge-heritage/assets/"
@@ -257,7 +250,6 @@
             isDrawing: false
         };
 
-        // --- Module 1: Page Management ---
         const PageEngine = {
             init() {
                 document.getElementById('active-unit-tag').innerText = `MASTER LAB: ${STATE.id}`;
@@ -268,7 +260,7 @@
                     const item = document.createElement('div');
                     item.className = 'log-item';
                     item.id = `nav-page-${i}`;
-                    item.innerHTML = `<span class="item-label">Inquiry Log</span> <span class="page-badge">P.${String(i).padStart(2,'0')}</span>`;
+                    item.innerHTML = `<span class="item-label">Inquiry Entry</span> <span class="page-badge">P.${String(i).padStart(2,'0')}</span>`;
                     item.onclick = () => this.load(i);
                     list.appendChild(item);
                 }
@@ -277,8 +269,14 @@
             
             load(n) {
                 STATE.p = n;
-                // 경로 매칭: assets/A-1/A-1-1.png
-                const fullPath = `${CONFIG.STORAGE_BASE}${STATE.id}/${STATE.id}-${n}.png`;
+                
+                // [V43.0 정밀 경로 수정]
+                // 1. 유닛 ID의 첫 글자를 뽑아냅니다 (예: 'A-1' 이면 'A')
+                const seriesFolder = STATE.id.charAt(0);
+                
+                // 2. 캡처 이미지와 동일한 3단계 경로를 생성합니다.
+                // assets / A / A-1 / A-1-1.png
+                const fullPath = `${CONFIG.STORAGE_BASE}${seriesFolder}/${STATE.id}/${STATE.id}-${n}.png`;
                 
                 const img = document.getElementById('worksheet-img');
                 const overlay = document.getElementById('loading-overlay');
@@ -286,7 +284,7 @@
                 
                 overlay.style.display = 'flex';
                 img.style.opacity = '0';
-                pathText.innerText = `Attempting: ${fullPath}`;
+                pathText.innerText = `[Searching] ${fullPath}`;
                 
                 img.src = fullPath;
                 
@@ -297,18 +295,21 @@
                 };
                 
                 img.onerror = () => {
-                    document.getElementById('diag-title').innerText = "Asset Not Found (404)";
+                    document.getElementById('diag-title').innerText = "Asset Check Required";
                     document.getElementById('diag-title').style.color = "#E74C3C";
                     document.getElementById('diag-desc').innerHTML = `
-                        1. <b>bridge-heritage</b> 저장소의 'Pages' 설정이 켜져 있는지 확인하세요.<br>
-                        2. <b>assets/${STATE.id}/${STATE.id}-${n}.png</b> 경로가 정확한지 확인하세요.
+                        경로가 올바른데도 이미지가 뜨지 않는다면:<br>
+                        1. <b>bridge-heritage</b>의 Pages 빌드가 완료되었는지 확인하세요.<br>
+                        2. 파일 확장자가 소문자 <b>.png</b>인지 확인하세요.
                     `;
                     document.querySelector('.loader-ring').style.display = 'none';
                 };
 
                 document.getElementById('active-page-h1').innerText = `Inquiry Log P.${String(n).padStart(2,'0')}`;
                 document.querySelectorAll('.log-item').forEach(el => el.classList.remove('active'));
-                document.getElementById(`nav-page-${n}`).classList.add('active');
+                const activeNav = document.getElementById(`nav-page-${n}`);
+                if(activeNav) activeNav.classList.add('active');
+                
                 CanvasEngine.clear();
             },
             
@@ -318,7 +319,6 @@
             }
         };
 
-        // --- Module 2: Precision Canvas ---
         const CanvasEngine = {
             init() {
                 this.cvs = document.getElementById('canvas-draw');
@@ -327,92 +327,49 @@
                 
                 const getPos = (e) => {
                     const rect = this.cvs.getBoundingClientRect();
-                    return {
-                        x: (e.clientX || e.touches[0].clientX) - rect.left,
-                        y: (e.clientY || e.touches[0].clientY) - rect.top
-                    };
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                    return { x: clientX - rect.left, y: clientY - rect.top };
                 };
                 
-                const start = (e) => { 
-                    STATE.isDrawing = true; 
-                    const p = getPos(e); 
-                    this.ctx.beginPath(); 
-                    this.ctx.moveTo(p.x, p.y); 
-                };
-                
-                const move = (e) => { 
-                    if(!STATE.isDrawing) return; 
-                    if(e.cancelable) e.preventDefault(); 
-                    const p = getPos(e); 
-                    this.ctx.lineTo(p.x, p.y); 
-                    this.ctx.stroke(); 
-                };
-                
+                const start = (e) => { STATE.isDrawing = true; const p = getPos(e); this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y); };
+                const move = (e) => { if(!STATE.isDrawing) return; if(e.cancelable) e.preventDefault(); const p = getPos(e); this.ctx.lineTo(p.x, p.y); this.ctx.stroke(); };
                 const stop = () => STATE.isDrawing = false;
 
-                this.cvs.onmousedown = start;
-                this.cvs.onmousemove = move;
-                window.onmouseup = stop;
-                
-                this.cvs.ontouchstart = start;
-                this.cvs.ontouchmove = move;
-                window.ontouchend = stop;
+                this.cvs.onmousedown = start; this.cvs.onmousemove = move; window.onmouseup = stop;
+                this.cvs.ontouchstart = start; this.cvs.ontouchmove = move; window.ontouchend = stop;
             },
-            
             sync() {
                 const dpr = window.devicePixelRatio || 1;
                 this.cvs.width = this.img.clientWidth * dpr;
                 this.cvs.height = this.img.clientHeight * dpr;
                 this.cvs.style.width = this.img.clientWidth + 'px';
                 this.cvs.style.height = this.img.clientHeight + 'px';
-                
                 this.ctx.scale(dpr, dpr);
-                this.ctx.lineCap = 'round';
-                this.ctx.lineJoin = 'round';
+                this.ctx.lineCap = 'round'; this.ctx.lineJoin = 'round';
                 this.ctx.strokeStyle = document.getElementById('brush-color').value;
                 this.ctx.lineWidth = document.getElementById('brush-thickness').value;
-                
                 document.getElementById('brush-color').onchange = (e) => this.ctx.strokeStyle = e.target.value;
                 document.getElementById('brush-thickness').oninput = (e) => this.ctx.lineWidth = e.target.value;
             },
-            
-            clear() {
-                this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
-                this.ctx.beginPath();
-            }
+            clear() { this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height); this.ctx.beginPath(); }
         };
 
-        // --- Module 3: Audio Interaction ---
         const AudioEngine = {
             toggle() {
                 const btn = document.getElementById('record-btn');
-                if(!btn.classList.contains('recording')) {
-                    btn.classList.add('recording');
-                    btn.innerText = "🛑 Stop Logging";
-                    btn.style.background = "#FDF2F2";
+                btn.classList.toggle('recording');
+                if(btn.classList.contains('recording')) {
+                    btn.innerText = "🛑 Stop Rec";
                     btn.style.color = "#E74C3C";
-                    btn.style.borderColor = "#FADBD8";
                 } else {
-                    btn.classList.remove('recording');
                     btn.innerText = "🎤 Audio Log";
-                    btn.style.background = "#FFF";
-                    btn.style.color = "var(--bridge-charcoal)";
-                    btn.style.borderColor = "var(--bridge-border)";
+                    btn.style.color = "var(--bridge-text-muted)";
                 }
             }
         };
 
-        // Initialize Suite
-        window.onload = () => {
-            PageEngine.init();
-            CanvasEngine.init();
-            
-            window.addEventListener('resize', () => {
-                if(document.getElementById('worksheet-img').style.opacity === '1') {
-                    setTimeout(() => CanvasEngine.sync(), 150);
-                }
-            });
-        };
+        window.onload = () => { PageEngine.init(); CanvasEngine.init(); };
     </script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- 터치 확대 및 바운스 스크롤 완벽 차단 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -13,8 +14,8 @@
     
     <style>
         /* ======================================================================
-         * [Architecture: Bridge Universal System V52.0]
-         * Feature: STT Audio Evaluation & Socratic Context Verification
+         * [Architecture: Bridge Universal System V53.0]
+         * Feature: Flawless PointerEvent Canvas & Toggle Eraser
          * ====================================================================== */
         :root {
             --br-green: #89BFA0; --br-gold: #CBAE75; --br-blue: #7CA6C1; --br-charcoal: #363431;
@@ -27,7 +28,8 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; overscroll-behavior: none; position: fixed; }
+        /* 터치 액션 완전 차단으로 펜 그리기 시 화면 밀림 방지 */
+        body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; overscroll-behavior: none; position: fixed; touch-action: none; }
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
         
         .app-container { display: flex; width: 100vw; height: 100vh; position: relative; }
@@ -64,12 +66,17 @@
         .soundscape-ui { display: flex; align-items: center; gap: 8px; background: #FFF; padding: 12px 20px; border-radius: 100px; border: 1px solid var(--br-border); font-size: 12px; font-weight: 900; color: var(--br-muted); cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
         .soundscape-ui.active { color: var(--br-blue); border-color: var(--br-blue); }
 
+        /* [Fluid Stage - V53.0 화면 잘림 원천 방지] */
         .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px; overflow: hidden; min-height: 0; position: relative; }
         
-        .canvas-container { position: relative; display: inline-block; max-width: 100%; max-height: 100%; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); border: 1px solid var(--br-border); background: var(--br-paper); line-height: 0; }
+        .canvas-container { position: relative; display: flex; justify-content: center; align-items: center; max-width: 100%; max-height: 100%; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); border: 1px solid var(--br-border); background: var(--br-paper); line-height: 0; }
+        
+        /* V53.0 Cursor Switch */
         .canvas-container.drawing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='%23CBAE75' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/></svg>") 0 20, crosshair; }
+        .canvas-container.erasing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23FFF' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><line x1='3' y1='9' x2='21' y2='9'/></svg>") 12 12, cell; }
         
         #worksheet-img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; border-radius: 20px; opacity: 0; transition: opacity 0.5s; object-fit: contain; pointer-events: none; }
+        /* V53.0 Touch Action None 강제 적용 */
         #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 20px; touch-action: none; z-index: 50; }
 
         .scan-line { width: 100%; height: 4px; background: var(--br-green); position: absolute; top: 0; left: 0; box-shadow: 0 0 15px var(--br-green); animation: scan 2s linear infinite; z-index: 100; display: none; border-radius: 4px; }
@@ -82,8 +89,12 @@
         .color-preview { width: 50px; height: 50px; border-radius: 50%; border: 4px solid #FFF; cursor: pointer; background: var(--br-charcoal); box-shadow: 0 10px 20px rgba(0,0,0,0.08); transition: transform 0.2s var(--ease-bounce); flex-shrink: 0; }
         .color-preview:active { transform: scale(0.9); }
         .brush-slider { width: 150px; accent-color: var(--br-green); cursor: pointer; height: 8px; }
-        .btn-erase { font-size: 13px; font-weight: 900; color: var(--br-muted); letter-spacing: 1px; padding: 10px; transition: 0.3s; }
-        .btn-erase:hover { color: var(--br-charcoal); }
+        
+        /* V53.0 Eraser Toggle UI */
+        .btn-erase { font-size: 13px; font-weight: 900; color: var(--br-charcoal); letter-spacing: 1px; padding: 10px 20px; border-radius: 20px; transition: 0.3s; background: #FFF; border: 1px solid var(--br-border); }
+        .btn-erase.active { background: var(--br-error); color: #FFF; border-color: var(--br-error); }
+        .btn-erase-all { font-size: 11px; font-weight: 800; color: var(--br-muted); cursor: pointer; padding: 10px; }
+        .btn-erase-all:hover { color: var(--br-error); }
         
         .action-group { display: flex; gap: 15px; align-items: center; }
         .btn-nav { width: 80px; height: 80px; border-radius: 25px; border: 1px solid var(--br-border); font-size: 28px; background: #FFF; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.02); color: var(--br-charcoal); display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
@@ -109,8 +120,6 @@
         .btn-close-ai { font-size: 32px; color: var(--br-muted); line-height: 1; padding: 0 10px; }
         
         .ai-content { padding: 30px; flex: 1; overflow-y: auto; }
-        
-        /* V52.0 Transcript UI Box */
         .transcript-box { background: #F4F8F5; padding: 20px; border-radius: 15px; border-left: 4px solid var(--br-green); margin-bottom: 20px; font-size: 15px; font-style: italic; color: var(--br-charcoal); font-weight: 700; line-height: 1.5; }
         .transcript-empty { background: #FFF9F0; padding: 15px; border-radius: 10px; border: 1px dashed var(--br-gold); margin-bottom: 20px; font-size: 12px; color: var(--br-muted); text-align: center; }
 
@@ -165,8 +174,10 @@
             .soundscape-ui { padding: 10px 15px; font-size: 11px; }
             .soundscape-ui span { display: none; }
             
-            .tool-group { gap: 15px; }
-            .brush-slider { width: 100px; }
+            .tool-group { gap: 10px; }
+            .brush-slider { width: 80px; }
+            .btn-erase { font-size: 11px; padding: 8px 12px; }
+            
             .btn-nav, .btn-core { height: 60px; font-size: 13px; letter-spacing: 1px; }
             .btn-nav { width: 60px; }
             
@@ -222,7 +233,10 @@
                     <div class="color-preview" id="btn-color"></div>
                     <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;">
                     <input type="range" class="brush-slider" id="brush-size" min="2" max="40" value="6">
-                    <button class="btn-erase" onclick="CanvasEngine.clear()">ERASER</button>
+                    
+                    <!-- V53.0 Toggle Eraser & Clear All Buttons -->
+                    <button class="btn-erase" id="btn-eraser" onclick="CanvasEngine.toggleEraser()">ERASER</button>
+                    <button class="btn-erase-all" onclick="CanvasEngine.clearAll()">[CLEAR ALL]</button>
                 </div>
                 
                 <div class="action-group">
@@ -264,7 +278,7 @@
             id: new URLSearchParams(window.location.search).get('id') || "A-1",
             currentPage: 1,
             isRecording: false,
-            lastTranscript: "" // V52.0: Stores the STT result
+            lastTranscript: ""
         };
 
         const UIEngine = {
@@ -272,7 +286,6 @@
             closeSidebarOnMobile() { if(window.innerWidth <= 992) document.getElementById('sidebar').classList.remove('open'); }
         };
 
-        // [V52.0] Context DB with Keyword Evaluation Logic added
         const AI_CONTEXT_DB = {
             "A-1": {
                 theme: "All About Me",
@@ -308,7 +321,7 @@
             },
             load(n) {
                 STATE.currentPage = n;
-                STATE.lastTranscript = ""; // 페이지 이동 시 트랜스크립트 초기화
+                STATE.lastTranscript = ""; 
                 const seriesChar = STATE.id.charAt(0);
                 const imgPath = `${CONFIG.STORAGE}${seriesChar}/${STATE.id}/${STATE.id}-${n}.png`;
                 
@@ -325,7 +338,7 @@
                 const activeNav = document.getElementById(`nav-${n}`);
                 if(activeNav) activeNav.classList.add('active');
                 
-                CanvasEngine.clear();
+                CanvasEngine.clearAll();
                 AITutor.close();
             },
             move(dir) {
@@ -334,49 +347,99 @@
             }
         };
 
+        /* ======================================================================
+         * [V53.0 Flawless PointerEvent Canvas Engine]
+         * ====================================================================== */
         const CanvasEngine = {
             isDrawing: false,
+            isErasing: false,
+            lastColor: "#363431",
+            
             init() {
                 this.cvs = document.getElementById('draw-layer');
                 this.ctx = this.cvs.getContext('2d', { willReadFrequently: true });
                 this.img = document.getElementById('worksheet-img');
+                this.container = document.getElementById('canvas-container');
                 
                 document.getElementById('btn-color').onclick = () => document.getElementById('native-color-picker').click();
                 document.getElementById('native-color-picker').onchange = (e) => {
-                    document.getElementById('btn-color').style.background = e.target.value;
-                    this.ctx.strokeStyle = e.target.value;
+                    this.lastColor = e.target.value;
+                    document.getElementById('btn-color').style.background = this.lastColor;
+                    if(!this.isErasing) this.ctx.strokeStyle = this.lastColor;
                 };
                 this.bind();
             },
+            
+            // V53.0 Toggle Eraser Logic
+            toggleEraser() {
+                const btn = document.getElementById('btn-eraser');
+                this.isErasing = !this.isErasing;
+                
+                if (this.isErasing) {
+                    btn.classList.add('active');
+                    btn.innerText = "PEN MODE";
+                    // Change cursor class
+                    this.container.classList.remove('drawing-mode');
+                    this.container.classList.add('erasing-mode');
+                    // Set context to erase (globalCompositeOperation)
+                    this.ctx.globalCompositeOperation = 'destination-out';
+                    // Increase brush size for easier erasing
+                    this.ctx.lineWidth = document.getElementById('brush-size').value * (window.devicePixelRatio || 1) * 2;
+                } else {
+                    btn.classList.remove('active');
+                    btn.innerText = "ERASER";
+                    // Restore drawing cursor
+                    this.container.classList.remove('erasing-mode');
+                    this.container.classList.add('drawing-mode');
+                    // Restore draw mode
+                    this.ctx.globalCompositeOperation = 'source-over';
+                    this.ctx.strokeStyle = this.lastColor;
+                    this.ctx.lineWidth = document.getElementById('brush-size').value * (window.devicePixelRatio || 1);
+                }
+            },
+            
             bind() {
                 const getPos = (e) => {
                     const rect = this.cvs.getBoundingClientRect();
-                    let clientX, clientY;
-                    if (e.touches && e.touches.length > 0) {
-                        clientX = e.touches[0].clientX; clientY = e.touches[0].clientY;
-                    } else if (e.changedTouches && e.changedTouches.length > 0) {
-                        clientX = e.changedTouches[0].clientX; clientY = e.changedTouches[0].clientY;
-                    } else {
-                        clientX = e.clientX; clientY = e.clientY;
-                    }
                     const dpr = window.devicePixelRatio || 1;
-                    return { x: (clientX - rect.left) * dpr, y: (clientY - rect.top) * dpr };
+                    return { x: (e.clientX - rect.left) * dpr, y: (e.clientY - rect.top) * dpr };
                 };
 
-                const start = (e) => { e.preventDefault(); this.isDrawing = true; const p = getPos(e); this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y); };
-                const move = (e) => { if(!this.isDrawing) return; e.preventDefault(); const p = getPos(e); this.ctx.lineTo(p.x, p.y); this.ctx.stroke(); };
-                const stop = (e) => { if(this.isDrawing) { e.preventDefault(); this.isDrawing = false; HapticEngine.trigger('light'); } };
+                const start = (e) => { 
+                    this.cvs.setPointerCapture(e.pointerId); // 펜/터치 벗어남 방지
+                    this.isDrawing = true; 
+                    const p = getPos(e); 
+                    this.ctx.beginPath(); 
+                    this.ctx.moveTo(p.x, p.y); 
+                };
+                
+                const move = (e) => { 
+                    if(!this.isDrawing) return; 
+                    const p = getPos(e); 
+                    this.ctx.lineTo(p.x, p.y); 
+                    this.ctx.stroke(); 
+                };
+                
+                const stop = (e) => { 
+                    if(this.isDrawing) { 
+                        this.cvs.releasePointerCapture(e.pointerId);
+                        this.isDrawing = false; 
+                        HapticEngine.trigger('light'); 
+                    } 
+                };
 
-                this.cvs.addEventListener('mousedown', start, { passive: false });
-                this.cvs.addEventListener('mousemove', move, { passive: false });
-                window.addEventListener('mouseup', stop);
+                // V53.0: 최신 PointerEvent 활용 (마우스, 터치, 애플펜슬 통합 완벽 지원)
+                this.cvs.addEventListener('pointerdown', start);
+                this.cvs.addEventListener('pointermove', move);
+                this.cvs.addEventListener('pointerup', stop);
+                this.cvs.addEventListener('pointercancel', stop);
+                this.cvs.addEventListener('pointerout', stop);
                 
-                this.cvs.addEventListener('touchstart', start, { passive: false });
-                this.cvs.addEventListener('touchmove', move, { passive: false });
-                this.cvs.addEventListener('touchend', stop, { passive: false });
-                this.cvs.addEventListener('touchcancel', stop, { passive: false });
-                
-                document.getElementById('brush-size').oninput = (e) => { this.ctx.lineWidth = e.target.value * (window.devicePixelRatio || 1); };
+                document.getElementById('brush-size').oninput = (e) => { 
+                    const dpr = window.devicePixelRatio || 1;
+                    const multiplier = this.isErasing ? 2 : 1;
+                    this.ctx.lineWidth = e.target.value * dpr * multiplier; 
+                };
             },
             sync() {
                 const rect = this.img.getBoundingClientRect();
@@ -392,12 +455,20 @@
                 this.cvs.style.width = '100%'; this.cvs.style.height = '100%';
                 
                 this.ctx.lineCap = 'round'; this.ctx.lineJoin = 'round';
-                this.ctx.strokeStyle = document.getElementById('native-color-picker').value || "#363431";
-                this.ctx.lineWidth = document.getElementById('brush-size').value * dpr;
+                this.ctx.globalCompositeOperation = this.isErasing ? 'destination-out' : 'source-over';
+                this.ctx.strokeStyle = this.isErasing ? "rgba(0,0,0,1)" : this.lastColor;
+                const multiplier = this.isErasing ? 2 : 1;
+                this.ctx.lineWidth = document.getElementById('brush-size').value * dpr * multiplier;
                 
                 if(tempCvs.width > 0) { this.ctx.drawImage(tempCvs, 0, 0, tempCvs.width, tempCvs.height, 0, 0, this.cvs.width, this.cvs.height); }
             },
-            clear() { this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); this.ctx.beginPath(); HapticEngine.trigger('light'); }
+            clearAll() { 
+                this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
+                this.ctx.beginPath(); 
+                HapticEngine.trigger('heavy'); 
+                // 지우개 모드였다면 펜 모드로 끄기
+                if(this.isErasing) this.toggleEraser();
+            }
         };
 
         const AmbientEngine = {
@@ -411,9 +482,6 @@
         };
         const HapticEngine = { trigger(type) { if(navigator.vibrate) navigator.vibrate(type === 'light' ? 20 : [30, 50, 30]); } };
 
-        /* ======================================================================
-         * [V52.0 Speech-To-Text (STT) Audio Engine]
-         * ====================================================================== */
         const AudioEngine = {
             recognition: null,
             init() {
@@ -424,86 +492,40 @@
                     this.recognition.interimResults = false;
                     this.recognition.continuous = false;
 
-                    this.recognition.onresult = (event) => {
-                        STATE.lastTranscript = event.results[0][0].transcript;
-                        console.log("[Bridge STT Log] Heard:", STATE.lastTranscript);
-                    };
-                    this.recognition.onend = () => {
-                        if (STATE.isRecording) this.toggle(); // Auto-stop UI when speaking stops
-                    };
-                    this.recognition.onerror = (e) => {
-                        console.error("[Bridge STT Log] Error:", e);
-                        if (STATE.isRecording) this.toggle();
-                    };
+                    this.recognition.onresult = (event) => { STATE.lastTranscript = event.results[0][0].transcript; };
+                    this.recognition.onend = () => { if (STATE.isRecording) this.toggle(); };
+                    this.recognition.onerror = (e) => { if (STATE.isRecording) this.toggle(); };
                 }
             },
             toggle() {
                 const btn = document.getElementById('btn-record'); const text = document.getElementById('record-text');
                 if(!STATE.isRecording) { 
-                    STATE.isRecording = true; 
-                    STATE.lastTranscript = ""; // Reset old transcript
-                    btn.classList.add('recording'); 
-                    text.innerText = "Listening..."; 
-                    HapticEngine.trigger('light'); 
-                    
-                    if(this.recognition) {
-                        try { this.recognition.start(); } catch(e) {}
-                    }
+                    STATE.isRecording = true; STATE.lastTranscript = ""; btn.classList.add('recording'); text.innerText = "Listening..."; HapticEngine.trigger('light'); 
+                    if(this.recognition) { try { this.recognition.start(); } catch(e) {} }
                 } else { 
-                    STATE.isRecording = false; 
-                    btn.classList.remove('recording'); 
-                    text.innerText = "Audio Log"; 
-                    HapticEngine.trigger('heavy'); 
-                    
-                    if(this.recognition) {
-                        this.recognition.stop();
-                    }
+                    STATE.isRecording = false; btn.classList.remove('recording'); text.innerText = "Audio Log"; HapticEngine.trigger('heavy'); 
+                    if(this.recognition) { this.recognition.stop(); }
                 }
             }
         };
 
-        /* ======================================================================
-         * [V52.0 Socratic AI Tutor with STT Verification]
-         * ====================================================================== */
         const AITutor = {
             submitWork() {
                 HapticEngine.trigger('heavy');
-                
-                // 음성 인식 중이었으면 종료
                 if(STATE.isRecording) AudioEngine.toggle(); 
-                
-                if (STATE.currentPage === 1 && !STATE.isNameRegistered) {
-                    this.scanHandwritingForName();
-                    return;
-                }
+                if (STATE.currentPage === 1 && !STATE.isNameRegistered) { this.scanHandwritingForName(); return; }
                 this.provideFeedback();
             },
             
             scanHandwritingForName() {
-                const panel = document.getElementById('ai-panel');
-                const content = document.getElementById('ai-content');
-                const scanLine = document.getElementById('canvas-scan-line');
+                const panel = document.getElementById('ai-panel'); const content = document.getElementById('ai-content'); const scanLine = document.getElementById('canvas-scan-line');
+                panel.classList.add('open'); scanLine.style.display = 'block'; 
                 
-                panel.classList.add('open');
-                scanLine.style.display = 'block'; 
-                
-                content.innerHTML = `
-                    <div style="text-align:center; padding: 50px 0;">
-                        <div style="width:50px; height:50px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px;"></div>
-                        <p style="font-size:13px; color:var(--br-muted); font-weight:900; letter-spacing:3px;">SCANNING HANDWRITING...</p>
-                    </div>
-                `;
+                content.innerHTML = `<div style="text-align:center; padding: 50px 0;"><div style="width:50px; height:50px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px;"></div><p style="font-size:13px; color:var(--br-muted); font-weight:900; letter-spacing:3px;">SCANNING HANDWRITING...</p></div>`;
 
                 setTimeout(() => {
                     scanLine.style.display = 'none'; 
-                    content.innerHTML = `
-                        <div class="ai-bubble">
-                            <b>Bridge Visual AI</b><br><br>
-                            Great handwriting! Please confirm your name spelling below to start your 1:1 voice tutoring session.
-                            <input type="text" id="ai-name-verify" class="ai-name-input" placeholder="e.g. Olivia" autocomplete="off" onkeypress="if(event.key === 'Enter') AITutor.saveName()">
-                            <button class="ai-name-btn" onclick="AITutor.saveName()">CONFIRM NAME</button>
-                        </div>
-                    `;
+                    content.innerHTML = `<div class="ai-bubble"><b>Bridge Visual AI</b><br><br>Great handwriting! Please confirm your name spelling below to start your 1:1 voice tutoring session.<input type="text" id="ai-name-verify" class="ai-name-input" placeholder="e.g. Olivia" autocomplete="off" onkeypress="if(event.key === 'Enter') AITutor.saveName()"><button class="ai-name-btn" onclick="AITutor.saveName()">CONFIRM NAME</button></div>`;
                     setTimeout(() => document.getElementById('ai-name-verify').focus(), 100);
                 }, 2000);
             },
@@ -511,76 +533,34 @@
             saveName() {
                 const nameInput = document.getElementById('ai-name-verify').value.trim();
                 if(nameInput) {
-                    STATE.studentName = nameInput;
-                    STATE.isNameRegistered = true;
-                    
-                    document.getElementById('profile-box').classList.add('registered');
-                    document.getElementById('display-student-name').innerText = nameInput;
-                    document.getElementById('avatar-char').innerText = nameInput.charAt(0).toUpperCase();
-                    document.querySelector('.profile-role').innerText = "Bridge Inquirer";
-
+                    STATE.studentName = nameInput; STATE.isNameRegistered = true;
+                    document.getElementById('profile-box').classList.add('registered'); document.getElementById('display-student-name').innerText = nameInput; document.getElementById('avatar-char').innerText = nameInput.charAt(0).toUpperCase(); document.querySelector('.profile-role').innerText = "Bridge Inquirer";
                     this.provideFeedback(true);
-                } else {
-                    alert("Please enter your name.");
-                }
+                } else { alert("Please enter your name."); }
             },
 
             provideFeedback(isFirstGreeting = false) {
-                const panel = document.getElementById('ai-panel');
-                const content = document.getElementById('ai-content');
-                panel.classList.add('open');
+                const panel = document.getElementById('ai-panel'); const content = document.getElementById('ai-content'); panel.classList.add('open');
+                const contextData = getPageContext(STATE.id, STATE.currentPage); const callName = STATE.studentName ? STATE.studentName : "my friend";
                 
-                const contextData = getPageContext(STATE.id, STATE.currentPage);
-                const callName = STATE.studentName ? STATE.studentName : "my friend";
-                
-                // V52.0: Audio Evaluation Logic
-                let transcriptHtml = "";
-                let analysisMod = contextData.analysis;
-                let confidenceLvl = Math.floor(Math.random() * 15) + 65; // Base 65~80% if no audio
+                let transcriptHtml = ""; let analysisMod = contextData.analysis; let confidenceLvl = Math.floor(Math.random() * 15) + 65; 
                 
                 if (STATE.lastTranscript) {
-                    // Show what the child said
                     transcriptHtml = `<div class="transcript-box">" ${STATE.lastTranscript} "</div>`;
-                    
-                    // Verify against Context DB keywords
-                    const spokenWords = STATE.lastTranscript.toLowerCase();
-                    const hitKeywords = contextData.keywords.filter(kw => spokenWords.includes(kw));
+                    const spokenWords = STATE.lastTranscript.toLowerCase(); const hitKeywords = contextData.keywords.filter(kw => spokenWords.includes(kw));
                     
                     if (hitKeywords.length > 0) {
-                        confidenceLvl = Math.floor(Math.random() * 5) + 95; // 95~100%
+                        confidenceLvl = Math.floor(Math.random() * 5) + 95;
                         analysisMod = `<b style="color:var(--br-green);">Perfect Audio Match!</b> I heard you mention words like '<b>${hitKeywords.join(", ")}</b>'. ${contextData.analysis}`;
                     } else {
-                        confidenceLvl = Math.floor(Math.random() * 10) + 85; // 85~95%
+                        confidenceLvl = Math.floor(Math.random() * 10) + 85; 
                         analysisMod = `<b>Great Speaking!</b> I heard your voice clearly. ${contextData.analysis}`;
                     }
-                } else {
-                    transcriptHtml = `<div class="transcript-empty">(No voice log detected. Try using the Audio Log!)</div>`;
-                }
+                } else { transcriptHtml = `<div class="transcript-empty">(No voice log detected. Try using the Audio Log!)</div>`; }
                 
-                let introText = isFirstGreeting 
-                    ? `<b>Nice to meet you, ${callName}!</b><br><br>I scanned your beautiful name. Now let's explore together.<br><br>` 
-                    : `<b>Hello, ${callName}!</b><br><br>I looked at your drawing and listened to your voice.<br><br>`;
+                let introText = isFirstGreeting ? `<b>Nice to meet you, ${callName}!</b><br><br>I scanned your beautiful name. Now let's explore together.<br><br>` : `<b>Hello, ${callName}!</b><br><br>I looked at your drawing and listened to your voice.<br><br>`;
 
-                content.innerHTML = `
-                    <div class="analytics-box">
-                        <div class="analytics-title">Inquiry Analytics</div>
-                        
-                        ${transcriptHtml}
-                        
-                        <div class="stat-row">
-                            <div class="stat-label"><span>Voice Confidence</span> <span>${confidenceLvl}%</span></div>
-                            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: ${confidenceLvl}%;"></div></div>
-                        </div>
-                        <div class="visual-intent">
-                            <b>🎯 Intent Analysis: ${contextData.intent}</b><br><br>
-                            ${analysisMod}
-                        </div>
-                    </div>
-                    <div class="ai-bubble">
-                        ${introText}
-                        <b style="font-size:18px; color:var(--br-green);">${contextData.question}</b>
-                    </div>
-                `;
+                content.innerHTML = `<div class="analytics-box"><div class="analytics-title">Inquiry Analytics</div>${transcriptHtml}<div class="stat-row"><div class="stat-label"><span>Voice Confidence</span> <span>${confidenceLvl}%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill" style="width: ${confidenceLvl}%;"></div></div></div><div class="visual-intent"><b>🎯 Intent Analysis: ${contextData.intent}</b><br><br>${analysisMod}</div></div><div class="ai-bubble">${introText}<b style="font-size:18px; color:var(--br-green);">${contextData.question}</b></div>`;
                 
                 let speechText = isFirstGreeting ? `Nice to meet you, ${callName}. ${contextData.question}` : `Hello, ${callName}. ${contextData.question}`;
                 this.speak(speechText);
@@ -588,36 +568,18 @@
             
             speak(text) {
                 if ('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel();
-                    const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.lang = 'en-US';
-                    utterance.rate = 0.85; 
-                    utterance.pitch = 1.2;
-                    window.speechSynthesis.speak(utterance);
+                    window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'en-US'; utterance.rate = 0.85; utterance.pitch = 1.2; window.speechSynthesis.speak(utterance);
                 }
             },
             
-            close() {
-                document.getElementById('ai-panel').classList.remove('open');
-                if('speechSynthesis' in window) window.speechSynthesis.cancel();
-            }
+            close() { document.getElementById('ai-panel').classList.remove('open'); if('speechSynthesis' in window) window.speechSynthesis.cancel(); }
         };
 
         let resizeTimer;
         window.onload = () => {
-            PageEngine.init();
-            CanvasEngine.init();
-            AmbientEngine.init();
-            AudioEngine.init(); // Initialize STT
-            
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => {
-                    if(document.getElementById('worksheet-img').style.opacity === '1') {
-                        CanvasEngine.sync();
-                    }
-                }, 200);
-            });
+            PageEngine.init(); CanvasEngine.init(); AmbientEngine.init(); AudioEngine.init(); 
+            window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { if(document.getElementById('worksheet-img').style.opacity === '1') CanvasEngine.sync(); }, 200); });
         };
     </script>
 </body>

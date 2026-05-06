@@ -11,7 +11,7 @@
     
     <style>
         /* ======================================================================
-         * [Architecture: Bridge System V58.0 - The Classic Stable Master]
+         * [Architecture: Bridge System V60.0 - Heritage Cross-Origin Master]
          * ====================================================================== */
         :root {
             --br-green: #89BFA0; --br-gold: #CBAE75; --br-blue: #7CA6C1; --br-charcoal: #363431;
@@ -62,10 +62,11 @@
         
         .canvas-container { position: relative; display: inline-block; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); border: 1px solid var(--br-border); background: var(--br-paper); line-height: 0; }
         
+        /* 화면 높이의 최대 70%까지만 커지도록 제한하여 한 화면에 쏙 들어오게 맞춤 */
         #worksheet-img { display: block; max-width: 100%; height: auto; max-height: 70vh; border-radius: 20px; opacity: 0; transition: opacity 0.5s; object-fit: contain; pointer-events: none; }
         
-        /* 캔버스 절대 위치 설정 (이미지 1:1 매칭) */
-        #draw-layer { position: absolute; top: 0; left: 0; border-radius: 20px; touch-action: none; z-index: 50; }
+        /* V60.0 터치 스크롤 충돌을 원천 차단하는 핵심 속성 touch-action: none */
+        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 20px; touch-action: none; z-index: 50; }
         
         /* 커서 모드 */
         .drawing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='%23CBAE75' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/></svg>") 0 20, crosshair !important; }
@@ -79,6 +80,7 @@
         
         .tool-group { display: flex; align-items: center; gap: 20px; background: #FAFAFA; padding: 12px 25px; border-radius: 100px; border: 1px solid var(--br-border); }
         .color-preview { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #FFF; cursor: pointer; background: var(--br-charcoal); box-shadow: 0 5px 10px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .color-preview:active { transform: scale(0.9); }
         .brush-slider { width: 120px; accent-color: var(--br-green); cursor: pointer; height: 6px; }
         
         /* 토글 지우개 버튼 */
@@ -138,7 +140,9 @@
             .top-bar-left { display: flex; align-items: center; gap: 10px; }
             .page-info { font-size: 28px; margin-top: 0; }
             
-            /* 모바일은 독 영역이 두 줄로 내려가도록 처리 */
+            /* 모바일 기기 화면 잘림을 막기 위한 강제 축소 */
+            #worksheet-img { max-height: 55vh; }
+            
             .bottom-dock { flex-direction: column; justify-content: center; padding: 15px 20px; gap: 15px; border-radius: 25px 25px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
             .tool-group { width: 100%; justify-content: center; padding: 8px 20px; }
             .action-group { width: 100%; justify-content: space-between; }
@@ -183,10 +187,10 @@
                 </button>
             </div>
 
-            <!-- V58.0 캔버스 래퍼 영역 -->
-            <main class="stage-wrapper">
+            <main class="stage-wrapper" id="stage-wrapper">
                 <div class="canvas-container" id="canvas-container">
-                    <img src="" id="worksheet-img" crossorigin="anonymous">
+                    <!-- V60.0: CORS 이슈를 해결하기 위해 crossorigin 속성을 삭제하여 순수 이미지 렌더링 보장 -->
+                    <img src="" id="worksheet-img">
                     <canvas id="draw-layer"></canvas>
                     <div class="scan-line" id="canvas-scan-line"></div>
                 </div>
@@ -282,9 +286,10 @@
                 
                 const img = document.getElementById('worksheet-img');
                 img.style.opacity = '0'; img.src = imgPath;
+                
+                // 이미지가 로딩된 시점 처리
                 img.onload = () => { 
                     img.style.opacity = '1'; 
-                    CanvasEngine.sync(); 
                 };
 
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
@@ -298,8 +303,8 @@
         };
 
         /* ======================================================================
-         * [V58.0 Pure Classic Canvas Engine] 
-         * 복잡한 포인터 이벤트나 좌표 수학을 버리고 초기 버전에 썼던 가장 안정적인 마우스/터치 방식으로 완벽 롤백
+         * [V60.0 Perfect PointerEvent Canvas Engine + ResizeObserver] 
+         * 외부 저장소 로딩 딜레이 및 크로스도메인 문제 완벽 해결
          * ====================================================================== */
         const CanvasEngine = {
             isDrawing: false,
@@ -319,6 +324,14 @@
                     if(!this.isErasing) this.ctx.strokeStyle = this.lastColor;
                 };
                 this.bind();
+                
+                // V60.0 핵심: 외부에서 불러온 이미지가 실제 화면에 렌더링되어 크기가 잡히는 순간을 무조건 포착하여 캔버스를 동기화
+                const resizeObserver = new ResizeObserver(() => {
+                    if (this.img.clientWidth > 0 && this.img.style.opacity === '1') {
+                        this.sync();
+                    }
+                });
+                resizeObserver.observe(this.img);
             },
             
             toggleEraser() {
@@ -341,20 +354,20 @@
             },
             
             bind() {
-                // V58.0 초창기 직관적인 1:1 좌표 매핑으로 롤백
                 const getPos = (e) => {
                     const rect = this.cvs.getBoundingClientRect();
-                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                    // 브라우저 해상도와 캔버스 해상도 오차를 완벽 보정
+                    const scaleX = this.cvs.width / rect.width;
+                    const scaleY = this.cvs.height / rect.height;
                     return { 
-                        x: clientX - rect.left, 
-                        y: clientY - rect.top 
+                        x: (e.clientX - rect.left) * scaleX, 
+                        y: (e.clientY - rect.top) * scaleY 
                     };
                 };
 
                 const start = (e) => { 
-                    e.preventDefault(); 
                     this.isDrawing = true; 
+                    this.cvs.setPointerCapture(e.pointerId); 
                     const p = getPos(e); 
                     this.ctx.beginPath(); 
                     this.ctx.moveTo(p.x, p.y); 
@@ -362,7 +375,6 @@
                 
                 const move = (e) => { 
                     if(!this.isDrawing) return; 
-                    e.preventDefault(); 
                     const p = getPos(e); 
                     this.ctx.lineTo(p.x, p.y); 
                     this.ctx.stroke(); 
@@ -370,58 +382,69 @@
                 
                 const stop = (e) => { 
                     if(this.isDrawing) { 
-                        e.preventDefault();
                         this.isDrawing = false; 
+                        this.cvs.releasePointerCapture(e.pointerId);
                         HapticEngine.trigger('light'); 
                     } 
                 };
 
-                // 순수한 Mouse & Touch 이벤트만 남김 (오작동 방지)
-                this.cvs.addEventListener('mousedown', start, { passive: false });
-                this.cvs.addEventListener('mousemove', move, { passive: false });
-                window.addEventListener('mouseup', stop);
-                this.cvs.addEventListener('mouseleave', stop);
-                
-                this.cvs.addEventListener('touchstart', start, { passive: false });
-                this.cvs.addEventListener('touchmove', move, { passive: false });
-                window.addEventListener('touchend', stop);
-                window.addEventListener('touchcancel', stop);
+                // PointerEvents로 단일화 처리 (touch-action: none 과 조합되어 완벽한 펜/터치 보장)
+                this.cvs.addEventListener('pointerdown', start);
+                this.cvs.addEventListener('pointermove', move);
+                this.cvs.addEventListener('pointerup', stop);
+                this.cvs.addEventListener('pointercancel', stop);
                 
                 document.getElementById('brush-size').oninput = (e) => { 
                     const multiplier = this.isErasing ? 2 : 1;
-                    this.ctx.lineWidth = e.target.value * multiplier; 
+                    const dpr = window.devicePixelRatio || 1;
+                    this.ctx.lineWidth = e.target.value * multiplier * dpr; 
                 };
             },
             
             sync() {
-                // V58.0 초창기 안정화 버전 방식 - CSS 크기와 Canvas 내부 크기를 1:1로 완벽 매칭
-                const imgWidth = this.img.clientWidth;
-                const imgHeight = this.img.clientHeight;
-                if(imgWidth === 0) return; 
+                const rect = this.img.getBoundingClientRect();
+                if(rect.width === 0 || rect.height === 0) return; 
                 
                 const tempCvs = document.createElement('canvas');
                 tempCvs.width = this.cvs.width; tempCvs.height = this.cvs.height;
                 if(this.cvs.width > 0) tempCvs.getContext('2d').drawImage(this.cvs, 0, 0);
 
-                this.cvs.width = imgWidth; 
-                this.cvs.height = imgHeight;
-                this.cvs.style.width = imgWidth + 'px';
-                this.cvs.style.height = imgHeight + 'px';
+                const dpr = window.devicePixelRatio || 1;
                 
+                // 실제 화면에 보이는 크기에 정확하게 맞춤
+                this.cvs.style.width = rect.width + 'px';
+                this.cvs.style.height = rect.height + 'px';
+                
+                // 고화질 대응을 위한 내부 해상도 설정
+                this.cvs.width = rect.width * dpr; 
+                this.cvs.height = rect.height * dpr;
+                
+                this.ctx.scale(dpr, dpr);
                 this.ctx.lineCap = 'round'; this.ctx.lineJoin = 'round';
                 this.ctx.globalCompositeOperation = this.isErasing ? 'destination-out' : 'source-over';
                 this.ctx.strokeStyle = this.isErasing ? "rgba(0,0,0,1)" : this.lastColor;
                 const multiplier = this.isErasing ? 2 : 1;
                 this.ctx.lineWidth = document.getElementById('brush-size').value * multiplier;
                 
-                if(tempCvs.width > 0) { 
-                    this.ctx.drawImage(tempCvs, 0, 0, tempCvs.width, tempCvs.height, 0, 0, this.cvs.width, this.cvs.height); 
+                if(tempCvs.width > 0 && tempCvs.height > 0) { 
+                    this.ctx.save();
+                    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    // 해상도가 변하더라도 이전 그림을 비율에 맞춰 복원
+                    const scaleX = (rect.width * dpr) / tempCvs.width;
+                    const scaleY = (rect.height * dpr) / tempCvs.height;
+                    this.ctx.scale(scaleX, scaleY);
+                    this.ctx.drawImage(tempCvs, 0, 0); 
+                    this.ctx.restore();
                 }
             },
             
             clearAll() { 
+                this.ctx.save();
+                this.ctx.setTransform(1, 0, 0, 1, 0, 0);
                 this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
+                this.ctx.restore();
                 this.ctx.beginPath(); 
+                
                 HapticEngine.trigger('heavy'); 
                 if(this.isErasing) this.toggleEraser();
             }
@@ -446,18 +469,25 @@
                     this.recognition = new SpeechRecognition();
                     this.recognition.lang = 'en-US'; this.recognition.interimResults = false; this.recognition.continuous = false;
                     this.recognition.onresult = (event) => { STATE.lastTranscript = event.results[0][0].transcript; };
-                    this.recognition.onend = () => { if (STATE.isRecording) this.toggle(); };
-                    this.recognition.onerror = () => { if (STATE.isRecording) this.toggle(); };
+                    this.recognition.onend = () => { 
+                        if (STATE.isRecording) this.toggle(); 
+                    };
+                    this.recognition.onerror = () => { 
+                        if (STATE.isRecording) this.toggle(); 
+                    };
                 }
             },
             toggle() {
-                const btn = document.getElementById('btn-record'); const text = document.getElementById('record-text');
+                const btn = document.getElementById('btn-record'); 
+                const text = document.getElementById('record-text');
+                
                 if(!STATE.isRecording) { 
                     STATE.isRecording = true; STATE.lastTranscript = ""; btn.classList.add('recording'); text.innerText = "Listening..."; HapticEngine.trigger('light'); 
                     if(this.recognition) { try { this.recognition.start(); } catch(e) {} }
                 } else { 
                     STATE.isRecording = false; btn.classList.remove('recording'); text.innerText = "Audio Log"; HapticEngine.trigger('heavy'); 
                     if(this.recognition) { this.recognition.stop(); }
+                    setTimeout(() => { AITutor.submitWork(); }, 500);
                 }
             }
         };
@@ -465,7 +495,7 @@
         const AITutor = {
             submitWork() {
                 HapticEngine.trigger('heavy');
-                if(STATE.isRecording) AudioEngine.toggle(); 
+                if(STATE.isRecording) { AudioEngine.toggle(); return; }
                 if (STATE.currentPage === 1 && !STATE.isNameRegistered) { this.scanHandwritingForName(); return; }
                 this.provideFeedback();
             },
@@ -528,14 +558,8 @@
             close() { document.getElementById('ai-panel').classList.remove('open'); if('speechSynthesis' in window) window.speechSynthesis.cancel(); }
         };
 
-        // Resize 관리를 매우 정밀하게 세팅
-        let resizeTimer;
         window.onload = () => {
             PageEngine.init(); CanvasEngine.init(); AmbientEngine.init(); AudioEngine.init(); 
-            window.addEventListener('resize', () => { 
-                clearTimeout(resizeTimer); 
-                resizeTimer = setTimeout(() => { if(document.getElementById('worksheet-img').style.opacity === '1') CanvasEngine.sync(); }, 150); 
-            });
         };
     </script>
 </body>

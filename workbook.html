@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     
+    <!-- Visual AI (OCR) 구동을 위한 Tesseract.js 엔진 탑재 -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
     <style>
         :root {
             --br-green: #89BFA0; --br-gold: #CBAE75; --br-blue: #7CA6C1; --br-charcoal: #363431;
@@ -82,6 +85,12 @@
         .btn-record.recording .dot { opacity: 1; animation: blink 1s infinite; }
         .btn-submit { background: var(--br-charcoal); color: #FFF; }
 
+        /* [V80.0 복구된 커스텀 RGB 링 모달] */
+        .rgb-modal { position: absolute; bottom: 130px; left: 40px; background: var(--br-paper); border-radius: 25px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border: 1px solid var(--br-border); z-index: 20000; opacity: 0; pointer-events: none; transform: translateY(20px); transition: 0.3s ease; display: flex; flex-direction: column; align-items: center; touch-action: none; }
+        .rgb-modal.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        #color-wheel { border-radius: 50%; cursor: crosshair; touch-action: none; }
+        .rgb-close { text-align: center; font-size: 11px; font-weight: 900; color: var(--br-muted); margin-top: 15px; cursor: pointer; letter-spacing: 2px; padding: 10px; }
+
         /* [English AI Teacher Panel] */
         .ai-panel { position: absolute; top: 0; right: -450px; width: 420px; height: 100%; background: #FFF; box-shadow: -10px 0 30px rgba(0,0,0,0.1); z-index: 10001; transition: right 0.5s ease; display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
         .ai-panel.open { right: 0; }
@@ -101,6 +110,10 @@
         .ai-bubble { background: #F8F9FA; padding: 20px; border-radius: 20px; border-bottom-left-radius: 5px; border: 1px solid var(--br-border); font-size: 15px; line-height: 1.7; font-weight: 500; }
         .ai-name-input { width: 100%; padding: 15px; border: 2px dashed var(--br-green); border-radius: 12px; margin-top: 15px; font-size: 16px; text-align: center; font-weight: 800; outline: none; }
         .ai-name-btn { width: 100%; background: var(--br-green); color: #fff; padding: 15px; border-radius: 12px; margin-top: 10px; font-weight: 900; cursor: pointer; font-size: 14px; }
+        .ai-btn-secondary { background: #EEE; color: #333; margin-top: 5px; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
         .mobile-menu-btn { display: none; font-size: 28px; padding: 10px; color: var(--br-charcoal); z-index: 1500; }
 
@@ -109,6 +122,7 @@
             .top-bar { height: 75px; padding: 0 20px; }
             .bottom-dock { height: 100px; padding: 0 20px; }
             .stage-wrapper { padding: 10px 20px; }
+            .rgb-modal { left: 20px; bottom: 110px; }
         }
 
         @media (max-width: 800px) {
@@ -122,6 +136,8 @@
             .action-group { width: 100%; justify-content: space-between; }
             .btn-nav, .btn-core { height: 50px; font-size: 13px; }
             .ai-panel { width: 100%; right: -100%; border-left: none; }
+            .rgb-modal { left: 50%; transform: translateX(-50%) translateY(20px); bottom: 160px; }
+            .rgb-modal.active { transform: translateX(-50%) translateY(0); }
         }
     </style>
 </head>
@@ -163,8 +179,7 @@
 
             <div class="bottom-dock">
                 <div class="tool-group">
-                    <div class="color-preview" id="btn-color"></div>
-                    <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;">
+                    <div class="color-preview" id="btn-color" onclick="RGBRingEngine.toggle()"></div>
                     <input type="range" class="brush-slider" id="brush-size" min="2" max="40" value="6">
                     <button class="btn-erase" id="btn-eraser" onclick="CanvasEngine.toggleEraser()">ERASER</button>
                     <button class="btn-erase-all" onclick="CanvasEngine.clearAll()">[CLEAR ALL]</button>
@@ -179,6 +194,12 @@
                     <button class="btn-nav" onclick="PageEngine.move(1)">▶</button>
                 </div>
             </div>
+        </div>
+
+        <!-- [V80.0 복구된 RGB Color Ring Modal] -->
+        <div class="rgb-modal" id="rgb-modal">
+            <canvas id="color-wheel" width="180" height="180"></canvas>
+            <div class="rgb-close" onclick="RGBRingEngine.toggle()">[ CLOSE ]</div>
         </div>
 
         <div class="ai-panel" id="ai-panel">
@@ -262,6 +283,79 @@
             move(dir) { const t = STATE.currentPage + dir; if(t >= 1 && t <= 17) this.load(t); }
         };
 
+        /* ======================================================================
+         * [V80.0 RGB Color Ring Engine] - 완벽 복구
+         * ====================================================================== */
+        const RGBRingEngine = {
+            init() {
+                this.modal = document.getElementById('rgb-modal');
+                this.cvs = document.getElementById('color-wheel');
+                this.ctx = this.cvs.getContext('2d', { willReadFrequently: true });
+                
+                const size = 180;
+                this.cvs.width = size;
+                this.cvs.height = size;
+                this.cvs.style.width = size + 'px';
+                this.cvs.style.height = size + 'px';
+                
+                this.drawWheel(size);
+                this.bind();
+            },
+            drawWheel(size) {
+                const radius = size / 2;
+                for(let angle=0; angle<=360; angle++) {
+                    const startAngle = (angle - 1) * Math.PI / 180;
+                    const endAngle = (angle + 1) * Math.PI / 180;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(radius, radius);
+                    this.ctx.arc(radius, radius, radius, startAngle, endAngle);
+                    this.ctx.closePath();
+                    this.ctx.fillStyle = `hsl(${angle}, 100%, 50%)`;
+                    this.ctx.fill();
+                }
+                const grad = this.ctx.createRadialGradient(radius, radius, 0, radius, radius, radius);
+                grad.addColorStop(0, 'rgba(255,255,255,1)');
+                grad.addColorStop(0.3, 'rgba(255,255,255,0.8)');
+                grad.addColorStop(1, 'rgba(255,255,255,0)');
+                this.ctx.fillStyle = grad;
+                this.ctx.fillRect(0,0,size, size);
+                
+                this.ctx.beginPath();
+                this.ctx.arc(radius, radius, 12, 0, Math.PI*2);
+                this.ctx.fillStyle = "#363431";
+                this.ctx.fill();
+            },
+            bind() {
+                const pickColor = (e) => {
+                    e.preventDefault();
+                    const rect = this.cvs.getBoundingClientRect();
+                    let clientX = e.clientX;
+                    let clientY = e.clientY;
+                    
+                    if(e.touches && e.touches.length > 0) {
+                        clientX = e.touches[0].clientX;
+                        clientY = e.touches[0].clientY;
+                    }
+                    
+                    const x = Math.floor(clientX - rect.left);
+                    const y = Math.floor(clientY - rect.top);
+                    
+                    const pixel = this.ctx.getImageData(x, y, 1, 1).data;
+                    if(pixel[3] < 50) return; 
+                    
+                    const hex = "#" + ((1 << 24) + (pixel[0] << 16) + (pixel[1] << 8) + pixel[2]).toString(16).slice(1).toUpperCase();
+                    CanvasEngine.setColor(hex);
+                    this.toggle(); 
+                };
+
+                this.cvs.addEventListener('mousedown', pickColor, { passive: false });
+                this.cvs.addEventListener('touchstart', pickColor, { passive: false });
+            },
+            toggle() {
+                this.modal.classList.toggle('active');
+            }
+        };
+
         const CanvasEngine = {
             isDrawing: false,
             isErasing: false,
@@ -317,7 +411,6 @@
             },
 
             resizeCanvas() {
-                // 🚨 방어 코드 추가 🚨
                 if (!this.cvs || !this.ctx || !this.board) return;
 
                 const rect = this.board.getBoundingClientRect();
@@ -361,8 +454,6 @@
                     try { this.cvs.setPointerCapture(e.pointerId); } catch(err){}
 
                     const p = this.getPos(e);
-                    console.log("DOWN", p);
-
                     this.ctx.beginPath();
                     this.ctx.moveTo(p.x, p.y);
                 });
@@ -378,7 +469,6 @@
 
                 this.cvs.addEventListener('pointerup', (e) => {
                     this.isDrawing = false;
-                    console.log("UP");
                     try { this.cvs.releasePointerCapture(e.pointerId); } catch(err){}
                 });
 
@@ -392,33 +482,45 @@
                 });
             },
 
+            setColor(hex) {
+                this.lastColor = hex;
+                document.getElementById('btn-color').style.background = hex;
+                if (!this.isErasing) {
+                    this.ctx.strokeStyle = this.lastColor;
+                }
+            },
+
             setupUI() {
                 const colorBtn = document.getElementById('btn-color');
-                const picker = document.getElementById('native-color-picker');
-
                 colorBtn.style.background = this.lastColor;
-
-                colorBtn.onclick = () => picker.click();
-
-                picker.onchange = (e) => {
-                    this.lastColor = e.target.value;
-                    colorBtn.style.background = this.lastColor;
-
-                    if (!this.isErasing) {
-                        this.ctx.strokeStyle = this.lastColor;
-                    }
-                };
-
+                // RGBRingEngine으로 연결
+                
                 document.getElementById('brush-size').oninput = (e) => {
                     const size = e.target.value;
                     this.ctx.lineWidth = this.isErasing ? size * 2 : size;
                 };
             },
 
-            clearAll() {
-                // 🚨 방어 코드 추가 🚨
-                if (!this.ctx || !this.cvs) return;
+            toggleEraser() {
+                const btn = document.getElementById('btn-eraser');
+                this.isErasing = !this.isErasing;
 
+                if (this.isErasing) {
+                    btn.classList.add('active');
+                    btn.innerText = "PEN MODE";
+                    this.ctx.globalCompositeOperation = 'destination-out';
+                    this.ctx.lineWidth = document.getElementById('brush-size').value * 2;
+                } else {
+                    btn.classList.remove('active');
+                    btn.innerText = "ERASER";
+                    this.ctx.globalCompositeOperation = 'source-over';
+                    this.ctx.strokeStyle = this.lastColor;
+                    this.ctx.lineWidth = document.getElementById('brush-size').value;
+                }
+            },
+
+            clearAll() {
+                if (!this.ctx || !this.cvs) return;
                 this.ctx.save();
                 this.ctx.setTransform(1, 0, 0, 1, 0, 0);
                 this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
@@ -451,31 +553,115 @@
             }
         };
 
+        /* ======================================================================
+         * [V80.0 Visual AI Tutor - Handwriting OCR Integration]
+         * ====================================================================== */
         const AITutor = {
             submitWork() {
                 if(STATE.isRecording) { AudioEngine.toggle(); return; }
-                if (STATE.currentPage === 1 && !STATE.isNameRegistered) { this.scanHandwritingForName(); return; }
+                
+                // 1페이지이고 이름 등록이 안되어 있다면 OCR 스캔 시작
+                if (STATE.currentPage === 1 && !STATE.isNameRegistered) { 
+                    this.scanHandwritingForName(); 
+                    return; 
+                }
                 this.provideFeedback();
             },
             
             scanHandwritingForName() {
-                const panel = document.getElementById('ai-panel'); const content = document.getElementById('ai-content');
+                const panel = document.getElementById('ai-panel'); 
+                const content = document.getElementById('ai-content');
                 panel.classList.add('open'); 
-                content.innerHTML = `<div style="text-align:center; padding: 50px 0;"><div style="width:50px; height:50px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px;"></div><p style="font-size:13px; color:var(--br-muted); font-weight:900; letter-spacing:3px;">SCANNING HANDWRITING...</p></div>`;
+                
+                // 1. 스캔 UI 표시
+                content.innerHTML = `
+                    <div style="text-align:center; padding: 50px 0;">
+                        <div style="width:50px; height:50px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px;"></div>
+                        <p id="ocr-status" style="font-size:13px; color:var(--br-muted); font-weight:900; letter-spacing:3px; animation: pulse 1.5s infinite;">ACTIVATING VISUAL AI...</p>
+                    </div>
+                `;
 
-                setTimeout(() => {
-                    content.innerHTML = `<div class="ai-bubble"><b>Bridge Visual AI</b><br><br>Great handwriting! Please confirm your name spelling below to start your 1:1 voice tutoring session.<input type="text" id="ai-name-verify" class="ai-name-input" placeholder="e.g. Olivia" autocomplete="off" onkeypress="if(event.key === 'Enter') AITutor.saveName()"><button class="ai-name-btn" onclick="AITutor.saveName()">CONFIRM NAME</button></div>`;
-                    setTimeout(() => document.getElementById('ai-name-verify').focus(), 100);
-                }, 2000);
+                // 2. 캔버스 데이터를 추출하여 흰색 배경의 깔끔한 이미지로 만듦 (OCR 인식률 향상)
+                const tempCvs = document.createElement('canvas');
+                tempCvs.width = CanvasEngine.cvs.width;
+                tempCvs.height = CanvasEngine.cvs.height;
+                const tCtx = tempCvs.getContext('2d');
+                tCtx.fillStyle = '#FFFFFF';
+                tCtx.fillRect(0, 0, tempCvs.width, tempCvs.height);
+                tCtx.drawImage(CanvasEngine.cvs, 0, 0);
+                
+                // Jpeg 변환을 통해 알파(투명도) 제거 -> 흰 배경에 검은 글씨 생성
+                const imgData = tempCvs.toDataURL('image/jpeg', 1.0);
+
+                // 3. Tesseract.js 신경망 모델 실행
+                if(window.Tesseract) {
+                    setTimeout(() => { document.getElementById('ocr-status').innerText = "READING HANDWRITING..."; }, 800);
+                    
+                    Tesseract.recognize(imgData, 'eng', {
+                        logger: m => console.log("Visual AI:", m.status, Math.round(m.progress * 100) + "%")
+                    }).then(({ data: { text } }) => {
+                        
+                        // 인식된 텍스트 정제 (알파벳 외 제거, 불필요한 공백 제거)
+                        let cleanedName = text.replace(/[^a-zA-Z]/g, '').trim();
+                        
+                        if (cleanedName.length >= 2) {
+                            // 첫 글자 대문자, 나머지 소문자로 예쁘게 변환
+                            cleanedName = cleanedName.charAt(0).toUpperCase() + cleanedName.slice(1).toLowerCase();
+                            this.confirmScannedName(cleanedName);
+                        } else {
+                            this.showManualInput("I couldn't quite read that. What is your name?");
+                        }
+                    }).catch(err => {
+                        console.error(err);
+                        this.showManualInput("Visual AI failed. Please type your name.");
+                    });
+                } else {
+                    this.showManualInput("Visual AI is offline. Please type your name.");
+                }
             },
 
-            saveName() {
-                const nameInput = document.getElementById('ai-name-verify').value.trim();
+            confirmScannedName(scannedName) {
+                const content = document.getElementById('ai-content');
+                content.innerHTML = `
+                    <div class="ai-bubble">
+                        <b>Bridge Visual AI</b><br><br>
+                        Wow! I read your handwriting. Is your name <b style="color:var(--br-green); font-size:20px;">${scannedName}</b>?<br><br>
+                        <button class="ai-name-btn" onclick="AITutor.saveName('${scannedName}')">YES, THAT'S ME!</button>
+                        <button class="ai-name-btn ai-btn-secondary" onclick="AITutor.showManualInput('Let me try typing it instead.')">NO, LET ME TYPE</button>
+                    </div>
+                `;
+            },
+
+            showManualInput(message) {
+                const content = document.getElementById('ai-content');
+                content.innerHTML = `
+                    <div class="ai-bubble">
+                        <b>Bridge Visual AI</b><br><br>
+                        ${message}<br>
+                        <input type="text" id="ai-name-verify" class="ai-name-input" placeholder="e.g. Elena" autocomplete="off" onkeypress="if(event.key === 'Enter') AITutor.saveName()">
+                        <button class="ai-name-btn" onclick="AITutor.saveName()">CONFIRM NAME</button>
+                    </div>
+                `;
+                setTimeout(() => {
+                    const input = document.getElementById('ai-name-verify');
+                    if(input) input.focus();
+                }, 100);
+            },
+
+            saveName(providedName = null) {
+                const nameInput = providedName || document.getElementById('ai-name-verify').value.trim();
+                
                 if(nameInput) {
                     STATE.studentName = nameInput; STATE.isNameRegistered = true;
-                    document.getElementById('profile-box').classList.add('registered'); document.getElementById('display-student-name').innerText = nameInput; document.getElementById('avatar-char').innerText = nameInput.charAt(0).toUpperCase(); document.querySelector('.profile-role').innerText = "Bridge Inquirer";
+                    document.getElementById('profile-box').classList.add('registered'); 
+                    document.getElementById('display-student-name').innerText = nameInput; 
+                    document.getElementById('avatar-char').innerText = nameInput.charAt(0).toUpperCase(); 
+                    document.querySelector('.profile-role').innerText = "Bridge Inquirer";
+                    
                     this.provideFeedback(true);
-                } else { alert("Please enter your name."); }
+                } else { 
+                    alert("Please enter your name."); 
+                }
             },
 
             provideFeedback(isFirstGreeting = false) {
@@ -509,9 +695,9 @@
             close() { document.getElementById('ai-panel').classList.remove('open'); if('speechSynthesis' in window) window.speechSynthesis.cancel(); }
         };
 
-        // 🚨 1️⃣ 원장님 지시: 순서 조정 (CanvasEngine 먼저, 이후 Page, Audio) 및 타이밍 안전장치 적용 🚨
         window.onload = () => {
             CanvasEngine.init(); 
+            RGBRingEngine.init(); // RGB 링 엔진 활성화
             PageEngine.init(); 
             AudioEngine.init(); 
             

@@ -9,9 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <!-- Visual AI (OCR) 엔진 -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-    <!-- 낙서 인식(Doodle Recognition) 엔진 -->
     <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
 
     <style>
@@ -61,9 +59,7 @@
         .drawing-board.fade-out { opacity: 0; transform: scale(0.95) translateY(10px); pointer-events: none !important; }
 
         #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; user-select: none; pointer-events: none !important; }
-        
-        /* 🚨 V84.0 CSS 커서 설정: js에서 덮어씌울 예정이므로 기본값 제거 */
-        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; }
+        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; cursor: crosshair; }
 
         /* [Bottom Dock] */
         .bottom-dock { height: 120px; flex-shrink: 0; background: rgba(255, 255, 255, 0.95); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; }
@@ -411,20 +407,20 @@
                 
                 this.bindEvents();
                 this.setupResizeObserver();
-                this.updateCursor(); // 🚨 V84.0 커서 초기 세팅
+                this.updateCursor(); // 🚨 V85.0 커서 적용
             },
 
-            // 🚨 V84.0 마우스 커서를 귀여운 펜/지우개로 실시간 변경하는 매직 엔진
+            // 🚨 V85.0 초경량(Lightweight) & 정밀 타겟팅 커서 업데이트
             updateCursor() {
                 if (this.isErasing) {
-                    // 귀여운 핑크색 지우개 커서
-                    const eraserSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="%23FFB6C1" stroke="%23363431" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11C23 12 23 14 22 15L20 20Z"/><path d="M17 17L7 7"/></svg>`;
-                    this.cvs.style.cursor = `url('data:image/svg+xml;utf8,${eraserSvg}') 4 24, cell`;
+                    // 크기를 20x20으로 줄이고, 지우개 끝부분(0, 20)에 클릭 판정(Hotspot)을 맞춤
+                    const eraserSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="%23FFB6C1" stroke="%23363431" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11C23 12 23 14 22 15L20 20Z"/><path d="M17 17L7 7"/></svg>`;
+                    this.cvs.style.cursor = `url('data:image/svg+xml;utf8,${eraserSvg}') 0 20, cell`;
                 } else {
-                    // 현재 선택된 색깔이 칠해진 귀여운 연필/마법스틱 커서
+                    // 크기를 20x20으로 줄이고, 연필 심 부분(0, 20)에 클릭 판정을 완벽히 맞춤
                     const colorEncoded = this.lastColor.replace('#', '%23');
-                    const penSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="${colorEncoded}" stroke="%23363431" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/><path d="M15 5l4 4"/><circle cx="2" cy="22" r="2.5" fill="${colorEncoded}" stroke="none"/></svg>`;
-                    this.cvs.style.cursor = `url('data:image/svg+xml;utf8,${penSvg}') 2 24, crosshair`;
+                    const penSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="${colorEncoded}" stroke="%23363431" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/><path d="M15 5l4 4"/><circle cx="2" cy="22" r="1.5" fill="${colorEncoded}" stroke="none"/></svg>`;
+                    this.cvs.style.cursor = `url('data:image/svg+xml;utf8,${penSvg}') 0 20, crosshair`;
                 }
             },
 
@@ -549,7 +545,7 @@
                 if (!this.isErasing) { 
                     this.ctx.strokeStyle = this.lastColor; 
                 }
-                this.updateCursor(); // 🚨 색상이 바뀔 때마다 커서 마법 지팡이 색도 실시간 변경!
+                this.updateCursor(); 
             },
 
             setupUI() {
@@ -575,7 +571,7 @@
                     this.ctx.strokeStyle = this.lastColor;
                     this.ctx.lineWidth = document.getElementById('brush-size').value;
                 }
-                this.updateCursor(); // 🚨 지우개 상태에 따라 커서 모양 변경
+                this.updateCursor();
             },
 
             clearAll() {
@@ -588,7 +584,25 @@
             }
         };
 
-        const VisionAI = {
+        // 🚨 V85.0 초고속 OCR Worker 글로벌 초기화 (딜레이 제로화)
+        const VisualAI_OCR = {
+            worker: null,
+            async init() {
+                if(window.Tesseract) {
+                    try {
+                        this.worker = await Tesseract.createWorker('eng');
+                        console.log("Visual AI (OCR) Pre-initialized and Ready!");
+                    } catch(e) { console.warn("OCR Worker init failed."); }
+                }
+            },
+            async recognize(imgData) {
+                if (!this.worker) return null;
+                const { data: { text } } = await this.worker.recognize(imgData);
+                return text;
+            }
+        };
+
+        const VisionAI_Doodle = {
             classifier: null, isReady: false,
             init() {
                 try {
@@ -676,15 +690,14 @@
                 content.innerHTML = `<div style="text-align:center; padding: 50px 0;"><div style="width:50px; height:50px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px;"></div><p style="font-size:13px; color:var(--br-muted); font-weight:900; letter-spacing:3px; animation: pulse 1.5s infinite;">ANALYZING AUDIO & DRAWING...</p></div>`;
                 document.getElementById('chat-input-area').style.display = "none";
 
-                let doodleLabel = await VisionAI.classifyCanvas(CanvasEngine.cvs);
+                // 🚨 V85.0 비동기 최적화: 대기 시간 없이 즉각 결과 도출
+                let doodleLabel = await VisionAI_Doodle.classifyCanvas(CanvasEngine.cvs);
                 if (doodleLabel) doodleLabel = doodleLabel.replace(/_/g, ' '); 
 
-                setTimeout(() => {
-                    this.provideFeedback(false, doodleLabel);
-                }, 800);
+                this.provideFeedback(false, doodleLabel);
             },
             
-            scanHandwritingForName() {
+            async scanHandwritingForName() {
                 const panel = document.getElementById('ai-panel'); 
                 const content = document.getElementById('ai-content');
                 panel.classList.add('open'); 
@@ -693,7 +706,7 @@
                 content.innerHTML = `
                     <div style="text-align:center; padding: 50px 0;">
                         <div style="width:50px; height:50px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px;"></div>
-                        <p id="ocr-status" style="font-size:13px; color:var(--br-muted); font-weight:900; letter-spacing:3px; animation: pulse 1.5s infinite;">ACTIVATING VISUAL AI...</p>
+                        <p id="ocr-status" style="font-size:13px; color:var(--br-muted); font-weight:900; letter-spacing:3px; animation: pulse 1.5s infinite;">READING HANDWRITING...</p>
                     </div>
                 `;
 
@@ -707,9 +720,9 @@
                 
                 const imgData = tempCvs.toDataURL('image/jpeg', 1.0);
 
-                if(window.Tesseract) {
-                    setTimeout(() => { document.getElementById('ocr-status').innerText = "READING HANDWRITING..."; }, 800);
-                    Tesseract.recognize(imgData, 'eng').then(({ data: { text } }) => {
+                if(VisualAI_OCR.worker) {
+                    try {
+                        const text = await VisualAI_OCR.recognize(imgData);
                         let cleanedName = text.replace(/[^a-zA-Z]/g, '').trim();
                         if (cleanedName.length >= 2) {
                             cleanedName = cleanedName.charAt(0).toUpperCase() + cleanedName.slice(1).toLowerCase();
@@ -717,11 +730,11 @@
                         } else {
                             this.showManualInput("I couldn't quite read that. What is your name?");
                         }
-                    }).catch(err => {
+                    } catch (e) {
                         this.showManualInput("Visual AI failed. Please type your name.");
-                    });
+                    }
                 } else {
-                    this.showManualInput("Visual AI is offline. Please type your name.");
+                    this.showManualInput("Visual AI is loading... Please type your name.");
                 }
             },
 
@@ -861,7 +874,10 @@
             RGBRingEngine.init(); 
             PageEngine.init(); 
             AudioEngine.init(); 
-            VisionAI.init(); 
+            
+            // 🚨 V85.0 글로벌 백그라운드 AI 엔진 사전 로드 (딜레이 제거)
+            VisualAI_OCR.init(); 
+            VisionAI_Doodle.init(); 
             
             setTimeout(() => {
                 CanvasEngine.resizeCanvas();

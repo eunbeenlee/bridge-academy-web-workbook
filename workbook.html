@@ -17,7 +17,7 @@
             --sidebar-width: 320px;
         }
 
-        /* [Absolute Reset] CSS 락(Lock) 해제 유지 */
+        /* [Absolute Reset] CSS 락 해제 유지 */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; pointer-events: auto !important; }
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
@@ -56,10 +56,10 @@
         
         .drawing-board { position: relative; display: inline-flex; line-height: 0; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); background: var(--br-paper); max-width: 100%; max-height: 100%; pointer-events: auto !important; }
         
-        /* 🚨 3️⃣ 원장님 지시: 이미지 클릭 원천 차단 (pointer-events: none) */
+        /* 이미지 터치/드래그 원천 차단 */
         #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; user-select: none; pointer-events: none !important; }
         
-        /* 캔버스에 touch-action: none 부여 유지 */
+        /* 캔버스 터치 액션 단독 처리 */
         #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; cursor: crosshair; }
 
         /* [Bottom Dock] */
@@ -249,7 +249,7 @@
                 
                 img.onload = () => { 
                     img.style.opacity = '1'; 
-                    CanvasEngine.resizeCanvas();
+                    setTimeout(() => CanvasEngine.resizeCanvas(), 50);
                 };
 
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
@@ -317,6 +317,7 @@
             },
 
             resizeCanvas() {
+                // 🚨 방어 코드 추가 🚨
                 if (!this.cvs || !this.ctx || !this.board) return;
 
                 const rect = this.board.getBoundingClientRect();
@@ -360,11 +361,8 @@
                     try { this.cvs.setPointerCapture(e.pointerId); } catch(err){}
 
                     const p = this.getPos(e);
-                    
-                    // 🚨 4️⃣ 원장님 지시: 이벤트 로그 확인
                     console.log("DOWN", p);
 
-                    // 🚨 1️⃣ 원장님 지시: pointerdown → beginPath 확실히
                     this.ctx.beginPath();
                     this.ctx.moveTo(p.x, p.y);
                 });
@@ -374,8 +372,6 @@
                     e.preventDefault();
 
                     const p = this.getPos(e);
-                    
-                    // 🚨 2️⃣ 원장님 지시: pointermove 단순화 (lineTo → stroke만 유지)
                     this.ctx.lineTo(p.x, p.y);
                     this.ctx.stroke();
                 });
@@ -419,25 +415,10 @@
                 };
             },
 
-            toggleEraser() {
-                const btn = document.getElementById('btn-eraser');
-                this.isErasing = !this.isErasing;
-
-                if (this.isErasing) {
-                    btn.classList.add('active');
-                    btn.innerText = "PEN MODE";
-                    this.ctx.globalCompositeOperation = 'destination-out';
-                    this.ctx.lineWidth = document.getElementById('brush-size').value * 2;
-                } else {
-                    btn.classList.remove('active');
-                    btn.innerText = "ERASER";
-                    this.ctx.globalCompositeOperation = 'source-over';
-                    this.ctx.strokeStyle = this.lastColor;
-                    this.ctx.lineWidth = document.getElementById('brush-size').value;
-                }
-            },
-
             clearAll() {
+                // 🚨 방어 코드 추가 🚨
+                if (!this.ctx || !this.cvs) return;
+
                 this.ctx.save();
                 this.ctx.setTransform(1, 0, 0, 1, 0, 0);
                 this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
@@ -528,9 +509,10 @@
             close() { document.getElementById('ai-panel').classList.remove('open'); if('speechSynthesis' in window) window.speechSynthesis.cancel(); }
         };
 
+        // 🚨 1️⃣ 원장님 지시: 순서 조정 (CanvasEngine 먼저, 이후 Page, Audio) 및 타이밍 안전장치 적용 🚨
         window.onload = () => {
-            PageEngine.init(); 
             CanvasEngine.init(); 
+            PageEngine.init(); 
             AudioEngine.init(); 
             
             setTimeout(() => {

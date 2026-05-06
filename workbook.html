@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     
-    <!-- Visual AI (OCR) 구동을 위한 Tesseract.js 엔진 탑재 -->
+    <!-- Visual AI (OCR) 엔진 -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
     <style>
@@ -20,7 +20,6 @@
             --sidebar-width: 320px;
         }
 
-        /* [Absolute Reset] CSS 락 해제 유지 */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html, body { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; pointer-events: auto !important; }
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
@@ -56,13 +55,9 @@
         
         /* [Stage Wrapper] */
         .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px; position: relative; overflow: hidden; pointer-events: auto !important; }
-        
         .drawing-board { position: relative; display: inline-flex; line-height: 0; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); background: var(--br-paper); max-width: 100%; max-height: 100%; pointer-events: auto !important; }
         
-        /* 이미지 터치/드래그 원천 차단 */
         #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; user-select: none; pointer-events: none !important; }
-        
-        /* 캔버스 터치 액션 단독 처리 */
         #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; cursor: crosshair; }
 
         /* [Bottom Dock] */
@@ -85,7 +80,7 @@
         .btn-record.recording .dot { opacity: 1; animation: blink 1s infinite; }
         .btn-submit { background: var(--br-charcoal); color: #FFF; }
 
-        /* [V80.0 복구된 커스텀 RGB 링 모달] */
+        /* [RGB Color Ring Modal] */
         .rgb-modal { position: absolute; bottom: 130px; left: 40px; background: var(--br-paper); border-radius: 25px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border: 1px solid var(--br-border); z-index: 20000; opacity: 0; pointer-events: none; transform: translateY(20px); transition: 0.3s ease; display: flex; flex-direction: column; align-items: center; touch-action: none; }
         .rgb-modal.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
         #color-wheel { border-radius: 50%; cursor: crosshair; touch-action: none; }
@@ -102,12 +97,17 @@
         .transcript-box { background: #F4F8F5; padding: 15px; border-radius: 12px; border-left: 4px solid var(--br-green); margin-bottom: 20px; font-size: 14px; font-style: italic; color: var(--br-charcoal); font-weight: 700; line-height: 1.5; }
         .analytics-box { background: #FAFAFA; border: 1px solid var(--br-border); border-radius: 20px; padding: 20px; margin-bottom: 25px; }
         .analytics-title { font-size: 11px; font-weight: 900; color: var(--br-muted); letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
-        .stat-row { margin-bottom: 15px; }
-        .stat-label { font-size: 13px; font-weight: 900; display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--br-charcoal); }
-        .stat-bar-bg { width: 100%; height: 10px; background: #E0E0E0; border-radius: 10px; overflow: hidden; }
-        .stat-bar-fill { height: 100%; background: var(--br-gold); width: 0%; transition: width 1.5s ease; }
+        
+        /* 🚨 V81.0 3대 지표 Progress Bar CSS */
+        .stat-row { margin-bottom: 12px; }
+        .stat-label { font-size: 12px; font-weight: 900; display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--br-charcoal); }
+        .stat-bar-bg { width: 100%; height: 8px; background: #E0E0E0; border-radius: 10px; overflow: hidden; }
+        .stat-bar-fill { height: 100%; background: var(--br-gold); width: 0%; transition: width 1.5s ease; border-radius: 10px; }
+        .stat-bar-fill.green { background: var(--br-green); }
+        .stat-bar-fill.blue { background: var(--br-blue); }
+        
         .visual-intent { font-size: 13px; background: #FFF; padding: 15px; border-radius: 12px; border: 1px dashed var(--br-border); margin-top: 15px; line-height: 1.6; color: var(--br-text); }
-        .ai-bubble { background: #F8F9FA; padding: 20px; border-radius: 20px; border-bottom-left-radius: 5px; border: 1px solid var(--br-border); font-size: 15px; line-height: 1.7; font-weight: 500; }
+        .ai-bubble { background: #F8F9FA; padding: 20px; border-radius: 20px; border-bottom-left-radius: 5px; border: 1px solid var(--br-border); font-size: 15px; line-height: 1.7; font-weight: 500; margin-bottom: 15px; }
         .ai-name-input { width: 100%; padding: 15px; border: 2px dashed var(--br-green); border-radius: 12px; margin-top: 15px; font-size: 16px; text-align: center; font-weight: 800; outline: none; }
         .ai-name-btn { width: 100%; background: var(--br-green); color: #fff; padding: 15px; border-radius: 12px; margin-top: 10px; font-weight: 900; cursor: pointer; font-size: 14px; }
         .ai-btn-secondary { background: #EEE; color: #333; margin-top: 5px; }
@@ -196,7 +196,6 @@
             </div>
         </div>
 
-        <!-- [V80.0 복구된 RGB Color Ring Modal] -->
         <div class="rgb-modal" id="rgb-modal">
             <canvas id="color-wheel" width="180" height="180"></canvas>
             <div class="rgb-close" onclick="RGBRingEngine.toggle()">[ CLOSE ]</div>
@@ -216,10 +215,12 @@
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/"
         };
 
+        // 🚨 V81.0 추가: 음성 분석을 위한 시간 기록 변수 세팅
         const STATE = {
             studentName: "", isNameRegistered: false,
             id: new URLSearchParams(window.location.search).get('id') || "A-1",
-            currentPage: 1, isRecording: false, lastTranscript: ""
+            currentPage: 1, isRecording: false, lastTranscript: "",
+            audioStartTime: 0, audioDurationSec: 0, sttConfidence: 0
         };
 
         const UIEngine = {
@@ -230,11 +231,11 @@
         const AI_CONTEXT_DB = {
             "A-1": {
                 pages: {
-                    1: { navTitle: "👑 My Special Name", keywords: ["name", "hello"], intent: "Expressing name and identity", analysis: "The strokes show positive self-perception.", question: "What makes your name special?" },
-                    2: { navTitle: "👀 My Beautiful Face", keywords: ["face", "eyes", "nose"], intent: "Depicting face", analysis: "High observation skills shown.", question: "What is your favorite part of your face?" },
-                    3: { navTitle: "🖐️ My Strong Hands", keywords: ["hands", "touch"], intent: "Exploring body functions", analysis: "Shows understanding of body capabilities.", question: "What fun things can you do with hands?" },
-                    4: { navTitle: "👨‍👩‍👧 My Family Tree", keywords: ["mom", "dad", "family"], intent: "Understanding family", analysis: "Clear depiction of family members.", question: "Who did you draw here?" },
-                    5: { navTitle: "🎨 My Favorite Colors", keywords: ["color", "red", "blue"], intent: "Expressing preferences", analysis: "Vibrant color choices.", question: "Why did you choose these colors?" }
+                    1: { navTitle: "👑 My Special Name", keywords: ["name", "hello", "am", "is"], intent: "Expressing name and identity", analysis: "The strokes show positive self-perception.", question: "What makes your name special?" },
+                    2: { navTitle: "👀 My Beautiful Face", keywords: ["face", "eyes", "nose", "mouth"], intent: "Depicting face", analysis: "High observation skills shown.", question: "What is your favorite part of your face?" },
+                    3: { navTitle: "🖐️ My Strong Hands", keywords: ["hands", "touch", "clap"], intent: "Exploring body functions", analysis: "Shows understanding of body capabilities.", question: "What fun things can you do with hands?" },
+                    4: { navTitle: "👨‍👩‍👧 My Family Tree", keywords: ["mom", "dad", "family", "brother", "sister"], intent: "Understanding family", analysis: "Clear depiction of family members.", question: "Who did you draw here?" },
+                    5: { navTitle: "🎨 My Favorite Colors", keywords: ["color", "red", "blue", "yellow", "green"], intent: "Expressing preferences", analysis: "Vibrant color choices.", question: "Why did you choose these colors?" }
                 }
             }
         };
@@ -260,7 +261,7 @@
                 this.load(1);
             },
             load(n) {
-                STATE.currentPage = n; STATE.lastTranscript = ""; 
+                STATE.currentPage = n; STATE.lastTranscript = ""; STATE.sttConfidence = 0; STATE.audioDurationSec = 0;
                 const seriesChar = STATE.id.charAt(0);
                 const imgPath = `${CONFIG.STORAGE_URL}${seriesChar}/${STATE.id}/${STATE.id}-${n}.png?t=${new Date().getTime()}`;
                 
@@ -270,7 +271,7 @@
                 
                 img.onload = () => { 
                     img.style.opacity = '1'; 
-                    setTimeout(() => CanvasEngine.resizeCanvas(), 50);
+                    CanvasEngine.resizeCanvas();
                 };
 
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
@@ -283,9 +284,6 @@
             move(dir) { const t = STATE.currentPage + dir; if(t >= 1 && t <= 17) this.load(t); }
         };
 
-        /* ======================================================================
-         * [V80.0 RGB Color Ring Engine] - 완벽 복구
-         * ====================================================================== */
         const RGBRingEngine = {
             init() {
                 this.modal = document.getElementById('rgb-modal');
@@ -493,7 +491,6 @@
             setupUI() {
                 const colorBtn = document.getElementById('btn-color');
                 colorBtn.style.background = this.lastColor;
-                // RGBRingEngine으로 연결
                 
                 document.getElementById('brush-size').oninput = (e) => {
                     const size = e.target.value;
@@ -534,33 +531,56 @@
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                 if (SpeechRecognition) {
                     this.recognition = new SpeechRecognition();
-                    this.recognition.lang = 'en-US'; this.recognition.interimResults = false; this.recognition.continuous = false;
-                    this.recognition.onresult = (event) => { STATE.lastTranscript = event.results[0][0].transcript; };
+                    this.recognition.lang = 'en-US'; 
+                    this.recognition.interimResults = false; 
+                    this.recognition.continuous = false;
+                    
+                    this.recognition.onresult = (event) => { 
+                        STATE.lastTranscript = event.results[0][0].transcript;
+                        // 🚨 실제 AI STT 엔진의 발음 정확도(Confidence) 데이터 획득
+                        STATE.sttConfidence = Math.round(event.results[0][0].confidence * 100);
+                    };
                     this.recognition.onend = () => { if (STATE.isRecording) this.toggle(); };
                     this.recognition.onerror = () => { if (STATE.isRecording) this.toggle(); };
                 }
             },
             toggle() {
-                const btn = document.getElementById('btn-record'); const text = document.getElementById('record-text');
+                const btn = document.getElementById('btn-record'); 
+                const text = document.getElementById('record-text');
+                
                 if(!STATE.isRecording) { 
-                    STATE.isRecording = true; STATE.lastTranscript = ""; btn.classList.add('recording'); text.innerText = "Listening..."; 
+                    STATE.isRecording = true; 
+                    STATE.lastTranscript = ""; 
+                    STATE.sttConfidence = 0;
+                    
+                    // 🚨 시간 측정 시작 (말하기 유창성 WPM 계산용)
+                    STATE.audioStartTime = Date.now();
+                    
+                    btn.classList.add('recording'); 
+                    text.innerText = "Listening..."; 
+                    
                     if(this.recognition) { try { this.recognition.start(); } catch(e) {} }
                 } else { 
-                    STATE.isRecording = false; btn.classList.remove('recording'); text.innerText = "Audio Log"; 
+                    STATE.isRecording = false; 
+                    
+                    // 🚨 시간 측정 종료
+                    const endTime = Date.now();
+                    STATE.audioDurationSec = (endTime - STATE.audioStartTime) / 1000;
+                    
+                    btn.classList.remove('recording'); 
+                    text.innerText = "Audio Log"; 
+                    
                     if(this.recognition) { this.recognition.stop(); }
                     setTimeout(() => { AITutor.submitWork(); }, 500);
                 }
             }
         };
 
-        /* ======================================================================
-         * [V80.0 Visual AI Tutor - Handwriting OCR Integration]
-         * ====================================================================== */
         const AITutor = {
             submitWork() {
                 if(STATE.isRecording) { AudioEngine.toggle(); return; }
                 
-                // 1페이지이고 이름 등록이 안되어 있다면 OCR 스캔 시작
+                // OCR Visual AI 트리거
                 if (STATE.currentPage === 1 && !STATE.isNameRegistered) { 
                     this.scanHandwritingForName(); 
                     return; 
@@ -573,7 +593,6 @@
                 const content = document.getElementById('ai-content');
                 panel.classList.add('open'); 
                 
-                // 1. 스캔 UI 표시
                 content.innerHTML = `
                     <div style="text-align:center; padding: 50px 0;">
                         <div style="width:50px; height:50px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px;"></div>
@@ -581,7 +600,7 @@
                     </div>
                 `;
 
-                // 2. 캔버스 데이터를 추출하여 흰색 배경의 깔끔한 이미지로 만듦 (OCR 인식률 향상)
+                // 캔버스 추출 및 Tesseract 적용
                 const tempCvs = document.createElement('canvas');
                 tempCvs.width = CanvasEngine.cvs.width;
                 tempCvs.height = CanvasEngine.cvs.height;
@@ -590,22 +609,16 @@
                 tCtx.fillRect(0, 0, tempCvs.width, tempCvs.height);
                 tCtx.drawImage(CanvasEngine.cvs, 0, 0);
                 
-                // Jpeg 변환을 통해 알파(투명도) 제거 -> 흰 배경에 검은 글씨 생성
                 const imgData = tempCvs.toDataURL('image/jpeg', 1.0);
 
-                // 3. Tesseract.js 신경망 모델 실행
                 if(window.Tesseract) {
                     setTimeout(() => { document.getElementById('ocr-status').innerText = "READING HANDWRITING..."; }, 800);
                     
                     Tesseract.recognize(imgData, 'eng', {
                         logger: m => console.log("Visual AI:", m.status, Math.round(m.progress * 100) + "%")
                     }).then(({ data: { text } }) => {
-                        
-                        // 인식된 텍스트 정제 (알파벳 외 제거, 불필요한 공백 제거)
                         let cleanedName = text.replace(/[^a-zA-Z]/g, '').trim();
-                        
                         if (cleanedName.length >= 2) {
-                            // 첫 글자 대문자, 나머지 소문자로 예쁘게 변환
                             cleanedName = cleanedName.charAt(0).toUpperCase() + cleanedName.slice(1).toLowerCase();
                             this.confirmScannedName(cleanedName);
                         } else {
@@ -665,27 +678,82 @@
             },
 
             provideFeedback(isFirstGreeting = false) {
-                const panel = document.getElementById('ai-panel'); const content = document.getElementById('ai-content'); panel.classList.add('open');
-                const contextData = getPageContext(STATE.id, STATE.currentPage); const callName = STATE.studentName ? STATE.studentName : "my friend";
+                const panel = document.getElementById('ai-panel'); 
+                const content = document.getElementById('ai-content'); 
+                panel.classList.add('open');
                 
-                let transcriptHtml = ""; let analysisMod = contextData.analysis; let confidenceLvl = Math.floor(Math.random() * 15) + 65; 
+                const contextData = getPageContext(STATE.id, STATE.currentPage); 
+                const callName = STATE.studentName ? STATE.studentName : "my friend";
+                
+                let transcriptHtml = ""; 
+                let analysisMod = contextData.analysis; 
+                
+                // 🚨 V81.0 3대 핵심 지표 초기화
+                let scorePronunciation = 0;
+                let scoreAccuracy = 0;
+                let scoreSpeedWPM = 0;
+                let speedPercentage = 0;
                 
                 if (STATE.lastTranscript) {
                     transcriptHtml = `<div class="transcript-box">" ${STATE.lastTranscript} "</div>`;
-                    const spokenWords = STATE.lastTranscript.toLowerCase(); const hitKeywords = contextData.keywords.filter(kw => spokenWords.includes(kw));
                     
+                    // 1. 발음 (Pronunciation) - STT 엔진에서 추출한 실제 신뢰도
+                    scorePronunciation = STATE.sttConfidence || 85;
+
+                    // 2. 정확도 (Accuracy) - 타겟 키워드 포함 비율 계산
+                    const spokenWords = STATE.lastTranscript.toLowerCase(); 
+                    const targetKeywords = contextData.keywords;
+                    const hitKeywords = targetKeywords.filter(kw => spokenWords.includes(kw));
+                    scoreAccuracy = targetKeywords.length > 0 ? Math.round((hitKeywords.length / targetKeywords.length) * 100) : 100;
+                    
+                    // 3. 말하기 유창성 (Speed/Fluency - WPM 계산)
+                    const wordCount = STATE.lastTranscript.trim().split(/\s+/).length;
+                    if (STATE.audioDurationSec > 0) {
+                        scoreSpeedWPM = Math.round((wordCount / STATE.audioDurationSec) * 60);
+                    }
+                    // WPM을 UI 프로그레스 바(0~100%)로 표현하기 위한 환산 (아이들 기준 120 WPM을 100%로 설정)
+                    speedPercentage = Math.min(Math.round((scoreSpeedWPM / 120) * 100), 100);
+
+                    // 피드백 문구 세팅
                     if (hitKeywords.length > 0) {
-                        confidenceLvl = Math.floor(Math.random() * 5) + 95;
-                        analysisMod = `<b style="color:var(--br-green);">Perfect Audio Match!</b> I heard you mention words like '<b>${hitKeywords.join(", ")}</b>'. ${contextData.analysis}`;
+                        analysisMod = `<b style="color:var(--br-green);">Excellent Accuracy!</b> You used ${hitKeywords.length} key words perfectly. ${contextData.analysis}`;
                     } else {
-                        confidenceLvl = Math.floor(Math.random() * 10) + 85; 
                         analysisMod = `<b>Great Speaking!</b> I heard your voice clearly. ${contextData.analysis}`;
                     }
-                } else { transcriptHtml = `<div class="transcript-empty">(No voice log detected. Try using the Audio Log!)</div>`; }
+                } else { 
+                    transcriptHtml = `<div class="transcript-empty">(No voice log detected. Try using the Audio Log!)</div>`; 
+                }
                 
-                let introText = isFirstGreeting ? `<b>Nice to meet you, ${callName}!</b><br><br>I scanned your beautiful name. Now let's explore together.<br><br>` : `<b>Hello, ${callName}!</b><br><br>I looked at your drawing and listened to your voice.<br><br>`;
+                let introText = isFirstGreeting ? `<b>Nice to meet you, ${callName}!</b><br><br>I scanned your beautiful name. Now let's explore together.<br><br>` : `<b>Hello, ${callName}!</b><br><br>I analyzed your speech using 3 metrics.<br><br>`;
 
-                content.innerHTML = `<div class="analytics-box"><div class="analytics-title">Inquiry Analytics</div>${transcriptHtml}<div class="stat-row"><div class="stat-label"><span>Voice Confidence</span> <span>${confidenceLvl}%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill" style="width: ${confidenceLvl}%;"></div></div></div><div class="visual-intent"><b>🎯 Intent Analysis: ${contextData.intent}</b><br><br>${analysisMod}</div></div><div class="ai-bubble">${introText}<b style="font-size:18px; color:var(--br-green);">${contextData.question}</b></div>`;
+                // 🚨 3대 지표를 모두 출력하는 Analytics Box
+                content.innerHTML = `
+                    <div class="analytics-box">
+                        <div class="analytics-title">Advanced Speech Analytics</div>
+                        ${transcriptHtml}
+                        
+                        <!-- 1. Pronunciation -->
+                        <div class="stat-row">
+                            <div class="stat-label"><span>Pronunciation (Clarity)</span> <span>${scorePronunciation}%</span></div>
+                            <div class="stat-bar-bg"><div class="stat-bar-fill blue" style="width: ${scorePronunciation}%;"></div></div>
+                        </div>
+
+                        <!-- 2. Accuracy -->
+                        <div class="stat-row">
+                            <div class="stat-label"><span>Accuracy (Keywords)</span> <span>${scoreAccuracy}%</span></div>
+                            <div class="stat-bar-bg"><div class="stat-bar-fill green" style="width: ${scoreAccuracy}%;"></div></div>
+                        </div>
+
+                        <!-- 3. Fluency (Speed) -->
+                        <div class="stat-row">
+                            <div class="stat-label"><span>Fluency (Speed)</span> <span>${scoreSpeedWPM} WPM</span></div>
+                            <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: ${speedPercentage}%;"></div></div>
+                        </div>
+
+                        <div class="visual-intent"><b>🎯 Intent Analysis: ${contextData.intent}</b><br><br>${analysisMod}</div>
+                    </div>
+                    <div class="ai-bubble">${introText}<b style="font-size:18px; color:var(--br-green);">${contextData.question}</b></div>
+                `;
                 
                 if ('speechSynthesis' in window) {
                     window.speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(isFirstGreeting ? `Nice to meet you, ${callName}. ${contextData.question}` : `Hello, ${callName}. ${contextData.question}`);
@@ -697,7 +765,7 @@
 
         window.onload = () => {
             CanvasEngine.init(); 
-            RGBRingEngine.init(); // RGB 링 엔진 활성화
+            RGBRingEngine.init(); 
             PageEngine.init(); 
             AudioEngine.init(); 
             

@@ -55,15 +55,15 @@
         .unit-info { font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 5px; }
         .page-info { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: var(--br-charcoal); margin-top: 5px; }
         
-        /* 🚨 V83.0 스테이지 스무스 트랜지션 애니메이션 */
+        /* [Stage Wrapper] */
         .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px; position: relative; overflow: hidden; pointer-events: auto !important; perspective: 1000px; }
         .drawing-board { position: relative; display: inline-flex; line-height: 0; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); background: var(--br-paper); max-width: 100%; max-height: 100%; pointer-events: auto !important; transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center center; opacity: 1; transform: scale(1); }
-        
-        /* 트랜지션 아웃 상태 클래스 */
         .drawing-board.fade-out { opacity: 0; transform: scale(0.95) translateY(10px); pointer-events: none !important; }
 
         #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; user-select: none; pointer-events: none !important; }
-        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; cursor: crosshair; }
+        
+        /* 🚨 V84.0 CSS 커서 설정: js에서 덮어씌울 예정이므로 기본값 제거 */
+        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; }
 
         /* [Bottom Dock] */
         .bottom-dock { height: 120px; flex-shrink: 0; background: rgba(255, 255, 255, 0.95); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; }
@@ -101,7 +101,6 @@
         .btn-close-ai { font-size: 32px; color: var(--br-muted); line-height: 1; cursor: pointer; }
         
         .ai-content { padding: 25px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
-        
         .chat-bubble { max-width: 85%; padding: 18px; border-radius: 20px; font-size: 15px; line-height: 1.6; font-weight: 500; word-break: keep-all; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .chat-bubble.ai { align-self: flex-start; background: #F8F9FA; border: 1px solid var(--br-border); border-bottom-left-radius: 5px; color: var(--br-text); }
         .chat-bubble.user { align-self: flex-end; background: var(--br-green); color: #FFF; border-bottom-right-radius: 5px; box-shadow: 0 5px 15px rgba(137,191,160,0.2); }
@@ -120,8 +119,6 @@
         .chat-input-area { padding: 20px 25px; border-top: 1px solid var(--br-border); background: #FFF; display: flex; flex-direction: column; gap: 10px; }
         .btn-chat-record { width: 100%; height: 55px; background: var(--br-charcoal); color: #FFF; border-radius: 15px; font-weight: 900; font-size: 15px; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: 0.3s; }
         .btn-chat-record.recording { background: var(--br-error); animation: pulse 1.5s infinite; }
-
-        /* 🚨 V83.0 부드러운 전환을 위한 핵심 NEXT 버튼 UI */
         .btn-chat-next { width: 100%; height: 55px; background: var(--br-blue); color: #FFF; border-radius: 15px; font-weight: 900; font-size: 15px; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(124,166,193,0.3); }
         .btn-chat-next:active { transform: scale(0.95); }
 
@@ -228,7 +225,6 @@
                 <button class="btn-close-ai" onclick="AITutor.close()">×</button>
             </div>
             <div class="ai-content" id="ai-content"></div>
-            <!-- 실시간 대화 및 다음 페이지 유도 영역 -->
             <div class="chat-input-area" id="chat-input-area" style="display:none;">
                 <button class="btn-chat-record" id="btn-chat-record" onclick="AudioEngine.toggleChat()">
                     🎤 <span>Hold to Reply</span>
@@ -253,18 +249,12 @@
             isChatMode: false 
         };
 
-        // 🚨 V83.0 앱 전반의 부드러운 흐름 제어 엔진
         const AppEngine = {
             smoothPageTransition(direction) {
                 const board = document.getElementById('drawing-board');
-                // 1. 페이드 아웃 애니메이션 트리거
                 board.classList.add('fade-out');
-                
-                // 2. 애니메이션이 끝난 후(400ms) 실제 페이지 이동 및 캔버스 초기화
                 setTimeout(() => {
                     PageEngine.move(direction);
-                    
-                    // 3. 새 페이지 이미지가 완전히 로드되고 캔버스가 리사이즈될 시간을 준 뒤 페이드 인
                     setTimeout(() => {
                         board.classList.remove('fade-out');
                     }, 150); 
@@ -421,6 +411,21 @@
                 
                 this.bindEvents();
                 this.setupResizeObserver();
+                this.updateCursor(); // 🚨 V84.0 커서 초기 세팅
+            },
+
+            // 🚨 V84.0 마우스 커서를 귀여운 펜/지우개로 실시간 변경하는 매직 엔진
+            updateCursor() {
+                if (this.isErasing) {
+                    // 귀여운 핑크색 지우개 커서
+                    const eraserSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="%23FFB6C1" stroke="%23363431" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11C23 12 23 14 22 15L20 20Z"/><path d="M17 17L7 7"/></svg>`;
+                    this.cvs.style.cursor = `url('data:image/svg+xml;utf8,${eraserSvg}') 4 24, cell`;
+                } else {
+                    // 현재 선택된 색깔이 칠해진 귀여운 연필/마법스틱 커서
+                    const colorEncoded = this.lastColor.replace('#', '%23');
+                    const penSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="${colorEncoded}" stroke="%23363431" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/><path d="M15 5l4 4"/><circle cx="2" cy="22" r="2.5" fill="${colorEncoded}" stroke="none"/></svg>`;
+                    this.cvs.style.cursor = `url('data:image/svg+xml;utf8,${penSvg}') 2 24, crosshair`;
+                }
             },
 
             setupCanvas() {
@@ -541,7 +546,10 @@
             setColor(hex) {
                 this.lastColor = hex;
                 document.getElementById('btn-color').style.background = hex;
-                if (!this.isErasing) { this.ctx.strokeStyle = this.lastColor; }
+                if (!this.isErasing) { 
+                    this.ctx.strokeStyle = this.lastColor; 
+                }
+                this.updateCursor(); // 🚨 색상이 바뀔 때마다 커서 마법 지팡이 색도 실시간 변경!
             },
 
             setupUI() {
@@ -567,6 +575,7 @@
                     this.ctx.strokeStyle = this.lastColor;
                     this.ctx.lineWidth = document.getElementById('brush-size').value;
                 }
+                this.updateCursor(); // 🚨 지우개 상태에 따라 커서 모양 변경
             },
 
             clearAll() {
@@ -688,7 +697,6 @@
                     </div>
                 `;
 
-                // 🚨 V83.0 해상도 2배 뻥튀기 및 명암 극대화를 통한 OCR 인식률 개선
                 const tempCvs = document.createElement('canvas');
                 tempCvs.width = CanvasEngine.cvs.width * 2; 
                 tempCvs.height = CanvasEngine.cvs.height * 2;
@@ -801,7 +809,6 @@
                     <div class="chat-bubble ai">${introText}${doodleMsg}<br><br><b style="font-size:16px; color:var(--br-green);">${contextData.question}</b></div>
                 `;
                 
-                // 🚨 V83.0 채팅창 오픈 시 NEXT ADVENTURE 버튼 등장
                 document.getElementById('chat-input-area').style.display = "flex";
                 
                 if ('speechSynthesis' in window) {

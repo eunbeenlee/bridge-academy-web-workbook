@@ -3,207 +3,416 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bridge Academy | Inquiry Lab</title>
+    <title>Bridge Academy | Premium Inquiry Lab</title>
     
+    <!-- [Premium Typography] -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
         /* 
          * ======================================================================
-         * [Architecture: Premium Inquiry Lab V40.0]
-         * Remote Asset Integration Module
+         * [Architecture: Premium Silk Cloud System V42.0]
+         * Storage Node: bridge-heritage (eunbeenlee.github.io)
          * ======================================================================
          */
         :root {
-            --lab-bg: #FCFBF9;
-            --lab-sidebar: #FFFFFF;
-            --lab-accent: #89BFA0;
-            --lab-gold: #CBAE75;
-            --lab-charcoal: #363431;
-            --lab-border: #F0EFEB;
-            --ease-lux: cubic-bezier(0.19, 1, 0.22, 1);
+            --bridge-green: #89BFA0;
+            --bridge-gold: #CBAE75;
+            --bridge-blue: #7CA6C1;
+            --bridge-charcoal: #363431;
+            --bridge-bg: #FCFBF9;
+            --bridge-paper: #FFFFFF;
+            --bridge-text-main: #2A2825;
+            --bridge-text-muted: #8C8985;
+            --bridge-border: #F0EFEB;
+            
+            --shadow-silk: 0 30px 60px rgba(54, 52, 49, 0.04);
+            --shadow-massive: 0 50px 100px rgba(54, 52, 49, 0.08);
+            --ease-silk: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Noto Sans KR', sans-serif; background: var(--lab-bg); height: 100vh; display: flex; overflow: hidden; }
+        /* [Universal Standards] */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bridge-bg); height: 100vh; display: flex; overflow: hidden; color: var(--bridge-text-main); }
 
-        /* [Sidebar Navigation] */
+        /* --------------------------------------------------
+         * [Sidebar] 17-Page Inquiry Navigation
+         * -------------------------------------------------- */
         .sidebar { 
-            width: 360px; background: var(--lab-sidebar); border-right: 1px solid var(--lab-border); 
-            display: flex; flex-direction: column; box-shadow: 15px 0 40px rgba(0,0,0,0.02); z-index: 100;
+            width: 360px; 
+            background: var(--bridge-paper); 
+            border-right: 1px solid var(--bridge-border); 
+            display: flex; 
+            flex-direction: column; 
+            z-index: 1000; 
+            box-shadow: 20px 0 50px rgba(0,0,0,0.02); 
         }
-        .sidebar-header { 
-            padding: 45px 35px; border-bottom: 1px solid var(--lab-border); cursor: pointer; 
-            transition: 0.4s var(--ease-lux); text-align: center;
-        }
-        .sidebar-header:hover { opacity: 0.6; }
-        .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 800; color: var(--lab-charcoal); margin-bottom: 15px; }
-        .logo span { color: var(--lab-accent); font-style: italic; }
-        .btn-back { font-size: 11px; font-weight: 700; color: var(--lab-gold); letter-spacing: 4px; text-transform: uppercase; }
-
-        .nav-list { flex: 1; overflow-y: auto; padding: 30px 25px; }
-        .nav-item { 
-            padding: 22px 25px; margin-bottom: 12px; border-radius: 20px; background: #FAFAFA;
-            display: flex; justify-content: space-between; align-items: center; cursor: pointer; 
-            transition: 0.3s; border: 1px solid transparent;
-        }
-        .nav-item:hover { background: #F5F5F5; transform: translateX(5px); }
-        .nav-item.active { 
-            background: #F4F8F5; border-left: 6px solid var(--lab-accent); border-color: #F4F8F5;
-            font-weight: 700; box-shadow: 0 10px 20px rgba(137, 191, 160, 0.1); 
-        }
-        .page-num { font-size: 11px; font-weight: 900; opacity: 0.3; letter-spacing: 1px; }
-
-        /* [Workspace] */
-        .workspace { flex: 1; display: flex; flex-direction: column; position: relative; overflow-y: auto; align-items: center; padding: 60px 40px; }
-        .lab-info { width: 100%; max-width: 900px; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 35px; }
-        .unit-tag { font-size: 14px; font-weight: 900; color: var(--lab-gold); letter-spacing: 6px; }
-        .page-h1 { font-family: 'Playfair Display', serif; font-size: 46px; font-weight: 700; color: var(--lab-charcoal); }
-
-        .stage-container { 
-            position: relative; background: #FFF; border-radius: 30px; box-shadow: 0 30px 70px rgba(0,0,0,0.04); 
-            width: 100%; max-width: 900px; border: 1px solid var(--lab-border); line-height: 0;
-        }
-        #worksheet { width: 100%; height: auto; border-radius: 30px; opacity: 0; transition: opacity 0.8s ease; }
-        #canvas { position: absolute; top: 0; left: 0; border-radius: 30px; touch-action: none; cursor: crosshair; }
-
-        /* [Controls] */
-        .control-dock { 
-            width: 100%; max-width: 900px; margin-top: 40px; background: rgba(255, 255, 255, 0.9); 
-            padding: 25px 45px; border-radius: 100px; border: 1px solid var(--lab-border); 
-            backdrop-filter: blur(20px); display: flex; gap: 30px; align-items: center; justify-content: space-between;
-        }
-        .tool-group { display: flex; align-items: center; gap: 20px; }
-        .color-well { width: 50px; height: 50px; border-radius: 50%; border: 4px solid #FFF; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; }
-        .brush-range { width: 180px; accent-color: var(--lab-accent); cursor: pointer; }
         
-        .btn-submit { 
-            padding: 22px 60px; border-radius: 100px; background: var(--lab-charcoal); color: #FFF; 
-            font-weight: 900; letter-spacing: 4px; cursor: pointer; transition: 0.4s var(--ease-lux);
+        .sidebar-header { 
+            padding: 50px 40px; 
+            text-align: center; 
+            border-bottom: 1px solid var(--bridge-border); 
+            cursor: pointer; 
+            transition: 0.4s var(--ease-silk);
         }
-        .btn-submit:hover { background: var(--lab-accent); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(137, 191, 160, 0.3); }
+        .sidebar-header:hover { opacity: 0.7; transform: translateY(-2px); }
+        
+        .logo-area { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 26px; color: var(--bridge-charcoal); letter-spacing: -0.5px; }
+        .logo-area span { color: var(--bridge-green); font-style: italic; }
+        
+        .nav-meta { 
+            font-size: 11px; font-weight: 700; color: var(--bridge-gold); 
+            letter-spacing: 5px; text-transform: uppercase; margin-top: 15px; display: block;
+        }
 
-        /* [Loading / Error] */
-        .error-state { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            display: none; flex-direction: column; align-items: center; justify-content: center; 
-            background: #FAFAFA; border-radius: 30px; z-index: 50; 
+        .log-nav-list { flex: 1; overflow-y: auto; padding: 35px 25px; }
+        .log-nav-list::-webkit-scrollbar { width: 5px; }
+        .log-nav-list::-webkit-scrollbar-thumb { background: var(--bridge-border); border-radius: 10px; }
+        
+        .log-item { 
+            padding: 24px 28px; 
+            margin-bottom: 15px; 
+            border-radius: 20px; 
+            background: #FAFAFA;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            cursor: pointer; 
+            transition: 0.4s var(--ease-silk);
+            border: 1px solid transparent;
         }
-        .error-state p { font-size: 16px; color: var(--lab-charcoal); opacity: 0.4; font-weight: 700; letter-spacing: 2px; }
+        .log-item:hover { background: #F5F5F5; transform: translateX(8px); }
+        .log-item.active { 
+            background: #F4F8F5; 
+            border-left: 8px solid var(--bridge-green); 
+            border-color: #F4F8F5;
+            color: var(--bridge-charcoal); 
+            box-shadow: 0 15px 30px rgba(137, 191, 160, 0.12); 
+        }
+        
+        .item-label { font-size: 15px; font-weight: 500; letter-spacing: -0.2px; }
+        .log-item.active .item-label { font-weight: 700; }
+        .page-badge { font-size: 11px; font-weight: 900; opacity: 0.3; letter-spacing: 1px; }
+
+        /* --------------------------------------------------
+         * [Workspace] Premium Inquiry Stage
+         * -------------------------------------------------- */
+        .workspace { flex: 1; display: flex; flex-direction: column; position: relative; overflow-y: auto; background: var(--bridge-bg); }
+        .viewer-stage { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 60px 40px; }
+        
+        .lab-status { 
+            width: 100%; 
+            max-width: 950px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+            margin-bottom: 40px; 
+        }
+        .unit-indicator { font-size: 14px; font-weight: 900; color: var(--bridge-gold); letter-spacing: 7px; text-transform: uppercase; }
+        .current-page-h1 { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 700; color: var(--bridge-charcoal); letter-spacing: -1.5px; }
+
+        /* [Canvas Architecture] */
+        .canvas-core { 
+            position: relative; 
+            background: #FFF; 
+            border-radius: 40px; 
+            box-shadow: var(--shadow-silk); 
+            width: 100%; 
+            max-width: 950px; 
+            line-height: 0; 
+            border: 1px solid var(--bridge-border); 
+            transition: 0.8s var(--ease-silk);
+        }
+        
+        #worksheet-img { width: 100%; height: auto; border-radius: 40px; opacity: 0; transition: opacity 1s ease; pointer-events: none; }
+        #draw-layer { position: absolute; top: 0; left: 0; border-radius: 40px; cursor: crosshair; touch-action: none; z-index: 10; }
+
+        /* [Cloud Error/Loading Diagnostic UI] */
+        .diagnostic-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: #FAFAFA; border-radius: 40px; z-index: 50; text-align: center; padding: 40px;
+        }
+        .loader-ring { width: 50px; height: 50px; border: 3px solid #EEE; border-top-color: var(--bridge-green); border-radius: 50%; animation: spin 1s infinite linear; margin-bottom: 25px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .diag-title { font-weight: 700; color: var(--bridge-charcoal); letter-spacing: 1px; margin-bottom: 10px; }
+        .diag-desc { font-size: 14px; color: var(--bridge-text-muted); line-height: 1.6; max-width: 400px; margin: 0 auto; }
+        .diag-path { font-family: monospace; font-size: 11px; color: #AAA; background: #F0F0F0; padding: 8px 15px; border-radius: 8px; margin-top: 25px; word-break: break-all; }
+
+        /* --------------------------------------------------
+         * [Control System]
+         * -------------------------------------------------- */
+        .bottom-dock { 
+            width: 100%; background: rgba(255, 255, 255, 0.9); padding: 30px 40px 45px; 
+            border-top: 1px solid var(--bridge-border); display: flex; flex-direction: column; gap: 30px; 
+            align-items: center; backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); position: sticky; bottom: 0;
+            z-index: 1500;
+        }
+        
+        .tool-suite { 
+            display: flex; width: 100%; max-width: 950px; align-items: center; justify-content: space-between; 
+            background: #F8FAF9; padding: 20px 45px; border-radius: 100px; border: 1px solid var(--bridge-border); 
+        }
+        
+        .color-well { width: 55px; height: 55px; border-radius: 50%; border: 4px solid #FFF; box-shadow: 0 10px 20px rgba(0,0,0,0.06); cursor: pointer; }
+        .brush-slider { width: 250px; accent-color: var(--bridge-green); cursor: pointer; }
+
+        .button-group { display: flex; width: 100%; max-width: 950px; gap: 20px; }
+        .btn-side { width: 80px; height: 80px; border-radius: 25px; border: 1px solid var(--bridge-border); background: #FFF; font-size: 24px; cursor: pointer; transition: 0.3s; color: var(--bridge-text-muted); }
+        .btn-side:hover { background: #F5F5F5; color: var(--bridge-charcoal); }
+        
+        .btn-core { height: 80px; border-radius: 25px; border: none; font-weight: 800; cursor: pointer; font-size: 16px; letter-spacing: 5px; text-transform: uppercase; transition: 0.5s var(--ease-silk); }
+        .btn-record { background: #FFF; color: var(--bridge-charcoal); border: 1px solid var(--bridge-border); flex: 1; }
+        .btn-submit { background: var(--bridge-charcoal); color: #FFF; flex: 2; box-shadow: 0 20px 40px rgba(54, 52, 49, 0.15); }
+        .btn-submit:hover { background: var(--bridge-green); transform: translateY(-5px); box-shadow: 0 30px 60px rgba(137, 191, 160, 0.3); }
+
+        @media (max-width: 1024px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; border-right: none; border-bottom: 1px solid var(--bridge-border); }
+            .sidebar-header { padding: 20px; border-right: 1px solid var(--bridge-border); border-bottom: none; }
+            .log-nav-list { display: flex; overflow-x: auto; padding: 15px; gap: 15px; }
+            .log-item { min-width: 180px; margin-bottom: 0; padding: 15px 25px; }
+            .viewer-stage { padding: 40px 20px; }
+            .current-page-h1 { font-size: 34px; }
+            .bottom-dock { padding: 25px 20px; }
+            .tool-suite { padding: 15px 25px; }
+            .brush-slider { width: 120px; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- Sidebar Master -->
     <nav class="sidebar">
         <div class="sidebar-header" onclick="location.href='index.html'">
-            <div class="logo">Bridge<span>Academy</span></div>
-            <div class="btn-back">◀ BACK TO CAMPUS</div>
+            <div class="logo-area">Bridge<span>Academy</span></div>
+            <span class="nav-meta">◀ Back to Campus</span>
         </div>
-        <div id="nav-pages" class="nav-list"></div>
+        <div id="inquiry-nav-list" class="log-nav-list">
+            <!-- JavaScript Renders Pages 01-17 -->
+        </div>
     </nav>
 
+    <!-- Content Workspace -->
     <div class="workspace">
-        <div class="lab-info">
-            <div id="display-unit" class="unit-tag">MASTER LAB: UNIT A-1</div>
-            <div id="display-page" class="page-h1">Inquiry Log P.01</div>
-        </div>
-
-        <div class="stage-container">
-            <div id="error-box" class="error-state"><p>CONNECTING TO CLOUD ASSETS...</p></div>
-            <img src="" id="worksheet" crossorigin="anonymous">
-            <canvas id="canvas"></canvas>
-        </div>
-
-        <div class="control-dock">
-            <div class="tool-group">
-                <input type="color" id="color-input" value="#363431" class="color-well">
-                <input type="range" id="brush-input" min="2" max="25" value="6" class="brush-range">
+        <main class="viewer-stage">
+            <div class="lab-status">
+                <div id="active-unit-tag" class="unit-indicator">UNIT A-1</div>
+                <div id="active-page-h1" class="current-page-h1">Inquiry Log P.01</div>
             </div>
-            <button class="btn-submit" onclick="alert('데이터가 브릿지 클라우드에 안전하게 저장되었습니다.')">SUBMIT INQUIRY ✨</button>
-            <button onclick="CanvasEngine.clear()" style="background:none; border:none; color:#AAA; font-weight:700; cursor:pointer; font-size:12px; letter-spacing:2px;">RESET</button>
+
+            <div class="canvas-core">
+                <!-- Diagnostic/Loading Overlay -->
+                <div id="loading-overlay" class="diagnostic-overlay">
+                    <div class="loader-ring"></div>
+                    <div id="diag-title" class="diag-title">Accessing Cloud Assets...</div>
+                    <div id="diag-desc" class="diag-desc">브릿지 아카데미 클라우드 저장소에서 교재 이미지를 안전하게 불러오고 있습니다.</div>
+                    <div id="diag-path" class="diag-path">Connecting to Storage Node...</div>
+                </div>
+
+                <img src="" id="worksheet-img" crossorigin="anonymous">
+                <canvas id="canvas-draw"></canvas>
+            </div>
+        </main>
+
+        <!-- Bottom UI Dock -->
+        <div class="bottom-dock">
+            <div class="tool-suite">
+                <div style="display:flex; align-items:center; gap:25px;">
+                    <input type="color" id="brush-color" value="#363431" class="color-well">
+                    <div style="font-size:11px; font-weight:800; color:var(--bridge-gold); letter-spacing:2px;">INK</div>
+                </div>
+                <input type="range" id="brush-thickness" class="brush-slider" min="2" max="30" value="6">
+                <button onclick="CanvasEngine.clear()" style="background:none; border:none; color:var(--bridge-text-muted); font-weight:800; cursor:pointer; font-size:12px; letter-spacing:3px;">ERASE ALL</button>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-side" onclick="PageEngine.move(-1)">◀</button>
+                <button id="record-btn" class="btn-core btn-record" onclick="AudioEngine.toggle()">🎤 Audio Log</button>
+                <button class="btn-core btn-submit" onclick="alert('Inquiry evidence has been synchronized with the cloud.')">Submit Inquiry ✨</button>
+                <button class="btn-side" onclick="PageEngine.move(1)">▶</button>
+            </div>
         </div>
     </div>
 
+    <!-- ======================================================================
+         [CORE ENGINE V42.0]
+         Storage Protocol: eunbeenlee.github.io/bridge-heritage
+         ====================================================================== -->
     <script>
         /**
-         * [State & Configuration]
-         * 원장님의 bridge-heritage 저장소 주소를 기본값으로 설정합니다.
+         * [System Configuration]
+         * 원격 저장소: eunbeenlee (프로젝트: bridge-heritage)
          */
+        const CONFIG = {
+            STORAGE_BASE: "https://eunbeenlee.github.io/bridge-heritage/assets/"
+        };
+
         const STATE = {
             id: new URLSearchParams(window.location.search).get('id') || "A-1",
             p: 1,
-            // [중요] YOUR_GITHUB_ID를 실제 아이디로 반드시 교체하십시오.
-            cloudRoot: "https://YOUR_GITHUB_ID.github.io/bridge-heritage/assets/"
+            isDrawing: false
         };
 
+        // --- Module 1: Page Management ---
         const PageEngine = {
             init() {
-                document.getElementById('display-unit').innerText = `MASTER LAB: UNIT ${STATE.id}`;
-                const list = document.getElementById('nav-pages');
+                document.getElementById('active-unit-tag').innerText = `MASTER LAB: ${STATE.id}`;
+                const list = document.getElementById('inquiry-nav-list');
+                list.innerHTML = "";
+                
                 for(let i=1; i<=17; i++) {
                     const item = document.createElement('div');
-                    item.className = 'nav-item'; item.id = `nav-${i}`;
-                    item.innerHTML = `<span>Inquiry Entry</span> <span class="page-num">P.${String(i).padStart(2,'0')}</span>`;
+                    item.className = 'log-item';
+                    item.id = `nav-page-${i}`;
+                    item.innerHTML = `<span class="item-label">Inquiry Log</span> <span class="page-badge">P.${String(i).padStart(2,'0')}</span>`;
                     item.onclick = () => this.load(i);
                     list.appendChild(item);
                 }
                 this.load(1);
             },
+            
             load(n) {
                 STATE.p = n;
-                const path = `${STATE.cloudRoot}${STATE.id}/${STATE.id}-${n}.png`;
-                const img = document.getElementById('worksheet');
-                const err = document.getElementById('error-box');
+                // 경로 매칭: assets/A-1/A-1-1.png
+                const fullPath = `${CONFIG.STORAGE_BASE}${STATE.id}/${STATE.id}-${n}.png`;
                 
-                img.style.opacity = '0'; err.style.display = 'flex';
-                img.src = path;
+                const img = document.getElementById('worksheet-img');
+                const overlay = document.getElementById('loading-overlay');
+                const pathText = document.getElementById('diag-path');
                 
-                img.onload = () => { img.style.opacity = '1'; err.style.display = 'none'; CanvasEngine.sync(); };
-                img.onerror = () => { err.innerHTML = `<p>ASSET NOT FOUND: ${STATE.id}-${n}.png</p>`; };
+                overlay.style.display = 'flex';
+                img.style.opacity = '0';
+                pathText.innerText = `Attempting: ${fullPath}`;
+                
+                img.src = fullPath;
+                
+                img.onload = () => {
+                    img.style.opacity = '1';
+                    overlay.style.display = 'none';
+                    CanvasEngine.sync();
+                };
+                
+                img.onerror = () => {
+                    document.getElementById('diag-title').innerText = "Asset Not Found (404)";
+                    document.getElementById('diag-title').style.color = "#E74C3C";
+                    document.getElementById('diag-desc').innerHTML = `
+                        1. <b>bridge-heritage</b> 저장소의 'Pages' 설정이 켜져 있는지 확인하세요.<br>
+                        2. <b>assets/${STATE.id}/${STATE.id}-${n}.png</b> 경로가 정확한지 확인하세요.
+                    `;
+                    document.querySelector('.loader-ring').style.display = 'none';
+                };
 
-                document.getElementById('display-page').innerText = `Inquiry Log P.${String(n).padStart(2,'0')}`;
-                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                document.getElementById(`nav-${n}`).classList.add('active');
+                document.getElementById('active-page-h1').innerText = `Inquiry Log P.${String(n).padStart(2,'0')}`;
+                document.querySelectorAll('.log-item').forEach(el => el.classList.remove('active'));
+                document.getElementById(`nav-page-${n}`).classList.add('active');
                 CanvasEngine.clear();
+            },
+            
+            move(dir) {
+                const target = STATE.p + dir;
+                if(target >= 1 && target <= 17) this.load(target);
             }
         };
 
+        // --- Module 2: Precision Canvas ---
         const CanvasEngine = {
             init() {
-                this.cvs = document.getElementById('canvas'); this.ctx = this.cvs.getContext('2d');
-                this.img = document.getElementById('worksheet');
-                let isDrawing = false;
+                this.cvs = document.getElementById('canvas-draw');
+                this.ctx = this.cvs.getContext('2d');
+                this.img = document.getElementById('worksheet-img');
+                
                 const getPos = (e) => {
                     const rect = this.cvs.getBoundingClientRect();
-                    const x = (e.clientX || e.touches[0].clientX) - rect.left;
-                    const y = (e.clientY || e.touches[0].clientY) - rect.top;
-                    return { x, y };
+                    return {
+                        x: (e.clientX || e.touches[0].clientX) - rect.left,
+                        y: (e.clientY || e.touches[0].clientY) - rect.top
+                    };
                 };
-                const start = (e) => { isDrawing = true; const p = getPos(e); this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y); };
-                const move = (e) => { if(!isDrawing) return; if(e.cancelable) e.preventDefault(); const p = getPos(e); this.ctx.lineTo(p.x, p.y); this.ctx.stroke(); };
-                this.cvs.onmousedown = start; this.cvs.onmousemove = move; window.onmouseup = () => isDrawing = false;
-                this.cvs.ontouchstart = start; this.cvs.ontouchmove = move; window.ontouchend = () => isDrawing = false;
+                
+                const start = (e) => { 
+                    STATE.isDrawing = true; 
+                    const p = getPos(e); 
+                    this.ctx.beginPath(); 
+                    this.ctx.moveTo(p.x, p.y); 
+                };
+                
+                const move = (e) => { 
+                    if(!STATE.isDrawing) return; 
+                    if(e.cancelable) e.preventDefault(); 
+                    const p = getPos(e); 
+                    this.ctx.lineTo(p.x, p.y); 
+                    this.ctx.stroke(); 
+                };
+                
+                const stop = () => STATE.isDrawing = false;
+
+                this.cvs.onmousedown = start;
+                this.cvs.onmousemove = move;
+                window.onmouseup = stop;
+                
+                this.cvs.ontouchstart = start;
+                this.cvs.ontouchmove = move;
+                window.ontouchend = stop;
             },
+            
             sync() {
                 const dpr = window.devicePixelRatio || 1;
                 this.cvs.width = this.img.clientWidth * dpr;
                 this.cvs.height = this.img.clientHeight * dpr;
                 this.cvs.style.width = this.img.clientWidth + 'px';
                 this.cvs.style.height = this.img.clientHeight + 'px';
-                this.ctx.scale(dpr, dpr);
-                this.ctx.lineCap = 'round'; this.ctx.lineJoin = 'round';
-                this.ctx.strokeStyle = document.getElementById('color-input').value;
-                this.ctx.lineWidth = document.getElementById('brush-input').value;
                 
-                document.getElementById('color-input').onchange = (e) => this.ctx.strokeStyle = e.target.value;
-                document.getElementById('brush-input').oninput = (e) => this.ctx.lineWidth = e.target.value;
+                this.ctx.scale(dpr, dpr);
+                this.ctx.lineCap = 'round';
+                this.ctx.lineJoin = 'round';
+                this.ctx.strokeStyle = document.getElementById('brush-color').value;
+                this.ctx.lineWidth = document.getElementById('brush-thickness').value;
+                
+                document.getElementById('brush-color').onchange = (e) => this.ctx.strokeStyle = e.target.value;
+                document.getElementById('brush-thickness').oninput = (e) => this.ctx.lineWidth = e.target.value;
             },
-            clear() { this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height); this.ctx.beginPath(); }
+            
+            clear() {
+                this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height);
+                this.ctx.beginPath();
+            }
         };
 
-        window.onload = () => { PageEngine.init(); CanvasEngine.init(); };
+        // --- Module 3: Audio Interaction ---
+        const AudioEngine = {
+            toggle() {
+                const btn = document.getElementById('record-btn');
+                if(!btn.classList.contains('recording')) {
+                    btn.classList.add('recording');
+                    btn.innerText = "🛑 Stop Logging";
+                    btn.style.background = "#FDF2F2";
+                    btn.style.color = "#E74C3C";
+                    btn.style.borderColor = "#FADBD8";
+                } else {
+                    btn.classList.remove('recording');
+                    btn.innerText = "🎤 Audio Log";
+                    btn.style.background = "#FFF";
+                    btn.style.color = "var(--bridge-charcoal)";
+                    btn.style.borderColor = "var(--bridge-border)";
+                }
+            }
+        };
+
+        // Initialize Suite
+        window.onload = () => {
+            PageEngine.init();
+            CanvasEngine.init();
+            
+            window.addEventListener('resize', () => {
+                if(document.getElementById('worksheet-img').style.opacity === '1') {
+                    setTimeout(() => CanvasEngine.sync(), 150);
+                }
+            });
+        };
     </script>
 </body>
 </html>

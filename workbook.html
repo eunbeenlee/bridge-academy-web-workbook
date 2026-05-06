@@ -17,9 +17,10 @@
             --sidebar-width: 320px;
         }
 
-        /* [Absolute Reset] */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body { width: 100%; height: 100dvh; position: fixed; top: 0; left: 0; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; touch-action: none; }
+        
+        /* 1️⃣ 원장님 요청 반영: position: fixed; touch-action: none; 삭제 완료 */
+        html, body { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; }
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
         
         .app-container { display: flex; width: 100vw; height: 100dvh; position: relative; }
@@ -51,16 +52,14 @@
         .unit-info { font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 5px; }
         .page-info { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: var(--br-charcoal); margin-top: 5px; }
         
-        /* ==================================================================
-           [V69.0 원장님의 캔버스 래퍼 구조 연동]
-           ================================================================== */
+        /* [Stage Wrapper] */
         .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px; position: relative; overflow: hidden; }
         
         .drawing-board { position: relative; display: inline-flex; line-height: 0; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); background: var(--br-paper); max-width: 100%; max-height: 100%; }
         
-        #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; object-fit: contain; pointer-events: none; opacity: 0; transition: opacity 0.3s; border-radius: 15px; }
+        #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; pointer-events: none; }
         
-        /* 🔥 원장님 지정 속성: touch-action: none 탑재 */
+        /* 2️⃣ 원장님 요청 반영: touch-action: none; 추가 및 유지 */
         #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 50; touch-action: none; border-radius: 15px; cursor: crosshair; }
 
         /* [Bottom Dock] */
@@ -248,8 +247,10 @@
                 img.style.opacity = '0'; 
                 img.src = imgPath;
                 
+                // 3️⃣ 원장님 요청 반영: 이미지 로드 후 강제 리사이즈 트리거 추가
                 img.onload = () => { 
                     img.style.opacity = '1'; 
+                    setTimeout(() => CanvasEngine.resizeCanvas(), 50);
                 };
 
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
@@ -262,10 +263,6 @@
             move(dir) { const t = STATE.currentPage + dir; if(t >= 1 && t <= 17) this.load(t); }
         };
 
-        /* ======================================================================
-         * [V69.0 Perfect Canvas Engine] 
-         * 원장님이 설계해주신 PointerEvent + ResizeObserver 아키텍처 완전 이식
-         * ====================================================================== */
         const CanvasEngine = {
             isDrawing: false,
             isErasing: false,
@@ -312,7 +309,6 @@
             },
 
             resizeCanvas() {
-                // 기존에 그린 그림 백업
                 const temp = document.createElement('canvas');
                 temp.width = this.cvs.width;
                 temp.height = this.cvs.height;
@@ -320,13 +316,11 @@
                     temp.getContext('2d').drawImage(this.cvs, 0, 0);
                 }
 
-                // 캔버스 크기 재설정
                 this.setupCanvas();
 
-                // 비율에 맞춰 그림 복원
                 if(temp.width > 0 && temp.height > 0) {
                     this.ctx.save();
-                    this.ctx.setTransform(1, 0, 0, 1, 0, 0); // Transform 초기화 후 렌더링
+                    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
                     this.ctx.drawImage(
                         temp,
                         0, 0, temp.width, temp.height,
@@ -345,12 +339,11 @@
             },
 
             bindEvents() {
-                // 🔥 핵심: 모바일 터치 오작동 원천 차단
+                // 터치 액션은 원장님 요청대로 css와 js 모두에 확실히 보장합니다.
                 this.cvs.style.touchAction = "none"; 
 
                 this.cvs.addEventListener('pointerdown', (e) => {
                     this.isDrawing = true;
-                    // 포인터 화면 이탈 시에도 이벤트 추적 유지
                     try { this.cvs.setPointerCapture(e.pointerId); } catch(err){}
 
                     const p = this.getPos(e);
@@ -425,9 +418,6 @@
             }
         };
 
-        /* ======================================================================
-         * [Audio Engine & AI Tutor] 
-         * ====================================================================== */
         const AudioEngine = {
             recognition: null,
             init() {

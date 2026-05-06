@@ -17,12 +17,9 @@
             --sidebar-width: 320px;
         }
 
-        /* ==================================================================
-           [🚨 1. CSS 입력 차단(Block) 완전 릴리즈 🚨]
-           ================================================================== */
+        /* [Absolute Reset] */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        /* 1️⃣ 원장님 지시 적용: 전체 영역의 position:fixed, touch-action:none 삭제 및 포인터 허용 */
         html, body { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; pointer-events: auto !important; }
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
         
@@ -60,10 +57,11 @@
         
         .drawing-board { position: relative; display: inline-block; line-height: 0; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); background: var(--br-paper); max-width: 100%; max-height: 100%; pointer-events: auto !important; }
         
-        #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; pointer-events: none !important; user-select: none; }
+        /* ❌ 4️⃣ 원장님 요청: pointer-events: none !important 제거 완료 */
+        #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; user-select: none; }
         
-        /* 2️⃣ 원장님 지시 적용: touch-action: none; 오직 캔버스에만 강제 부여 */
-        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none !important; pointer-events: auto !important; border-radius: 15px; cursor: crosshair; }
+        /* 2️⃣ 원장님 요청: touch-action: none 은 오직 캔버스에만 부여 */
+        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; cursor: crosshair; }
 
         /* [Bottom Dock] */
         .bottom-dock { height: 120px; flex-shrink: 0; background: rgba(255, 255, 255, 0.95); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; }
@@ -72,7 +70,7 @@
         .color-preview { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #FFF; cursor: pointer; background: var(--br-charcoal); box-shadow: 0 5px 10px rgba(0,0,0,0.05); flex-shrink: 0; }
         .brush-slider { width: 120px; accent-color: var(--br-green); cursor: pointer; height: 6px; }
         
-        .btn-erase { font-size: 13px; font-weight: 900; color: var(--br-charcoal); padding: 10px 15px; border-radius: 15px; background: #FFF; border: 1px solid var(--br-border); cursor: pointer; }
+        .btn-erase { font-size: 13px; font-weight: 900; color: var(--br-charcoal); padding: 10px 15px; border-radius: 15px; transition: 0.3s; background: #FFF; border: 1px solid var(--br-border); cursor: pointer; }
         .btn-erase.active { background: var(--br-error); color: #FFF; border-color: var(--br-error); }
         .btn-erase-all { font-size: 11px; font-weight: 800; color: var(--br-muted); cursor: pointer; padding: 5px; }
         
@@ -159,8 +157,7 @@
 
             <main class="stage-wrapper">
                 <div class="drawing-board" id="drawing-board">
-                    <!-- CORS 블록 방지를 위해 crossorigin 속성 제거 유지 -->
-                    <img src="" id="worksheet-img">
+                    <img src="" id="worksheet-img" crossorigin="anonymous">
                     <canvas id="draw-layer"></canvas>
                 </div>
             </main>
@@ -251,10 +248,9 @@
                 img.style.opacity = '0'; 
                 img.src = imgPath;
                 
-                // 3️⃣ 원장님 지시 적용: img.onload 후 50ms 대기 후 resize 강제 실행
+                // ❌ 3️⃣ 원장님 지시: img.onload 후 resizeCanvas 강제 제거, ResizeObserver에게 온전히 일임
                 img.onload = () => { 
                     img.style.opacity = '1'; 
-                    setTimeout(() => CanvasEngine.resizeCanvas(), 50);
                 };
 
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
@@ -279,7 +275,12 @@
                 this.board = document.getElementById('drawing-board');
 
                 this.setupUI();
-                this.setupCanvas();
+                
+                // 1️⃣ 원장님 지시: 초기 렌더링 시 브라우저 페인트 사이클과 동기화
+                requestAnimationFrame(() => {
+                    this.setupCanvas();
+                });
+                
                 this.bindEvents();
                 this.setupResizeObserver();
             },
@@ -307,7 +308,10 @@
 
             setupResizeObserver() {
                 const ro = new ResizeObserver(() => {
-                    this.resizeCanvas();
+                    // 성능 최적화 및 렌더링 타이밍 보장을 위해 rAF 적용
+                    requestAnimationFrame(() => {
+                        this.resizeCanvas();
+                    });
                 });
                 ro.observe(this.board);
             },
@@ -336,7 +340,6 @@
 
             getPos(e) {
                 const rect = this.cvs.getBoundingClientRect();
-                // 🔥 수학적 오류(이중 스케일링) 제거: PointerEvent의 기본 좌표계 사용
                 return {
                     x: e.clientX - rect.left,
                     y: e.clientY - rect.top
@@ -348,6 +351,7 @@
 
                 this.cvs.addEventListener('pointerdown', (e) => {
                     this.isDrawing = true;
+                    // ⚠️ 예외처리 유지
                     try { this.cvs.setPointerCapture(e.pointerId); } catch(err){}
 
                     const p = this.getPos(e);
@@ -361,6 +365,10 @@
                     const p = this.getPos(e);
                     this.ctx.lineTo(p.x, p.y);
                     this.ctx.stroke();
+                    
+                    // ✨ 5️⃣ 원장님 지시: 메모리 누수 방지 및 부드러운 드로잉을 위한 패스 분리
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(p.x, p.y);
                 });
 
                 this.cvs.addEventListener('pointerup', (e) => {

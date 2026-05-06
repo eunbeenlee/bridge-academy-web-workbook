@@ -17,13 +17,16 @@
             --sidebar-width: 320px;
         }
 
+        /* ==================================================================
+           [🚨 1. CSS 입력 차단(Block) 완전 릴리즈 🚨]
+           ================================================================== */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        /* 1️⃣ 원장님 요청 반영: position: fixed; touch-action: none; 삭제 완료 */
-        html, body { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; }
+        /* 1️⃣ 원장님 지시 적용: 전체 영역의 position:fixed, touch-action:none 삭제 및 포인터 허용 */
+        html, body { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; pointer-events: auto !important; }
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
         
-        .app-container { display: flex; width: 100vw; height: 100dvh; position: relative; }
+        .app-container { display: flex; width: 100vw; height: 100dvh; position: relative; pointer-events: auto !important; }
         
         /* [Sidebar] */
         .sidebar { width: var(--sidebar-width); height: 100%; background: var(--br-paper); border-right: 1px solid var(--br-border); display: flex; flex-direction: column; z-index: 10000; transition: transform 0.4s ease; flex-shrink: 0; }
@@ -46,21 +49,21 @@
         .nav-badge { font-size: 11px; font-weight: 900; opacity: 0.3; }
         
         /* [Workspace] */
-        .workspace { flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 0; position: relative; overflow: hidden; }
+        .workspace { flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 0; position: relative; overflow: hidden; pointer-events: auto !important; }
         
         .top-bar { height: 90px; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; z-index: 10; border-bottom: 1px solid transparent; }
         .unit-info { font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 5px; }
         .page-info { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: var(--br-charcoal); margin-top: 5px; }
         
         /* [Stage Wrapper] */
-        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px; position: relative; overflow: hidden; }
+        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px; position: relative; overflow: hidden; pointer-events: auto !important; }
         
-        .drawing-board { position: relative; display: inline-flex; line-height: 0; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); background: var(--br-paper); max-width: 100%; max-height: 100%; }
+        .drawing-board { position: relative; display: inline-block; line-height: 0; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); background: var(--br-paper); max-width: 100%; max-height: 100%; pointer-events: auto !important; }
         
-        #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; pointer-events: none; }
+        #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; pointer-events: none !important; user-select: none; }
         
-        /* 2️⃣ 원장님 요청 반영: touch-action: none; 추가 및 유지 */
-        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 50; touch-action: none; border-radius: 15px; cursor: crosshair; }
+        /* 2️⃣ 원장님 지시 적용: touch-action: none; 오직 캔버스에만 강제 부여 */
+        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none !important; pointer-events: auto !important; border-radius: 15px; cursor: crosshair; }
 
         /* [Bottom Dock] */
         .bottom-dock { height: 120px; flex-shrink: 0; background: rgba(255, 255, 255, 0.95); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; }
@@ -156,6 +159,7 @@
 
             <main class="stage-wrapper">
                 <div class="drawing-board" id="drawing-board">
+                    <!-- CORS 블록 방지를 위해 crossorigin 속성 제거 유지 -->
                     <img src="" id="worksheet-img">
                     <canvas id="draw-layer"></canvas>
                 </div>
@@ -247,7 +251,7 @@
                 img.style.opacity = '0'; 
                 img.src = imgPath;
                 
-                // 3️⃣ 원장님 요청 반영: 이미지 로드 후 강제 리사이즈 트리거 추가
+                // 3️⃣ 원장님 지시 적용: img.onload 후 50ms 대기 후 resize 강제 실행
                 img.onload = () => { 
                     img.style.opacity = '1'; 
                     setTimeout(() => CanvasEngine.resizeCanvas(), 50);
@@ -332,6 +336,7 @@
 
             getPos(e) {
                 const rect = this.cvs.getBoundingClientRect();
+                // 🔥 수학적 오류(이중 스케일링) 제거: PointerEvent의 기본 좌표계 사용
                 return {
                     x: e.clientX - rect.left,
                     y: e.clientY - rect.top
@@ -339,7 +344,6 @@
             },
 
             bindEvents() {
-                // 터치 액션은 원장님 요청대로 css와 js 모두에 확실히 보장합니다.
                 this.cvs.style.touchAction = "none"; 
 
                 this.cvs.addEventListener('pointerdown', (e) => {
@@ -360,6 +364,11 @@
                 });
 
                 this.cvs.addEventListener('pointerup', (e) => {
+                    this.isDrawing = false;
+                    try { this.cvs.releasePointerCapture(e.pointerId); } catch(err){}
+                });
+
+                this.cvs.addEventListener('pointercancel', (e) => {
                     this.isDrawing = false;
                     try { this.cvs.releasePointerCapture(e.pointerId); } catch(err){}
                 });

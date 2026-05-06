@@ -51,17 +51,14 @@
         .unit-info { font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 5px; }
         .page-info { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: var(--br-charcoal); margin-top: 5px; }
         
-        /* ==================================================================
-           [V67.0 강제 레이아웃 고정 및 최상단 캔버스]
-           ================================================================== */
+        /* [Stage Wrapper] */
         .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px; position: relative; overflow: hidden; }
         
         .drawing-board { position: relative; display: inline-block; line-height: 0; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); background: var(--br-paper); max-width: 100%; max-height: 100%; }
         
         #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; pointer-events: none; }
         
-        /* 🚨 핵심 픽스: z-index를 9999로 올려 모든 간섭을 차단하고, pointer-events: auto를 강제 적용 */
-        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none !important; pointer-events: auto !important; border-radius: 15px; cursor: crosshair; }
+        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; border-radius: 15px; cursor: crosshair; }
 
         /* [Bottom Dock] */
         .bottom-dock { height: 120px; flex-shrink: 0; background: rgba(255, 255, 255, 0.95); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; }
@@ -162,6 +159,7 @@
             <div class="bottom-dock">
                 <div class="tool-group">
                     <div class="color-preview" id="btn-color"></div>
+                    <!-- 네이티브 컬러 피커 연동 -->
                     <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;">
                     <input type="range" class="brush-slider" id="brush-size" min="2" max="40" value="6">
                     <button class="btn-erase" id="btn-eraser" onclick="CanvasEngine.toggleEraser()">ERASER</button>
@@ -247,8 +245,7 @@
                 
                 img.onload = () => { 
                     img.style.opacity = '1'; 
-                    // 로드 직후 강제 동기화
-                    CanvasEngine.sync();
+                    // ResizeObserver가 변화를 감지해 자동으로 CanvasEngine.resizeCanvas()를 호출합니다.
                 };
 
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
@@ -262,153 +259,156 @@
         };
 
         /* ======================================================================
-         * [V67.0 The Bulletproof Canvas Engine]
-         * 무조건 그려지게 만드는 브루트포스(Brute-force) 동기화 적용
+         * [V68.0 User-Driven Masterpiece Canvas Engine]
+         * 원장님께서 직접 제공해주신 최적화된 PointerEvent 엔진 이식
          * ====================================================================== */
         const CanvasEngine = {
             isDrawing: false,
             isErasing: false,
             lastColor: "#363431",
-            
+
             init() {
                 this.cvs = document.getElementById('draw-layer');
                 this.ctx = this.cvs.getContext('2d');
                 this.board = document.getElementById('drawing-board');
-                
-                // 컬러 피커 (시스템 기본 피커 사용으로 오류 원천 차단)
-                document.getElementById('btn-color').style.background = this.lastColor;
-                document.getElementById('btn-color').onclick = () => document.getElementById('native-color-picker').click();
-                document.getElementById('native-color-picker').onchange = (e) => {
-                    this.lastColor = e.target.value;
-                    document.getElementById('btn-color').style.background = this.lastColor;
-                    if(!this.isErasing) this.ctx.strokeStyle = this.lastColor;
-                };
-                
-                this.bind();
 
-                // 🚨 핵심 픽스: 브라우저가 사이즈를 놓치지 않도록 0.5초마다 강제로 사이즈를 체크하고 맞춥니다.
-                setInterval(() => { this.sync(); }, 500);
+                this.dpr = window.devicePixelRatio || 1;
+
+                this.setupCanvas();
+                this.bindEvents();
+                this.setupResizeObserver();
+                this.setupUI();
             },
-            
+
+            setupCanvas() {
+                const rect = this.board.getBoundingClientRect();
+
+                this.cvs.style.width = rect.width + "px";
+                this.cvs.style.height = rect.height + "px";
+
+                this.cvs.width = rect.width * this.dpr;
+                this.cvs.height = rect.height * this.dpr;
+
+                this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+
+                this.ctx.lineCap = 'round';
+                this.ctx.lineJoin = 'round';
+                this.ctx.strokeStyle = this.lastColor;
+                this.ctx.lineWidth = 6;
+            },
+
+            setupResizeObserver() {
+                const ro = new ResizeObserver(() => {
+                    this.resizeCanvas();
+                });
+                ro.observe(this.board);
+            },
+
+            resizeCanvas() {
+                const temp = document.createElement('canvas');
+                temp.width = this.cvs.width;
+                temp.height = this.cvs.height;
+                temp.getContext('2d').drawImage(this.cvs, 0, 0);
+
+                this.setupCanvas();
+
+                // 리사이즈 시 기존에 그린 그림 복원
+                const rect = this.board.getBoundingClientRect();
+                this.ctx.drawImage(
+                    temp,
+                    0, 0, temp.width, temp.height,
+                    0, 0, rect.width, rect.height
+                );
+            },
+
+            getPos(e) {
+                const rect = this.cvs.getBoundingClientRect();
+                return {
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top
+                };
+            },
+
+            bindEvents() {
+                this.cvs.style.touchAction = "none"; // 🔥 핵심: 브라우저 기본 터치 동작(스크롤, 줌 등) 완벽 차단
+
+                this.cvs.addEventListener('pointerdown', (e) => {
+                    this.isDrawing = true;
+                    this.cvs.setPointerCapture(e.pointerId);
+
+                    const p = this.getPos(e);
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(p.x, p.y);
+                });
+
+                this.cvs.addEventListener('pointermove', (e) => {
+                    if (!this.isDrawing) return;
+
+                    const p = this.getPos(e);
+                    this.ctx.lineTo(p.x, p.y);
+                    this.ctx.stroke();
+                });
+
+                this.cvs.addEventListener('pointerup', (e) => {
+                    this.isDrawing = false;
+                    this.cvs.releasePointerCapture(e.pointerId);
+                });
+
+                this.cvs.addEventListener('pointerleave', () => {
+                    this.isDrawing = false;
+                });
+            },
+
+            setupUI() {
+                // 색상 피커 연동
+                const colorBtn = document.getElementById('btn-color');
+                const picker = document.getElementById('native-color-picker');
+
+                colorBtn.style.background = this.lastColor;
+
+                colorBtn.onclick = () => picker.click();
+
+                picker.onchange = (e) => {
+                    this.lastColor = e.target.value;
+                    colorBtn.style.background = this.lastColor;
+
+                    if (!this.isErasing) {
+                        this.ctx.strokeStyle = this.lastColor;
+                    }
+                };
+
+                // 브러시 두께 조절 연동
+                document.getElementById('brush-size').oninput = (e) => {
+                    const size = e.target.value;
+                    this.ctx.lineWidth = this.isErasing ? size * 2 : size;
+                };
+            },
+
             toggleEraser() {
                 const btn = document.getElementById('btn-eraser');
+
                 this.isErasing = !this.isErasing;
-                
+
                 if (this.isErasing) {
-                    btn.classList.add('active'); btn.innerText = "PEN MODE";
+                    btn.classList.add('active');
+                    btn.innerText = "PEN MODE";
                     this.ctx.globalCompositeOperation = 'destination-out';
-                    this.ctx.lineWidth = document.getElementById('brush-size').value * 2;
                 } else {
-                    btn.classList.remove('active'); btn.innerText = "ERASER";
+                    btn.classList.remove('active');
+                    btn.innerText = "ERASER";
                     this.ctx.globalCompositeOperation = 'source-over';
                     this.ctx.strokeStyle = this.lastColor;
-                    this.ctx.lineWidth = document.getElementById('brush-size').value;
                 }
             },
-            
-            bind() {
-                const getPos = (e) => {
-                    const rect = this.cvs.getBoundingClientRect();
-                    let clientX = e.clientX;
-                    let clientY = e.clientY;
-                    
-                    if(e.touches && e.touches.length > 0) {
-                        clientX = e.touches[0].clientX;
-                        clientY = e.touches[0].clientY;
-                    }
-                    
-                    // 논리 픽셀과 CSS 픽셀을 1:1로 맵핑 (오작동 제로)
-                    const scaleX = this.cvs.width / rect.width;
-                    const scaleY = this.cvs.height / rect.height;
-                    
-                    return { 
-                        x: (clientX - rect.left) * scaleX, 
-                        y: (clientY - rect.top) * scaleY 
-                    };
-                };
 
-                const start = (e) => { 
-                    e.preventDefault(); 
-                    this.isDrawing = true; 
-                    const p = getPos(e); 
-                    this.ctx.beginPath(); 
-                    this.ctx.moveTo(p.x, p.y); 
-                };
-                
-                const move = (e) => { 
-                    if(!this.isDrawing) return; 
-                    e.preventDefault(); 
-                    const p = getPos(e); 
-                    this.ctx.lineTo(p.x, p.y); 
-                    this.ctx.stroke(); 
-                };
-                
-                const stop = (e) => { 
-                    if(this.isDrawing) { 
-                        e.preventDefault();
-                        this.isDrawing = false; 
-                    } 
-                };
-
-                // PC 환경 마우스 이벤트
-                this.cvs.addEventListener('mousedown', start, { passive: false });
-                this.cvs.addEventListener('mousemove', move, { passive: false });
-                window.addEventListener('mouseup', stop);
-                this.cvs.addEventListener('mouseleave', stop);
-                
-                // 모바일/태블릿 환경 터치 이벤트
-                this.cvs.addEventListener('touchstart', start, { passive: false });
-                this.cvs.addEventListener('touchmove', move, { passive: false });
-                window.addEventListener('touchend', stop, { passive: false });
-                window.addEventListener('touchcancel', stop, { passive: false });
-                
-                document.getElementById('brush-size').oninput = (e) => { 
-                    const multiplier = this.isErasing ? 2 : 1;
-                    this.ctx.lineWidth = e.target.value * multiplier; 
-                };
-            },
-            
-            sync() {
-                // 부모 박스(drawing-board)의 실제 렌더링 크기를 가져옵니다.
-                const w = this.board.clientWidth;
-                const h = this.board.clientHeight;
-                
-                // 크기가 0이면 아직 이미지가 안 뜬 것이므로 무시합니다.
-                if(w === 0 || h === 0) return; 
-                
-                // 이미 캔버스 크기가 동일하면 굳이 다시 그리지 않습니다. (성능 최적화)
-                if(this.cvs.width === w && this.cvs.height === h) return;
-
-                // 기존 그림 백업
-                const tempCvs = document.createElement('canvas');
-                tempCvs.width = this.cvs.width || w; 
-                tempCvs.height = this.cvs.height || h;
-                if(this.cvs.width > 0) tempCvs.getContext('2d').drawImage(this.cvs, 0, 0);
-
-                // 캔버스 크기를 부모 박스와 똑같이 강제 할당
-                this.cvs.width = w; 
-                this.cvs.height = h;
-                
-                // 펜 설정 복구
-                this.ctx.lineCap = 'round'; 
-                this.ctx.lineJoin = 'round';
-                this.ctx.globalCompositeOperation = this.isErasing ? 'destination-out' : 'source-over';
-                this.ctx.strokeStyle = this.isErasing ? "rgba(0,0,0,1)" : this.lastColor;
-                const multiplier = this.isErasing ? 2 : 1;
-                this.ctx.lineWidth = document.getElementById('brush-size').value * multiplier;
-                
-                // 기존 그림 복원
-                if(tempCvs.width > 0) { 
-                    this.ctx.drawImage(tempCvs, 0, 0, tempCvs.width, tempCvs.height, 0, 0, w, h); 
-                }
-            },
-            
-            clearAll() { 
-                this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
-                this.ctx.beginPath(); 
+            clearAll() {
+                this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
             }
         };
 
+        /* ======================================================================
+         * [Audio Engine & AI Tutor] 
+         * ====================================================================== */
         const AudioEngine = {
             recognition: null,
             init() {
@@ -493,7 +493,9 @@
         };
 
         window.onload = () => {
-            PageEngine.init(); CanvasEngine.init(); AudioEngine.init(); 
+            PageEngine.init(); 
+            CanvasEngine.init(); 
+            AudioEngine.init(); 
         };
     </script>
 </body>

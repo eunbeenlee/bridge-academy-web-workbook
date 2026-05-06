@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bridge Academy | Premium EdTech Lab</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,7 +11,7 @@
     
     <style>
         /* ======================================================================
-         * [Architecture: Bridge System V57.0 - The Final Canvas Fix]
+         * [Architecture: Bridge System V58.0 - The Classic Stable Master]
          * ====================================================================== */
         :root {
             --br-green: #89BFA0; --br-gold: #CBAE75; --br-blue: #7CA6C1; --br-charcoal: #363431;
@@ -22,14 +20,11 @@
             --sidebar-width: 320px;
         }
 
-        /* [Absolute Reset] */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        /* 화면 스크롤, 바운스 완벽 차단. 화면 높이를 무조건 기기 화면(dvh)에 고정 */
-        html, body { width: 100%; height: 100dvh; position: fixed; top: 0; left: 0; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; touch-action: none; }
+        body, html { width: 100%; height: 100%; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; overflow: hidden; }
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
         
-        .app-container { display: flex; width: 100%; height: 100%; }
+        .app-container { display: flex; width: 100vw; height: 100vh; position: relative; }
         
         /* [Sidebar] */
         .sidebar { width: var(--sidebar-width); height: 100%; background: var(--br-paper); border-right: 1px solid var(--br-border); display: flex; flex-direction: column; z-index: 1000; transition: transform 0.4s ease; flex-shrink: 0; }
@@ -54,33 +49,33 @@
         .nav-badge { font-size: 11px; font-weight: 900; opacity: 0.3; letter-spacing: 1px; flex-shrink: 0; }
         
         /* [Workspace] */
-        .workspace { flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 0; position: relative; }
+        .workspace { flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 0; position: relative; overflow-y: auto; overflow-x: hidden; }
         
-        .top-bar { height: 100px; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; z-index: 10; }
+        .top-bar { padding: 20px 40px; display: flex; justify-content: space-between; align-items: flex-end; flex-shrink: 0; z-index: 10; position: sticky; top: 0; background: var(--br-bg); }
         .unit-info { font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 5px; }
         .page-info { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; color: var(--br-charcoal); line-height: 1; margin-top: 5px; }
         .soundscape-ui { display: flex; align-items: center; gap: 8px; background: #FFF; padding: 12px 20px; border-radius: 100px; border: 1px solid var(--br-border); font-size: 12px; font-weight: 900; color: var(--br-muted); cursor: pointer; }
         .soundscape-ui.active { color: var(--br-blue); border-color: var(--br-blue); }
 
-        /* ==================================================================
-           [V57.0 완벽한 캔버스 & 래퍼 구조]
-           화면이 좁아지면 알아서 축소되며 절대 스크롤이나 잘림 현상을 일으키지 않음
-           ================================================================== */
-        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px; overflow: hidden; min-height: 0; position: relative; }
+        /* [Stage: 스크롤이 자연스럽게 발생하도록 유연한 레이아웃 적용] */
+        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px 40px; position: relative; min-height: fit-content; }
         
-        /* 이 보드가 캔버스와 이미지를 묶어주는 절대 영역입니다. */
-        .drawing-board { position: relative; max-width: 100%; max-height: 100%; display: inline-flex; justify-content: center; align-items: center; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); border: 1px solid var(--br-border); background: var(--br-paper); line-height: 0; overflow: hidden; }
+        .canvas-container { position: relative; display: inline-block; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); border: 1px solid var(--br-border); background: var(--br-paper); line-height: 0; }
         
-        #worksheet-img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; pointer-events: none; opacity: 0; transition: 0.5s; border-radius: 20px; }
+        #worksheet-img { display: block; max-width: 100%; height: auto; max-height: 70vh; border-radius: 20px; opacity: 0; transition: opacity 0.5s; object-fit: contain; pointer-events: none; }
         
-        /* 캔버스는 부모 보드에 100% 겹쳐서 고정됨 */
-        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 50; touch-action: none; }
+        /* 캔버스 절대 위치 설정 (이미지 1:1 매칭) */
+        #draw-layer { position: absolute; top: 0; left: 0; border-radius: 20px; touch-action: none; z-index: 50; }
         
-        .drawing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23CBAE75' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/></svg>") 2 22, crosshair !important; }
+        /* 커서 모드 */
+        .drawing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='%23CBAE75' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/></svg>") 0 20, crosshair !important; }
         .erasing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23FFF' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><line x1='3' y1='9' x2='21' y2='9'/></svg>") 12 12, cell !important; }
 
+        .scan-line { width: 100%; height: 4px; background: var(--br-green); position: absolute; top: 0; left: 0; box-shadow: 0 0 15px var(--br-green); animation: scan 2s linear infinite; z-index: 100; display: none; border-radius: 4px; }
+        @keyframes scan { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+
         /* [Bottom Dock] */
-        .bottom-dock { height: 110px; flex-shrink: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(25px); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; }
+        .bottom-dock { flex-shrink: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(25px); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; z-index: 500; position: sticky; bottom: 0; }
         
         .tool-group { display: flex; align-items: center; gap: 20px; background: #FAFAFA; padding: 12px 25px; border-radius: 100px; border: 1px solid var(--br-border); }
         .color-preview { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #FFF; cursor: pointer; background: var(--br-charcoal); box-shadow: 0 5px 10px rgba(0,0,0,0.05); flex-shrink: 0; }
@@ -101,7 +96,7 @@
         .btn-submit { background: var(--br-charcoal); color: #FFF; }
 
         /* [English AI Teacher Panel] */
-        .ai-panel { position: absolute; top: 0; right: -450px; width: 420px; height: 100%; background: #FFF; box-shadow: -10px 0 30px rgba(0,0,0,0.1); z-index: 2000; transition: right 0.5s ease; display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
+        .ai-panel { position: fixed; top: 0; right: -450px; width: 420px; height: 100vh; background: #FFF; box-shadow: -10px 0 30px rgba(0,0,0,0.1); z-index: 2000; transition: right 0.5s ease; display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
         .ai-panel.open { right: 0; }
         .ai-header { padding: 25px; background: var(--br-ai); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); flex-shrink: 0; }
         .ai-title { font-size: 18px; font-weight: 900; color: var(--br-green); display: flex; align-items: center; gap: 10px; }
@@ -130,26 +125,27 @@
         /* [Responsive Breakpoints] */
         @media (max-width: 1024px) {
             :root { --sidebar-width: 260px; }
-            .top-bar { height: 80px; padding: 0 20px; }
-            .bottom-dock { height: 90px; padding: 0 20px; }
+            .top-bar { padding: 15px 20px; }
+            .bottom-dock { padding: 15px 20px; }
             .stage-wrapper { padding: 10px 20px; }
-            .btn-nav, .btn-core { height: 50px; border-radius: 15px; font-size: 12px; }
-            .btn-nav { width: 50px; font-size: 20px; }
-            .color-preview { width: 35px; height: 35px; }
         }
 
         @media (max-width: 800px) {
             .mobile-menu-btn { display: block; }
-            .sidebar { position: absolute; left: calc(var(--sidebar-width) * -1); top: 0; box-shadow: none; }
+            .sidebar { position: fixed; left: calc(var(--sidebar-width) * -1); top: 0; box-shadow: none; }
             .sidebar.open { left: 0; box-shadow: 20px 0 50px rgba(0,0,0,0.1); }
             
             .top-bar-left { display: flex; align-items: center; gap: 10px; }
             .page-info { font-size: 28px; margin-top: 0; }
             
-            .bottom-dock { height: 140px; flex-direction: column; justify-content: space-evenly; padding: 10px 20px; border-radius: 25px 25px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
+            /* 모바일은 독 영역이 두 줄로 내려가도록 처리 */
+            .bottom-dock { flex-direction: column; justify-content: center; padding: 15px 20px; gap: 15px; border-radius: 25px 25px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
             .tool-group { width: 100%; justify-content: center; padding: 8px 20px; }
             .action-group { width: 100%; justify-content: space-between; }
-            .btn-core { flex: 1; justify-content: center; padding: 0 10px; }
+            
+            .btn-nav, .btn-core { height: 50px; border-radius: 15px; font-size: 13px; }
+            .btn-nav { width: 50px; font-size: 20px; }
+            .btn-core { padding: 0 15px; flex: 1; justify-content: center; }
             
             .ai-panel { width: 100%; right: -100%; border-left: none; }
         }
@@ -183,15 +179,16 @@
                     </div>
                 </div>
                 <button class="soundscape-ui" id="soundscape-btn" onclick="AmbientEngine.toggle()">
-                    🎵 <span>Soundscape:</span> OFF
+                    🎵 <span class="hide-mobile">Soundscape:</span> OFF
                 </button>
             </div>
 
-            <!-- V57.0 래퍼 (절대 잘리지 않고 비율을 유지하며 축소/확대됨) -->
+            <!-- V58.0 캔버스 래퍼 영역 -->
             <main class="stage-wrapper">
-                <div class="drawing-board" id="drawing-board">
+                <div class="canvas-container" id="canvas-container">
                     <img src="" id="worksheet-img" crossorigin="anonymous">
                     <canvas id="draw-layer"></canvas>
+                    <div class="scan-line" id="canvas-scan-line"></div>
                 </div>
             </main>
 
@@ -200,7 +197,6 @@
                     <div class="color-preview" id="btn-color"></div>
                     <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;">
                     <input type="range" class="brush-slider" id="brush-size" min="2" max="40" value="6">
-                    <!-- V57.0 지우개 토글 버튼 -->
                     <button class="btn-erase" id="btn-eraser" onclick="CanvasEngine.toggleEraser()">ERASER</button>
                     <button class="btn-erase-all" onclick="CanvasEngine.clearAll()">[CLEAR ALL]</button>
                 </div>
@@ -288,7 +284,6 @@
                 img.style.opacity = '0'; img.src = imgPath;
                 img.onload = () => { 
                     img.style.opacity = '1'; 
-                    // 이미지 로드 후 캔버스 사이즈 동기화
                     CanvasEngine.sync(); 
                 };
 
@@ -303,7 +298,8 @@
         };
 
         /* ======================================================================
-         * [V57.0 Classic Touch & Mouse Event Canvas Engine]
+         * [V58.0 Pure Classic Canvas Engine] 
+         * 복잡한 포인터 이벤트나 좌표 수학을 버리고 초기 버전에 썼던 가장 안정적인 마우스/터치 방식으로 완벽 롤백
          * ====================================================================== */
         const CanvasEngine = {
             isDrawing: false,
@@ -314,7 +310,7 @@
                 this.cvs = document.getElementById('draw-layer');
                 this.ctx = this.cvs.getContext('2d', { willReadFrequently: true });
                 this.img = document.getElementById('worksheet-img');
-                this.board = document.getElementById('drawing-board');
+                this.container = document.getElementById('canvas-container');
                 
                 document.getElementById('btn-color').onclick = () => document.getElementById('native-color-picker').click();
                 document.getElementById('native-color-picker').onchange = (e) => {
@@ -334,7 +330,6 @@
                     btn.classList.add('active'); btn.innerText = "PEN MODE";
                     body.classList.remove('drawing-mode'); body.classList.add('erasing-mode');
                     this.ctx.globalCompositeOperation = 'destination-out';
-                    // 지우개는 펜보다 2배 두껍게
                     this.ctx.lineWidth = document.getElementById('brush-size').value * 2;
                 } else {
                     btn.classList.remove('active'); btn.innerText = "ERASER";
@@ -346,29 +341,19 @@
             },
             
             bind() {
-                // V57.0 캔버스 내부 좌표 계산 로직 (가장 안정적)
+                // V58.0 초창기 직관적인 1:1 좌표 매핑으로 롤백
                 const getPos = (e) => {
                     const rect = this.cvs.getBoundingClientRect();
-                    let clientX = e.clientX;
-                    let clientY = e.clientY;
-                    
-                    if(e.touches && e.touches.length > 0) {
-                        clientX = e.touches[0].clientX;
-                        clientY = e.touches[0].clientY;
-                    }
-                    
-                    // CSS 표시 크기와 내부 Canvas Pixel 크기 비율 계산
-                    const scaleX = this.cvs.width / rect.width;
-                    const scaleY = this.cvs.height / rect.height;
-                    
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
                     return { 
-                        x: (clientX - rect.left) * scaleX, 
-                        y: (clientY - rect.top) * scaleY 
+                        x: clientX - rect.left, 
+                        y: clientY - rect.top 
                     };
                 };
 
                 const start = (e) => { 
-                    e.preventDefault(); // 스크롤/바운스 원천 차단
+                    e.preventDefault(); 
                     this.isDrawing = true; 
                     const p = getPos(e); 
                     this.ctx.beginPath(); 
@@ -391,19 +376,17 @@
                     } 
                 };
 
-                // PC (Mouse)
+                // 순수한 Mouse & Touch 이벤트만 남김 (오작동 방지)
                 this.cvs.addEventListener('mousedown', start, { passive: false });
                 this.cvs.addEventListener('mousemove', move, { passive: false });
                 window.addEventListener('mouseup', stop);
                 this.cvs.addEventListener('mouseleave', stop);
                 
-                // Mobile & Tablet (Touch)
                 this.cvs.addEventListener('touchstart', start, { passive: false });
                 this.cvs.addEventListener('touchmove', move, { passive: false });
-                this.cvs.addEventListener('touchend', stop, { passive: false });
-                this.cvs.addEventListener('touchcancel', stop, { passive: false });
+                window.addEventListener('touchend', stop);
+                window.addEventListener('touchcancel', stop);
                 
-                // 브러시 사이즈 조절
                 document.getElementById('brush-size').oninput = (e) => { 
                     const multiplier = this.isErasing ? 2 : 1;
                     this.ctx.lineWidth = e.target.value * multiplier; 
@@ -411,50 +394,34 @@
             },
             
             sync() {
-                const rect = this.img.getBoundingClientRect();
-                if(rect.width === 0) return; 
+                // V58.0 초창기 안정화 버전 방식 - CSS 크기와 Canvas 내부 크기를 1:1로 완벽 매칭
+                const imgWidth = this.img.clientWidth;
+                const imgHeight = this.img.clientHeight;
+                if(imgWidth === 0) return; 
                 
-                // 기존에 그려진 그림 데이터 백업
                 const tempCvs = document.createElement('canvas');
                 tempCvs.width = this.cvs.width; tempCvs.height = this.cvs.height;
                 if(this.cvs.width > 0) tempCvs.getContext('2d').drawImage(this.cvs, 0, 0);
 
-                // 고해상도(Retina) 처리 (DPR 적용)
-                const dpr = window.devicePixelRatio || 1;
+                this.cvs.width = imgWidth; 
+                this.cvs.height = imgHeight;
+                this.cvs.style.width = imgWidth + 'px';
+                this.cvs.style.height = imgHeight + 'px';
                 
-                // 캔버스 내부 실제 픽셀 세팅
-                this.cvs.width = rect.width * dpr; 
-                this.cvs.height = rect.height * dpr;
-                
-                // 컨텍스트에 DPR 스케일 적용 (좌표 계산 시 편리함)
-                this.ctx.scale(dpr, dpr);
-                
-                // 스타일 복구
-                this.ctx.lineCap = 'round'; 
-                this.ctx.lineJoin = 'round';
+                this.ctx.lineCap = 'round'; this.ctx.lineJoin = 'round';
                 this.ctx.globalCompositeOperation = this.isErasing ? 'destination-out' : 'source-over';
                 this.ctx.strokeStyle = this.isErasing ? "rgba(0,0,0,1)" : this.lastColor;
                 const multiplier = this.isErasing ? 2 : 1;
                 this.ctx.lineWidth = document.getElementById('brush-size').value * multiplier;
                 
-                // 백업된 그림 복원
                 if(tempCvs.width > 0) { 
-                    // 복원 시 스케일을 1로 임시 변경 후 그리기
-                    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-                    this.ctx.drawImage(tempCvs, 0, 0, tempCvs.width, tempCvs.height, 0, 0, this.cvs.width, this.cvs.height);
-                    // 다시 DPR 스케일 적용
-                    this.ctx.scale(dpr, dpr);
+                    this.ctx.drawImage(tempCvs, 0, 0, tempCvs.width, tempCvs.height, 0, 0, this.cvs.width, this.cvs.height); 
                 }
             },
             
             clearAll() { 
-                // 전체 지우기 시에도 Transform 초기화 후 지움
-                this.ctx.setTransform(1, 0, 0, 1, 0, 0);
                 this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
-                const dpr = window.devicePixelRatio || 1;
-                this.ctx.scale(dpr, dpr);
                 this.ctx.beginPath(); 
-                
                 HapticEngine.trigger('heavy'); 
                 if(this.isErasing) this.toggleEraser();
             }

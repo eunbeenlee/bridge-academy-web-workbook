@@ -17,9 +17,8 @@
             --sidebar-width: 320px;
         }
 
-        /* [Absolute Reset] */
+        /* [Absolute Reset] CSS 락(Lock) 해제 유지 */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
         html, body { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; pointer-events: auto !important; }
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
         
@@ -55,12 +54,11 @@
         /* [Stage Wrapper] */
         .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px; position: relative; overflow: hidden; pointer-events: auto !important; }
         
-        .drawing-board { position: relative; display: inline-block; line-height: 0; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); background: var(--br-paper); max-width: 100%; max-height: 100%; pointer-events: auto !important; }
+        .drawing-board { position: relative; display: inline-flex; line-height: 0; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); background: var(--br-paper); max-width: 100%; max-height: 100%; pointer-events: auto !important; }
         
-        /* ❌ 4️⃣ 원장님 요청: pointer-events: none !important 제거 완료 */
         #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; user-select: none; }
         
-        /* 2️⃣ 원장님 요청: touch-action: none 은 오직 캔버스에만 부여 */
+        /* 캔버스에만 touch-action: none 부여 유지 */
         #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; cursor: crosshair; }
 
         /* [Bottom Dock] */
@@ -157,7 +155,7 @@
 
             <main class="stage-wrapper">
                 <div class="drawing-board" id="drawing-board">
-                    <img src="" id="worksheet-img" crossorigin="anonymous">
+                    <img src="" id="worksheet-img">
                     <canvas id="draw-layer"></canvas>
                 </div>
             </main>
@@ -248,9 +246,10 @@
                 img.style.opacity = '0'; 
                 img.src = imgPath;
                 
-                // ❌ 3️⃣ 원장님 지시: img.onload 후 resizeCanvas 강제 제거, ResizeObserver에게 온전히 일임
+                // 1️⃣ 원장님 지시: img.onload 후 50ms 딜레이 resize 강제 복구
                 img.onload = () => { 
                     img.style.opacity = '1'; 
+                    setTimeout(() => CanvasEngine.resizeCanvas(), 50);
                 };
 
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
@@ -276,9 +275,12 @@
 
                 this.setupUI();
                 
-                // 1️⃣ 원장님 지시: 초기 렌더링 시 브라우저 페인트 사이클과 동기화
+                // 2️⃣ 원장님 지시: 브라우저 렌더링 틱 지연을 완벽히 잡는 2-Pass Setup (rAF + setTimeout)
                 requestAnimationFrame(() => {
                     this.setupCanvas();
+                    setTimeout(() => {
+                        this.setupCanvas();
+                    }, 50);
                 });
                 
                 this.bindEvents();
@@ -308,7 +310,6 @@
 
             setupResizeObserver() {
                 const ro = new ResizeObserver(() => {
-                    // 성능 최적화 및 렌더링 타이밍 보장을 위해 rAF 적용
                     requestAnimationFrame(() => {
                         this.resizeCanvas();
                     });
@@ -351,7 +352,6 @@
 
                 this.cvs.addEventListener('pointerdown', (e) => {
                     this.isDrawing = true;
-                    // ⚠️ 예외처리 유지
                     try { this.cvs.setPointerCapture(e.pointerId); } catch(err){}
 
                     const p = this.getPos(e);
@@ -366,7 +366,6 @@
                     this.ctx.lineTo(p.x, p.y);
                     this.ctx.stroke();
                     
-                    // ✨ 5️⃣ 원장님 지시: 메모리 누수 방지 및 부드러운 드로잉을 위한 패스 분리
                     this.ctx.beginPath();
                     this.ctx.moveTo(p.x, p.y);
                 });

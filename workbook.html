@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- [V48.0 핵심] 모바일/태블릿 완벽 대응을 위한 Viewport 고정 및 스크롤 바운스 방지 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Bridge Academy | Universal EdTech Lab</title>
+    <title>Bridge Academy | Premium EdTech Lab</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,8 +13,8 @@
     
     <style>
         /* ======================================================================
-         * [Architecture: Bridge Universal System V48.0]
-         * Feature: Omnichannel Responsive Design & Socratic AI
+         * [Architecture: Bridge Universal System V50.0]
+         * Feature: Dynamic AI-Context Navigation Sidebar
          * ====================================================================== */
         :root {
             --br-green: #89BFA0; --br-gold: #CBAE75; --br-blue: #7CA6C1; --br-charcoal: #363431;
@@ -26,22 +25,16 @@
             
             --sidebar-width: 320px;
             --dock-height-pc: 130px;
-            --dock-height-mobile: 100px;
-            
-            /* 디바이스 높이에 따른 동적 캔버스 계산 */
             --stage-max-height: calc(100dvh - var(--dock-height-pc) - 100px);
         }
 
-        /* [Reset & Touch Optimization] */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-        body, html { width: 100%; height: 100dvh; /* dvh 사용으로 모바일 브라우저 주소창 이슈 해결 */ overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; overscroll-behavior: none; }
+        body, html { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; overscroll-behavior: none; }
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
         
         .app-container { display: flex; width: 100vw; height: 100dvh; position: relative; }
         
-        /* --------------------------------------------------
-         * [Responsive Sidebar Navigation]
-         * -------------------------------------------------- */
+        /* [Sidebar] */
         .sidebar { width: var(--sidebar-width); height: 100dvh; background: var(--br-paper); border-right: 1px solid var(--br-border); display: flex; flex-direction: column; z-index: 1000; transition: transform 0.4s var(--ease-lux); }
         .sidebar-header { padding: 40px 30px 30px; text-align: center; border-bottom: 1px solid var(--br-border); cursor: pointer; }
         .brand-logo { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: var(--br-charcoal); }
@@ -61,9 +54,11 @@
         .nav-item { padding: 18px 20px; margin-bottom: 10px; border-radius: 16px; background: #FAFAFA; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; cursor: pointer; border: 1px solid transparent; }
         .nav-item.active { background: var(--br-ai); border-left: 6px solid var(--br-green); font-weight: 900; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
         
-        /* --------------------------------------------------
-         * [Workspace & Fluid Canvas]
-         * -------------------------------------------------- */
+        /* V50.0 사이드바 텍스트 길이 제어 (말줄임표) */
+        .nav-title { font-size: 14px; font-weight: 800; letter-spacing: -0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+        .nav-badge { font-size: 11px; font-weight: 900; opacity: 0.3; letter-spacing: 1px; flex-shrink: 0; }
+
+        /* [Workspace] */
         .workspace { flex: 1; display: flex; flex-direction: column; position: relative; background: var(--br-bg); height: 100dvh; overflow: hidden; }
         .top-bar { padding: 20px 40px; display: flex; justify-content: space-between; align-items: flex-end; z-index: 10; flex-shrink: 0; }
         .unit-info { font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 5px; }
@@ -72,11 +67,10 @@
         .soundscape-ui { display: flex; align-items: center; gap: 8px; background: #FFF; padding: 12px 20px; border-radius: 100px; border: 1px solid var(--br-border); font-size: 12px; font-weight: 900; color: var(--br-muted); cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
         .soundscape-ui.active { color: var(--br-blue); border-color: var(--br-blue); }
 
-        /* V48.0 Stage: Flex를 활용하여 브라우저 크기에 맞춰 캔버스가 우아하게 리사이징됨 */
         .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px 20px; position: relative; overflow: hidden; }
         .canvas-container { position: relative; background: var(--br-paper); border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.06); border: 1px solid var(--br-border); max-width: 100%; max-height: var(--stage-max-height); display: flex; justify-content: center; align-items: center; }
         
-        .canvas-container.drawing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24' fill='none' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/></svg>") 0 36, crosshair; }
+        .canvas-container.drawing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='%23CBAE75' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/></svg>") 0 20, crosshair; }
         
         #worksheet-img { max-width: 100%; max-height: var(--stage-max-height); border-radius: 30px; opacity: 0; transition: opacity 0.5s; user-select: none; -webkit-user-drag: none; display: block; object-fit: contain; }
         #draw-layer { position: absolute; top: 0; left: 0; border-radius: 30px; touch-action: none; z-index: 50; }
@@ -84,9 +78,7 @@
         .scan-line { width: 100%; height: 5px; background: var(--br-green); position: absolute; top: 0; left: 0; box-shadow: 0 0 20px var(--br-green); animation: scan 2s linear infinite; z-index: 100; display: none; border-radius: 5px; }
         @keyframes scan { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
 
-        /* --------------------------------------------------
-         * [Child-Centric Bottom Dock]
-         * -------------------------------------------------- */
+        /* [Bottom Dock] */
         .bottom-dock { height: var(--dock-height-pc); background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(25px); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; flex-shrink: 0; }
         
         .tool-group { display: flex; align-items: center; gap: 20px; background: #FAFAFA; padding: 15px 30px; border-radius: 100px; border: 1px solid var(--br-border); }
@@ -111,9 +103,7 @@
         .btn-submit { background: var(--br-charcoal); color: #FFF; border: none; }
         .btn-submit:hover { background: var(--br-green); box-shadow: 0 20px 40px rgba(137, 191, 160, 0.3); }
 
-        /* --------------------------------------------------
-         * [Universal AI Teacher Panel]
-         * -------------------------------------------------- */
+        /* [English AI Teacher Panel] */
         .ai-panel { position: absolute; top: 0; right: -500px; width: 420px; height: 100dvh; background: #FFF; box-shadow: -20px 0 50px rgba(0,0,0,0.1); z-index: 2000; transition: right 0.6s var(--ease-bounce); display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
         .ai-panel.open { right: 0; }
         .ai-header { padding: 30px; background: var(--br-ai); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); flex-shrink: 0; }
@@ -135,14 +125,9 @@
         .ai-name-input:focus { background: #F4F8F5; border-style: solid; }
         .ai-name-btn { width: 100%; background: var(--br-green); color: #fff; padding: 20px; border-radius: 15px; margin-top: 15px; font-weight: 900; cursor: pointer; transition: 0.3s; letter-spacing: 2px; font-size: 16px; }
 
-        /* [Mobile Navigation Toggle] */
         .mobile-menu-btn { display: none; font-size: 28px; padding: 10px; color: var(--br-charcoal); z-index: 1500; }
 
-        /* ======================================================================
-         * [Responsive Breakpoints]
-         * ====================================================================== */
-        
-        /* [Tablet Landscape & Small PC] */
+        /* [Responsive Breakpoints] */
         @media (max-width: 1200px) {
             :root { --sidebar-width: 280px; }
             .top-bar { padding: 20px; }
@@ -152,12 +137,9 @@
             .btn-nav { width: 70px; font-size: 24px; }
         }
 
-        /* [Tablet Portrait & Large Mobile] */
         @media (max-width: 992px) {
-            :root { --stage-max-height: calc(100dvh - 160px - 80px); } /* Dock height increased for wrap */
-            
+            :root { --stage-max-height: calc(100dvh - 160px - 80px); } 
             .mobile-menu-btn { display: block; }
-            
             .sidebar { position: absolute; left: calc(var(--sidebar-width) * -1); top: 0; box-shadow: none; }
             .sidebar.open { left: 0; box-shadow: 20px 0 50px rgba(0,0,0,0.1); }
             
@@ -174,21 +156,16 @@
             .btn-core { padding: 0 20px; flex: 1; justify-content: center; }
         }
 
-        /* [Mobile Phone - Bottom Sheet AI Panel] */
         @media (max-width: 600px) {
             :root { --sidebar-width: 85vw; --stage-max-height: calc(100dvh - 200px); }
-            
             .page-info { font-size: 26px; }
             .soundscape-ui { padding: 10px 15px; font-size: 11px; }
-            .soundscape-ui span { display: none; } /* 모바일에서 텍스트 축소 */
-            
+            .soundscape-ui span { display: none; }
             .tool-group { gap: 15px; }
             .brush-slider { width: 100px; }
-            
             .btn-nav, .btn-core { height: 60px; font-size: 13px; letter-spacing: 1px; }
             .btn-nav { width: 60px; }
             
-            /* V48.0 핵심: 모바일에서는 AI 패널이 우측이 아닌 '아래'에서 올라오는 Bottom Sheet 구조 */
             .ai-panel { 
                 width: 100vw; height: 90dvh; 
                 top: auto; bottom: -100dvh; right: 0; left: 0; 
@@ -206,7 +183,6 @@
 
     <div class="app-container" id="main-app">
         
-        <!-- V48.0 Sidebar -->
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header" onclick="location.href='index.html'">
                 <div class="brand-logo">Bridge<span>Academy</span></div>
@@ -221,11 +197,9 @@
             <div class="nav-list" id="nav-list"></div>
         </nav>
 
-        <!-- V48.0 Workspace -->
         <div class="workspace">
             <div class="top-bar">
                 <div class="top-bar-left">
-                    <!-- Mobile Hamburger Menu -->
                     <button class="mobile-menu-btn" onclick="UIEngine.toggleSidebar()">☰</button>
                     <div>
                         <div id="unit-info" class="unit-info">UNIT LOADING...</div>
@@ -237,7 +211,6 @@
                 </button>
             </div>
 
-            <!-- V48.0 Fluid Canvas Stage -->
             <main class="stage-wrapper" id="stage-wrapper">
                 <div class="canvas-container drawing-mode" id="canvas-container">
                     <img src="" id="worksheet-img" crossorigin="anonymous">
@@ -246,7 +219,6 @@
                 </div>
             </main>
 
-            <!-- V48.0 Thumb-Zone Dock -->
             <div class="bottom-dock">
                 <div class="tool-group">
                     <div class="color-preview" id="btn-color"></div>
@@ -266,7 +238,6 @@
             </div>
         </div>
 
-        <!-- V48.0 Responsive AI Panel -->
         <div class="ai-panel" id="ai-panel">
             <div class="ai-header">
                 <div class="ai-title">Bridge AI Tutor</div>
@@ -278,13 +249,7 @@
         <audio id="bgm-ambient" loop crossorigin="anonymous"></audio>
     </div>
 
-    <!-- ======================================================================
-         [Enterprise JavaScript Architecture V48.0]
-         ====================================================================== -->
     <script>
-        /**
-         * [System Config]
-         */
         const CONFIG = {
             GITHUB_ID: "eunbeenlee", 
             REPO: "bridge-heritage",
@@ -303,31 +268,21 @@
             isRecording: false
         };
 
-        /**
-         * [V48.0 UI Engine] (Mobile UI Handlers)
-         */
         const UIEngine = {
-            toggleSidebar() {
-                const sidebar = document.getElementById('sidebar');
-                sidebar.classList.toggle('open');
-            },
-            closeSidebarOnMobile() {
-                if(window.innerWidth <= 992) {
-                    document.getElementById('sidebar').classList.remove('open');
-                }
-            }
+            toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); },
+            closeSidebarOnMobile() { if(window.innerWidth <= 992) document.getElementById('sidebar').classList.remove('open'); }
         };
 
-        /**
-         * [Context-Aware AI DB]
-         */
+        // [V50.0] 100% English AI Context Database with Navigation Titles
         const AI_CONTEXT_DB = {
             "A-1": {
                 theme: "All About Me",
                 pages: {
-                    1: { intent: "자신의 이름과 정체성 표현", analysis: "학생이 캔버스에 자신의 이름을 쓰고 꾸민 형태를 스캔했습니다. 획의 흐름에서 긍정적인 자아 인식이 돋보입니다.", question: "What makes your name so special and beautiful?" },
-                    2: { intent: "얼굴 및 감정 묘사", analysis: "얼굴의 주요 특징을 배치한 방식에서 높은 관찰력이 보입니다. 표정을 통해 오늘의 감정을 창의적으로 표현했습니다.", question: "What is your favorite part of your face, and why?" },
-                    3: { intent: "신체 부위 기능 탐구", analysis: "손과 발의 움직임을 역동적으로 연결했습니다. 자신의 몸이 할 수 있는 일에 대한 이해도가 높습니다.", question: "What fun things can you do with your strong hands?" }
+                    1: { navTitle: "👑 My Special Name", intent: "Expressing name and identity", analysis: "The student's strokes show positive self-perception and great confidence in writing their name.", question: "What makes your name so special and beautiful?" },
+                    2: { navTitle: "👀 My Beautiful Face", intent: "Depicting face and emotions", analysis: "High observation skills shown in facial feature placement. The student expressed today's emotion creatively.", question: "What is your favorite part of your face, and why?" },
+                    3: { navTitle: "🖐️ My Strong Hands", intent: "Exploring body functions", analysis: "Connected hands and feet dynamically. Shows a great understanding of body capabilities.", question: "What fun things can you do with your strong hands?" },
+                    4: { navTitle: "👨‍👩‍👧 My Family Tree", intent: "Understanding family connections", analysis: "Clear depiction of family members, showing strong emotional bonds and spatial relationships.", question: "Who did you draw here, and what do you love about them?" },
+                    5: { navTitle: "🎨 My Favorite Colors", intent: "Expressing personal preferences", analysis: "Vibrant color choices reflect a highly energetic and positive mood today.", question: "Why did you choose these beautiful colors?" }
                 }
             }
         };
@@ -335,20 +290,21 @@
         function getPageContext(unitId, pageNum) {
             const unitData = AI_CONTEXT_DB[unitId];
             if (unitData && unitData.pages[pageNum]) return unitData.pages[pageNum];
-            return { intent: "창의적 문제 해결 과정", analysis: "주어진 질문에 대해 시각적으로 다양한 각도로 접근하며 훌륭한 탐구 능력을 보여주고 있습니다.", question: "Can you tell me more about the wonderful things you drew here?" };
+            // V50.0 Fallback for pages without explicit mappings
+            return { navTitle: "✨ Inquiry Lab", intent: "Creative problem-solving", analysis: "Approaches the question from multiple angles, showing excellent inquiry and critical thinking skills.", question: "Can you tell me more about the wonderful things you drew here?" };
         }
 
-        /**
-         * [Page Engine]
-         */
         const PageEngine = {
             init() {
                 document.getElementById('unit-info').innerText = `MASTER LAB: ${STATE.id}`;
                 const list = document.getElementById('nav-list');
                 for(let i=1; i<=17; i++) {
+                    const ctx = getPageContext(STATE.id, i); // DB에서 동적으로 제목 가져오기
                     const item = document.createElement('div');
                     item.className = 'nav-item'; item.id = `nav-${i}`;
-                    item.innerHTML = `<span style="font-size:15px; font-weight:800; letter-spacing:-0.5px;">Inquiry Entry</span> <span style="font-size:12px; opacity:0.4; font-weight:900;">P.${String(i).padStart(2,'0')}</span>`;
+                    
+                    // V50.0: 하드코딩된 'Inquiry Entry' 대신 DB의 'navTitle' 표시
+                    item.innerHTML = `<span class="nav-title" title="${ctx.navTitle}">${ctx.navTitle}</span> <span class="nav-badge">P.${String(i).padStart(2,'0')}</span>`;
                     item.onclick = () => { this.load(i); UIEngine.closeSidebarOnMobile(); };
                     list.appendChild(item);
                 }
@@ -381,14 +337,11 @@
             }
         };
 
-        /**
-         * [V48.0 Fluid Canvas Engine]
-         */
         const CanvasEngine = {
             isDrawing: false,
             init() {
                 this.cvs = document.getElementById('draw-layer');
-                this.ctx = this.cvs.getContext('2d', { willReadFrequently: true });
+                this.ctx = this.cvs.getContext('2d');
                 this.img = document.getElementById('worksheet-img');
                 
                 document.getElementById('btn-color').onclick = () => document.getElementById('native-color-picker').click();
@@ -403,11 +356,7 @@
                     const rect = this.cvs.getBoundingClientRect();
                     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
                     const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                    
-                    // V48.0 핵심: 모바일 브라우저의 리사이징 등에서도 정확한 포인터 위치 계산
-                    const scaleX = this.cvs.width / rect.width;
-                    const scaleY = this.cvs.height / rect.height;
-                    return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+                    return { x: clientX - rect.left, y: clientY - rect.top };
                 };
 
                 const start = (e) => {
@@ -418,7 +367,6 @@
 
                 const move = (e) => {
                     if(!this.isDrawing) return;
-                    // 모바일 터치 스크롤 방지 (중요)
                     if(e.cancelable && e.touches) e.preventDefault();
                     const p = getPos(e);
                     this.ctx.lineTo(p.x, p.y); this.ctx.stroke();
@@ -426,29 +374,33 @@
 
                 const stop = () => { if(this.isDrawing) { this.isDrawing = false; HapticEngine.trigger('light'); } };
 
-                this.cvs.onmousedown = start; this.cvs.onmousemove = move; window.onmouseup = stop;
-                this.cvs.ontouchstart = start; this.cvs.ontouchmove = move; window.ontouchend = stop;
+                this.cvs.addEventListener('mousedown', start);
+                this.cvs.addEventListener('mousemove', move);
+                window.addEventListener('mouseup', stop);
+                
+                this.cvs.addEventListener('touchstart', start, {passive: false});
+                this.cvs.addEventListener('touchmove', move, {passive: false});
+                window.addEventListener('touchend', stop);
+                
                 document.getElementById('brush-size').oninput = (e) => this.ctx.lineWidth = e.target.value;
             },
             sync() {
                 const rect = this.img.getBoundingClientRect();
-                if(rect.width === 0) return; // 이미지 로드 전 방지
+                if(rect.width === 0) return; 
                 
-                // 기존 그림 임시 저장
                 const tempCvs = document.createElement('canvas');
                 tempCvs.width = this.cvs.width; tempCvs.height = this.cvs.height;
                 if(this.cvs.width > 0) tempCvs.getContext('2d').drawImage(this.cvs, 0, 0);
 
-                // 캔버스 크기 재설정
                 this.cvs.width = rect.width; 
                 this.cvs.height = rect.height;
+                this.cvs.style.width = rect.width + 'px';
+                this.cvs.style.height = rect.height + 'px';
                 
-                // 속성 복구
                 this.ctx.lineCap = 'round'; this.ctx.lineJoin = 'round';
                 this.ctx.strokeStyle = document.getElementById('native-color-picker').value || "#363431";
                 this.ctx.lineWidth = document.getElementById('brush-size').value;
                 
-                // 기존 그림 비율에 맞춰 다시 그리기 (리사이징 복구 로직)
                 if(tempCvs.width > 0) {
                     this.ctx.drawImage(tempCvs, 0, 0, tempCvs.width, tempCvs.height, 0, 0, this.cvs.width, this.cvs.height);
                 }
@@ -460,9 +412,6 @@
             }
         };
 
-        /**
-         * [Engines: Ambient, Haptic, Audio]
-         */
         const AmbientEngine = {
             isPlaying: false, audio: document.getElementById('bgm-ambient'),
             init() { this.audio.src = CONFIG.SOUNDSCAPES[STATE.id.charAt(0)] || CONFIG.SOUNDSCAPES["A"]; this.audio.volume = 0.2; },
@@ -473,7 +422,6 @@
             }
         };
         const HapticEngine = { trigger(type) { if(navigator.vibrate) navigator.vibrate(type === 'light' ? 20 : [30, 50, 30]); } };
-        
         const AudioEngine = {
             toggle() {
                 const btn = document.getElementById('btn-record'); const text = document.getElementById('record-text');
@@ -482,13 +430,9 @@
             }
         };
 
-        /**
-         * [Socratic AI Tutor]
-         */
         const AITutor = {
             submitWork() {
                 HapticEngine.trigger('heavy');
-                
                 if (STATE.currentPage === 1 && !STATE.isNameRegistered) {
                     this.scanHandwritingForName();
                     return;
@@ -516,12 +460,11 @@
                     content.innerHTML = `
                         <div class="ai-bubble">
                             <b>Bridge Visual AI</b><br><br>
-                            멋진 필체네요! 캔버스에 그린 영어 이름의 철자를 확인해 주세요. 확인이 완료되면 1:1 보이스 튜터링이 시작됩니다.
+                            Great handwriting! Please confirm your name spelling below to start your 1:1 voice tutoring session.
                             <input type="text" id="ai-name-verify" class="ai-name-input" placeholder="e.g. Olivia" autocomplete="off" onkeypress="if(event.key === 'Enter') AITutor.saveName()">
                             <button class="ai-name-btn" onclick="AITutor.saveName()">CONFIRM NAME</button>
                         </div>
                     `;
-                    // 모바일 키보드가 올라오면서 화면이 밀리는 것을 방지하기 위해 setTimeout 적용
                     setTimeout(() => document.getElementById('ai-name-verify').focus(), 100);
                 }, 2000);
             },
@@ -539,7 +482,7 @@
 
                     this.provideFeedback(true);
                 } else {
-                    alert("이름 철자를 입력해 주세요.");
+                    alert("Please enter your name.");
                 }
             },
 
@@ -564,7 +507,7 @@
                             <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: ${confidenceLvl}%;"></div></div>
                         </div>
                         <div class="visual-intent">
-                            <b>🎯 의도 분석: ${contextData.intent}</b><br><br>
+                            <b>🎯 Intent Analysis: ${contextData.intent}</b><br><br>
                             ${contextData.analysis}
                         </div>
                     </div>
@@ -595,7 +538,6 @@
             }
         };
 
-        // Window Init & Resize Debounce for Fluid Canvas
         let resizeTimer;
         window.onload = () => {
             PageEngine.init();

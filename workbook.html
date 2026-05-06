@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- 화면 스크롤, 바운스, 줌 완벽 차단 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Bridge Academy | Premium EdTech Lab</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,35 +14,32 @@
     
     <style>
         /* ======================================================================
-         * [Architecture: Bridge Universal System V55.0]
-         * Feature: Perfect Fit-to-Screen Layout & Classic Pen Stability
+         * [Architecture: Bridge Absolute System V56.0]
+         * Feature: 100% Clip-Free Layout & PointerEvent Precision Canvas
          * ====================================================================== */
         :root {
             --br-green: #89BFA0; --br-gold: #CBAE75; --br-blue: #7CA6C1; --br-charcoal: #363431;
             --br-bg: #FCFBF9; --br-paper: #FFFFFF; --br-text: #2A2825; --br-muted: #8C8985;
             --br-border: #F0EFEB; --br-error: #E74C3C; --br-ai: #F4F8F5;
-            --ease-lux: cubic-bezier(0.19, 1, 0.22, 1);
-            --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-            
             --sidebar-width: 320px;
         }
 
-        /* [Reset] */
+        /* [Absolute Reset - 화면 움직임 원천 봉쇄] */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body, html { width: 100%; height: 100%; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; touch-action: none; /* 브라우저 스와이프 방지 */ }
+        html, body { width: 100%; height: 100%; position: fixed; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; touch-action: none; }
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
         
-        .app-container { display: flex; width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+        .app-container { display: flex; width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
         
         /* [Sidebar] */
-        .sidebar { width: var(--sidebar-width); height: 100vh; background: var(--br-paper); border-right: 1px solid var(--br-border); display: flex; flex-direction: column; z-index: 1000; transition: transform 0.4s var(--ease-lux); flex-shrink: 0; }
+        .sidebar { width: var(--sidebar-width); height: 100%; background: var(--br-paper); border-right: 1px solid var(--br-border); display: flex; flex-direction: column; z-index: 1000; transition: transform 0.4s ease; flex-shrink: 0; }
         .sidebar-header { padding: 40px 30px 30px; text-align: center; border-bottom: 1px solid var(--br-border); cursor: pointer; }
         .brand-logo { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: var(--br-charcoal); }
         .brand-logo span { color: var(--br-green); font-style: italic; }
         
         .student-profile { padding: 20px 30px; border-bottom: 1px solid var(--br-border); display: flex; align-items: center; gap: 15px; background: #FAFAFA; transition: 0.5s; }
         .student-profile.registered { background: #F4F8F5; }
-        .profile-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--br-border); color: var(--br-muted); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 22px; transition: 0.5s; flex-shrink: 0; }
+        .profile-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--br-border); color: var(--br-muted); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 22px; flex-shrink: 0; }
         .student-profile.registered .profile-avatar { background: var(--br-gold); color: #FFF; box-shadow: 0 10px 20px rgba(203,174,117,0.3); }
         .profile-info { display: flex; flex-direction: column; overflow: hidden; }
         .profile-name { font-size: 16px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -49,133 +49,115 @@
         .nav-list::-webkit-scrollbar { width: 6px; }
         .nav-list::-webkit-scrollbar-thumb { background: #E0E0E0; border-radius: 10px; }
         .nav-item { padding: 18px 20px; margin-bottom: 10px; border-radius: 16px; background: #FAFAFA; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; cursor: pointer; border: 1px solid transparent; }
-        .nav-item.active { background: var(--br-ai); border-left: 6px solid var(--br-green); font-weight: 900; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .nav-item.active { background: var(--br-ai); border-left: 6px solid var(--br-green); font-weight: 900; }
         .nav-title { font-size: 14px; font-weight: 800; letter-spacing: -0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
         .nav-badge { font-size: 11px; font-weight: 900; opacity: 0.3; letter-spacing: 1px; flex-shrink: 0; }
         
-        /* [Workspace] - V55.0 화면 잘림 완전 방지 구조 */
-        .workspace { flex: 1; display: flex; flex-direction: column; background: var(--br-bg); height: 100vh; overflow: hidden; min-width: 0; }
+        /* [Workspace - 절대 잘리지 않는 Flex 구조] */
+        .workspace { flex: 1; display: flex; flex-direction: column; background: var(--br-bg); height: 100%; min-width: 0; position: relative; }
         
-        .top-bar { padding: 20px 40px; display: flex; justify-content: space-between; align-items: flex-end; flex-shrink: 0; z-index: 10; }
+        .top-bar { height: 100px; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; z-index: 10; border-bottom: 1px solid transparent; }
         .unit-info { font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 5px; }
         .page-info { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; color: var(--br-charcoal); line-height: 1; margin-top: 5px; }
         
-        .soundscape-ui { display: flex; align-items: center; gap: 8px; background: #FFF; padding: 12px 20px; border-radius: 100px; border: 1px solid var(--br-border); font-size: 12px; font-weight: 900; color: var(--br-muted); cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .soundscape-ui { display: flex; align-items: center; gap: 8px; background: #FFF; padding: 12px 20px; border-radius: 100px; border: 1px solid var(--br-border); font-size: 12px; font-weight: 900; color: var(--br-muted); cursor: pointer; }
         .soundscape-ui.active { color: var(--br-blue); border-color: var(--br-blue); }
 
-        /* [Fluid Stage] V55.0 min-height: 0 적용으로 완벽한 스케일 다운 유도 */
-        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px 20px; position: relative; overflow: hidden; min-height: 0; }
+        /* [Fluid Stage - 높이를 100% 보장하며 오버플로우 방지] */
+        .stage-wrapper { flex: 1 1 auto; height: 0; display: flex; justify-content: center; align-items: center; padding: 10px 40px; position: relative; }
         
-        .canvas-container { position: relative; display: flex; justify-content: center; align-items: center; max-width: 100%; max-height: 100%; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); border: 1px solid var(--br-border); background: var(--br-paper); line-height: 0; }
+        #worksheet-img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; border-radius: 20px; opacity: 0; transition: opacity 0.5s; object-fit: contain; pointer-events: none; box-shadow: 0 15px 40px rgba(0,0,0,0.05); border: 1px solid var(--br-border); background: var(--br-paper); }
         
-        .canvas-container.drawing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='%23CBAE75' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/></svg>") 0 20, crosshair; }
-        .canvas-container.erasing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23FFF' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><line x1='3' y1='9' x2='21' y2='9'/></svg>") 12 12, cell; }
+        /* 캔버스는 JS를 통해 이미지 위에 정확히 위치하게 됨 */
+        #draw-layer { position: absolute; touch-action: none; z-index: 50; border-radius: 20px; }
         
-        /* 이미지가 무조건 컨테이너를 넘지 않고 비율을 유지하며 축소됨 */
-        #worksheet-img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; border-radius: 20px; opacity: 0; transition: opacity 0.5s; object-fit: contain; pointer-events: none; }
-        
-        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 20px; z-index: 50; touch-action: none; }
+        /* 작고 귀여운 황금색 연필 커서 / 지우개 커서 */
+        .drawing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23CBAE75' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'/></svg>") 2 22, crosshair !important; }
+        .erasing-mode { cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23FFF' stroke='%23363431' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'/><line x1='3' y1='9' x2='21' y2='9'/></svg>") 12 12, cell !important; }
 
         .scan-line { width: 100%; height: 4px; background: var(--br-green); position: absolute; top: 0; left: 0; box-shadow: 0 0 15px var(--br-green); animation: scan 2s linear infinite; z-index: 100; display: none; border-radius: 4px; }
         @keyframes scan { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
 
-        /* [Bottom Dock] flex-shrink: 0 으로 크기 고정 보장 */
-        .bottom-dock { flex-shrink: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(25px); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; z-index: 500; }
+        /* [Bottom Dock - 높이 절대 고정] */
+        .bottom-dock { height: 110px; flex-shrink: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(25px); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; }
         
-        .tool-group { display: flex; align-items: center; gap: 20px; background: #FAFAFA; padding: 15px 30px; border-radius: 100px; border: 1px solid var(--br-border); }
-        .color-preview { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #FFF; cursor: pointer; background: var(--br-charcoal); box-shadow: 0 10px 20px rgba(0,0,0,0.08); transition: transform 0.2s var(--ease-bounce); flex-shrink: 0; }
-        .color-preview:active { transform: scale(0.9); }
-        .brush-slider { width: 120px; accent-color: var(--br-green); cursor: pointer; height: 8px; }
+        .tool-group { display: flex; align-items: center; gap: 20px; background: #FAFAFA; padding: 12px 25px; border-radius: 100px; border: 1px solid var(--br-border); }
+        .color-preview { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #FFF; cursor: pointer; background: var(--br-charcoal); box-shadow: 0 5px 10px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .brush-slider { width: 120px; accent-color: var(--br-green); cursor: pointer; height: 6px; }
         
-        .btn-erase { font-size: 13px; font-weight: 900; color: var(--br-charcoal); letter-spacing: 1px; padding: 10px 20px; border-radius: 20px; transition: 0.3s; background: #FFF; border: 1px solid var(--br-border); cursor: pointer; }
+        /* 토글 지우개 버튼 */
+        .btn-erase { font-size: 13px; font-weight: 900; color: var(--br-charcoal); letter-spacing: 1px; padding: 10px 15px; border-radius: 15px; transition: 0.3s; background: #FFF; border: 1px solid var(--br-border); cursor: pointer; }
         .btn-erase.active { background: var(--br-error); color: #FFF; border-color: var(--br-error); }
-        .btn-erase-all { font-size: 11px; font-weight: 800; color: var(--br-muted); cursor: pointer; padding: 10px; }
-        .btn-erase-all:hover { color: var(--br-error); }
+        .btn-erase-all { font-size: 11px; font-weight: 800; color: var(--br-muted); cursor: pointer; padding: 5px; }
         
         .action-group { display: flex; gap: 15px; align-items: center; }
-        .btn-nav { width: 60px; height: 60px; border-radius: 20px; border: 1px solid var(--br-border); font-size: 24px; background: #FFF; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.02); color: var(--br-charcoal); display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
-        .btn-nav:active { transform: scale(0.95); background: #F5F5F5; }
+        .btn-nav { width: 65px; height: 65px; border-radius: 20px; border: 1px solid var(--br-border); font-size: 24px; background: #FFF; cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.02); color: var(--br-charcoal); display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
         
-        .btn-core { height: 60px; padding: 0 25px; border-radius: 20px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; transition: 0.3s; box-shadow: 0 15px 30px rgba(0,0,0,0.04); flex-shrink: 0; }
-        .btn-core:active { transform: scale(0.95); }
-        
+        .btn-core { height: 65px; padding: 0 30px; border-radius: 20px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; box-shadow: 0 10px 20px rgba(0,0,0,0.03); flex-shrink: 0; }
         .btn-record { background: #FFF; color: var(--br-charcoal); border: 1px solid var(--br-border); }
-        .btn-record .dot { width: 10px; height: 10px; background: var(--br-error); border-radius: 50%; opacity: 0; transition: 0.3s; }
+        .btn-record .dot { width: 10px; height: 10px; background: var(--br-error); border-radius: 50%; opacity: 0; }
         .btn-record.recording { background: #FFF0F0; color: var(--br-error); border-color: #FADBD8; }
         .btn-record.recording .dot { opacity: 1; animation: blink 1s infinite; }
         
-        .btn-submit { background: var(--br-charcoal); color: #FFF; border: none; }
-        .btn-submit:hover { background: var(--br-green); box-shadow: 0 20px 40px rgba(137, 191, 160, 0.3); }
+        .btn-submit { background: var(--br-charcoal); color: #FFF; }
 
         /* [English AI Teacher Panel] */
-        .ai-panel { position: absolute; top: 0; right: -500px; width: 420px; height: 100vh; background: #FFF; box-shadow: -20px 0 50px rgba(0,0,0,0.1); z-index: 2000; transition: right 0.6s var(--ease-bounce); display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
+        .ai-panel { position: absolute; top: 0; right: -420px; width: 420px; height: 100%; background: #FFF; box-shadow: -10px 0 30px rgba(0,0,0,0.1); z-index: 2000; transition: right 0.5s ease; display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
         .ai-panel.open { right: 0; }
-        .ai-header { padding: 30px; background: var(--br-ai); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); flex-shrink: 0; }
+        .ai-header { padding: 25px; background: var(--br-ai); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); flex-shrink: 0; }
         .ai-title { font-size: 18px; font-weight: 900; color: var(--br-green); display: flex; align-items: center; gap: 10px; }
         .ai-title::before { content: '✨'; font-size: 24px; }
-        .btn-close-ai { font-size: 32px; color: var(--br-muted); line-height: 1; padding: 0 10px; }
+        .btn-close-ai { font-size: 32px; color: var(--br-muted); line-height: 1; }
         
-        .ai-content { padding: 30px; flex: 1; overflow-y: auto; }
-        .transcript-box { background: #F4F8F5; padding: 20px; border-radius: 15px; border-left: 4px solid var(--br-green); margin-bottom: 20px; font-size: 15px; font-style: italic; color: var(--br-charcoal); font-weight: 700; line-height: 1.5; }
+        .ai-content { padding: 25px; flex: 1; overflow-y: auto; }
+        .transcript-box { background: #F4F8F5; padding: 15px; border-radius: 12px; border-left: 4px solid var(--br-green); margin-bottom: 20px; font-size: 14px; font-style: italic; color: var(--br-charcoal); font-weight: 700; line-height: 1.5; }
         .transcript-empty { background: #FFF9F0; padding: 15px; border-radius: 10px; border: 1px dashed var(--br-gold); margin-bottom: 20px; font-size: 12px; color: var(--br-muted); text-align: center; }
 
-        .analytics-box { background: #FAFAFA; border: 1px solid var(--br-border); border-radius: 20px; padding: 25px; margin-bottom: 25px; }
-        .analytics-title { font-size: 12px; font-weight: 900; color: var(--br-muted); letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; }
-        .stat-row { margin-bottom: 20px; }
-        .stat-label { font-size: 14px; font-weight: 900; display: flex; justify-content: space-between; margin-bottom: 10px; color: var(--br-charcoal); }
-        .stat-bar-bg { width: 100%; height: 12px; background: #E0E0E0; border-radius: 10px; overflow: hidden; }
-        .stat-bar-fill { height: 100%; background: var(--br-gold); width: 0%; transition: width 1.5s var(--ease-lux); }
-        .visual-intent { font-size: 14px; background: #FFF; padding: 20px; border-radius: 15px; border: 1px dashed var(--br-border); margin-top: 20px; line-height: 1.7; color: var(--br-text); }
+        .analytics-box { background: #FAFAFA; border: 1px solid var(--br-border); border-radius: 20px; padding: 20px; margin-bottom: 25px; }
+        .analytics-title { font-size: 11px; font-weight: 900; color: var(--br-muted); letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
+        .stat-row { margin-bottom: 15px; }
+        .stat-label { font-size: 13px; font-weight: 900; display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--br-charcoal); }
+        .stat-bar-bg { width: 100%; height: 10px; background: #E0E0E0; border-radius: 10px; overflow: hidden; }
+        .stat-bar-fill { height: 100%; background: var(--br-gold); width: 0%; transition: width 1.5s ease; }
+        .visual-intent { font-size: 13px; background: #FFF; padding: 15px; border-radius: 12px; border: 1px dashed var(--br-border); margin-top: 15px; line-height: 1.6; color: var(--br-text); }
         
-        .ai-bubble { background: #F8F9FA; padding: 25px; border-radius: 25px; border-bottom-left-radius: 5px; border: 1px solid var(--br-border); font-size: 16px; line-height: 1.8; font-weight: 500; }
-        .ai-name-input { width: 100%; padding: 20px; border: 2px dashed var(--br-green); border-radius: 15px; margin-top: 20px; font-size: 18px; text-align: center; font-weight: 800; outline: none; transition: 0.3s; font-family: inherit; -webkit-appearance: none; }
+        .ai-bubble { background: #F8F9FA; padding: 20px; border-radius: 20px; border-bottom-left-radius: 5px; border: 1px solid var(--br-border); font-size: 15px; line-height: 1.7; font-weight: 500; }
+        .ai-name-input { width: 100%; padding: 15px; border: 2px dashed var(--br-green); border-radius: 12px; margin-top: 15px; font-size: 16px; text-align: center; font-weight: 800; outline: none; transition: 0.3s; font-family: inherit; }
         .ai-name-input:focus { background: #F4F8F5; border-style: solid; }
-        .ai-name-btn { width: 100%; background: var(--br-green); color: #fff; padding: 20px; border-radius: 15px; margin-top: 15px; font-weight: 900; cursor: pointer; transition: 0.3s; letter-spacing: 2px; font-size: 16px; }
+        .ai-name-btn { width: 100%; background: var(--br-green); color: #fff; padding: 15px; border-radius: 12px; margin-top: 10px; font-weight: 900; cursor: pointer; letter-spacing: 2px; font-size: 14px; }
 
         .mobile-menu-btn { display: none; font-size: 28px; padding: 10px; color: var(--br-charcoal); z-index: 1500; }
 
-        /* [Responsive Breakpoints] */
-        @media (max-width: 1200px) {
+        /* [Responsive Breakpoints - 모바일/태블릿 최적화] */
+        @media (max-width: 1024px) {
             :root { --sidebar-width: 280px; }
-            .top-bar { padding: 15px 30px; }
-            .stage-wrapper { padding: 10px 30px 20px; }
-            .bottom-dock { padding: 20px 30px; }
+            .top-bar { padding: 0 20px; height: 80px; }
+            .bottom-dock { padding: 0 20px; }
+            .stage-wrapper { padding: 10px 20px; }
         }
 
-        @media (max-width: 992px) {
+        @media (max-width: 800px) {
             .mobile-menu-btn { display: block; }
             .sidebar { position: absolute; left: calc(var(--sidebar-width) * -1); top: 0; box-shadow: none; }
             .sidebar.open { left: 0; box-shadow: 20px 0 50px rgba(0,0,0,0.1); }
             
-            .top-bar { padding: 15px 20px; }
-            .top-bar-left { display: flex; align-items: center; gap: 15px; }
-            .page-info { font-size: 32px; margin-top: 0; }
+            .top-bar-left { display: flex; align-items: center; gap: 10px; }
+            .page-info { font-size: 28px; margin-top: 0; }
             
-            .stage-wrapper { padding: 10px 20px 20px; }
-            
-            .bottom-dock { flex-direction: column; padding: 20px; gap: 15px; border-radius: 30px 30px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.05); }
-            .tool-group { width: 100%; justify-content: center; padding: 12px 20px; }
+            /* 모바일 세로모드: 컨트롤독 높이를 늘리고 버튼을 2줄로 랩핑 */
+            .bottom-dock { height: 150px; flex-direction: column; justify-content: space-evenly; padding: 15px 20px; border-radius: 25px 25px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); }
+            .tool-group { width: 100%; justify-content: center; padding: 8px 20px; }
             .action-group { width: 100%; justify-content: space-between; }
-        }
-
-        @media (max-width: 600px) {
-            :root { --sidebar-width: 85vw; }
-            .page-info { font-size: 26px; }
-            .soundscape-ui { padding: 10px 15px; font-size: 11px; }
-            .soundscape-ui span { display: none; }
             
-            .tool-group { gap: 10px; }
-            .brush-slider { width: 80px; }
-            .btn-erase { font-size: 11px; padding: 8px 12px; }
+            .btn-nav, .btn-core { height: 50px; border-radius: 15px; font-size: 13px; }
+            .btn-nav { width: 50px; font-size: 20px; }
+            .btn-core { padding: 0 15px; flex: 1; justify-content: center; }
             
-            .ai-panel { width: 100vw; height: 90vh; top: auto; bottom: -100vh; right: 0; left: 0; border-left: none; border-top: 1px solid var(--br-border); border-radius: 30px 30px 0 0; transition: bottom 0.5s var(--ease-bounce); }
-            .ai-panel.open { bottom: 0; right: 0; }
-            .ai-header { padding: 25px; border-radius: 30px 30px 0 0; }
-            .ai-content { padding: 25px; }
+            .ai-panel { width: 100%; right: -100%; border-left: none; }
         }
     </style>
 </head>
-<body>
+<body class="drawing-mode" id="body-cursor">
 
     <div class="app-container" id="main-app">
         
@@ -203,17 +185,14 @@
                     </div>
                 </div>
                 <button class="soundscape-ui" id="soundscape-btn" onclick="AmbientEngine.toggle()">
-                    🎵 <span>Soundscape:</span> OFF
+                    🎵 <span class="hide-mobile">Soundscape:</span> OFF
                 </button>
             </div>
 
-            <!-- V55.0 화면 잘림이 절대 발생하지 않는 Fluid Stage -->
             <main class="stage-wrapper" id="stage-wrapper">
-                <div class="canvas-container drawing-mode" id="canvas-container">
-                    <img src="" id="worksheet-img" crossorigin="anonymous">
-                    <canvas id="draw-layer"></canvas>
-                    <div class="scan-line" id="canvas-scan-line"></div>
-                </div>
+                <img src="" id="worksheet-img" crossorigin="anonymous">
+                <canvas id="draw-layer"></canvas>
+                <div class="scan-line" id="canvas-scan-line"></div>
             </main>
 
             <div class="bottom-dock">
@@ -252,24 +231,18 @@
             GITHUB_ID: "eunbeenlee", 
             REPO: "bridge-heritage",
             get STORAGE() { return `https://${this.GITHUB_ID}.github.io/${this.REPO}/assets/`; },
-            SOUNDSCAPES: {
-                "A": "https://cdn.freesound.org/previews/407/407519_5121236-lq.mp3",
-                "B": "https://cdn.freesound.org/previews/515/515822_10984905-lq.mp3"
-            }
+            SOUNDSCAPES: { "A": "https://cdn.freesound.org/previews/407/407519_5121236-lq.mp3", "B": "https://cdn.freesound.org/previews/515/515822_10984905-lq.mp3" }
         };
 
         const STATE = {
-            studentName: "",
-            isNameRegistered: false,
+            studentName: "", isNameRegistered: false,
             id: new URLSearchParams(window.location.search).get('id') || "A-1",
-            currentPage: 1,
-            isRecording: false,
-            lastTranscript: ""
+            currentPage: 1, isRecording: false, lastTranscript: ""
         };
 
         const UIEngine = {
             toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); },
-            closeSidebarOnMobile() { if(window.innerWidth <= 992) document.getElementById('sidebar').classList.remove('open'); }
+            closeSidebarOnMobile() { if(window.innerWidth <= 800) document.getElementById('sidebar').classList.remove('open'); }
         };
 
         const AI_CONTEXT_DB = {
@@ -306,35 +279,26 @@
                 this.load(1);
             },
             load(n) {
-                STATE.currentPage = n;
-                STATE.lastTranscript = ""; 
+                STATE.currentPage = n; STATE.lastTranscript = ""; 
                 const seriesChar = STATE.id.charAt(0);
                 const imgPath = `${CONFIG.STORAGE}${seriesChar}/${STATE.id}/${STATE.id}-${n}.png`;
                 
                 const img = document.getElementById('worksheet-img');
-                img.style.opacity = '0';
-                img.src = imgPath;
-                img.onload = () => {
-                    img.style.opacity = '1';
-                    setTimeout(() => CanvasEngine.sync(), 50);
-                };
+                img.style.opacity = '0'; img.src = imgPath;
+                img.onload = () => { img.style.opacity = '1'; CanvasEngine.sync(); };
 
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
                 document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
                 const activeNav = document.getElementById(`nav-${n}`);
                 if(activeNav) activeNav.classList.add('active');
                 
-                CanvasEngine.clearAll();
-                AITutor.close();
+                CanvasEngine.clearAll(); AITutor.close();
             },
-            move(dir) {
-                const t = STATE.currentPage + dir;
-                if(t >= 1 && t <= 17) this.load(t);
-            }
+            move(dir) { const t = STATE.currentPage + dir; if(t >= 1 && t <= 17) this.load(t); }
         };
 
         /* ======================================================================
-         * [V55.0 Classic Canvas Engine - 완벽한 좌표계 복원]
+         * [V56.0 Absolute Canvas Engine - Bug Free Pointer Events]
          * ====================================================================== */
         const CanvasEngine = {
             isDrawing: false,
@@ -345,7 +309,7 @@
                 this.cvs = document.getElementById('draw-layer');
                 this.ctx = this.cvs.getContext('2d', { willReadFrequently: true });
                 this.img = document.getElementById('worksheet-img');
-                this.container = document.getElementById('canvas-container');
+                this.stage = document.getElementById('stage-wrapper');
                 
                 document.getElementById('btn-color').onclick = () => document.getElementById('native-color-picker').click();
                 document.getElementById('native-color-picker').onchange = (e) => {
@@ -359,19 +323,16 @@
             toggleEraser() {
                 const btn = document.getElementById('btn-eraser');
                 this.isErasing = !this.isErasing;
+                const body = document.getElementById('body-cursor');
                 
                 if (this.isErasing) {
-                    btn.classList.add('active');
-                    btn.innerText = "PEN MODE";
-                    this.container.classList.remove('drawing-mode');
-                    this.container.classList.add('erasing-mode');
+                    btn.classList.add('active'); btn.innerText = "PEN MODE";
+                    body.classList.remove('drawing-mode'); body.classList.add('erasing-mode');
                     this.ctx.globalCompositeOperation = 'destination-out';
                     this.ctx.lineWidth = document.getElementById('brush-size').value * 2;
                 } else {
-                    btn.classList.remove('active');
-                    btn.innerText = "ERASER";
-                    this.container.classList.remove('erasing-mode');
-                    this.container.classList.add('drawing-mode');
+                    btn.classList.remove('active'); btn.innerText = "ERASER";
+                    body.classList.remove('erasing-mode'); body.classList.add('drawing-mode');
                     this.ctx.globalCompositeOperation = 'source-over';
                     this.ctx.strokeStyle = this.lastColor;
                     this.ctx.lineWidth = document.getElementById('brush-size').value;
@@ -381,22 +342,14 @@
             bind() {
                 const getPos = (e) => {
                     const rect = this.cvs.getBoundingClientRect();
-                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                    
-                    // 스케일 계산으로 브라우저 크기에 완벽하게 좌표 매핑
-                    const scaleX = this.cvs.width / rect.width;
-                    const scaleY = this.cvs.height / rect.height;
-                    
-                    return { 
-                        x: (clientX - rect.left) * scaleX, 
-                        y: (clientY - rect.top) * scaleY 
-                    };
+                    // V56.0: PointerEvent API 사용으로 clientX를 단일화 처리
+                    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
                 };
 
                 const start = (e) => { 
                     e.preventDefault(); 
                     this.isDrawing = true; 
+                    this.cvs.setPointerCapture(e.pointerId); // 화면 이탈 방지
                     const p = getPos(e); 
                     this.ctx.beginPath(); 
                     this.ctx.moveTo(p.x, p.y); 
@@ -413,47 +366,60 @@
                 const stop = (e) => { 
                     if(this.isDrawing) { 
                         this.isDrawing = false; 
+                        this.cvs.releasePointerCapture(e.pointerId);
                         HapticEngine.trigger('light'); 
                     } 
                 };
 
-                this.cvs.addEventListener('mousedown', start, { passive: false });
-                this.cvs.addEventListener('mousemove', move, { passive: false });
-                window.addEventListener('mouseup', stop);
-                window.addEventListener('mouseleave', stop);
-                
-                this.cvs.addEventListener('touchstart', start, { passive: false });
-                this.cvs.addEventListener('touchmove', move, { passive: false });
-                window.addEventListener('touchend', stop);
-                window.addEventListener('touchcancel', stop);
+                // 최신 표준 Pointer Events 탑재 (마우스, 터치, 펜슬 모두 지원)
+                this.cvs.addEventListener('pointerdown', start, { passive: false });
+                this.cvs.addEventListener('pointermove', move, { passive: false });
+                this.cvs.addEventListener('pointerup', stop);
+                this.cvs.addEventListener('pointercancel', stop);
                 
                 document.getElementById('brush-size').oninput = (e) => { 
                     const multiplier = this.isErasing ? 2 : 1;
                     this.ctx.lineWidth = e.target.value * multiplier; 
                 };
             },
+            
             sync() {
-                const rect = this.img.getBoundingClientRect();
-                if(rect.width === 0) return; 
+                const imgRect = this.img.getBoundingClientRect();
+                const stageRect = this.stage.getBoundingClientRect();
+                if(imgRect.width === 0) return; 
                 
+                // 기존 그림 백업
                 const tempCvs = document.createElement('canvas');
                 tempCvs.width = this.cvs.width; tempCvs.height = this.cvs.height;
                 if(this.cvs.width > 0) tempCvs.getContext('2d').drawImage(this.cvs, 0, 0);
 
-                // 캔버스 내부 해상도를 실제 보이는 크기와 일치시킴
-                this.cvs.width = rect.width; 
-                this.cvs.height = rect.height;
-                this.cvs.style.width = '100%'; 
-                this.cvs.style.height = '100%';
+                // V56.0: 캔버스를 이미지 위에 '절대 위치'로 완벽하게 포개기
+                this.cvs.style.width = imgRect.width + 'px'; 
+                this.cvs.style.height = imgRect.height + 'px';
+                this.cvs.style.top = (imgRect.top - stageRect.top) + 'px';
+                this.cvs.style.left = (imgRect.left - stageRect.left) + 'px';
                 
+                // 내부 픽셀 해상도 1:1 동기화
+                this.cvs.width = imgRect.width; 
+                this.cvs.height = imgRect.height;
+                
+                // 스타일 복구
                 this.ctx.lineCap = 'round'; this.ctx.lineJoin = 'round';
                 this.ctx.globalCompositeOperation = this.isErasing ? 'destination-out' : 'source-over';
                 this.ctx.strokeStyle = this.isErasing ? "rgba(0,0,0,1)" : this.lastColor;
                 const multiplier = this.isErasing ? 2 : 1;
                 this.ctx.lineWidth = document.getElementById('brush-size').value * multiplier;
                 
+                // 그림 복원
                 if(tempCvs.width > 0) { this.ctx.drawImage(tempCvs, 0, 0, tempCvs.width, tempCvs.height, 0, 0, this.cvs.width, this.cvs.height); }
+                
+                // 스캔 라인 위치 동기화
+                const scanLine = document.getElementById('canvas-scan-line');
+                scanLine.style.width = imgRect.width + 'px';
+                scanLine.style.top = (imgRect.top - stageRect.top) + 'px';
+                scanLine.style.left = (imgRect.left - stageRect.left) + 'px';
             },
+            
             clearAll() { 
                 this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
                 this.ctx.beginPath(); 
@@ -467,8 +433,8 @@
             init() { this.audio.src = CONFIG.SOUNDSCAPES[STATE.id.charAt(0)] || CONFIG.SOUNDSCAPES["A"]; this.audio.volume = 0.2; },
             toggle() {
                 const btn = document.getElementById('soundscape-btn');
-                if(!this.isPlaying) { this.audio.play().catch(e=>{}); this.isPlaying = true; btn.classList.add('active'); btn.innerHTML = "🎵 <span>Soundscape:</span> ON"; }
-                else { this.audio.pause(); this.isPlaying = false; btn.classList.remove('active'); btn.innerHTML = "🎵 <span>Soundscape:</span> OFF"; }
+                if(!this.isPlaying) { this.audio.play().catch(e=>{}); this.isPlaying = true; btn.classList.add('active'); btn.innerHTML = "🎵 <span class='hide-mobile'>Soundscape:</span> ON"; }
+                else { this.audio.pause(); this.isPlaying = false; btn.classList.remove('active'); btn.innerHTML = "🎵 <span class='hide-mobile'>Soundscape:</span> OFF"; }
             }
         };
         const HapticEngine = { trigger(type) { if(navigator.vibrate) navigator.vibrate(type === 'light' ? 20 : [30, 50, 30]); } };
@@ -479,13 +445,10 @@
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                 if (SpeechRecognition) {
                     this.recognition = new SpeechRecognition();
-                    this.recognition.lang = 'en-US';
-                    this.recognition.interimResults = false;
-                    this.recognition.continuous = false;
-
+                    this.recognition.lang = 'en-US'; this.recognition.interimResults = false; this.recognition.continuous = false;
                     this.recognition.onresult = (event) => { STATE.lastTranscript = event.results[0][0].transcript; };
                     this.recognition.onend = () => { if (STATE.isRecording) this.toggle(); };
-                    this.recognition.onerror = (e) => { if (STATE.isRecording) this.toggle(); };
+                    this.recognition.onerror = () => { if (STATE.isRecording) this.toggle(); };
                 }
             },
             toggle() {
@@ -567,16 +530,13 @@
             close() { document.getElementById('ai-panel').classList.remove('open'); if('speechSynthesis' in window) window.speechSynthesis.cancel(); }
         };
 
+        // Resize 관리를 매우 정밀하게 세팅
         let resizeTimer;
         window.onload = () => {
             PageEngine.init(); CanvasEngine.init(); AmbientEngine.init(); AudioEngine.init(); 
             window.addEventListener('resize', () => { 
                 clearTimeout(resizeTimer); 
-                resizeTimer = setTimeout(() => { 
-                    if(document.getElementById('worksheet-img').style.opacity === '1') {
-                        CanvasEngine.sync(); 
-                    }
-                }, 200); 
+                resizeTimer = setTimeout(() => { if(document.getElementById('worksheet-img').style.opacity === '1') CanvasEngine.sync(); }, 150); 
             });
         };
     </script>

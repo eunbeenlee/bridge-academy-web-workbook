@@ -58,7 +58,7 @@
         
         #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; user-select: none; }
         
-        /* 캔버스에만 touch-action: none 부여 유지 */
+        /* 캔버스에 touch-action: none 부여 유지 */
         #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; cursor: crosshair; }
 
         /* [Bottom Dock] */
@@ -155,7 +155,7 @@
 
             <main class="stage-wrapper">
                 <div class="drawing-board" id="drawing-board">
-                    <img src="" id="worksheet-img">
+                    <img src="" id="worksheet-img" crossorigin="anonymous">
                     <canvas id="draw-layer"></canvas>
                 </div>
             </main>
@@ -246,10 +246,10 @@
                 img.style.opacity = '0'; 
                 img.src = imgPath;
                 
-                // 1️⃣ 원장님 지시: img.onload 후 50ms 딜레이 resize 강제 복구
+                // 🔥 1️⃣ 원장님 지시: img.onload에서 강제 1차 렌더링 호출
                 img.onload = () => { 
                     img.style.opacity = '1'; 
-                    setTimeout(() => CanvasEngine.resizeCanvas(), 50);
+                    CanvasEngine.resizeCanvas();
                 };
 
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
@@ -275,7 +275,6 @@
 
                 this.setupUI();
                 
-                // 2️⃣ 원장님 지시: 브라우저 렌더링 틱 지연을 완벽히 잡는 2-Pass Setup (rAF + setTimeout)
                 requestAnimationFrame(() => {
                     this.setupCanvas();
                     setTimeout(() => {
@@ -318,6 +317,12 @@
             },
 
             resizeCanvas() {
+                // 🔥 2️⃣ 원장님 지시: 방어 코드 추가 (가장 확실한 버그 예방)
+                if (!this.cvs || !this.ctx || !this.board) return;
+
+                const rect = this.board.getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) return;
+
                 const temp = document.createElement('canvas');
                 temp.width = this.cvs.width;
                 temp.height = this.cvs.height;
@@ -351,6 +356,9 @@
                 this.cvs.style.touchAction = "none"; 
 
                 this.cvs.addEventListener('pointerdown', (e) => {
+                    // 🔥 3️⃣ 원장님 지시: pointerdown에 preventDefault 추가하여 모바일 스크롤 완벽 차단
+                    e.preventDefault(); 
+                    
                     this.isDrawing = true;
                     try { this.cvs.setPointerCapture(e.pointerId); } catch(err){}
 
@@ -361,6 +369,7 @@
 
                 this.cvs.addEventListener('pointermove', (e) => {
                     if (!this.isDrawing) return;
+                    e.preventDefault();
 
                     const p = this.getPos(e);
                     this.ctx.lineTo(p.x, p.y);
@@ -517,10 +526,15 @@
             close() { document.getElementById('ai-panel').classList.remove('open'); if('speechSynthesis' in window) window.speechSynthesis.cancel(); }
         };
 
+        // 🔥 원장님 지시: 가장 강력한 안전장치, 300ms 후 강제 초기화 확인
         window.onload = () => {
             PageEngine.init(); 
             CanvasEngine.init(); 
             AudioEngine.init(); 
+            
+            setTimeout(() => {
+                CanvasEngine.resizeCanvas();
+            }, 300);
         };
     </script>
 </body>

@@ -3,133 +3,892 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bridge Academy | Premium EdTech Lab</title>
+    <title>Bridge Academy | Premium AI Lab</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@300;500;700;900&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
     <style>
+        /* ======================================================================
+         * [CSS Reset & Variables]
+         * ====================================================================== */
         :root {
-            --br-green: #89BFA0; --br-gold: #CBAE75; --br-blue: #7CA6C1; --br-charcoal: #363431;
-            --br-bg: #FCFBF9; --br-paper: #FFFFFF; --br-text: #2A2825; --br-muted: #8C8985;
-            --br-border: #F0EFEB; --br-error: #E74C3C; --br-ai: #F4F8F5;
+            --br-green: #89BFA0; 
+            --br-gold: #CBAE75; 
+            --br-blue: #7CA6C1; 
+            --br-charcoal: #363431;
+            --br-bg: #FCFBF9; 
+            --br-paper: #FFFFFF; 
+            --br-text: #2A2825; 
+            --br-muted: #8C8985;
+            --br-border: #F0EFEB; 
+            --br-error: #E74C3C; 
+            --br-ai: #F4F8F5;
             --sidebar-width: 320px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Noto Sans KR', sans-serif; pointer-events: auto !important; }
-        button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
-        
-        .app-container { display: flex; width: 100vw; height: 100dvh; position: relative; pointer-events: auto !important; }
-        
-        /* [Sidebar] */
-        .sidebar { width: var(--sidebar-width); height: 100%; background: var(--br-paper); border-right: 1px solid var(--br-border); display: flex; flex-direction: column; z-index: 10000; transition: transform 0.4s ease; flex-shrink: 0; }
-        .sidebar-header { padding: 40px 30px 30px; text-align: center; border-bottom: 1px solid var(--br-border); cursor: pointer; }
-        .brand-logo { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: var(--br-charcoal); }
-        .brand-logo span { color: var(--br-green); font-style: italic; }
-        
-        .student-profile { padding: 20px 30px; border-bottom: 1px solid var(--br-border); display: flex; align-items: center; gap: 15px; background: #FAFAFA; transition: 0.3s; }
-        .student-profile.registered { background: #F4F8F5; }
-        .profile-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--br-border); color: var(--br-muted); display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 22px; flex-shrink: 0; transition: 0.3s; }
-        .student-profile.registered .profile-avatar { background: var(--br-gold); color: #FFF; box-shadow: 0 10px 20px rgba(203,174,117,0.3); }
-        .profile-info { display: flex; flex-direction: column; overflow: hidden; }
-        .profile-name { font-size: 16px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .profile-role { font-size: 11px; color: var(--br-muted); letter-spacing: 1px; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
 
-        .nav-list { flex: 1; overflow-y: auto; padding: 20px; }
-        .nav-item { padding: 18px 20px; margin-bottom: 10px; border-radius: 16px; background: #FAFAFA; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .nav-item.active { background: var(--br-ai); border-left: 6px solid var(--br-green); font-weight: 900; }
-        .nav-title { font-size: 14px; font-weight: 800; letter-spacing: -0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
-        .nav-badge { font-size: 11px; font-weight: 900; opacity: 0.3; }
-        
-        /* [Workspace] */
-        .workspace { flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 0; position: relative; overflow: hidden; pointer-events: auto !important; }
-        
-        .top-bar { height: 90px; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; z-index: 10; border-bottom: 1px solid transparent; }
-        .unit-info { font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 5px; }
-        .page-info { font-family: 'Playfair Display', serif; font-size: 38px; font-weight: 700; color: var(--br-charcoal); margin-top: 5px; }
-        
-        /* [Stage Wrapper] */
-        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 10px 40px; position: relative; overflow: hidden; pointer-events: auto !important; perspective: 1000px; }
-        .drawing-board { position: relative; display: inline-flex; line-height: 0; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); background: var(--br-paper); max-width: 100%; max-height: 100%; pointer-events: auto !important; transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-origin: center center; opacity: 1; transform: scale(1); }
-        .drawing-board.fade-out { opacity: 0; transform: scale(0.95) translateY(10px); pointer-events: none !important; }
+        html, body { 
+            width: 100%; 
+            height: 100dvh; 
+            overflow: hidden; 
+            background-color: var(--br-bg); 
+            color: var(--br-text); 
+            font-family: 'Noto Sans KR', sans-serif; 
+            pointer-events: auto !important; 
+        }
 
-        #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 240px); width: auto; height: auto; opacity: 0; transition: opacity 0.3s; border-radius: 15px; user-select: none; pointer-events: none !important; }
-        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; pointer-events: auto !important; border-radius: 15px; cursor: crosshair; }
-
-        /* [Bottom Dock] */
-        .bottom-dock { height: 120px; flex-shrink: 0; background: rgba(255, 255, 255, 0.95); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 500; }
+        button { 
+            border: none; 
+            background: none; 
+            font-family: inherit; 
+            cursor: pointer; 
+            outline: none; 
+        }
         
-        .tool-group { display: flex; align-items: center; gap: 15px; background: #FAFAFA; padding: 10px 25px; border-radius: 100px; border: 1px solid var(--br-border); }
-        .color-preview { width: 45px; height: 45px; border-radius: 50%; border: 3px solid #FFF; cursor: pointer; background: var(--br-charcoal); box-shadow: 0 5px 10px rgba(0,0,0,0.05); flex-shrink: 0; }
-        .brush-slider { width: 120px; accent-color: var(--br-green); cursor: pointer; height: 6px; }
+        .app-container { 
+            display: flex; 
+            width: 100vw; 
+            height: 100dvh; 
+            position: relative; 
+            pointer-events: auto !important; 
+        }
         
-        .btn-erase { font-size: 13px; font-weight: 900; color: var(--br-charcoal); padding: 10px 15px; border-radius: 15px; transition: 0.3s; background: #FFF; border: 1px solid var(--br-border); cursor: pointer; }
-        .btn-erase.active { background: var(--br-error); color: #FFF; border-color: var(--br-error); }
-        .btn-erase-all { font-size: 11px; font-weight: 800; color: var(--br-muted); cursor: pointer; padding: 5px; }
+        /* ======================================================================
+         * [Sidebar & Badges]
+         * ====================================================================== */
+        .sidebar { 
+            width: var(--sidebar-width); 
+            height: 100%; 
+            background: var(--br-paper); 
+            border-right: 1px solid var(--br-border); 
+            display: flex; 
+            flex-direction: column; 
+            z-index: 1000; 
+            flex-shrink: 0; 
+            transition: transform 0.4s ease; 
+        }
+
+        .sidebar-header { 
+            padding: 30px; 
+            text-align: center; 
+            border-bottom: 1px solid var(--br-border); 
+            cursor: pointer; 
+        }
+
+        .brand-logo { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 26px; 
+            font-weight: 900; 
+            color: var(--br-charcoal); 
+        }
+
+        .brand-logo span { 
+            color: var(--br-green); 
+            font-style: italic; 
+        }
         
-        .action-group { display: flex; gap: 12px; align-items: center; }
-        .btn-nav { width: 60px; height: 60px; border-radius: 18px; border: 1px solid var(--br-border); font-size: 24px; background: #FFF; cursor: pointer; color: var(--br-charcoal); display: flex; justify-content: center; align-items: center; flex-shrink: 0; transition: 0.2s; }
-        .btn-nav:active { transform: scale(0.9); }
-        .btn-core { height: 60px; padding: 0 25px; border-radius: 18px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; flex-shrink: 0; transition: 0.2s; }
-        .btn-core:active { transform: scale(0.95); }
-        .btn-record { background: #FFF; color: var(--br-charcoal); border: 1px solid var(--br-border); }
-        .btn-record .dot { width: 10px; height: 10px; background: var(--br-error); border-radius: 50%; opacity: 0; }
-        .btn-record.recording { background: #FFF0F0; color: var(--br-error); border-color: #FADBD8; }
-        .btn-record.recording .dot { opacity: 1; animation: blink 1s infinite; }
-        .btn-submit { background: var(--br-charcoal); color: #FFF; }
+        .student-profile { 
+            padding: 20px 30px; 
+            border-bottom: 1px solid var(--br-border); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            background: #FAFAFA; 
+            transition: 0.3s; 
+        }
 
-        /* [RGB Color Ring Modal] */
-        .rgb-modal { position: absolute; bottom: 130px; left: 40px; background: var(--br-paper); border-radius: 25px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border: 1px solid var(--br-border); z-index: 20000; opacity: 0; pointer-events: none; transform: translateY(20px); transition: 0.3s ease; display: flex; flex-direction: column; align-items: center; touch-action: none; }
-        .rgb-modal.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        #color-wheel { border-radius: 50%; cursor: crosshair; touch-action: none; }
-        .rgb-close { text-align: center; font-size: 11px; font-weight: 900; color: var(--br-muted); margin-top: 15px; cursor: pointer; letter-spacing: 2px; padding: 10px; }
+        .student-profile.registered { 
+            background: var(--br-ai); 
+        }
 
-        /* [Multi-Turn AI Teacher Panel] */
-        .ai-panel { position: absolute; top: 0; right: -450px; width: 450px; height: 100%; background: #FFF; box-shadow: -10px 0 30px rgba(0,0,0,0.1); z-index: 10001; transition: right 0.5s ease; display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
-        .ai-panel.open { right: 0; }
-        .ai-header { padding: 25px; background: var(--br-ai); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); flex-shrink: 0; }
-        .ai-title { font-size: 18px; font-weight: 900; color: var(--br-green); display: flex; align-items: center; gap: 10px; }
-        .btn-close-ai { font-size: 32px; color: var(--br-muted); line-height: 1; cursor: pointer; }
+        .profile-top { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+
+        .profile-avatar { 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 50%; 
+            background: var(--br-border); 
+            color: #FFF; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-weight: 900; 
+            font-size: 20px; 
+            transition: 0.3s; 
+        }
+
+        .student-profile.registered .profile-avatar { 
+            background: var(--br-gold); 
+            box-shadow: 0 5px 15px rgba(203,174,117,0.3); 
+        }
+
+        .profile-info { 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        }
+
+        .profile-name { 
+            font-size: 16px; 
+            font-weight: 900; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+
+        .profile-role { 
+            font-size: 11px; 
+            color: var(--br-muted); 
+            letter-spacing: 1px; 
+        }
         
-        .ai-content { padding: 25px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
-        .chat-bubble { max-width: 85%; padding: 18px; border-radius: 20px; font-size: 15px; line-height: 1.6; font-weight: 500; word-break: keep-all; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .chat-bubble.ai { align-self: flex-start; background: #F8F9FA; border: 1px solid var(--br-border); border-bottom-left-radius: 5px; color: var(--br-text); }
-        .chat-bubble.user { align-self: flex-end; background: var(--br-green); color: #FFF; border-bottom-right-radius: 5px; box-shadow: 0 5px 15px rgba(137,191,160,0.2); }
+        .badge-container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 5px; 
+        }
+
+        .badge { 
+            font-size: 11px; 
+            padding: 4px 8px; 
+            border-radius: 10px; 
+            background: #FFF; 
+            border: 1px solid var(--br-border); 
+            color: var(--br-charcoal); 
+            font-weight: 800; 
+            display: flex; 
+            align-items: center; 
+            gap: 4px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02); 
+            animation: popIn 0.3s ease; 
+        }
+
+        .nav-list { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 15px; 
+        }
+
+        .nav-item { 
+            padding: 15px; 
+            margin-bottom: 8px; 
+            border-radius: 12px; 
+            background: #FAFAFA; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            cursor: pointer; 
+            transition: 0.2s; 
+        }
+
+        .nav-item.active { 
+            background: var(--br-ai); 
+            border-left: 5px solid var(--br-green); 
+            font-weight: 800; 
+        }
+
+        .nav-title { 
+            font-size: 13px; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            max-width: 160px; 
+        }
+
+        .nav-badge { 
+            font-size: 10px; 
+            font-weight: 900; 
+            opacity: 0.4; 
+        }
         
-        @keyframes popIn { 0% { opacity: 0; transform: scale(0.8) translateY(10px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+        /* ======================================================================
+         * [Workspace & Stage]
+         * ====================================================================== */
+        .workspace { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100%; 
+            min-width: 0; 
+            position: relative; 
+            overflow: hidden; 
+            pointer-events: auto !important; 
+        }
 
-        .analytics-box { background: #FAFAFA; border: 1px solid var(--br-border); border-radius: 20px; padding: 20px; margin-bottom: 10px; align-self: stretch; animation: popIn 0.4s ease; }
-        .analytics-title { font-size: 11px; font-weight: 900; color: var(--br-muted); letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; }
-        .stat-row { margin-bottom: 12px; }
-        .stat-label { font-size: 12px; font-weight: 900; display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--br-charcoal); }
-        .stat-bar-bg { width: 100%; height: 8px; background: #E0E0E0; border-radius: 10px; overflow: hidden; }
-        .stat-bar-fill { height: 100%; background: var(--br-gold); width: 0%; transition: width 1.5s ease; border-radius: 10px; }
-        .stat-bar-fill.green { background: var(--br-green); }
-        .stat-bar-fill.blue { background: var(--br-blue); }
+        .top-bar { 
+            height: 75px; 
+            padding: 0 40px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--br-border); 
+            flex-shrink: 0; 
+            z-index: 10; 
+        }
+
+        .unit-info { 
+            font-size: 12px; 
+            font-weight: 900; 
+            color: var(--br-gold); 
+            letter-spacing: 3px; 
+            text-transform: uppercase; 
+        }
+
+        .page-info { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 30px; 
+            font-weight: 700; 
+            color: var(--br-charcoal); 
+            margin-top: 5px; 
+        }
         
-        .chat-input-area { padding: 20px 25px; border-top: 1px solid var(--br-border); background: #FFF; display: flex; flex-direction: column; gap: 10px; }
-        .btn-chat-record { width: 100%; height: 55px; background: var(--br-charcoal); color: #FFF; border-radius: 15px; font-weight: 900; font-size: 15px; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; transition: 0.3s; }
-        .btn-chat-record.recording { background: var(--br-error); animation: pulse 1.5s infinite; }
-        .btn-chat-next { width: 100%; height: 55px; background: var(--br-blue); color: #FFF; border-radius: 15px; font-weight: 900; font-size: 15px; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; box-shadow: 0 8px 20px rgba(124,166,193,0.3); }
-        .btn-chat-next:active { transform: scale(0.95); }
+        .stage-wrapper { 
+            flex: 1; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px 40px; 
+            background: var(--br-bg); 
+            perspective: 1000px; 
+            pointer-events: auto !important; 
+            overflow: hidden; 
+        }
 
-        .ai-name-input { width: 100%; padding: 15px; border: 2px dashed var(--br-green); border-radius: 12px; margin-top: 15px; font-size: 16px; text-align: center; font-weight: 800; outline: none; }
-        .ai-name-btn { width: 100%; background: var(--br-green); color: #fff; padding: 15px; border-radius: 12px; margin-top: 10px; font-weight: 900; cursor: pointer; font-size: 14px; }
-        .ai-btn-secondary { background: #EEE; color: #333; margin-top: 5px; }
+        .drawing-board { 
+            position: relative; 
+            display: inline-flex; 
+            line-height: 0; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
+            background: #FFF; 
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transform-origin: center; 
+            pointer-events: auto !important; 
+        }
 
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        .drawing-board.fade-out { 
+            opacity: 0; 
+            transform: scale(0.95) translateY(10px); 
+            pointer-events: none !important; 
+        }
 
-        .mobile-menu-btn { display: none; font-size: 28px; padding: 10px; color: var(--br-charcoal); z-index: 1500; }
+        #worksheet-img { 
+            display: block; 
+            max-width: 100%; 
+            max-height: calc(100dvh - 220px); 
+            width: auto; 
+            height: auto; 
+            border-radius: 15px; 
+            pointer-events: none !important; 
+            opacity: 0; 
+            transition: opacity 0.3s; 
+            user-select: none; 
+        }
 
+        #draw-layer { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 9999 !important; 
+            touch-action: none; 
+            pointer-events: auto !important; 
+            border-radius: 15px; 
+            cursor: crosshair; 
+        }
+
+        /* ======================================================================
+         * [Bottom Dock Tools]
+         * ====================================================================== */
+        .bottom-dock { 
+            height: 100px; 
+            background: rgba(255, 255, 255, 0.95); 
+            border-top: 1px solid var(--br-border); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 40px; 
+            flex-shrink: 0; 
+            z-index: 500; 
+        }
+
+        .tool-group { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            background: #FAFAFA; 
+            padding: 10px 25px; 
+            border-radius: 100px; 
+            border: 1px solid var(--br-border); 
+        }
+
+        .color-preview { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            border: 3px solid #FFF; 
+            cursor: pointer; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+        }
+        
+        .btn-magic { 
+            font-size: 20px; 
+            padding: 5px; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            filter: grayscale(100%); 
+        }
+
+        .btn-magic.active { 
+            filter: grayscale(0%); 
+            transform: scale(1.2); 
+        }
+
+        .brush-slider { 
+            width: 90px; 
+            accent-color: var(--br-green); 
+            cursor: pointer; 
+            height: 6px; 
+        }
+
+        .btn-tool { 
+            font-size: 16px; 
+            font-weight: 900; 
+            padding: 8px 12px; 
+            color: var(--br-charcoal); 
+            cursor: pointer; 
+            transition: 0.2s; 
+            background: #FFF; 
+            border: 1px solid var(--br-border); 
+            border-radius: 10px; 
+        }
+
+        .btn-tool:active { 
+            transform: scale(0.9); 
+        }
+
+        .btn-erase { 
+            font-size: 13px; 
+            font-weight: 900; 
+            padding: 10px 15px; 
+            border-radius: 12px; 
+            background: #FFF; 
+            border: 1px solid var(--br-border); 
+            cursor: pointer; 
+            transition: 0.3s; 
+            color: var(--br-charcoal); 
+        }
+
+        .btn-erase.active { 
+            background: var(--br-error); 
+            color: #FFF; 
+            border-color: var(--br-error); 
+        }
+        
+        .action-group { 
+            display: flex; 
+            gap: 10px; 
+            align-items: center; 
+        }
+
+        .btn-nav { 
+            width: 55px; 
+            height: 55px; 
+            border-radius: 15px; 
+            border: 1px solid var(--br-border); 
+            background: #FFF; 
+            font-size: 22px; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            color: var(--br-charcoal); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+
+        .btn-nav:active { 
+            transform: scale(0.9); 
+        }
+
+        .btn-main { 
+            height: 55px; 
+            padding: 0 25px; 
+            border-radius: 15px; 
+            font-weight: 900; 
+            font-size: 14px; 
+            letter-spacing: 1px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            transition: 0.2s; 
+            text-transform: uppercase; 
+        }
+
+        .btn-main:active { 
+            transform: scale(0.95); 
+        }
+
+        .btn-record { 
+            background: #FFF; 
+            border: 1px solid var(--br-border); 
+            color: var(--br-charcoal); 
+        }
+
+        .btn-record.recording { 
+            background: #FFF0F0; 
+            color: var(--br-error); 
+            border-color: var(--br-error); 
+        }
+
+        .btn-record .dot { 
+            width: 10px; 
+            height: 10px; 
+            background: var(--br-error); 
+            border-radius: 50%; 
+            opacity: 0; 
+        }
+
+        .btn-record.recording .dot { 
+            opacity: 1; 
+            animation: blink 1s infinite; 
+        }
+
+        .btn-submit { 
+            background: var(--br-charcoal); 
+            color: #FFF; 
+        }
+
+        /* ======================================================================
+         * [AI Tutor Panel & Chat]
+         * ====================================================================== */
+        .ai-panel { 
+            position: absolute; 
+            top: 0; 
+            right: -450px; 
+            width: 450px; 
+            height: 100%; 
+            background: #FFF; 
+            box-shadow: -10px 0 30px rgba(0,0,0,0.08); 
+            z-index: 10001; 
+            transition: right 0.5s cubic-bezier(0.19, 1, 0.22, 1); 
+            display: flex; 
+            flex-direction: column; 
+            border-left: 1px solid var(--br-border); 
+        }
+
+        .ai-panel.open { 
+            right: 0; 
+        }
+
+        .ai-header { 
+            padding: 25px; 
+            background: var(--br-ai); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--br-border); 
+            flex-shrink: 0; 
+        }
+
+        .ai-title { 
+            font-size: 18px; 
+            font-weight: 900; 
+            color: var(--br-green); 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+
+        .btn-close-ai { 
+            font-size: 32px; 
+            color: var(--br-muted); 
+            line-height: 1; 
+            cursor: pointer; 
+        }
+        
+        .ai-content { 
+            padding: 25px; 
+            flex: 1; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            scroll-behavior: smooth; 
+        }
+        
+        .chat-bubble { 
+            max-width: 85%; 
+            padding: 18px; 
+            border-radius: 20px; 
+            font-size: 15px; 
+            line-height: 1.6; 
+            font-weight: 500; 
+            word-break: keep-all; 
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+
+        .chat-bubble.ai { 
+            align-self: flex-start; 
+            background: #F8F9FA; 
+            border-bottom-left-radius: 5px; 
+            border: 1px solid var(--br-border); 
+            color: var(--br-text); 
+        }
+
+        .chat-bubble.user { 
+            align-self: flex-end; 
+            background: var(--br-green); 
+            color: #FFF; 
+            border-bottom-right-radius: 5px; 
+            box-shadow: 0 5px 15px rgba(137,191,160,0.2); 
+        }
+
+        .analytics-card { 
+            background: #FAFAFA; 
+            border: 1px solid var(--br-border); 
+            border-radius: 18px; 
+            padding: 20px; 
+            align-self: stretch; 
+            animation: popIn 0.4s ease; 
+            margin-bottom: 5px; 
+        }
+
+        .stat-row { 
+            margin-bottom: 12px; 
+        }
+
+        .stat-label { 
+            font-size: 12px; 
+            font-weight: 900; 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 6px; 
+            color: var(--br-charcoal); 
+        }
+
+        .bar-bg { 
+            width: 100%; 
+            height: 8px; 
+            background: #E0E0E0; 
+            border-radius: 10px; 
+            overflow: hidden; 
+        }
+
+        .bar-fill { 
+            height: 100%; 
+            transition: width 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            border-radius: 10px; 
+        }
+
+        .voice-fx-group { 
+            display: flex; 
+            gap: 10px; 
+            margin-top: 15px; 
+            justify-content: center; 
+        }
+
+        .btn-fx { 
+            padding: 8px 12px; 
+            border-radius: 10px; 
+            font-size: 12px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            border: 1px solid var(--br-border); 
+            background: #FFF; 
+            transition: 0.2s; 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+            color: var(--br-charcoal); 
+        }
+
+        .btn-fx:hover { 
+            background: var(--br-ai); 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 10px rgba(0,0,0,0.05); 
+        }
+
+        .chat-footer { 
+            padding: 20px 25px; 
+            border-top: 1px solid var(--br-border); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            background: #FFF; 
+        }
+
+        .btn-reply { 
+            width: 100%; 
+            height: 55px; 
+            background: var(--br-charcoal); 
+            color: #FFF; 
+            border-radius: 15px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            font-size: 15px; 
+            letter-spacing: 1px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px; 
+        }
+
+        .btn-reply.recording { 
+            background: var(--br-error); 
+            animation: pulse 1.5s infinite; 
+        }
+
+        .btn-next-page { 
+            width: 100%; 
+            height: 55px; 
+            background: var(--br-blue); 
+            color: #FFF; 
+            border-radius: 15px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            box-shadow: 0 5px 15px rgba(124,166,193,0.3); 
+            font-size: 15px; 
+            letter-spacing: 1px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+
+        .btn-next-page:active { 
+            transform: scale(0.95); 
+        }
+
+        .ai-name-input { 
+            width: 100%; 
+            padding: 15px; 
+            border: 2px dashed var(--br-green); 
+            border-radius: 12px; 
+            margin-top: 15px; 
+            font-size: 16px; 
+            text-align: center; 
+            font-weight: 800; 
+            outline: none; 
+        }
+
+        .ai-name-btn { 
+            width: 100%; 
+            background: var(--br-green); 
+            color: #fff; 
+            padding: 15px; 
+            border-radius: 12px; 
+            margin-top: 10px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            font-size: 14px; 
+        }
+
+        .ai-btn-secondary { 
+            background: #EEE; 
+            color: #333; 
+            margin-top: 5px; 
+        }
+
+        /* ======================================================================
+         * [Modals & Misc]
+         * ====================================================================== */
+        .rgb-modal { 
+            position: absolute; 
+            bottom: 120px; 
+            left: 40px; 
+            background: #FFF; 
+            border-radius: 25px; 
+            padding: 20px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15); 
+            z-index: 5000; 
+            opacity: 0; 
+            pointer-events: none; 
+            transform: translateY(20px); 
+            transition: 0.3s ease; 
+        }
+
+        .rgb-modal.active { 
+            opacity: 1; 
+            pointer-events: auto; 
+            transform: translateY(0); 
+        }
+
+        .cert-modal-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100dvh; 
+            background: rgba(0,0,0,0.8); 
+            z-index: 30000; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: 0.4s ease; 
+            backdrop-filter: blur(10px); 
+        }
+
+        .cert-modal-overlay.active { 
+            opacity: 1; 
+            pointer-events: auto; 
+        }
+
+        .cert-card { 
+            background: #FFF; 
+            width: 800px; 
+            max-width: 90%; 
+            border-radius: 30px; 
+            padding: 50px; 
+            text-align: center; 
+            position: relative; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3); 
+            transform: scale(0.8); 
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+
+        .cert-modal-overlay.active .cert-card { 
+            transform: scale(1); 
+        }
+
+        .cert-border { 
+            border: 8px solid var(--br-gold); 
+            border-radius: 20px; 
+            padding: 40px; 
+            position: relative; 
+        }
+
+        .cert-title { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 45px; 
+            color: var(--br-charcoal); 
+            font-weight: 900; 
+            margin-bottom: 10px; 
+        }
+
+        .cert-subtitle { 
+            font-size: 16px; 
+            color: var(--br-muted); 
+            font-weight: 700; 
+            letter-spacing: 3px; 
+            text-transform: uppercase; 
+            margin-bottom: 30px; 
+        }
+
+        .cert-name { 
+            font-size: 35px; 
+            color: var(--br-green); 
+            font-weight: 900; 
+            margin-bottom: 20px; 
+            text-decoration: underline; 
+            text-decoration-color: var(--br-gold); 
+        }
+
+        .cert-img-container { 
+            width: 100%; 
+            max-width: 400px; 
+            height: 250px; 
+            margin: 0 auto 30px; 
+            border-radius: 15px; 
+            border: 2px dashed var(--br-border); 
+            overflow: hidden; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: var(--br-bg); 
+        }
+
+        .cert-img-container img { 
+            max-width: 100%; 
+            max-height: 100%; 
+            object-fit: contain; 
+        }
+
+        .cert-msg { 
+            font-size: 16px; 
+            color: var(--br-text); 
+            line-height: 1.6; 
+            font-weight: 500; 
+            margin-bottom: 30px; 
+            font-style: italic; 
+        }
+
+        .btn-print { 
+            background: var(--br-charcoal); 
+            color: #FFF; 
+            padding: 15px 40px; 
+            font-size: 16px; 
+            font-weight: 900; 
+            border-radius: 100px; 
+            cursor: pointer; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 10px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+            transition: 0.3s; 
+        }
+
+        .btn-print:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 25px rgba(0,0,0,0.15); 
+        }
+
+        .cert-close { 
+            position: absolute; 
+            top: 20px; 
+            right: 30px; 
+            font-size: 30px; 
+            color: var(--br-muted); 
+            cursor: pointer; 
+            font-weight: 900; 
+        }
+
+        @keyframes popIn { 
+            from { opacity: 0; transform: scale(0.9) translateY(10px); } 
+            to { opacity: 1; transform: scale(1) translateY(0); } 
+        }
+
+        @keyframes blink { 
+            50% { opacity: 0.3; } 
+        }
+
+        @keyframes pulse { 
+            0% { opacity: 0.8; transform: scale(0.98); } 
+            50% { opacity: 1; transform: scale(1.02); } 
+            100% { opacity: 0.8; transform: scale(0.98); } 
+        }
+
+        .mobile-menu-btn { 
+            display: none; 
+            font-size: 28px; 
+            padding: 10px; 
+            color: var(--br-charcoal); 
+            z-index: 1500; 
+        }
+
+        /* [Media Queries] */
         @media (max-width: 1024px) {
             :root { --sidebar-width: 260px; }
-            .top-bar { height: 75px; padding: 0 20px; }
+            .top-bar { height: 70px; padding: 0 20px; }
             .bottom-dock { height: 100px; padding: 0 20px; }
             .stage-wrapper { padding: 10px 20px; }
             .rgb-modal { left: 20px; bottom: 110px; }
@@ -139,39 +898,44 @@
             .mobile-menu-btn { display: block; }
             .sidebar { position: fixed; left: calc(var(--sidebar-width) * -1); top: 0; box-shadow: none; }
             .sidebar.open { left: 0; box-shadow: 20px 0 50px rgba(0,0,0,0.1); }
-            .top-bar { height: 70px; }
-            #worksheet-img { max-height: calc(100dvh - 230px); }
+            #worksheet-img { max-height: calc(100dvh - 210px); }
             .bottom-dock { height: 140px; flex-direction: column; justify-content: center; padding: 10px 20px; gap: 12px; border-radius: 25px 25px 0 0; }
             .tool-group { width: 100%; justify-content: center; padding: 8px 20px; }
             .action-group { width: 100%; justify-content: space-between; }
-            .btn-nav, .btn-core { height: 50px; font-size: 13px; }
+            .btn-nav, .btn-main { height: 50px; font-size: 13px; }
             .ai-panel { width: 100%; right: -100%; border-left: none; }
             .rgb-modal { left: 50%; transform: translateX(-50%) translateY(20px); bottom: 160px; }
             .rgb-modal.active { transform: translateX(-50%) translateY(0); }
+            .cert-card { padding: 30px 20px; }
+            .cert-border { padding: 20px; }
+            .cert-title { font-size: 30px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="app-container" id="main-app">
+    <div class="app-container">
         
         <nav class="sidebar" id="sidebar">
-            <div class="sidebar-header" onclick="location.href='index.html'">
+            <div class="sidebar-header" onclick="location.reload()">
                 <div class="brand-logo">Bridge<span>Academy</span></div>
             </div>
             <div class="student-profile" id="profile-box">
-                <div class="profile-avatar" id="avatar-char">?</div>
-                <div class="profile-info">
-                    <span class="profile-name" id="display-student-name">Inquirer</span>
-                    <span class="profile-role">Awaiting Name</span>
+                <div class="profile-top">
+                    <div class="profile-avatar" id="avatar-char">?</div>
+                    <div class="profile-info">
+                        <span class="profile-name" id="display-name">Inquirer</span>
+                        <span class="profile-role">Bridge Explorer</span>
+                    </div>
                 </div>
+                <div class="badge-container" id="badge-container"></div>
             </div>
             <div class="nav-list" id="nav-list"></div>
         </nav>
 
         <div class="workspace">
             <div class="top-bar">
-                <div class="top-bar-left" style="display:flex; align-items:center; gap:10px;">
+                <div style="display:flex; align-items:center; gap:15px;">
                     <button class="mobile-menu-btn" onclick="UIEngine.toggleSidebar()">☰</button>
                     <div>
                         <div id="unit-info" class="unit-info">UNIT LOADING...</div>
@@ -191,51 +955,76 @@
                 <div class="tool-group">
                     <div class="color-preview" id="btn-color" onclick="RGBRingEngine.toggle()"></div>
                     <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;">
-                    <input type="range" class="brush-slider" id="brush-size" min="2" max="40" value="6">
                     
-                    <button class="btn-erase" onclick="CanvasEngine.undo()" title="Undo">↺</button>
-                    <button class="btn-erase" onclick="CanvasEngine.redo()" title="Redo">↻</button>
+                    <div class="btn-magic active" id="btn-brush-normal" onclick="CanvasEngine.setBrush('normal')" title="Normal Pen">🖍️</div>
+                    <div class="btn-magic" id="btn-brush-neon" onclick="CanvasEngine.setBrush('neon')" title="Neon Magic">🌟</div>
+                    <div class="btn-magic" id="btn-brush-rainbow" onclick="CanvasEngine.setBrush('rainbow')" title="Rainbow Magic">🌈</div>
+
+                    <input type="range" class="brush-slider" id="brush-size" min="2" max="35" value="6" style="margin-left:5px;">
                     
-                    <button class="btn-erase" id="btn-eraser" style="margin-left: 10px;" onclick="CanvasEngine.toggleEraser()">ERASER</button>
-                    <button class="btn-erase-all" onclick="CanvasEngine.clearAll()">[CLEAR ALL]</button>
+                    <button class="btn-tool" onclick="CanvasEngine.undo()" title="Undo">↺</button>
+                    <button class="btn-tool" onclick="CanvasEngine.redo()" title="Redo">↻</button>
+                    
+                    <button class="btn-erase" id="btn-eraser" style="margin-left: 5px;" onclick="CanvasEngine.toggleEraser()">ERASER</button>
+                    <button style="font-size: 10px; font-weight: 900; color: var(--br-muted); padding: 5px; margin-left: 5px; cursor: pointer; border: none; background: transparent;" onclick="CanvasEngine.clearAll()">CLEAR</button>
                 </div>
                 
                 <div class="action-group">
-                    <button class="btn-nav" onclick="AppEngine.smoothPageTransition(-1)">◀</button>
-                    <button class="btn-core btn-record" id="btn-record" onclick="AudioEngine.toggle()">
-                        <div class="dot"></div> <span id="record-text">Audio Log</span>
+                    <button class="btn-nav" onclick="AppEngine.smoothMove(-1)">◀</button>
+                    <button class="btn-main btn-record" id="btn-record" onclick="AudioEngine.toggle()">
+                        <div class="dot"></div> <span id="record-text">Voice Log</span>
                     </button>
-                    <button class="btn-core btn-submit" onclick="AITutor.submitWork()">Submit ✨</button>
-                    <button class="btn-nav" onclick="AppEngine.smoothPageTransition(1)">▶</button>
+                    <button class="btn-main btn-submit" onclick="AITutor.submit()">Submit ✨</button>
+                    <button class="btn-nav" onclick="AppEngine.smoothMove(1)">▶</button>
                 </div>
             </div>
         </div>
 
         <div class="rgb-modal" id="rgb-modal">
-            <canvas id="color-wheel" width="180" height="180"></canvas>
-            <div class="rgb-close" onclick="RGBRingEngine.toggle()">[ CLOSE ]</div>
+            <canvas id="color-wheel" width="150" height="150"></canvas>
+            <p style="text-align:center; font-size:10px; margin-top:12px; font-weight:900; color:var(--br-muted); cursor:pointer;" onclick="RGBRingEngine.toggle()">CLOSE</p>
         </div>
 
         <div class="ai-panel" id="ai-panel">
             <div class="ai-header">
-                <div class="ai-title">Bridge AI Tutor</div>
+                <div class="ai-title">✨ AI Tutor</div>
                 <button class="btn-close-ai" onclick="AITutor.close()">×</button>
             </div>
             <div class="ai-content" id="ai-content"></div>
-            <div class="chat-input-area" id="chat-input-area" style="display:none;">
-                <button class="btn-chat-record" id="btn-chat-record" onclick="AudioEngine.toggleChat()">
-                    🎤 <span>Hold to Reply</span>
-                </button>
-                <button class="btn-chat-next" onclick="AppEngine.smoothPageTransition(1); AITutor.close();">
-                    NEXT ADVENTURE 🚀
-                </button>
+            <div class="chat-footer" id="chat-footer" style="display:none;">
+                <button class="btn-reply" id="btn-chat-record" onclick="AudioEngine.toggleChat()">🎤 Speak to Reply</button>
+                <button class="btn-next-page" onclick="AppEngine.handleNextAdventure()">Next Adventure 🚀</button>
             </div>
         </div>
+
+        <div class="cert-modal-overlay" id="cert-modal">
+            <div class="cert-card" id="cert-card-content">
+                <div class="cert-close" onclick="CertificateEngine.close()">×</div>
+                <div class="cert-border">
+                    <div class="cert-subtitle" id="cert-week">WEEK 1 COMPLETED</div>
+                    <div class="cert-title">Certificate of Exploration</div>
+                    <p style="margin-bottom: 20px; color: var(--br-muted); font-weight: 500;">This magical certificate is proudly presented to</p>
+                    <div class="cert-name" id="cert-student-name">Student Name</div>
+                    
+                    <div class="cert-img-container">
+                        <img id="cert-canvas-img" src="" alt="My Masterpiece">
+                    </div>
+                    
+                    <div class="cert-msg" id="cert-ai-msg">"For showing amazing creativity and speaking with a clear, beautiful voice."</div>
+                    
+                    <button class="btn-print" onclick="CertificateEngine.print()">🖨️ Save & Print</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        const CONFIG = {
-            STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/"
+        // ======================================================================
+        // [Configuration & Global State]
+        // ======================================================================
+        const CONFIG = { 
+            STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/" 
         };
 
         const STATE = {
@@ -243,731 +1032,1105 @@
             isNameRegistered: false,
             id: new URLSearchParams(window.location.search).get('id') || "A-1",
             currentPage: 1, 
-            isRecording: false, lastTranscript: "",
-            audioStartTime: 0, audioDurationSec: 0, sttConfidence: 0,
-            isChatMode: false 
+            isRecording: false, 
+            lastTranscript: "",
+            audioStartTime: 0, 
+            audioDurationSec: 0, 
+            sttConfidence: 0,
+            isChatMode: false, 
+            historyStack: [], 
+            historyIndex: -1,
+            audioBlobUrl: null, 
+            badges: [], 
+            brushType: 'normal', 
+            rainbowHue: 0
         };
 
+        // ======================================================================
+        // [Storage Engine]
+        // ======================================================================
         const StorageEngine = {
-            saveState() {
-                try {
-                    localStorage.setItem(`bridge_state_${STATE.id}`, JSON.stringify({
-                        studentName: STATE.studentName,
-                        isNameRegistered: STATE.isNameRegistered,
-                        currentPage: STATE.currentPage
-                    }));
-                } catch(e) {}
+            save() { 
+                const stateData = { 
+                    name: STATE.studentName, 
+                    reg: STATE.isNameRegistered, 
+                    page: STATE.currentPage, 
+                    badges: STATE.badges 
+                };
+                localStorage.setItem(`br_v100_${STATE.id}`, JSON.stringify(stateData)); 
             },
-            loadState() {
-                try {
-                    const saved = JSON.parse(localStorage.getItem(`bridge_state_${STATE.id}`) || "{}");
-                    if (saved.currentPage) STATE.currentPage = saved.currentPage;
-                    if (saved.studentName) STATE.studentName = saved.studentName;
-                    if (saved.isNameRegistered) STATE.isNameRegistered = saved.isNameRegistered;
-                } catch(e) {}
+            
+            load() {
+                const s = JSON.parse(localStorage.getItem(`br_v100_${STATE.id}`) || "{}");
+                if (s.name) {
+                    STATE.studentName = s.name; 
+                }
+                if (s.reg) {
+                    STATE.isNameRegistered = s.reg; 
+                }
+                if (s.page) {
+                    STATE.currentPage = s.page; 
+                }
+                if (s.badges) {
+                    STATE.badges = s.badges;
+                }
             },
+            
             saveCanvas() {
-                try {
-                    if(CanvasEngine.cvs) {
-                        localStorage.setItem(`bridge_cvs_${STATE.id}_${STATE.currentPage}`, CanvasEngine.cvs.toDataURL());
-                    }
-                } catch(e) {}
+                if (!CanvasEngine.cvs) {
+                    return;
+                }
+                const canvasData = CanvasEngine.cvs.toDataURL();
+                localStorage.setItem(`br_cvs_${STATE.id}_${STATE.currentPage}`, canvasData);
             },
+            
             loadCanvas() {
-                try {
-                    const data = localStorage.getItem(`bridge_cvs_${STATE.id}_${STATE.currentPage}`);
-                    if (data) {
-                        const img = new Image();
-                        img.onload = () => {
-                            CanvasEngine.ctx.drawImage(img, 0, 0);
-                            CanvasEngine.saveState(); 
-                        };
-                        img.src = data;
-                    }
-                } catch(e) {}
+                const data = localStorage.getItem(`br_cvs_${STATE.id}_${STATE.currentPage}`);
+                if (data) {
+                    const img = new Image();
+                    img.onload = () => {
+                        CanvasEngine.ctx.drawImage(
+                            img, 
+                            0, 
+                            0, 
+                            CanvasEngine.cvs.width / CanvasEngine.dpr, 
+                            CanvasEngine.cvs.height / CanvasEngine.dpr
+                        );
+                        CanvasEngine.saveHistory();
+                    };
+                    img.src = data;
+                }
             }
         };
 
+        // ======================================================================
+        // [Certificate Engine]
+        // ======================================================================
+        const CertificateEngine = {
+            open(weekNum) {
+                const modal = document.getElementById('cert-modal');
+                document.getElementById('cert-week').innerText = `WEEK ${weekNum} COMPLETED`;
+                document.getElementById('cert-student-name').innerText = STATE.studentName || "Bridge Explorer";
+                
+                const img = document.getElementById('cert-canvas-img');
+                img.src = CanvasEngine.cvs.toDataURL();
+                
+                const hasArt = STATE.badges.includes("🎨 Colorful Artist");
+                const hasVoice = STATE.badges.includes("🗣️ Great Speaker");
+                
+                let msg = "For showing amazing curiosity and completing your inquiry journey.";
+                if (hasArt && hasVoice) {
+                    msg = "For your brilliant colorful art and speaking English so confidently!";
+                } else if (hasArt) {
+                    msg = "For expressing your wonderful imagination through colorful art!";
+                } else if (hasVoice) {
+                    msg = "For speaking English with a clear, brave voice like a true explorer!";
+                }
+                
+                document.getElementById('cert-ai-msg').innerText = `"${msg}"`;
+                
+                modal.classList.add('active');
+                
+                if (window.confetti) {
+                    confetti({ 
+                        particleCount: 150, 
+                        spread: 100, 
+                        origin: { y: 0.5 }, 
+                        colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] 
+                    });
+                }
+            },
+            
+            close() {
+                document.getElementById('cert-modal').classList.remove('active');
+                AppEngine.smoothMove(1); 
+            },
+            
+            print() {
+                const card = document.getElementById('cert-card-content');
+                const closeBtn = document.querySelector('.cert-close');
+                const printBtn = document.querySelector('.btn-print');
+                
+                closeBtn.style.display = 'none';
+                printBtn.style.display = 'none';
+                
+                html2canvas(card, { backgroundColor: '#FFFFFF', scale: 2 }).then(canvas => {
+                    closeBtn.style.display = 'block';
+                    printBtn.style.display = 'inline-flex';
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.download = `Bridge_Certificate_Week_${Math.ceil(STATE.currentPage / 4)}.png`;
+                    link.href = imgData;
+                    link.click();
+                });
+            }
+        };
+
+        // ======================================================================
+        // [App Engine & UI Engine]
+        // ======================================================================
         const AppEngine = {
-            smoothPageTransition(direction) {
+            smoothMove(dir) {
                 const board = document.getElementById('drawing-board');
                 board.classList.add('fade-out');
+                
                 setTimeout(() => {
-                    PageEngine.move(direction);
+                    STATE.currentPage += dir;
+                    if (STATE.currentPage < 1) {
+                        STATE.currentPage = 1;
+                    }
+                    PageEngine.load(STATE.currentPage);
+                    
                     setTimeout(() => {
                         board.classList.remove('fade-out');
-                    }, 150); 
+                    }, 150);
                 }, 400);
+            },
+            
+            handleNextAdventure() {
+                AITutor.close();
+                if (STATE.currentPage % 4 === 0) {
+                    CertificateEngine.open(STATE.currentPage / 4);
+                } else {
+                    this.smoothMove(1);
+                }
             }
         };
 
         const UIEngine = {
-            toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); },
-            closeSidebarOnMobile() { if(window.innerWidth <= 800) document.getElementById('sidebar').classList.remove('open'); }
-        };
-
-        const AI_CONTEXT_DB = {
-            "A-1": {
-                pages: {
-                    1: { navTitle: "👑 My Special Name", keywords: ["name", "hello", "am", "is"], intent: "Expressing name and identity", analysis: "The strokes show positive self-perception.", question: "What makes your name special?" },
-                    2: { navTitle: "👀 My Beautiful Face", keywords: ["face", "eyes", "nose", "mouth"], intent: "Depicting face", analysis: "High observation skills shown.", question: "What is your favorite part of your face?" },
-                    3: { navTitle: "🖐️ My Strong Hands", keywords: ["hands", "touch", "clap"], intent: "Exploring body functions", analysis: "Shows understanding of body capabilities.", question: "What fun things can you do with hands?" },
-                    4: { navTitle: "👨‍👩‍👧 My Family Tree", keywords: ["mom", "dad", "family", "brother", "sister"], intent: "Understanding family", analysis: "Clear depiction of family members.", question: "Who did you draw here?" },
-                    5: { navTitle: "🎨 My Favorite Colors", keywords: ["color", "red", "blue", "yellow", "green"], intent: "Expressing preferences", analysis: "Vibrant color choices.", question: "Why did you choose these colors?" }
+            toggleSidebar() { 
+                document.getElementById('sidebar').classList.toggle('open'); 
+            },
+            
+            closeSidebarOnMobile() { 
+                if (window.innerWidth <= 800) {
+                    document.getElementById('sidebar').classList.remove('open'); 
+                }
+            },
+            
+            renderBadges() {
+                const container = document.getElementById('badge-container');
+                container.innerHTML = "";
+                
+                const uniqueBadges = [...new Set(STATE.badges)];
+                
+                uniqueBadges.forEach(badge => {
+                    const el = document.createElement('div'); 
+                    el.className = "badge"; 
+                    el.innerText = badge;
+                    container.appendChild(el);
+                });
+            },
+            
+            awardBadge(badgeName) {
+                if (!STATE.badges.includes(badgeName)) {
+                    STATE.badges.push(badgeName);
+                    StorageEngine.save();
+                    this.renderBadges();
+                    
+                    if (window.confetti) {
+                        confetti({ 
+                            particleCount: 50, 
+                            spread: 60, 
+                            origin: { y: 0.8 }, 
+                            colors: ['#CBAE75', '#89BFA0'] 
+                        });
+                    }
                 }
             }
         };
 
-        function getPageContext(unitId, pageNum) {
-            const unitData = AI_CONTEXT_DB[unitId];
-            if (unitData && unitData.pages[pageNum]) return unitData.pages[pageNum];
-            return { navTitle: "✨ Inquiry Lab", keywords: ["wow", "beautiful"], intent: "Creative problem-solving", analysis: "Approaches from multiple angles.", question: "Can you tell me more about this?" };
-        }
+        // ======================================================================
+        // [AI Context Database]
+        // ======================================================================
+        const AI_CONTEXT_DB = {
+            "A-1": {
+                pages: {
+                    1: { navTitle: "👑 My Special Name", keywords: ["name", "hello", "am", "is"], target: "Name Identification", question: "What makes your name special?" },
+                    2: { navTitle: "👀 My Beautiful Face", keywords: ["face", "eyes", "nose", "mouth", "ear"], target: "Facial Features", question: "What is your favorite part of your face?" },
+                    3: { navTitle: "🖐️ My Strong Hands", keywords: ["hands", "fingers", "touch", "clap"], target: "Body Functions", question: "What fun things can you do with hands?" },
+                    4: { navTitle: "👨‍👩‍👧 My Family Tree", keywords: ["family", "mom", "dad", "brother", "sister", "love"], target: "Relationships", question: "Who did you draw here?" },
+                    5: { navTitle: "🎨 My Favorite Colors", keywords: ["color", "red", "blue", "yellow", "green"], target: "Color Aesthetics", question: "Why did you choose these colors?" }
+                }
+            }
+        };
 
+        // ======================================================================
+        // [Page Engine]
+        // ======================================================================
         const PageEngine = {
             init() {
-                document.getElementById('unit-info').innerText = `MASTER LAB: ${STATE.id}`;
                 const list = document.getElementById('nav-list');
-                for(let i=1; i<=17; i++) {
-                    const ctx = getPageContext(STATE.id, i);
+                
+                for (let i = 1; i <= 17; i++) {
+                    const ctx = AI_CONTEXT_DB[STATE.id]?.pages[i] || { navTitle: "Inquiry Lab" };
+                    const weekBadge = Math.ceil(i / 4);
+                    
                     const item = document.createElement('div');
-                    item.className = 'nav-item'; item.id = `nav-${i}`;
-                    item.innerHTML = `<span class="nav-title">${ctx.navTitle}</span> <span class="nav-badge">P.${String(i).padStart(2,'0')}</span>`;
+                    item.className = 'nav-item'; 
+                    item.id = `nav-${i}`;
+                    item.innerHTML = `
+                        <span class="nav-title">${ctx.navTitle}</span> 
+                        <span class="nav-badge">W${weekBadge}-P.${String(i).padStart(2,'0')}</span>
+                    `;
                     
                     item.onclick = () => { 
-                        AppEngine.smoothPageTransition(i - STATE.currentPage); 
+                        AppEngine.smoothMove(i - STATE.currentPage); 
                         UIEngine.closeSidebarOnMobile(); 
                     };
+                    
                     list.appendChild(item);
                 }
-                
                 this.load(STATE.currentPage);
             },
+            
             load(n) {
                 STATE.currentPage = n; 
-                STATE.lastTranscript = ""; STATE.sttConfidence = 0; STATE.audioDurationSec = 0;
+                STATE.lastTranscript = ""; 
+                STATE.sttConfidence = 0; 
+                STATE.audioDurationSec = 0; 
+                STATE.audioBlobUrl = null;
                 
-                StorageEngine.saveState();
-
-                const seriesChar = STATE.id.charAt(0);
-                const imgPath = `${CONFIG.STORAGE_URL}${seriesChar}/${STATE.id}/${STATE.id}-${n}.png?t=${new Date().getTime()}`;
+                document.getElementById('unit-info').innerText = `MASTER LAB: ${STATE.id}`;
+                document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
+                
+                document.querySelectorAll('.nav-item').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                const activeNav = document.getElementById(`nav-${n}`);
+                if (activeNav) {
+                    activeNav.classList.add('active');
+                }
                 
                 const img = document.getElementById('worksheet-img');
-                img.style.opacity = '0'; 
+                img.style.opacity = '0';
+                
+                const seriesChar = STATE.id.charAt(0);
+                const imgPath = `${CONFIG.STORAGE_URL}${seriesChar}/${STATE.id}/${STATE.id}-${n}.png?t=${new Date().getTime()}`;
                 img.src = imgPath;
                 
                 img.onload = () => { 
                     img.style.opacity = '1'; 
                     CanvasEngine.resizeCanvas();
-                    StorageEngine.loadCanvas(); 
+                    StorageEngine.loadCanvas();
                 };
-
-                document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
-                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                const activeNav = document.getElementById(`nav-${n}`);
-                if(activeNav) activeNav.classList.add('active');
                 
-                CanvasEngine.clearAll(); AITutor.close();
-            },
-            move(dir) { 
-                const t = STATE.currentPage + dir; 
-                if(t >= 1 && t <= 17) this.load(t); 
+                StorageEngine.save(); 
+                AITutor.close();
             }
         };
 
-        const RGBRingEngine = {
-            init() {
-                this.modal = document.getElementById('rgb-modal');
-                this.cvs = document.getElementById('color-wheel');
-                this.ctx = this.cvs.getContext('2d', { willReadFrequently: true });
-                
-                const size = 180;
-                this.cvs.width = size;
-                this.cvs.height = size;
-                this.cvs.style.width = size + 'px';
-                this.cvs.style.height = size + 'px';
-                
-                this.drawWheel(size);
-                this.bind();
-            },
-            drawWheel(size) {
-                const radius = size / 2;
-                for(let angle=0; angle<=360; angle++) {
-                    const startAngle = (angle - 1) * Math.PI / 180;
-                    const endAngle = (angle + 1) * Math.PI / 180;
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(radius, radius);
-                    this.ctx.arc(radius, radius, radius, startAngle, endAngle);
-                    this.ctx.closePath();
-                    this.ctx.fillStyle = `hsl(${angle}, 100%, 50%)`;
-                    this.ctx.fill();
-                }
-                const grad = this.ctx.createRadialGradient(radius, radius, 0, radius, radius, radius);
-                grad.addColorStop(0, 'rgba(255,255,255,1)');
-                grad.addColorStop(0.3, 'rgba(255,255,255,0.8)');
-                grad.addColorStop(1, 'rgba(255,255,255,0)');
-                this.ctx.fillStyle = grad;
-                this.ctx.fillRect(0,0,size, size);
-                
-                this.ctx.beginPath();
-                this.ctx.arc(radius, radius, 12, 0, Math.PI*2);
-                this.ctx.fillStyle = "#363431";
-                this.ctx.fill();
-            },
-            bind() {
-                const pickColor = (e) => {
-                    e.preventDefault();
-                    const rect = this.cvs.getBoundingClientRect();
-                    let clientX = e.clientX; let clientY = e.clientY;
-                    
-                    if(e.touches && e.touches.length > 0) {
-                        clientX = e.touches[0].clientX; clientY = e.touches[0].clientY;
-                    }
-                    
-                    const x = Math.floor(clientX - rect.left);
-                    const y = Math.floor(clientY - rect.top);
-                    
-                    const pixel = this.ctx.getImageData(x, y, 1, 1).data;
-                    if(pixel[3] < 50) return; 
-                    
-                    const hex = "#" + ((1 << 24) + (pixel[0] << 16) + (pixel[1] << 8) + pixel[2]).toString(16).slice(1).toUpperCase();
-                    CanvasEngine.setColor(hex);
-                    this.toggle(); 
-                };
-                this.cvs.addEventListener('mousedown', pickColor, { passive: false });
-                this.cvs.addEventListener('touchstart', pickColor, { passive: false });
-            },
-            toggle() { this.modal.classList.toggle('active'); }
-        };
-
+        // ======================================================================
+        // [Canvas Engine & Magic Brushes]
+        // ======================================================================
         const CanvasEngine = {
-            isDrawing: false, hasMoved: false, isErasing: false, lastColor: "#363431",
-            dpr: window.devicePixelRatio || 1, historyStack: [], historyIndex: -1,
+            isDrawing: false, 
+            hasMoved: false, 
+            isErasing: false, 
+            lastColor: "#363431",
+            dpr: window.devicePixelRatio || 1, 
+            historyStack: [], 
+            historyIndex: -1, 
+            colorsUsed: new Set(),
 
             init() {
-                this.cvs = document.getElementById('draw-layer');
+                this.cvs = document.getElementById('draw-layer'); 
                 this.ctx = this.cvs.getContext('2d');
                 this.board = document.getElementById('drawing-board');
-
-                this.setupUI();
+                
+                this.setupUI(); 
+                this.updateCursor();
+                
                 requestAnimationFrame(() => {
                     this.setupCanvas();
-                    setTimeout(() => {
-                        this.setupCanvas();
-                        this.saveState(); 
+                    setTimeout(() => { 
+                        this.setupCanvas(); 
+                        this.saveHistory(); 
                     }, 50);
                 });
                 
-                this.bindEvents();
-                this.setupResizeObserver();
-                this.updateCursor();
+                this.bind();
+                
+                new ResizeObserver(() => { 
+                    requestAnimationFrame(() => this.resizeCanvas()); 
+                }).observe(this.board);
             },
-
-            updateCursor() {
+            
+            setBrush(type) {
+                STATE.brushType = type;
+                
+                document.querySelectorAll('.btn-magic').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                const brushBtn = document.getElementById(`btn-brush-${type}`);
+                if (brushBtn) {
+                    brushBtn.classList.add('active');
+                }
+                
                 if (this.isErasing) {
-                    const eraserSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="%23FFB6C1" stroke="%23363431" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11C23 12 23 14 22 15L20 20Z"/><path d="M17 17L7 7"/></svg>`;
-                    this.cvs.style.cursor = `url('data:image/svg+xml;utf8,${eraserSvg}') 0 20, cell`;
-                } else {
-                    const colorEncoded = this.lastColor.replace('#', '%23');
-                    const penSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="${colorEncoded}" stroke="%23363431" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/><path d="M15 5l4 4"/><circle cx="2" cy="22" r="1.5" fill="${colorEncoded}" stroke="none"/></svg>`;
-                    this.cvs.style.cursor = `url('data:image/svg+xml;utf8,${penSvg}') 0 20, crosshair`;
+                    this.toggleEraser();
                 }
             },
-
+            
+            updateCursor() {
+                const color = this.lastColor.replace('#', '%23');
+                
+                const svg = this.isErasing ? 
+                    `<svg width="20" height="20" viewBox="0 0 24 24" fill="%23FFB6C1"><path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11C23 12 23 14 22 15L20 20Z"/></svg>` : 
+                    `<svg width="20" height="20" viewBox="0 0 24 24" fill="${color}"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/><path d="M15 5l4 4"/><circle cx="2" cy="22" r="1.5" fill="${color}"/></svg>`;
+                
+                this.cvs.style.cursor = `url('data:image/svg+xml;utf8,${svg}') 0 20, auto`;
+            },
+            
             setupCanvas() {
+                if (!this.board) return;
+                
                 const rect = this.board.getBoundingClientRect();
                 if (rect.width === 0 || rect.height === 0) return;
-
-                this.cvs.style.width = rect.width + "px";
+                
+                this.cvs.style.width = rect.width + "px"; 
                 this.cvs.style.height = rect.height + "px";
-                this.cvs.width = rect.width * this.dpr;
+                
+                this.cvs.width = rect.width * this.dpr; 
                 this.cvs.height = rect.height * this.dpr;
-
+                
                 this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
-                this.ctx.lineCap = 'round'; this.ctx.lineJoin = 'round';
+                this.ctx.lineCap = 'round'; 
+                this.ctx.lineJoin = 'round';
                 
                 const baseSize = document.getElementById('brush-size').value;
                 this.ctx.lineWidth = this.isErasing ? baseSize * 2 : baseSize;
                 this.ctx.strokeStyle = this.lastColor;
                 this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over";
             },
-
-            setupResizeObserver() {
-                const ro = new ResizeObserver(() => { requestAnimationFrame(() => { this.resizeCanvas(); }); });
-                ro.observe(this.board);
-            },
-
+            
             resizeCanvas() {
                 if (!this.cvs || !this.ctx || !this.board) return;
+                
                 const rect = this.board.getBoundingClientRect();
                 if (rect.width === 0 || rect.height === 0) return;
-
-                const temp = document.createElement('canvas');
-                temp.width = this.cvs.width; temp.height = this.cvs.height;
-                if(this.cvs.width > 0 && this.cvs.height > 0) temp.getContext('2d').drawImage(this.cvs, 0, 0);
-
+                
+                const temp = document.createElement('canvas'); 
+                temp.width = this.cvs.width; 
+                temp.height = this.cvs.height;
+                
+                if (this.cvs.width > 0 && this.cvs.height > 0) {
+                    temp.getContext('2d').drawImage(this.cvs, 0, 0);
+                }
+                
                 this.setupCanvas();
-
-                if(temp.width > 0 && temp.height > 0) {
-                    this.ctx.save();
+                
+                if (temp.width > 0 && temp.height > 0) {
+                    this.ctx.save(); 
                     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-                    this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, this.cvs.width, this.cvs.height);
+                    this.ctx.drawImage(
+                        temp, 
+                        0, 0, temp.width, temp.height, 
+                        0, 0, this.cvs.width, this.cvs.height
+                    );
                     this.ctx.restore();
                 }
             },
-
-            getPos(e) {
-                const rect = this.cvs.getBoundingClientRect();
-                return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-            },
-
-            bindEvents() {
-                this.cvs.style.touchAction = "none"; 
-
+            
+            bind() {
+                const getP = (e) => { 
+                    const r = this.cvs.getBoundingClientRect(); 
+                    let cx = e.clientX;
+                    let cy = e.clientY;
+                    if (e.touches && e.touches.length > 0) {
+                        cx = e.touches[0].clientX;
+                        cy = e.touches[0].clientY;
+                    }
+                    return { x: cx - r.left, y: cy - r.top }; 
+                };
+                
                 this.cvs.addEventListener('pointerdown', (e) => {
                     e.preventDefault(); 
-                    this.isDrawing = true; this.hasMoved = false; 
-                    try { this.cvs.setPointerCapture(e.pointerId); } catch(err){}
-
-                    const p = this.getPos(e);
-                    this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y);
-                });
-
-                this.cvs.addEventListener('pointermove', (e) => {
-                    if (!this.isDrawing) return;
-                    e.preventDefault(); this.hasMoved = true; 
-
-                    const p = this.getPos(e);
-                    this.ctx.lineTo(p.x, p.y); this.ctx.stroke();
-                });
-
-                this.cvs.addEventListener('pointerup', (e) => {
-                    this.isDrawing = false;
-                    try { this.cvs.releasePointerCapture(e.pointerId); } catch(err){}
+                    this.isDrawing = true; 
+                    this.hasMoved = false;
                     
-                    if(this.hasMoved) { 
-                        this.saveState(); 
-                        StorageEngine.saveCanvas(); 
+                    try { 
+                        this.cvs.setPointerCapture(e.pointerId); 
+                    } catch(err) {}
+                    
+                    const p = getP(e); 
+                    this.ctx.beginPath(); 
+                    this.ctx.moveTo(p.x, p.y);
+                    this.colorsUsed.add(this.lastColor);
+                });
+                
+                this.cvs.addEventListener('pointermove', (e) => {
+                    if (!this.isDrawing) return; 
+                    
+                    e.preventDefault(); 
+                    this.hasMoved = true;
+                    
+                    const p = getP(e);
+                    
+                    this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over";
+                    const size = document.getElementById('brush-size').value;
+                    this.ctx.lineWidth = this.isErasing ? size * 2 : size;
+                    
+                    this.ctx.shadowBlur = 0; 
+                    this.ctx.shadowColor = 'transparent';
+
+                    if (this.isErasing) {
+                        this.ctx.strokeStyle = "#FFF";
+                    } else if (STATE.brushType === 'neon') {
+                        this.ctx.strokeStyle = this.lastColor;
+                        this.ctx.shadowBlur = parseInt(size) + 10;
+                        this.ctx.shadowColor = this.lastColor;
+                    } else if (STATE.brushType === 'rainbow') {
+                        STATE.rainbowHue = (STATE.rainbowHue + 2) % 360;
+                        this.ctx.strokeStyle = `hsl(${STATE.rainbowHue}, 100%, 50%)`;
+                    } else {
+                        this.ctx.strokeStyle = this.lastColor;
                     }
+
+                    this.ctx.lineTo(p.x, p.y); 
+                    this.ctx.stroke();
+                    
+                    this.ctx.beginPath(); 
+                    this.ctx.moveTo(p.x, p.y);
                 });
-
-                this.cvs.addEventListener('pointercancel', (e) => {
-                    this.isDrawing = false;
-                    try { this.cvs.releasePointerCapture(e.pointerId); } catch(err){}
+                
+                const stop = (e) => {
+                    this.isDrawing = false; 
+                    
+                    try { 
+                        this.cvs.releasePointerCapture(e.pointerId); 
+                    } catch(err) {}
+                    
+                    this.ctx.shadowBlur = 0;
+                    
+                    if (this.hasMoved) { 
+                        this.saveHistory(); 
+                        StorageEngine.saveCanvas(); 
+                        
+                        if (this.colorsUsed.size >= 4) {
+                            UIEngine.awardBadge("🎨 Colorful Artist");
+                        }
+                    }
+                };
+                
+                this.cvs.addEventListener('pointerup', stop); 
+                this.cvs.addEventListener('pointercancel', stop);
+                
+                this.cvs.addEventListener('pointerleave', () => { 
+                    this.isDrawing = false; 
                 });
-
-                this.cvs.addEventListener('pointerleave', () => { this.isDrawing = false; });
             },
-
-            saveState() {
-                this.historyIndex++;
-                if (this.historyIndex < this.historyStack.length) {
-                    this.historyStack.length = this.historyIndex;
-                }
-                this.historyStack.push(this.cvs.toDataURL());
+            
+            saveHistory() {
+                STATE.historyIndex++;
+                STATE.historyStack.length = STATE.historyIndex;
+                STATE.historyStack.push(this.cvs.toDataURL());
             },
-
-            undo() {
-                if (this.historyIndex > 0) {
-                    this.historyIndex--;
-                    this.restoreState();
-                }
+            
+            undo() { 
+                if (STATE.historyIndex > 0) { 
+                    STATE.historyIndex--; 
+                    this.restore(); 
+                } 
             },
-
-            redo() {
-                if (this.historyIndex < this.historyStack.length - 1) {
-                    this.historyIndex++;
-                    this.restoreState();
-                }
+            
+            redo() { 
+                if (STATE.historyIndex < STATE.historyStack.length - 1) { 
+                    STATE.historyIndex++; 
+                    this.restore(); 
+                } 
             },
-
-            restoreState() {
+            
+            restore() {
                 const img = new Image();
                 img.onload = () => {
-                    this.ctx.save();
+                    this.ctx.save(); 
                     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
                     this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
-                    this.ctx.drawImage(img, 0, 0);
-                    this.ctx.restore();
-                    StorageEngine.saveCanvas(); 
+                    this.ctx.drawImage(img, 0, 0, this.cvs.width / this.dpr, this.cvs.height / this.dpr);
+                    this.ctx.restore(); 
+                    StorageEngine.saveCanvas();
                 };
-                img.src = this.historyStack[this.historyIndex];
+                img.src = STATE.historyStack[STATE.historyIndex];
             },
-
+            
             setColor(hex) {
-                this.lastColor = hex;
+                this.lastColor = hex; 
                 document.getElementById('btn-color').style.background = hex;
-                if (!this.isErasing) { 
-                    this.ctx.strokeStyle = this.lastColor; 
+                
+                if (!this.isErasing) {
+                    this.ctx.strokeStyle = this.lastColor;
                 }
-                this.updateCursor(); 
+                
+                this.updateCursor();
             },
-
+            
             setupUI() {
-                const colorBtn = document.getElementById('btn-color');
-                colorBtn.style.background = this.lastColor;
+                document.getElementById('btn-color').style.background = this.lastColor;
+                
                 document.getElementById('brush-size').oninput = (e) => {
-                    const size = e.target.value;
-                    this.ctx.lineWidth = this.isErasing ? size * 2 : size;
+                    this.ctx.lineWidth = this.isErasing ? e.target.value * 2 : e.target.value;
                 };
             },
-
+            
             toggleEraser() {
-                const btn = document.getElementById('btn-eraser');
                 this.isErasing = !this.isErasing;
-
+                
+                const btn = document.getElementById('btn-eraser');
+                
                 if (this.isErasing) {
-                    btn.classList.add('active'); btn.innerText = "PEN MODE";
+                    btn.classList.add('active'); 
+                    btn.innerText = "PEN MODE";
                     this.ctx.globalCompositeOperation = 'destination-out';
                     this.ctx.lineWidth = document.getElementById('brush-size').value * 2;
                 } else {
-                    btn.classList.remove('active'); btn.innerText = "ERASER";
+                    btn.classList.remove('active'); 
+                    btn.innerText = "ERASER";
                     this.ctx.globalCompositeOperation = 'source-over';
                     this.ctx.strokeStyle = this.lastColor;
                     this.ctx.lineWidth = document.getElementById('brush-size').value;
                 }
+                
                 this.updateCursor();
             },
-
+            
             clearAll() {
                 if (!this.ctx || !this.cvs) return;
-                this.ctx.save();
+                
+                this.ctx.save(); 
                 this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-                this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
+                this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
                 this.ctx.restore();
-                this.saveState(); 
+                
+                this.saveHistory(); 
                 StorageEngine.saveCanvas(); 
+                this.colorsUsed.clear();
             }
         };
 
+        // ======================================================================
+        // [RGB Ring Engine]
+        // ======================================================================
+        const RGBRingEngine = {
+            init() {
+                this.m = document.getElementById('rgb-modal'); 
+                this.c = document.getElementById('color-wheel'); 
+                this.x = this.c.getContext('2d', { willReadFrequently: true });
+                
+                const r = 75; 
+                this.c.width = 150; 
+                this.c.height = 150;
+                
+                for (let a = 0; a < 360; a++) {
+                    this.x.beginPath(); 
+                    this.x.moveTo(r, r); 
+                    this.x.arc(r, r, r, a * Math.PI / 180, (a + 2) * Math.PI / 180);
+                    this.x.fillStyle = `hsl(${a}, 100%, 50%)`; 
+                    this.x.fill();
+                }
+                
+                this.c.onclick = (e) => {
+                    const rect = this.c.getBoundingClientRect();
+                    const p = this.x.getImageData(e.clientX - rect.left, e.clientY - rect.top, 1, 1).data;
+                    
+                    if (p[3] < 50) return;
+                    
+                    const hex = "#" + ((1 << 24) + (p[0] << 16) + (p[1] << 8) + p[2]).toString(16).slice(1).toUpperCase();
+                    CanvasEngine.setColor(hex); 
+                    this.toggle();
+                };
+            },
+            
+            toggle() { 
+                this.m.classList.toggle('active'); 
+            }
+        };
+
+        // ======================================================================
+        // [Audio Engine & Recognition]
+        // ======================================================================
+        const AudioEngine = {
+            recognition: null, 
+            mediaRecorder: null, 
+            audioChunks: [],
+            
+            init() {
+                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+                
+                if (SR) {
+                    this.recognition = new SR(); 
+                    this.recognition.lang = 'en-US'; 
+                    this.recognition.interimResults = false; 
+                    this.recognition.continuous = false;
+                    
+                    this.recognition.onresult = (e) => {
+                        STATE.lastTranscript = e.results[0][0].transcript;
+                        STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100);
+                    };
+                    
+                    const finish = () => { 
+                        if (STATE.isRecording) { 
+                            if (STATE.isChatMode) {
+                                this.toggleChat();
+                            } else {
+                                this.toggle();
+                            }
+                        } 
+                    };
+                    
+                    this.recognition.onend = finish; 
+                    this.recognition.onerror = finish;
+                }
+                
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+                        this.mediaRecorder = new MediaRecorder(stream);
+                        this.mediaRecorder.ondataavailable = e => this.audioChunks.push(e.data);
+                        this.mediaRecorder.onstop = () => {
+                            const blob = new Blob(this.audioChunks, { 'type' : 'audio/ogg; codecs=opus' });
+                            STATE.audioBlobUrl = window.URL.createObjectURL(blob);
+                        };
+                    }).catch(err => console.warn("Mic access denied."));
+                }
+            },
+            
+            startRecordingUI(btnId, textId, activeText) {
+                STATE.isRecording = true; 
+                STATE.lastTranscript = ""; 
+                STATE.sttConfidence = 0; 
+                STATE.audioStartTime = Date.now();
+                
+                const btn = document.getElementById(btnId);
+                btn.classList.add('recording');
+                
+                if (textId) {
+                    document.getElementById(textId).innerText = activeText;
+                } else {
+                    btn.innerHTML = `🎤 <span>${activeText}</span>`;
+                }
+                
+                this.audioChunks = [];
+                
+                try { 
+                    if (this.recognition) this.recognition.start(); 
+                } catch(e) {}
+                
+                try { 
+                    if (this.mediaRecorder) this.mediaRecorder.start(); 
+                } catch(e) {}
+            },
+            
+            stopRecordingUI(btnId, textId, idleText, callback) {
+                STATE.isRecording = false; 
+                STATE.audioDurationSec = (Date.now() - STATE.audioStartTime) / 1000;
+                
+                const btn = document.getElementById(btnId);
+                btn.classList.remove('recording');
+                
+                if (textId) {
+                    document.getElementById(textId).innerText = idleText;
+                } else {
+                    btn.innerHTML = `🎤 <span>${idleText}</span>`;
+                }
+                
+                try { 
+                    if (this.recognition) this.recognition.stop(); 
+                } catch(e) {}
+                
+                try { 
+                    if (this.mediaRecorder && this.mediaRecorder.state !== "inactive") {
+                        this.mediaRecorder.stop(); 
+                    }
+                } catch(e) {}
+                
+                setTimeout(callback, 600); 
+            },
+            
+            toggle() {
+                if (!STATE.isRecording) { 
+                    STATE.isChatMode = false; 
+                    this.startRecordingUI('btn-record', 'record-text', 'Listening...'); 
+                } else { 
+                    this.stopRecordingUI('btn-record', 'record-text', 'Voice Log', () => AITutor.submit()); 
+                }
+            },
+            
+            toggleChat() {
+                if (!STATE.isRecording) { 
+                    STATE.isChatMode = true; 
+                    this.startRecordingUI('btn-chat-record', null, 'Listening...'); 
+                } else { 
+                    this.stopRecordingUI('btn-chat-record', null, 'Speak to Reply', () => AITutor.processReply()); 
+                }
+            },
+            
+            playVoiceEffect(effect) {
+                if (!STATE.audioBlobUrl) return;
+                
+                const audio = new Audio(STATE.audioBlobUrl);
+                
+                if (effect === 'chipmunk') {
+                    audio.playbackRate = 1.6;
+                } else if (effect === 'alien') {
+                    audio.playbackRate = 0.7;
+                } else {
+                    audio.playbackRate = 1.0;
+                }
+                
+                audio.play();
+            }
+        };
+
+        // ======================================================================
+        // [Visual AI Engines]
+        // ======================================================================
         const VisualAI_OCR = {
             worker: null,
-            async init() {
-                if(window.Tesseract) {
-                    try {
-                        this.worker = await Tesseract.createWorker('eng');
-                        console.log("Visual AI (OCR) Pre-initialized and Ready!");
-                    } catch(e) { console.warn("OCR Worker init failed."); }
-                }
+            async init() { 
+                if (window.Tesseract) { 
+                    try { 
+                        this.worker = await Tesseract.createWorker('eng'); 
+                    } catch(e) {} 
+                } 
             },
             async recognize(imgData) {
                 if (!this.worker) return null;
-                const { data: { text } } = await this.worker.recognize(imgData);
+                const { data: { text } } = await this.worker.recognize(imgData); 
                 return text;
             }
         };
 
         const VisionAI_Doodle = {
-            classifier: null, isReady: false,
-            init() {
-                try {
-                    this.classifier = ml5.imageClassifier('DoodleNet', () => {
-                        this.isReady = true; console.log("DoodleNet is loaded and ready.");
-                    });
-                } catch(e) { console.warn("Vision AI failed to initialize."); }
+            classifier: null, 
+            isReady: false,
+            init() { 
+                try { 
+                    this.classifier = ml5.imageClassifier('DoodleNet', () => { 
+                        this.isReady = true; 
+                    }); 
+                } catch(e) {} 
             },
-            
-            // 🚨 V87.0 강제 타임아웃 방어막 적용 (무한 로딩 100% 방지)
             async classifyCanvas(canvas) {
-                if(!this.isReady || !this.classifier) return null;
+                if (!this.isReady || !this.classifier) return [];
                 
                 return new Promise((resolve) => {
-                    // 2초 내에 응답이 없으면 에러로 간주하고 무시함
-                    const timeout = setTimeout(() => {
-                        console.warn("DoodleNet processing timeout.");
-                        resolve(null);
-                    }, 2000);
-                    
+                    const timeout = setTimeout(() => resolve([]), 2000);
                     try {
                         this.classifier.classify(canvas, (err, results) => {
                             clearTimeout(timeout);
-                            if(err || !results || results.length === 0) resolve(null);
-                            else resolve(results[0].label); 
+                            if (err || !results) {
+                                resolve([]); 
+                            } else {
+                                resolve(results);
+                            }
                         });
-                    } catch(e) {
-                        clearTimeout(timeout);
-                        resolve(null);
+                    } catch(e) { 
+                        clearTimeout(timeout); 
+                        resolve([]); 
                     }
                 });
             }
         };
 
-        const AudioEngine = {
-            recognition: null,
-            init() {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                if (SpeechRecognition) {
-                    this.recognition = new SpeechRecognition();
-                    this.recognition.lang = 'en-US'; 
-                    this.recognition.interimResults = false; 
-                    this.recognition.continuous = false;
-                    
-                    this.recognition.onresult = (event) => { 
-                        STATE.lastTranscript = event.results[0][0].transcript;
-                        STATE.sttConfidence = Math.round(event.results[0][0].confidence * 100);
-                    };
-                    this.recognition.onend = () => { 
-                        if (STATE.isRecording) { STATE.isChatMode ? this.toggleChat() : this.toggle(); }
-                    };
-                    this.recognition.onerror = () => { 
-                        if (STATE.isRecording) { STATE.isChatMode ? this.toggleChat() : this.toggle(); }
-                    };
-                }
-            },
-            toggle() {
-                const btn = document.getElementById('btn-record'); const text = document.getElementById('record-text');
-                if(!STATE.isRecording) { 
-                    STATE.isRecording = true; STATE.isChatMode = false; STATE.lastTranscript = ""; STATE.sttConfidence = 0;
-                    STATE.audioStartTime = Date.now();
-                    btn.classList.add('recording'); text.innerText = "Listening..."; 
-                    if(this.recognition) { try { this.recognition.start(); } catch(e) {} }
-                } else { 
-                    STATE.isRecording = false; 
-                    STATE.audioDurationSec = (Date.now() - STATE.audioStartTime) / 1000;
-                    btn.classList.remove('recording'); text.innerText = "Audio Log"; 
-                    if(this.recognition) { this.recognition.stop(); }
-                    setTimeout(() => { AITutor.submitWork(); }, 500);
-                }
-            },
-            toggleChat() {
-                const btn = document.getElementById('btn-chat-record');
-                if(!STATE.isRecording) { 
-                    STATE.isRecording = true; STATE.isChatMode = true; STATE.lastTranscript = "";
-                    btn.classList.add('recording'); btn.innerHTML = "🎤 <span>Listening...</span>"; 
-                    if(this.recognition) { try { this.recognition.start(); } catch(e) {} }
-                } else { 
-                    STATE.isRecording = false; 
-                    btn.classList.remove('recording'); btn.innerHTML = "🎤 <span>Hold to Reply</span>"; 
-                    if(this.recognition) { this.recognition.stop(); }
-                    setTimeout(() => { AITutor.processChatReply(); }, 500);
-                }
-            }
-        };
-
+        // ======================================================================
+        // [AI Tutor Main Logic]
+        // ======================================================================
         const AITutor = {
-            async submitWork() {
-                if(STATE.isRecording) { AudioEngine.toggle(); return; }
-                
-                if (STATE.currentPage === 1 && !STATE.isNameRegistered) { 
-                    this.scanHandwritingForName(); 
+            async submit() {
+                if (STATE.isRecording) { 
+                    AudioEngine.toggle(); 
                     return; 
                 }
                 
-                const panel = document.getElementById('ai-panel'); 
-                const content = document.getElementById('ai-content'); 
-                panel.classList.add('open');
+                if (STATE.currentPage === 1 && !STATE.isNameRegistered) {
+                    return this.scanName();
+                }
                 
-                content.innerHTML = `<div style="text-align:center; padding: 50px 0;"><div style="width:50px; height:50px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px;"></div><p style="font-size:13px; color:var(--br-muted); font-weight:900; letter-spacing:3px; animation: pulse 1.5s infinite;">ANALYZING AUDIO & DRAWING...</p></div>`;
-                document.getElementById('chat-input-area').style.display = "none";
+                const panel = document.getElementById('ai-panel'); 
+                panel.classList.add('open');
+                document.getElementById('chat-footer').style.display = "none";
+                
+                const content = document.getElementById('ai-content');
+                content.innerHTML = `
+                    <div style="text-align:center; padding:50px;">
+                        <div style="width:40px; height:40px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 15px;"></div>
+                        <p style="font-size:12px; font-weight:900; color:var(--br-muted);">LOOKING AT YOUR DISCOVERY...</p>
+                    </div>
+                `;
 
-                // 🚨 V87.0 Try-Catch로 비동기 에러가 발생해도 무한 로딩 탈출 보장
                 try {
-                    let doodleLabel = await VisionAI_Doodle.classifyCanvas(CanvasEngine.cvs);
-                    if (doodleLabel) doodleLabel = doodleLabel.replace(/_/g, ' '); 
+                    let doodleResults = await VisionAI_Doodle.classifyCanvas(CanvasEngine.cvs);
+                    let topDoodles = doodleResults ? doodleResults.map(r => r.label.replace(/_/g, ' ')) : [];
+                    
+                    setTimeout(() => { 
+                        this.generateFeedback(false, topDoodles); 
+                    }, 200);
+                } catch(e) { 
+                    this.generateFeedback(false, []); 
+                }
+            },
 
-                    setTimeout(() => {
-                        this.provideFeedback(false, doodleLabel);
-                    }, 500);
-                } catch (err) {
-                    console.error("AI Tutor Sync Error:", err);
-                    this.provideFeedback(false, null);
+            async scanName() {
+                const panel = document.getElementById('ai-panel'); 
+                panel.classList.add('open');
+                document.getElementById('chat-footer').style.display = "none";
+                
+                const content = document.getElementById('ai-content');
+                content.innerHTML = `
+                    <div style="text-align:center; padding:50px;">
+                        <div style="width:40px; height:40px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 15px;"></div>
+                        <p style="font-size:12px; font-weight:900; color:var(--br-muted);">READING YOUR NAME...</p>
+                    </div>
+                `;
+                
+                const tCvs = document.createElement('canvas'); 
+                tCvs.width = CanvasEngine.cvs.width * 2; 
+                tCvs.height = CanvasEngine.cvs.height * 2;
+                
+                const tx = tCvs.getContext('2d'); 
+                tx.fillStyle = '#FFF'; 
+                tx.fillRect(0, 0, tCvs.width, tCvs.height); 
+                tx.drawImage(CanvasEngine.cvs, 0, 0, tCvs.width, tCvs.height);
+                
+                if (VisualAI_OCR.worker) {
+                    try {
+                        const text = await VisualAI_OCR.recognize(tCvs.toDataURL('image/jpeg', 1.0));
+                        let name = text.replace(/[^a-zA-Z]/g, '').trim();
+                        
+                        if (name.length >= 2) {
+                            name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+                            
+                            content.innerHTML = `
+                                <div class="chat-bubble ai">
+                                    Wow! Did you write <b style="color:var(--br-green); font-size:18px;">${name}</b>? Is this you?<br><br>
+                                    <button class="btn-reply" style="height:45px; margin-bottom:10px;" onclick="AITutor.saveName('${name}')">YES!</button>
+                                    <button class="btn-reply" style="height:45px; background:#EEE; color:#333;" onclick="AITutor.manualName()">NO, LET ME TYPE</button>
+                                </div>
+                            `;
+                        } else {
+                            throw "fail";
+                        }
+                    } catch(e) { 
+                        this.manualName(); 
+                    }
+                } else {
+                    this.manualName();
                 }
             },
             
-            async scanHandwritingForName() {
-                const panel = document.getElementById('ai-panel'); 
+            manualName() {
                 const content = document.getElementById('ai-content');
-                panel.classList.add('open'); 
-                document.getElementById('chat-input-area').style.display = "none";
-                
                 content.innerHTML = `
-                    <div style="text-align:center; padding: 50px 0;">
-                        <div style="width:50px; height:50px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px;"></div>
-                        <p id="ocr-status" style="font-size:13px; color:var(--br-muted); font-weight:900; letter-spacing:3px; animation: pulse 1.5s infinite;">READING HANDWRITING...</p>
+                    <div class="chat-bubble ai">
+                        Oops! I can't read it well. Can you type your name for me?<br><br>
+                        <input type="text" id="ai-name-verify" style="width:100%; padding:12px; border-radius:10px; border:2px dashed var(--br-green); margin-bottom:10px; font-weight:bold;">
+                        <button class="btn-reply" style="height:45px;" onclick="AITutor.saveName()">CONFIRM</button>
                     </div>
                 `;
-
-                const tempCvs = document.createElement('canvas');
-                tempCvs.width = CanvasEngine.cvs.width * 2; 
-                tempCvs.height = CanvasEngine.cvs.height * 2;
-                const tCtx = tempCvs.getContext('2d');
-                tCtx.fillStyle = '#FFFFFF'; 
-                tCtx.fillRect(0, 0, tempCvs.width, tempCvs.height);
-                tCtx.drawImage(CanvasEngine.cvs, 0, 0, tempCvs.width, tempCvs.height);
+            },
+            
+            saveName(n = null) {
+                const name = n || document.getElementById('ai-name-verify').value.trim();
                 
-                const imgData = tempCvs.toDataURL('image/jpeg', 1.0);
+                if (name) {
+                    STATE.studentName = name; 
+                    STATE.isNameRegistered = true; 
+                    StorageEngine.save();
+                    
+                    const profileBox = document.getElementById('profile-box');
+                    profileBox.classList.add('registered');
+                    document.getElementById('display-name').innerText = name;
+                    document.getElementById('avatar-char').innerText = name.charAt(0).toUpperCase();
+                    
+                    this.generateFeedback(true, []);
+                }
+            },
 
-                if(VisualAI_OCR.worker) {
-                    try {
-                        const text = await VisualAI_OCR.recognize(imgData);
-                        let cleanedName = text.replace(/[^a-zA-Z]/g, '').trim();
-                        if (cleanedName.length >= 2) {
-                            cleanedName = cleanedName.charAt(0).toUpperCase() + cleanedName.slice(1).toLowerCase();
-                            this.confirmScannedName(cleanedName);
-                        } else {
-                            this.showManualInput("I couldn't quite read that. What is your name?");
+            generateFeedback(isFirstGreeting, topDoodles) {
+                const content = document.getElementById('ai-content');
+                const context = AI_CONTEXT_DB[STATE.id]?.pages[STATE.currentPage] || { keywords:[], target:"", question:"What's next?" };
+                const callName = STATE.studentName || "my friend";
+                
+                const transcript = STATE.lastTranscript.toLowerCase();
+                const hitKeywords = context.keywords.filter(k => transcript.includes(k));
+                
+                const scorePronunciation = STATE.sttConfidence || 0;
+                let scoreAccuracy = 100;
+                
+                if (context.keywords.length > 0) {
+                    scoreAccuracy = Math.round((hitKeywords.length / context.keywords.length) * 100);
+                }
+                
+                let wpm = 0;
+                if (STATE.audioDurationSec > 0) {
+                    wpm = (transcript.split(/\s+/).length / STATE.audioDurationSec) * 60;
+                }
+                const speedPercentage = Math.min(Math.round((wpm / 100) * 100), 100);
+
+                if (scorePronunciation >= 80 && transcript.length > 0) {
+                    setTimeout(() => {
+                        if (window.confetti) {
+                            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                         }
-                    } catch (e) {
-                        this.showManualInput("Visual AI failed. Please type your name.");
+                        UIEngine.awardBadge("🗣️ Great Speaker");
+                    }, 500);
+                }
+
+                let finalDoodleLabel = ""; 
+                let isShoehorned = false;
+                
+                if (topDoodles.length > 0) {
+                    for (let d of topDoodles.slice(0, 15)) {
+                        if (transcript.includes(d) || context.keywords.includes(d)) { 
+                            finalDoodleLabel = d; 
+                            isShoehorned = true; 
+                            break; 
+                        }
+                    }
+                    if (!isShoehorned) {
+                        finalDoodleLabel = topDoodles[0]; 
+                    }
+                }
+
+                let aiResponse = "";
+                
+                if (isFirstGreeting) {
+                    aiResponse = `Hi, <b>${callName}</b>! Welcome to our magical adventure! Are you ready to explore together? Let's go!`;
+                } else if (!transcript) {
+                    if (finalDoodleLabel) {
+                        aiResponse = `Wow! Did you draw a <b>${finalDoodleLabel}</b>? It looks so fun! Can you push the <b>Voice Log</b> button and tell me about it?`;
+                    } else {
+                        aiResponse = `What a beautiful drawing! I want to hear your voice. Press <b>Voice Log</b> and share your ideas with me!`;
                     }
                 } else {
-                    this.showManualInput("Visual AI is loading... Please type your name.");
+                    if (isShoehorned) {
+                        aiResponse = `Yay! You said <b>"${transcript}"</b> and I see a <b>${finalDoodleLabel}</b>! You are a brilliant artist and speaker! ${context.question}`;
+                    } else if (finalDoodleLabel && scoreAccuracy > 0) {
+                        aiResponse = `Great job! I heard you say <b>"${transcript}"</b>. And your <b>${finalDoodleLabel}</b> is super cool! ${context.question}`;
+                    } else {
+                        aiResponse = `Good try! I heard <b>"${hitKeywords.length > 0 ? hitKeywords.join(', ') : transcript}"</b>. Let's keep exploring! ${context.question}`;
+                    }
                 }
-            },
 
-            confirmScannedName(scannedName) {
-                const content = document.getElementById('ai-content');
-                content.innerHTML = `
-                    <div class="chat-bubble ai">
-                        <b>Bridge Visual AI</b><br><br>
-                        Wow! I read your handwriting. Is your name <b style="color:var(--br-green); font-size:20px;">${scannedName}</b>?<br><br>
-                        <button class="ai-name-btn" onclick="AITutor.saveName('${scannedName}')">YES, THAT'S ME!</button>
-                        <button class="ai-name-btn ai-btn-secondary" onclick="AITutor.showManualInput('Let me try typing it instead.')">NO, LET ME TYPE</button>
-                    </div>
-                `;
-            },
-
-            showManualInput(message) {
-                const content = document.getElementById('ai-content');
-                content.innerHTML = `
-                    <div class="chat-bubble ai">
-                        <b>Bridge Visual AI</b><br><br>
-                        ${message}<br>
-                        <input type="text" id="ai-name-verify" class="ai-name-input" placeholder="e.g. Elena" autocomplete="off" onkeypress="if(event.key === 'Enter') AITutor.saveName()">
-                        <button class="ai-name-btn" onclick="AITutor.saveName()">CONFIRM NAME</button>
-                    </div>
-                `;
-                setTimeout(() => {
-                    const input = document.getElementById('ai-name-verify');
-                    if(input) input.focus();
-                }, 100);
-            },
-
-            saveName(providedName = null) {
-                const nameInput = providedName || document.getElementById('ai-name-verify').value.trim();
-                if(nameInput) {
-                    STATE.studentName = nameInput; STATE.isNameRegistered = true;
-                    
-                    StorageEngine.saveState();
-
-                    document.getElementById('profile-box').classList.add('registered'); 
-                    document.getElementById('display-student-name').innerText = nameInput; 
-                    document.getElementById('avatar-char').innerText = nameInput.charAt(0).toUpperCase(); 
-                    document.querySelector('.profile-role').innerText = "Bridge Inquirer";
-                    
-                    this.provideFeedback(true);
-                } else { alert("Please enter your name."); }
-            },
-
-            provideFeedback(isFirstGreeting = false, doodleLabel = null) {
-                const content = document.getElementById('ai-content'); 
-                const contextData = getPageContext(STATE.id, STATE.currentPage); 
-                const callName = STATE.studentName ? STATE.studentName : "my friend";
-                
-                let transcriptHtml = ""; let analysisMod = contextData.analysis; 
-                let scorePronunciation = 0; let scoreAccuracy = 0; let scoreSpeedWPM = 0; let speedPercentage = 0;
-                
+                let transcriptUI = "";
                 if (STATE.lastTranscript) {
-                    transcriptHtml = `<div class="transcript-box">" ${STATE.lastTranscript} "</div>`;
-                    scorePronunciation = STATE.sttConfidence || 85;
-                    const spokenWords = STATE.lastTranscript.toLowerCase(); 
-                    const targetKeywords = contextData.keywords;
-                    const hitKeywords = targetKeywords.filter(kw => spokenWords.includes(kw));
-                    scoreAccuracy = targetKeywords.length > 0 ? Math.round((hitKeywords.length / targetKeywords.length) * 100) : 100;
-                    
-                    const wordCount = STATE.lastTranscript.trim().split(/\s+/).length;
-                    if (STATE.audioDurationSec > 0) scoreSpeedWPM = Math.round((wordCount / STATE.audioDurationSec) * 60);
-                    speedPercentage = Math.min(Math.round((scoreSpeedWPM / 120) * 100), 100);
-
-                    if (hitKeywords.length > 0) analysisMod = `<b style="color:var(--br-green);">Excellent Accuracy!</b> You used ${hitKeywords.length} key words perfectly.`;
-                    else analysisMod = `<b>Great Speaking!</b> I heard your voice clearly.`;
-                } else { transcriptHtml = `<div class="transcript-empty">(No voice log detected)</div>`; }
-                
-                let doodleMsg = "";
-                if (doodleLabel) {
-                    doodleMsg = `<br><br>🖍️ I also looked at your drawing! It looks like a <b>${doodleLabel}</b>. Is that right?`;
+                    transcriptUI = `
+                        <div style="background:#F4F8F5; padding:12px; border-radius:10px; border-left:4px solid var(--br-green); font-style:italic; font-size:14px; margin-bottom:15px; color:var(--br-charcoal);">
+                            "${STATE.lastTranscript}"
+                        </div>
+                    `;
                 }
-
-                let introText = isFirstGreeting ? `<b>Nice to meet you, ${callName}!</b><br><br>I scanned your beautiful name.` : `<b>Hello, ${callName}!</b><br><br>I analyzed your speech and your drawing.`;
+                
+                let voiceFxUI = "";
+                if (STATE.lastTranscript) {
+                    voiceFxUI = `
+                        <div class="voice-fx-group">
+                            <div class="btn-fx" onclick="AudioEngine.playVoiceEffect('normal')">▶️ Normal</div>
+                            <div class="btn-fx" onclick="AudioEngine.playVoiceEffect('chipmunk')">🐿️ Chipmunk</div>
+                            <div class="btn-fx" onclick="AudioEngine.playVoiceEffect('alien')">👽 Alien</div>
+                        </div>
+                    `;
+                }
 
                 content.innerHTML = `
-                    <div class="analytics-box">
-                        <div class="analytics-title">Advanced Speech Analytics</div>
-                        ${transcriptHtml}
-                        <div class="stat-row"><div class="stat-label"><span>Pronunciation (Clarity)</span> <span>${scorePronunciation}%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill blue" style="width: ${scorePronunciation}%;"></div></div></div>
-                        <div class="stat-row"><div class="stat-label"><span>Accuracy (Keywords)</span> <span>${scoreAccuracy}%</span></div><div class="stat-bar-bg"><div class="stat-bar-fill green" style="width: ${scoreAccuracy}%;"></div></div></div>
-                        <div class="stat-row"><div class="stat-label"><span>Fluency (Speed)</span> <span>${scoreSpeedWPM} WPM</span></div><div class="stat-bar-bg"><div class="stat-bar-fill" style="width: ${speedPercentage}%;"></div></div></div>
-                        <div class="visual-intent"><b>🎯 AI Analysis:</b><br>${analysisMod}</div>
+                    <div class="analytics-card">
+                        <div class="analytics-title" style="color:var(--br-gold); font-size:12px;">⭐ My Magic Scores ⭐</div>
+                        ${transcriptUI}
+                        <div class="stat-row">
+                            <div class="stat-label"><span>Clear Voice</span><span>${scorePronunciation}%</span></div>
+                            <div class="bar-bg"><div class="bar-fill" style="width:${scorePronunciation}%; background:var(--br-blue)"></div></div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label"><span>Right Words</span><span>${scoreAccuracy}%</span></div>
+                            <div class="bar-bg"><div class="bar-fill" style="width:${scoreAccuracy}%; background:var(--br-green)"></div></div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-label"><span>Good Speed</span><span>${Math.round(wpm)} WPM</span></div>
+                            <div class="bar-bg"><div class="bar-fill" style="width:${speedPercentage}%; background:var(--br-gold)"></div></div>
+                        </div>
+                        ${voiceFxUI}
                     </div>
-                    <div class="chat-bubble ai">${introText}${doodleMsg}<br><br><b style="font-size:16px; color:var(--br-green);">${contextData.question}</b></div>
+                    <div class="chat-bubble ai">${aiResponse}</div>
                 `;
                 
-                document.getElementById('chat-input-area').style.display = "flex";
-                
-                if ('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel(); 
-                    let speechTxt = isFirstGreeting ? `Nice to meet you, ${callName}. ${contextData.question}` : `Hello, ${callName}. ${doodleLabel ? `Your drawing looks like a ${doodleLabel}. ` : ''}${contextData.question}`;
-                    const utterance = new SpeechSynthesisUtterance(speechTxt);
-                    utterance.lang = 'en-US'; utterance.rate = 0.85; utterance.pitch = 1.2; window.speechSynthesis.speak(utterance);
-                }
+                document.getElementById('chat-footer').style.display = "flex";
+                this.speak(aiResponse.replace(/<[^>]*>?/gm, ''));
             },
 
-            processChatReply() {
-                if(!STATE.lastTranscript) return;
+            processReply() {
+                if (!STATE.lastTranscript) return;
                 
                 const content = document.getElementById('ai-content');
-                
-                const userBubble = document.createElement('div');
-                userBubble.className = "chat-bubble user";
-                userBubble.innerText = STATE.lastTranscript;
-                content.appendChild(userBubble);
+                const uBubble = document.createElement('div'); 
+                uBubble.className = "chat-bubble user"; 
+                uBubble.innerText = STATE.lastTranscript;
+                content.appendChild(uBubble); 
                 content.scrollTop = content.scrollHeight;
 
                 const followUps = [
-                    "That is so interesting! Can you tell me more about that?",
-                    "Wow! Why do you think that is?",
-                    "That's a great thought. What else comes to your mind?",
-                    "I love that answer! How does that make you feel?"
+                    "Wow, really? Tell me more!", 
+                    "That's so cool! Why is that?", 
+                    "I love your idea! What else can you imagine?"
                 ];
-                const replyText = followUps[Math.floor(Math.random() * followUps.length)];
+                
+                const reply = followUps[Math.floor(Math.random() * followUps.length)];
 
                 setTimeout(() => {
-                    const aiBubble = document.createElement('div');
-                    aiBubble.className = "chat-bubble ai";
-                    aiBubble.innerHTML = `<b style="color:var(--br-green); font-size:16px;">${replyText}</b>`;
-                    content.appendChild(aiBubble);
+                    const aBubble = document.createElement('div'); 
+                    aBubble.className = "chat-bubble ai"; 
+                    aBubble.innerHTML = `<b style="color:var(--br-green);">${reply}</b>`;
+                    content.appendChild(aBubble); 
                     content.scrollTop = content.scrollHeight;
-
-                    if ('speechSynthesis' in window) {
-                        const utterance = new SpeechSynthesisUtterance(replyText);
-                        utterance.lang = 'en-US'; utterance.rate = 0.85; utterance.pitch = 1.2; 
-                        window.speechSynthesis.speak(utterance);
-                    }
-                }, 1000);
+                    
+                    this.speak(reply);
+                }, 800);
             },
 
-            close() { document.getElementById('ai-panel').classList.remove('open'); if('speechSynthesis' in window) window.speechSynthesis.cancel(); }
+            speak(t) {
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.cancel();
+                    const u = new SpeechSynthesisUtterance(t); 
+                    u.lang = 'en-US'; 
+                    u.rate = 0.9; 
+                    window.speechSynthesis.speak(u);
+                }
+            },
+            
+            close() { 
+                document.getElementById('ai-panel').classList.remove('open'); 
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.cancel(); 
+                }
+            }
         };
 
+        // ======================================================================
+        // [System Boot]
+        // ======================================================================
         window.onload = () => {
-            StorageEngine.loadState(); 
+            StorageEngine.load();
             
-            if(STATE.isNameRegistered) {
-                document.getElementById('profile-box').classList.add('registered'); 
-                document.getElementById('display-student-name').innerText = STATE.studentName; 
-                document.getElementById('avatar-char').innerText = STATE.studentName.charAt(0).toUpperCase(); 
-                document.querySelector('.profile-role').innerText = "Bridge Inquirer";
+            if (STATE.isNameRegistered) {
+                const profileBox = document.getElementById('profile-box');
+                profileBox.classList.add('registered');
+                document.getElementById('display-name').innerText = STATE.studentName;
+                document.getElementById('avatar-char').innerText = STATE.studentName.charAt(0);
             }
-
+            
+            UIEngine.renderBadges();
+            
             CanvasEngine.init(); 
             RGBRingEngine.init(); 
             PageEngine.init(); 
-            AudioEngine.init(); 
+            AudioEngine.init();
             VisualAI_OCR.init(); 
-            VisionAI_Doodle.init(); 
+            VisionAI_Doodle.init();
             
-            setTimeout(() => {
-                CanvasEngine.resizeCanvas();
+            setTimeout(() => { 
+                CanvasEngine.resizeCanvas(); 
                 StorageEngine.loadCanvas(); 
             }, 300);
         };

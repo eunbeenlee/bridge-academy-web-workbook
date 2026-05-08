@@ -917,7 +917,7 @@
     <div class="app-container">
         
         <nav class="sidebar" id="sidebar">
-            <div class="sidebar-header" onclick="location.reload()">
+            <div class="sidebar-header" onclick="location.href='index.html'">
                 <div class="brand-logo">Bridge<span>Academy</span></div>
             </div>
             <div class="student-profile" id="profile-box">
@@ -1099,6 +1099,9 @@
                         CanvasEngine.saveHistory();
                     };
                     img.src = data;
+                } else {
+                    // 🚨 V100.3 FIX: 저장된 그림이 없을 때도 빈 도화지를 최초 히스토리로 등록
+                    CanvasEngine.saveHistory();
                 }
             }
         };
@@ -1172,6 +1175,9 @@
         // ======================================================================
         const AppEngine = {
             smoothMove(dir) {
+                // 🚨 V100.3 FIX: 페이지를 이동(Move)하기 직전에, 현재 보고 있는 페이지의 그림을 로컬 스토리지에 무조건 안전하게 저장합니다.
+                StorageEngine.saveCanvas();
+
                 const board = document.getElementById('drawing-board');
                 board.classList.add('fade-out');
                 
@@ -1179,6 +1185,9 @@
                     STATE.currentPage += dir;
                     if (STATE.currentPage < 1) {
                         STATE.currentPage = 1;
+                    }
+                    if (STATE.currentPage > 17) {
+                        STATE.currentPage = 17; // 워크북 최대 페이지 수 제한
                     }
                     PageEngine.load(STATE.currentPage);
                     
@@ -1190,6 +1199,9 @@
             
             handleNextAdventure() {
                 AITutor.close();
+                // 🚨 V100.3 FIX: 수료증을 띄우기 전에도 현재 페이지를 저장합니다.
+                StorageEngine.saveCanvas();
+
                 if (STATE.currentPage % 4 === 0) {
                     CertificateEngine.open(STATE.currentPage / 4);
                 } else {
@@ -1251,7 +1263,13 @@
                     2: { navTitle: "👀 My Beautiful Face", keywords: ["face", "eyes", "nose", "mouth", "ear"], target: "Facial Features", question: "What is your favorite part of your face?" },
                     3: { navTitle: "🖐️ My Strong Hands", keywords: ["hands", "fingers", "touch", "clap"], target: "Body Functions", question: "What fun things can you do with hands?" },
                     4: { navTitle: "👨‍👩‍👧 My Family Tree", keywords: ["family", "mom", "dad", "brother", "sister", "love"], target: "Relationships", question: "Who did you draw here?" },
-                    5: { navTitle: "🎨 My Favorite Colors", keywords: ["color", "red", "blue", "yellow", "green"], target: "Color Aesthetics", question: "Why did you choose these colors?" }
+                    5: { navTitle: "🎨 My Favorite Colors", keywords: ["color", "red", "blue", "yellow", "green"], target: "Color Aesthetics", question: "Why did you choose these colors?" },
+                    6: { navTitle: "🏠 My Cozy Home", keywords: ["house", "room", "door", "window"], target: "Living Spaces", question: "What is your favorite room?" },
+                    7: { navTitle: "🍎 My Favorite Food", keywords: ["apple", "banana", "eat", "yummy"], target: "Food & Taste", question: "Why do you like this food?" },
+                    8: { navTitle: "🧸 My Best Toy", keywords: ["toy", "bear", "play", "fun"], target: "Playtime", question: "Who plays with you?" },
+                    9: { navTitle: "🏃‍♂️ I Can Run", keywords: ["run", "jump", "fast", "legs"], target: "Physical Activity", question: "Where do you like to run?" },
+                    10: { navTitle: "🌙 Time to Sleep", keywords: ["sleep", "bed", "night", "moon"], target: "Rest", question: "What do you dream about?" }
+                    // 계속 확장 가능
                 }
             }
         };
@@ -1304,6 +1322,11 @@
                     activeNav.classList.add('active');
                 }
                 
+                // 🚨 V100.3 FIX: 페이지 이미지가 바뀌기 전에 캔버스 데이터와 히스토리를 완벽하게 격리(Hard Reset)합니다. 
+                // 기존 페이지의 그림이 새 페이지에 간섭하는 것을 원천 차단합니다.
+                CanvasEngine.hardReset();
+                AITutor.close();
+
                 const img = document.getElementById('worksheet-img');
                 img.style.opacity = '0';
                 
@@ -1314,11 +1337,11 @@
                 img.onload = () => { 
                     img.style.opacity = '1'; 
                     CanvasEngine.resizeCanvas();
+                    // 🚨 V100.3 FIX: 하드 리셋된 깨끗한 캔버스 위에, 해당 페이지 번호에 맞춰 저장된 로컬 스토리지만 끌어와서 입힙니다.
                     StorageEngine.loadCanvas();
                 };
                 
                 StorageEngine.save(); 
-                AITutor.close();
             }
         };
 
@@ -1331,8 +1354,6 @@
             isErasing: false, 
             lastColor: "#363431",
             dpr: window.devicePixelRatio || 1, 
-            historyStack: [], 
-            historyIndex: -1, 
             colorsUsed: new Set(),
 
             init() {
@@ -1358,6 +1379,20 @@
                 }).observe(this.board);
             },
             
+            // 🚨 V100.3 FIX: 페이지를 넘길 때 캔버스의 모든 물리적 상태와 히스토리 기록을 100% 포맷하는 함수입니다.
+            hardReset() {
+                if (!this.ctx || !this.cvs) return;
+                
+                this.ctx.save();
+                this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+                this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
+                this.ctx.restore();
+                
+                STATE.historyStack = [];
+                STATE.historyIndex = -1;
+                this.colorsUsed.clear();
+            },
+
             setBrush(type) {
                 STATE.brushType = type;
                 

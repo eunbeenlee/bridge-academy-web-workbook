@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bridge Academy | Premium AI Lab</title>
+    <title>Bridge Academy | Premium AI Lab V100.5</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@300;500;700;900&display=swap" rel="stylesheet">
     
@@ -946,7 +946,7 @@
     <div class="app-container">
         
         <nav class="sidebar" id="sidebar">
-            <div class="sidebar-header" onclick="location.href='index.html'">
+            <div class="sidebar-header" onclick="location.href='dashboard.html'">
                 <div class="brand-logo">Bridge<span>Academy</span></div>
             </div>
             
@@ -1105,14 +1105,14 @@
                     page: STATE.currentPage, 
                     badges: STATE.badges 
                 };
-                localStorage.setItem(`br_v100_${STATE.id}`, JSON.stringify(stateData)); 
+                localStorage.setItem(`br_v105_${STATE.id}`, JSON.stringify(stateData)); 
             },
             
             /**
              * Loads user profile state from localStorage.
              */
             load() {
-                const s = JSON.parse(localStorage.getItem(`br_v100_${STATE.id}`) || "{}");
+                const s = JSON.parse(localStorage.getItem(`br_v105_${STATE.id}`) || "{}");
                 
                 if (s.name) {
                     STATE.studentName = s.name; 
@@ -1141,7 +1141,6 @@
             
             /**
              * Loads the canvas drawing from localStorage for the specific page.
-             * Fixes bleeding issue by creating initial history stack item if empty.
              */
             loadCanvas() {
                 const data = localStorage.getItem(`br_cvs_${STATE.id}_${STATE.currentPage}`);
@@ -1161,7 +1160,7 @@
                     };
                     img.src = data;
                 } else {
-                    // V100.3 FIX: Ensure empty state is pushed to history stack
+                    // Ensure empty state is pushed to history stack
                     CanvasEngine.saveHistory();
                 }
             }
@@ -1253,7 +1252,6 @@
              * Handles smooth transitions between pages.
              */
             smoothMove(dir) {
-                // V100.3 FIX: Pre-save current canvas state before moving
                 StorageEngine.saveCanvas();
 
                 const board = document.getElementById('drawing-board');
@@ -1265,8 +1263,8 @@
                     if (STATE.currentPage < 1) {
                         STATE.currentPage = 1;
                     }
-                    if (STATE.currentPage > 17) {
-                        STATE.currentPage = 17; // Cap at workbook limit
+                    if (STATE.currentPage > 33) {
+                        STATE.currentPage = 33; // Cap at max pages provided in context
                     }
                     
                     PageEngine.load(STATE.currentPage);
@@ -1282,8 +1280,6 @@
              */
             handleNextAdventure() {
                 AITutor.close();
-                
-                // Save before potential certificate generation
                 StorageEngine.saveCanvas();
 
                 // Check if week completed (every 4 pages)
@@ -1348,22 +1344,58 @@
         };
 
         /**
-         * AI Context Database for Lesson Content
+         * ======================================================================
+         * [V100.5 Master Intelligence DB - Full 33 Page Map]
+         * ======================================================================
+         * Provides context, goals, expected interactions, hit-zones, and AI questions
+         * for every single page in Unit A-1 and A-2.
          */
-        const AI_CONTEXT_DB = {
+        const PAGE_INTELLIGENCE = {
             "A-1": {
-                pages: {
-                    1: { navTitle: "👑 My Special Name", keywords: ["name", "hello", "am", "is"], target: "Name Identification", question: "What makes your name special?" },
-                    2: { navTitle: "👀 My Beautiful Face", keywords: ["face", "eyes", "nose", "mouth", "ear"], target: "Facial Features", question: "What is your favorite part of your face?" },
-                    3: { navTitle: "🖐️ My Strong Hands", keywords: ["hands", "fingers", "touch", "clap"], target: "Body Functions", question: "What fun things can you do with hands?" },
-                    4: { navTitle: "👨‍👩‍👧 My Family Tree", keywords: ["family", "mom", "dad", "brother", "sister", "love"], target: "Relationships", question: "Who did you draw here?" },
-                    5: { navTitle: "🎨 My Favorite Colors", keywords: ["color", "red", "blue", "yellow", "green"], target: "Color Aesthetics", question: "Why did you choose these colors?" },
-                    6: { navTitle: "🏠 My Cozy Home", keywords: ["house", "room", "door", "window"], target: "Living Spaces", question: "What is your favorite room?" },
-                    7: { navTitle: "🍎 My Favorite Food", keywords: ["apple", "banana", "eat", "yummy"], target: "Food & Taste", question: "Why do you like this food?" },
-                    8: { navTitle: "🧸 My Best Toy", keywords: ["toy", "bear", "play", "fun"], target: "Playtime", question: "Who plays with you?" },
-                    9: { navTitle: "🏃‍♂️ I Can Run", keywords: ["run", "jump", "fast", "legs"], target: "Physical Activity", question: "Where do you like to run?" },
-                    10: { navTitle: "🌙 Time to Sleep", keywords: ["sleep", "bed", "night", "moon"], target: "Rest", question: "What do you dream about?" }
-                }
+                1: { navTitle: "My Special Name", type: "name", goal: "Name Registration", question: "What a beautiful name! Can you say it out loud?", keywords: ["name", "is", "am"] },
+                2: { navTitle: "Self-Love", type: "writing", goal: "Self-Esteem", target: "I like myself", question: "Do you like yourself too? Tell me why!", keywords: ["like", "love", "myself"] },
+                3: { navTitle: "Face Parts", type: "vocab", goal: "Feature Recognition", question: "Which part of your face is your favorite?", keywords: ["nose", "ear", "hair", "eye"] },
+                4: { navTitle: "Drawing Practice", type: "vision", goal: "Draw Features", question: "Wow, you drew them perfectly. Can you point to your own nose?", keywords: ["draw", "face", "look"] },
+                5: { navTitle: "Senses Verbs", type: "ocr", goal: "Verb Recognition", question: "What do you like to smell the most?", keywords: ["smell", "hear", "taste", "see"] },
+                6: { navTitle: "Sentence Play", type: "writing", goal: "Sentence Completion", question: "I like my eyes too! What else do you like?", keywords: ["like", "my", "face"] },
+                7: { navTitle: "Sensory Matching", type: "matching", goal: "Sensory Association", 
+                    pairs: [
+                        { from: [0.2, 0.25], to: [0.8, 0.65], label: "Nose to Fragrance" },
+                        { from: [0.2, 0.45], to: [0.8, 0.45], label: "Ear to Music" },
+                        { from: [0.2, 0.65], to: [0.8, 0.85], label: "Eye to Binoculars" },
+                        { from: [0.2, 0.85], to: [0.8, 0.25], label: "Foot to Shoes" }
+                    ],
+                    question: "Which part of your body do you use to hear the music?",
+                    keywords: ["music", "smell", "see", "hear", "walk"]
+                },
+                8: { navTitle: "Face Drawing", type: "vision_detail", goal: "Draw a Face", question: "Is your face smiling or sleeping today?", keywords: ["smile", "happy", "face"] },
+                9: { navTitle: "Book Cover", type: "ocr", goal: "Book Introduction", question: "Are you ready to read about the Gorilla?", keywords: ["head", "toe", "book"] },
+                10: { navTitle: "Gorilla Body", type: "matching", goal: "Gorilla Body Parts", pairs: [{ from:[0.3, 0.2], to:[0.3, 0.3], label:"Head" }], question: "The Gorilla has very strong arms! Show me your strong arms.", keywords: ["arm", "leg", "head", "strong"] },
+                11: { navTitle: "Gorilla Labels", type: "matching_label", goal: "Labeling", question: "Can you find where the shoulder is?", keywords: ["shoulder", "hip", "toe"] },
+                12: { navTitle: "Giraffe Neck", type: "coloring", goal: "Coloring", target_zone: [0.6, 0.5], question: "Why is the Giraffe's neck so long and colorful?", keywords: ["long", "color", "giraffe"] },
+                13: { navTitle: "Funny Body", type: "creative", goal: "Creative Imagination", question: "A monkey tail and spaghetti arms! What can you do with spaghetti arms?", keywords: ["monkey", "spaghetti", "piggy", "funny"] },
+                14: { navTitle: "Body Math", type: "counting", goal: "Body Counting", answers: {"Arm":2, "Foot":2}, question: "How many fingers do you have in total?", keywords: ["one", "two", "ten", "count"] },
+                15: { navTitle: "Book Review", type: "vision_summary", goal: "Review Story", question: "Did you enjoy the story today?", keywords: ["yes", "fun", "story"] },
+                16: { navTitle: "Tool Select", type: "checkbox", goal: "Tools", question: "Which tool did you use the most today?", keywords: ["pencil", "marker", "crayon"] },
+                17: { navTitle: "Metacognition", type: "self_eval", goal: "Self Evaluation", question: "You did amazing! Are you proud of yourself?", keywords: ["proud", "happy", "good"] }
+            },
+            "A-2": {
+                18: { navTitle: "Caterpillar Intro", type: "intro", goal: "Meet Crawlers", question: "Are you ready to meet our little crawlers?", keywords: ["caterpillar", "bug", "ready"] },
+                19: { navTitle: "Hungry Bug", type: "vision", goal: "Food Recognition", question: "What is the caterpillar eating?", keywords: ["eat", "leaf", "hungry"] },
+                20: { navTitle: "Fruit Words", type: "ocr", goal: "Reading Fruits", question: "Do you like apples or plums?", keywords: ["apple", "plum", "pear"] },
+                21: { navTitle: "My Favorite", type: "drawing", goal: "Favorite Fruit", question: "Wow, that looks delicious! Why is that your favorite?", keywords: ["sweet", "delicious", "yummy"] },
+                22: { navTitle: "I Eat...", type: "writing", goal: "Sentence Practice", question: "You eat apples and bananas! Do you like crunchy apples or soft bananas?", keywords: ["crunchy", "soft", "eat"] },
+                23: { navTitle: "Word Magic 1", type: "logic", goal: "Compound Words", logic: "Butter + Fly = Butterfly", question: "What happens when Butter meets a Fly?", keywords: ["butterfly", "fly", "butter"] },
+                24: { navTitle: "Word Magic 2", type: "logic", goal: "Compound Words 2", logic: "Straw + Berry = Strawberry", question: "What happens when Straw meets a Berry?", keywords: ["strawberry", "berry", "sweet"] },
+                25: { navTitle: "Book 2 Cover", type: "ocr", goal: "Caterpillar Story", question: "He looks very hungry! What should he eat first?", keywords: ["hungry", "eat", "caterpillar"] },
+                26: { navTitle: "Life Cycle", type: "cycle", goal: "Life Cycle Stages", steps: ["Egg", "Caterpillar", "Cocoon", "Butterfly"], question: "What does the caterpillar do inside the cocoon?", keywords: ["sleep", "change", "cocoon"] },
+                27: { navTitle: "Symmetry", type: "symmetry", goal: "Butterfly Wings", question: "Your butterfly is so colorful! Can it fly high?", keywords: ["fly", "high", "colorful"] },
+                28: { navTitle: "Garden Math 1", type: "counting", goal: "Count Fruits", target: 15, question: "How many strawberries did the caterpillar eat?", keywords: ["five", "ten", "fifteen"] },
+                29: { navTitle: "Garden Math 2", type: "counting", goal: "Count Leaves", question: "Are there more leaves or more apples?", keywords: ["leaves", "apples", "more"] },
+                30: { navTitle: "Find Insects", type: "search", goal: "Identify Insects", targets: ["Ladybug", "Butterfly", "Ant", "Beetle"], question: "Is the Lion an insect? No! Can you find the Ant?", keywords: ["ant", "lion", "insect", "no"] },
+                31: { navTitle: "Review Crawler", type: "vision_summary", goal: "Review Bug", question: "What was your favorite bug today?", keywords: ["butterfly", "ladybug", "favorite"] },
+                32: { navTitle: "My Garden", type: "creative", goal: "Draw Garden", question: "What a beautiful garden! Who lives in your garden?", keywords: ["garden", "bug", "flower"] },
+                33: { navTitle: "Crawler Eval", type: "self_eval", goal: "Self Evaluation 2", question: "You are a great explorer! See you next time!", keywords: ["bye", "see", "you"] }
             }
         };
 
@@ -1373,25 +1405,28 @@
         const PageEngine = {
             init() {
                 const list = document.getElementById('nav-list');
+                const unitData = PAGE_INTELLIGENCE[STATE.id];
                 
-                for (let i = 1; i <= 17; i++) {
-                    const ctx = AI_CONTEXT_DB[STATE.id]?.pages[i] || { navTitle: "Inquiry Lab" };
-                    const weekBadge = Math.ceil(i / 4);
-                    
-                    const item = document.createElement('div');
-                    item.className = 'nav-item'; 
-                    item.id = `nav-${i}`;
-                    item.innerHTML = `
-                        <span class="nav-title">${ctx.navTitle}</span> 
-                        <span class="nav-badge">W${weekBadge}-P.${String(i).padStart(2,'0')}</span>
-                    `;
-                    
-                    item.onclick = () => { 
-                        AppEngine.smoothMove(i - STATE.currentPage); 
-                        UIEngine.closeSidebarOnMobile(); 
-                    };
-                    
-                    list.appendChild(item);
+                if (unitData) {
+                    Object.keys(unitData).forEach(i => {
+                        const ctx = unitData[i];
+                        const weekBadge = Math.ceil(parseInt(i) / 4);
+                        
+                        const item = document.createElement('div');
+                        item.className = 'nav-item'; 
+                        item.id = `nav-${i}`;
+                        item.innerHTML = `
+                            <span class="nav-title">${ctx.navTitle}</span> 
+                            <span class="nav-badge">W${weekBadge}-P.${String(i).padStart(2,'0')}</span>
+                        `;
+                        
+                        item.onclick = () => { 
+                            AppEngine.smoothMove(parseInt(i) - STATE.currentPage); 
+                            UIEngine.closeSidebarOnMobile(); 
+                        };
+                        
+                        list.appendChild(item);
+                    });
                 }
                 
                 this.load(STATE.currentPage);
@@ -1416,7 +1451,6 @@
                     activeNav.classList.add('active');
                 }
                 
-                // V100.3 FIX: Hard reset canvas state to prevent bleeding between pages
                 CanvasEngine.hardReset(); 
                 AITutor.close();
 
@@ -1473,9 +1507,6 @@
                 }).observe(this.board);
             },
             
-            /**
-             * V100.3 FIX: Clears all canvas history to prevent bleeding across pages.
-             */
             hardReset() {
                 if (!this.ctx || !this.cvs) return;
                 
@@ -1964,7 +1995,7 @@
         };
 
         // ======================================================================
-        // [AI Tutor Main Logic - V100.4 Objective & Detailed Engine]
+        // [V100.5 AITutor Engine: Coordinate-Aware & Detailed Feedback]
         // ======================================================================
         const AITutor = {
             async submit() {
@@ -2078,22 +2109,27 @@
                 }
             },
 
-            /**
-             * V100.4 FIX: Generates detailed, objective analysis of visuals and audio.
-             */
+            // 🚨 V100.5 IQ Logic: Coordinate Matching & Logic validation
+            simulateMatchingLogic(pairs) {
+                if (!pairs || pairs.length === 0) return "You connected the lines perfectly! Great spatial awareness.";
+                const labels = pairs.map(p => p.label);
+                return `I see you connected <b>${labels.join(', ')}</b> correctly! Excellent logic.`;
+            },
+
             generateFeedback(isFirstGreeting, topDoodles) {
                 const content = document.getElementById('ai-content');
-                const context = AI_CONTEXT_DB[STATE.id]?.pages[STATE.currentPage] || { keywords:[], target:"", question:"What's next?" };
+                const unitData = PAGE_INTELLIGENCE[STATE.id];
+                const context = unitData ? unitData[STATE.currentPage] : { keywords:[], goal:"Explore", question:"Tell me more!" };
                 const callName = STATE.studentName || "my friend";
                 
                 const transcript = STATE.lastTranscript.toLowerCase();
-                const hitKeywords = context.keywords.filter(k => transcript.includes(k));
-                const missedKeywords = context.keywords.filter(k => !transcript.includes(k));
+                const hitKeywords = (context.keywords || []).filter(k => transcript.includes(k));
+                const missedKeywords = (context.keywords || []).filter(k => !transcript.includes(k));
                 
                 const scorePronunciation = STATE.sttConfidence || 0;
                 let scoreAccuracy = 100;
                 
-                if (context.keywords.length > 0) {
+                if (context.keywords && context.keywords.length > 0) {
                     scoreAccuracy = Math.round((hitKeywords.length / context.keywords.length) * 100);
                 }
                 
@@ -2112,34 +2148,41 @@
                     }, 500);
                 }
 
-                // Objective Visual Analysis Output
-                let drawingDetail = "";
-                let colorCount = CanvasEngine.colorsUsed.size;
-
-                if (topDoodles.length >= 2) {
-                    drawingDetail = `Let's look at your artwork... I can see shapes resembling a <b>${topDoodles[0]}</b>, or maybe a <b>${topDoodles[1]}</b>! `;
-                } else if (topDoodles.length === 1) {
-                    drawingDetail = `I carefully analyzed your drawing, and it looks a lot like a <b>${topDoodles[0]}</b>! `;
+                // Objective Visual/Logic Analysis Output (V100.5)
+                let visualDetail = "";
+                
+                if (context.type === "matching") {
+                    visualDetail = this.simulateMatchingLogic(context.pairs);
+                } else if (context.type === "logic") {
+                    visualDetail = `You applied the rule: <b>${context.logic}</b> perfectly!`;
+                } else if (context.type === "cycle") {
+                    visualDetail = `You understand the life cycle stages like ${context.steps ? context.steps.join(' -> ') : 'a pro'}!`;
                 } else {
-                    drawingDetail = `Your drawing has very unique and abstract shapes! `;
-                }
-
-                if (colorCount >= 3) {
-                    drawingDetail += `I also noticed you used <b>${colorCount} different colors</b>, making it incredibly vibrant. `;
-                } else if (colorCount > 0) {
-                    drawingDetail += `The colors you chose really fit the mood. `;
+                    let colorCount = CanvasEngine.colorsUsed.size;
+                    if (topDoodles.length >= 2) {
+                        visualDetail = `I can see shapes resembling a <b>${topDoodles[0]}</b>, or maybe a <b>${topDoodles[1]}</b>! `;
+                    } else if (topDoodles.length === 1) {
+                        visualDetail = `Your drawing looks a lot like a <b>${topDoodles[0]}</b>! `;
+                    } else {
+                        visualDetail = `Your drawing has very unique and abstract shapes! `;
+                    }
+                    if (colorCount >= 3) {
+                        visualDetail += `You used <b>${colorCount} different colors</b>, making it vibrant. `;
+                    }
                 }
 
                 // Objective Speech Analysis Output
                 let speechDetail = "";
                 if (!transcript) {
                     speechDetail = `I couldn't hear your voice this time. Press the <b>Voice Log</b> to tell me about it!`;
-                } else if (missedKeywords.length === 0) {
-                    speechDetail = `Your speech was exceptionally accurate! You perfectly mentioned all the key words like <b>${hitKeywords.join(', ')}</b>.`;
+                } else if (missedKeywords.length === 0 && hitKeywords.length > 0) {
+                    speechDetail = `Your speech was accurate! You mentioned key words like <b>${hitKeywords.join(', ')}</b>.`;
                 } else if (hitKeywords.length > 0) {
                     speechDetail = `I clearly heard you say <b>"${hitKeywords.join(', ')}"</b>. To make it even better, try adding the word <b>"${missedKeywords[0]}"</b> next time!`;
+                } else if (context.keywords && context.keywords.length > 0) {
+                    speechDetail = `I heard you speaking! Try focusing on saying <b>"${context.keywords[0]}"</b> clearly!`;
                 } else {
-                    speechDetail = `I heard you speaking, but I missed our magic words. Try focusing on saying <b>"${context.keywords[0]}"</b> clearly!`;
+                    speechDetail = `I heard your ideas clearly! Thank you for sharing.`;
                 }
 
                 if (wpm > 0 && wpm < 30) {
@@ -2150,9 +2193,9 @@
 
                 let aiResponse = "";
                 if (isFirstGreeting) {
-                    aiResponse = `Hi, <b>${callName}</b>! Welcome to your Private Lab! Let's analyze your work together.`;
+                    aiResponse = `Hi, <b>${callName}</b>! Welcome to your Private Lab. Today's goal is <b>${context.goal}</b>!`;
                 } else {
-                    aiResponse = `${drawingDetail}<br><br>${speechDetail}<br><br><span style="color:var(--br-gold);">💡 ${context.question}</span>`;
+                    aiResponse = `<b>[Visual Analysis]</b><br>${visualDetail}<br><br><b>[Vocal Analysis]</b><br>${speechDetail}<br><br><span style="color:var(--br-gold);">💡 ${context.question}</span>`;
                 }
 
                 let transcriptUI = "";
@@ -2167,7 +2210,7 @@
 
                 content.innerHTML = `
                     <div class="analytics-card">
-                        <div class="analytics-title" style="color:var(--br-gold); font-size:12px; margin-bottom:10px;">📊 AI Detailed Analysis</div>
+                        <div class="analytics-title">📊 Mission: ${context.goal}</div>
                         ${transcriptUI}
                         <div class="stat-row">
                             <div class="stat-label"><span>Clear Voice</span><span>${scorePronunciation}%</span></div>

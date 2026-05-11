@@ -14,7 +14,7 @@
 
     <style>
         /* ======================================================================
-         * [CSS Reset & Variables]
+         * [CSS Variables & Design Tokens]
          * ====================================================================== */
         :root {
             --br-green: #89BFA0; 
@@ -31,6 +31,9 @@
             --sidebar-width: 320px;
         }
 
+        /* ======================================================================
+         * [Global Reset]
+         * ====================================================================== */
         * { 
             margin: 0; 
             padding: 0; 
@@ -65,7 +68,7 @@
         }
         
         /* ======================================================================
-         * [Sidebar & Badges]
+         * [Sidebar Layout]
          * ====================================================================== */
         .sidebar { 
             width: var(--sidebar-width); 
@@ -98,6 +101,9 @@
             font-style: italic; 
         }
         
+        /* ======================================================================
+         * [Student Profile & Badges]
+         * ====================================================================== */
         .student-profile { 
             padding: 20px 30px; 
             border-bottom: 1px solid var(--br-border); 
@@ -178,6 +184,9 @@
             animation: popIn 0.3s ease; 
         }
 
+        /* ======================================================================
+         * [Navigation List]
+         * ====================================================================== */
         .nav-list { 
             flex: 1; 
             overflow-y: auto; 
@@ -217,7 +226,7 @@
         }
         
         /* ======================================================================
-         * [Workspace & Stage]
+         * [Main Workspace & Top Bar]
          * ====================================================================== */
         .workspace { 
             flex: 1; 
@@ -257,6 +266,9 @@
             margin-top: 5px; 
         }
         
+        /* ======================================================================
+         * [Stage & Drawing Board]
+         * ====================================================================== */
         .stage-wrapper { 
             flex: 1; 
             display: flex; 
@@ -314,7 +326,7 @@
         }
 
         /* ======================================================================
-         * [Bottom Dock Tools]
+         * [Bottom Dock & Drawing Tools]
          * ====================================================================== */
         .bottom-dock { 
             height: 100px; 
@@ -401,6 +413,9 @@
             border-color: var(--br-error); 
         }
         
+        /* ======================================================================
+         * [Action Group & Primary Buttons]
+         * ====================================================================== */
         .action-group { 
             display: flex; 
             gap: 10px; 
@@ -476,7 +491,7 @@
         }
 
         /* ======================================================================
-         * [AI Tutor Panel & Chat]
+         * [AI Tutor Panel & Chat Interface]
          * ====================================================================== */
         .ai-panel { 
             position: absolute; 
@@ -560,6 +575,9 @@
             box-shadow: 0 5px 15px rgba(137,191,160,0.2); 
         }
 
+        /* ======================================================================
+         * [AI Analytics Card - Enhanced Details]
+         * ====================================================================== */
         .analytics-card { 
             background: #FAFAFA; 
             border: 1px solid var(--br-border); 
@@ -570,8 +588,17 @@
             margin-bottom: 5px; 
         }
 
+        .analytics-title {
+            color: var(--br-gold);
+            font-size: 12px;
+            margin-bottom: 15px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         .stat-row { 
-            margin-bottom: 12px; 
+            margin-bottom: 15px; 
         }
 
         .stat-label { 
@@ -597,10 +624,22 @@
             border-radius: 10px; 
         }
 
+        .transcript-box {
+            background: #F4F8F5;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--br-green);
+            font-style: italic;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: var(--br-charcoal);
+            line-height: 1.5;
+        }
+
         .voice-fx-group { 
             display: flex; 
             gap: 10px; 
-            margin-top: 15px; 
+            margin-top: 20px; 
             justify-content: center; 
         }
 
@@ -625,6 +664,9 @@
             box-shadow: 0 5px 10px rgba(0,0,0,0.05); 
         }
 
+        /* ======================================================================
+         * [Chat Footer & Reply Inputs]
+         * ====================================================================== */
         .chat-footer { 
             padding: 20px 25px; 
             border-top: 1px solid var(--br-border); 
@@ -689,26 +731,8 @@
             outline: none; 
         }
 
-        .ai-name-btn { 
-            width: 100%; 
-            background: var(--br-green); 
-            color: #fff; 
-            padding: 15px; 
-            border-radius: 12px; 
-            margin-top: 10px; 
-            font-weight: 900; 
-            cursor: pointer; 
-            font-size: 14px; 
-        }
-
-        .ai-btn-secondary { 
-            background: #EEE; 
-            color: #333; 
-            margin-top: 5px; 
-        }
-
         /* ======================================================================
-         * [Modals & Misc]
+         * [Modals & Overlay Components]
          * ====================================================================== */
         .rgb-modal { 
             position: absolute; 
@@ -862,6 +886,9 @@
             font-weight: 900; 
         }
 
+        /* ======================================================================
+         * [Animations]
+         * ====================================================================== */
         @keyframes popIn { 
             from { opacity: 0; transform: scale(0.9) translateY(10px); } 
             to { opacity: 1; transform: scale(1) translateY(0); } 
@@ -885,7 +912,9 @@
             z-index: 1500; 
         }
 
-        /* [Media Queries] */
+        /* ======================================================================
+         * [Media Queries for Responsive Layout]
+         * ====================================================================== */
         @media (max-width: 1024px) {
             :root { --sidebar-width: 260px; }
             .top-bar { height: 70px; padding: 0 20px; }
@@ -920,6 +949,7 @@
             <div class="sidebar-header" onclick="location.href='index.html'">
                 <div class="brand-logo">Bridge<span>Academy</span></div>
             </div>
+            
             <div class="student-profile" id="profile-box">
                 <div class="profile-top">
                     <div class="profile-avatar" id="avatar-char">?</div>
@@ -930,10 +960,13 @@
                 </div>
                 <div class="badge-container" id="badge-container"></div>
             </div>
-            <div class="nav-list" id="nav-list"></div>
+            
+            <div class="nav-list" id="nav-list">
+                </div>
         </nav>
 
         <div class="workspace">
+            
             <div class="top-bar">
                 <div style="display:flex; align-items:center; gap:15px;">
                     <button class="mobile-menu-btn" onclick="UIEngine.toggleSidebar()">☰</button>
@@ -952,8 +985,10 @@
             </main>
 
             <div class="bottom-dock">
+                
                 <div class="tool-group">
                     <div class="color-preview" id="btn-color" onclick="RGBRingEngine.toggle()"></div>
+                    
                     <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;">
                     
                     <div class="btn-magic active" id="btn-brush-normal" onclick="CanvasEngine.setBrush('normal')" title="Normal Pen">🖍️</div>
@@ -971,10 +1006,14 @@
                 
                 <div class="action-group">
                     <button class="btn-nav" onclick="AppEngine.smoothMove(-1)">◀</button>
+                    
                     <button class="btn-main btn-record" id="btn-record" onclick="AudioEngine.toggle()">
-                        <div class="dot"></div> <span id="record-text">Voice Log</span>
+                        <div class="dot"></div> 
+                        <span id="record-text">Voice Log</span>
                     </button>
+                    
                     <button class="btn-main btn-submit" onclick="AITutor.submit()">Submit ✨</button>
+                    
                     <button class="btn-nav" onclick="AppEngine.smoothMove(1)">▶</button>
                 </div>
             </div>
@@ -990,7 +1029,10 @@
                 <div class="ai-title">✨ AI Tutor</div>
                 <button class="btn-close-ai" onclick="AITutor.close()">×</button>
             </div>
-            <div class="ai-content" id="ai-content"></div>
+            
+            <div class="ai-content" id="ai-content">
+                </div>
+            
             <div class="chat-footer" id="chat-footer" style="display:none;">
                 <button class="btn-reply" id="btn-chat-record" onclick="AudioEngine.toggleChat()">🎤 Speak to Reply</button>
                 <button class="btn-next-page" onclick="AppEngine.handleNextAdventure()">Next Adventure 🚀</button>
@@ -1020,13 +1062,16 @@
     </div>
 
     <script>
-        // ======================================================================
-        // [Configuration & Global State]
-        // ======================================================================
+        /**
+         * System Configuration
+         */
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/" 
         };
 
+        /**
+         * Global Application State Management
+         */
         const STATE = {
             studentName: "", 
             isNameRegistered: false,
@@ -1046,10 +1091,13 @@
             rainbowHue: 0
         };
 
-        // ======================================================================
-        // [Storage Engine]
-        // ======================================================================
+        /**
+         * Storage Engine for Local Data Persistence
+         */
         const StorageEngine = {
+            /**
+             * Saves the current user profile state to localStorage.
+             */
             save() { 
                 const stateData = { 
                     name: STATE.studentName, 
@@ -1060,8 +1108,12 @@
                 localStorage.setItem(`br_v100_${STATE.id}`, JSON.stringify(stateData)); 
             },
             
+            /**
+             * Loads user profile state from localStorage.
+             */
             load() {
                 const s = JSON.parse(localStorage.getItem(`br_v100_${STATE.id}`) || "{}");
+                
                 if (s.name) {
                     STATE.studentName = s.name; 
                 }
@@ -1076,6 +1128,9 @@
                 }
             },
             
+            /**
+             * Saves the current canvas drawing to localStorage for the specific page.
+             */
             saveCanvas() {
                 if (!CanvasEngine.cvs) {
                     return;
@@ -1084,8 +1139,13 @@
                 localStorage.setItem(`br_cvs_${STATE.id}_${STATE.currentPage}`, canvasData);
             },
             
+            /**
+             * Loads the canvas drawing from localStorage for the specific page.
+             * Fixes bleeding issue by creating initial history stack item if empty.
+             */
             loadCanvas() {
                 const data = localStorage.getItem(`br_cvs_${STATE.id}_${STATE.currentPage}`);
+                
                 if (data) {
                     const img = new Image();
                     img.onload = () => {
@@ -1096,22 +1156,27 @@
                             CanvasEngine.cvs.width / CanvasEngine.dpr, 
                             CanvasEngine.cvs.height / CanvasEngine.dpr
                         );
+                        // Save restored image to history stack
                         CanvasEngine.saveHistory();
                     };
                     img.src = data;
                 } else {
-                    // 🚨 V100.3 FIX: 저장된 그림이 없을 때도 빈 도화지를 최초 히스토리로 등록
+                    // V100.3 FIX: Ensure empty state is pushed to history stack
                     CanvasEngine.saveHistory();
                 }
             }
         };
 
-        // ======================================================================
-        // [Certificate Engine]
-        // ======================================================================
+        /**
+         * Certificate Engine for generating and downloading awards
+         */
         const CertificateEngine = {
+            /**
+             * Opens the certificate modal and populates it with user data.
+             */
             open(weekNum) {
                 const modal = document.getElementById('cert-modal');
+                
                 document.getElementById('cert-week').innerText = `WEEK ${weekNum} COMPLETED`;
                 document.getElementById('cert-student-name').innerText = STATE.studentName || "Bridge Explorer";
                 
@@ -1122,6 +1187,7 @@
                 const hasVoice = STATE.badges.includes("🗣️ Great Speaker");
                 
                 let msg = "For showing amazing curiosity and completing your inquiry journey.";
+                
                 if (hasArt && hasVoice) {
                     msg = "For your brilliant colorful art and speaking English so confidently!";
                 } else if (hasArt) {
@@ -1134,6 +1200,7 @@
                 
                 modal.classList.add('active');
                 
+                // Trigger celebratory confetti
                 if (window.confetti) {
                     confetti({ 
                         particleCount: 150, 
@@ -1144,21 +1211,29 @@
                 }
             },
             
+            /**
+             * Closes the certificate modal and proceeds to next page.
+             */
             close() {
                 document.getElementById('cert-modal').classList.remove('active');
                 AppEngine.smoothMove(1); 
             },
             
+            /**
+             * Generates a PNG download of the certificate using html2canvas.
+             */
             print() {
                 const card = document.getElementById('cert-card-content');
                 const closeBtn = document.querySelector('.cert-close');
                 const printBtn = document.querySelector('.btn-print');
                 
-                closeBtn.style.display = 'none';
+                // Hide interactive UI elements before capturing
+                closeBtn.style.display = 'none'; 
                 printBtn.style.display = 'none';
                 
                 html2canvas(card, { backgroundColor: '#FFFFFF', scale: 2 }).then(canvas => {
-                    closeBtn.style.display = 'block';
+                    // Restore interactive UI elements
+                    closeBtn.style.display = 'block'; 
                     printBtn.style.display = 'inline-flex';
                     
                     const imgData = canvas.toDataURL('image/png');
@@ -1170,12 +1245,15 @@
             }
         };
 
-        // ======================================================================
-        // [App Engine & UI Engine]
-        // ======================================================================
+        /**
+         * Main Application Flow Engine
+         */
         const AppEngine = {
+            /**
+             * Handles smooth transitions between pages.
+             */
             smoothMove(dir) {
-                // 🚨 V100.3 FIX: 페이지를 이동(Move)하기 직전에, 현재 보고 있는 페이지의 그림을 로컬 스토리지에 무조건 안전하게 저장합니다.
+                // V100.3 FIX: Pre-save current canvas state before moving
                 StorageEngine.saveCanvas();
 
                 const board = document.getElementById('drawing-board');
@@ -1183,12 +1261,14 @@
                 
                 setTimeout(() => {
                     STATE.currentPage += dir;
+                    
                     if (STATE.currentPage < 1) {
                         STATE.currentPage = 1;
                     }
                     if (STATE.currentPage > 17) {
-                        STATE.currentPage = 17; // 워크북 최대 페이지 수 제한
+                        STATE.currentPage = 17; // Cap at workbook limit
                     }
+                    
                     PageEngine.load(STATE.currentPage);
                     
                     setTimeout(() => {
@@ -1197,11 +1277,16 @@
                 }, 400);
             },
             
+            /**
+             * Handles logic for the "Next Adventure" button in AI Tutor.
+             */
             handleNextAdventure() {
                 AITutor.close();
-                // 🚨 V100.3 FIX: 수료증을 띄우기 전에도 현재 페이지를 저장합니다.
+                
+                // Save before potential certificate generation
                 StorageEngine.saveCanvas();
 
+                // Check if week completed (every 4 pages)
                 if (STATE.currentPage % 4 === 0) {
                     CertificateEngine.open(STATE.currentPage / 4);
                 } else {
@@ -1210,6 +1295,9 @@
             }
         };
 
+        /**
+         * User Interface Rendering Engine
+         */
         const UIEngine = {
             toggleSidebar() { 
                 document.getElementById('sidebar').classList.toggle('open'); 
@@ -1221,6 +1309,9 @@
                 }
             },
             
+            /**
+             * Renders earned badges in the sidebar.
+             */
             renderBadges() {
                 const container = document.getElementById('badge-container');
                 container.innerHTML = "";
@@ -1235,10 +1326,13 @@
                 });
             },
             
+            /**
+             * Awards a new badge and triggers celebration.
+             */
             awardBadge(badgeName) {
                 if (!STATE.badges.includes(badgeName)) {
                     STATE.badges.push(badgeName);
-                    StorageEngine.save();
+                    StorageEngine.save(); 
                     this.renderBadges();
                     
                     if (window.confetti) {
@@ -1253,9 +1347,9 @@
             }
         };
 
-        // ======================================================================
-        // [AI Context Database]
-        // ======================================================================
+        /**
+         * AI Context Database for Lesson Content
+         */
         const AI_CONTEXT_DB = {
             "A-1": {
                 pages: {
@@ -1269,14 +1363,13 @@
                     8: { navTitle: "🧸 My Best Toy", keywords: ["toy", "bear", "play", "fun"], target: "Playtime", question: "Who plays with you?" },
                     9: { navTitle: "🏃‍♂️ I Can Run", keywords: ["run", "jump", "fast", "legs"], target: "Physical Activity", question: "Where do you like to run?" },
                     10: { navTitle: "🌙 Time to Sleep", keywords: ["sleep", "bed", "night", "moon"], target: "Rest", question: "What do you dream about?" }
-                    // 계속 확장 가능
                 }
             }
         };
 
-        // ======================================================================
-        // [Page Engine]
-        // ======================================================================
+        /**
+         * Page Initialization and Loading Engine
+         */
         const PageEngine = {
             init() {
                 const list = document.getElementById('nav-list');
@@ -1300,6 +1393,7 @@
                     
                     list.appendChild(item);
                 }
+                
                 this.load(STATE.currentPage);
             },
             
@@ -1322,9 +1416,8 @@
                     activeNav.classList.add('active');
                 }
                 
-                // 🚨 V100.3 FIX: 페이지 이미지가 바뀌기 전에 캔버스 데이터와 히스토리를 완벽하게 격리(Hard Reset)합니다. 
-                // 기존 페이지의 그림이 새 페이지에 간섭하는 것을 원천 차단합니다.
-                CanvasEngine.hardReset();
+                // V100.3 FIX: Hard reset canvas state to prevent bleeding between pages
+                CanvasEngine.hardReset(); 
                 AITutor.close();
 
                 const img = document.getElementById('worksheet-img');
@@ -1336,24 +1429,25 @@
                 
                 img.onload = () => { 
                     img.style.opacity = '1'; 
-                    CanvasEngine.resizeCanvas();
-                    // 🚨 V100.3 FIX: 하드 리셋된 깨끗한 캔버스 위에, 해당 페이지 번호에 맞춰 저장된 로컬 스토리지만 끌어와서 입힙니다.
-                    StorageEngine.loadCanvas();
+                    CanvasEngine.resizeCanvas(); 
+                    StorageEngine.loadCanvas(); 
                 };
                 
                 StorageEngine.save(); 
             }
         };
 
-        // ======================================================================
-        // [Canvas Engine & Magic Brushes]
-        // ======================================================================
+        /**
+         * Drawing & Tools Engine
+         */
         const CanvasEngine = {
             isDrawing: false, 
             hasMoved: false, 
             isErasing: false, 
             lastColor: "#363431",
             dpr: window.devicePixelRatio || 1, 
+            historyStack: [], 
+            historyIndex: -1, 
             colorsUsed: new Set(),
 
             init() {
@@ -1379,20 +1473,22 @@
                 }).observe(this.board);
             },
             
-            // 🚨 V100.3 FIX: 페이지를 넘길 때 캔버스의 모든 물리적 상태와 히스토리 기록을 100% 포맷하는 함수입니다.
+            /**
+             * V100.3 FIX: Clears all canvas history to prevent bleeding across pages.
+             */
             hardReset() {
                 if (!this.ctx || !this.cvs) return;
                 
-                this.ctx.save();
+                this.ctx.save(); 
                 this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-                this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
+                this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
                 this.ctx.restore();
                 
-                STATE.historyStack = [];
-                STATE.historyIndex = -1;
+                STATE.historyStack = []; 
+                STATE.historyIndex = -1; 
                 this.colorsUsed.clear();
             },
-
+            
             setBrush(type) {
                 STATE.brushType = type;
                 
@@ -1473,12 +1569,14 @@
             bind() {
                 const getP = (e) => { 
                     const r = this.cvs.getBoundingClientRect(); 
-                    let cx = e.clientX;
+                    let cx = e.clientX; 
                     let cy = e.clientY;
-                    if (e.touches && e.touches.length > 0) {
-                        cx = e.touches[0].clientX;
-                        cy = e.touches[0].clientY;
+                    
+                    if (e.touches && e.touches.length > 0) { 
+                        cx = e.touches[0].clientX; 
+                        cy = e.touches[0].clientY; 
                     }
+                    
                     return { x: cx - r.left, y: cy - r.top }; 
                 };
                 
@@ -1493,13 +1591,12 @@
                     
                     const p = getP(e); 
                     this.ctx.beginPath(); 
-                    this.ctx.moveTo(p.x, p.y);
+                    this.ctx.moveTo(p.x, p.y); 
                     this.colorsUsed.add(this.lastColor);
                 });
                 
                 this.cvs.addEventListener('pointermove', (e) => {
                     if (!this.isDrawing) return; 
-                    
                     e.preventDefault(); 
                     this.hasMoved = true;
                     
@@ -1559,10 +1656,10 @@
                 });
             },
             
-            saveHistory() {
-                STATE.historyIndex++;
-                STATE.historyStack.length = STATE.historyIndex;
-                STATE.historyStack.push(this.cvs.toDataURL());
+            saveHistory() { 
+                STATE.historyIndex++; 
+                STATE.historyStack.length = STATE.historyIndex; 
+                STATE.historyStack.push(this.cvs.toDataURL()); 
             },
             
             undo() { 
@@ -1592,41 +1689,40 @@
                 img.src = STATE.historyStack[STATE.historyIndex];
             },
             
-            setColor(hex) {
+            setColor(hex) { 
                 this.lastColor = hex; 
-                document.getElementById('btn-color').style.background = hex;
+                document.getElementById('btn-color').style.background = hex; 
                 
                 if (!this.isErasing) {
-                    this.ctx.strokeStyle = this.lastColor;
+                    this.ctx.strokeStyle = this.lastColor; 
                 }
                 
-                this.updateCursor();
+                this.updateCursor(); 
             },
             
-            setupUI() {
-                document.getElementById('btn-color').style.background = this.lastColor;
+            setupUI() { 
+                document.getElementById('btn-color').style.background = this.lastColor; 
                 
-                document.getElementById('brush-size').oninput = (e) => {
-                    this.ctx.lineWidth = this.isErasing ? e.target.value * 2 : e.target.value;
-                };
+                document.getElementById('brush-size').oninput = (e) => { 
+                    this.ctx.lineWidth = this.isErasing ? e.target.value * 2 : e.target.value; 
+                }; 
             },
             
             toggleEraser() {
-                this.isErasing = !this.isErasing;
-                
+                this.isErasing = !this.isErasing; 
                 const btn = document.getElementById('btn-eraser');
                 
-                if (this.isErasing) {
+                if (this.isErasing) { 
                     btn.classList.add('active'); 
-                    btn.innerText = "PEN MODE";
-                    this.ctx.globalCompositeOperation = 'destination-out';
-                    this.ctx.lineWidth = document.getElementById('brush-size').value * 2;
-                } else {
+                    btn.innerText = "PEN MODE"; 
+                    this.ctx.globalCompositeOperation = 'destination-out'; 
+                    this.ctx.lineWidth = document.getElementById('brush-size').value * 2; 
+                } else { 
                     btn.classList.remove('active'); 
-                    btn.innerText = "ERASER";
-                    this.ctx.globalCompositeOperation = 'source-over';
-                    this.ctx.strokeStyle = this.lastColor;
-                    this.ctx.lineWidth = document.getElementById('brush-size').value;
+                    btn.innerText = "ERASER"; 
+                    this.ctx.globalCompositeOperation = 'source-over'; 
+                    this.ctx.strokeStyle = this.lastColor; 
+                    this.ctx.lineWidth = document.getElementById('brush-size').value; 
                 }
                 
                 this.updateCursor();
@@ -1636,7 +1732,7 @@
                 if (!this.ctx || !this.cvs) return;
                 
                 this.ctx.save(); 
-                this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+                this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
                 this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
                 this.ctx.restore();
                 
@@ -1646,9 +1742,9 @@
             }
         };
 
-        // ======================================================================
-        // [RGB Ring Engine]
-        // ======================================================================
+        /**
+         * Custom UI Component: RGB Color Wheel Selector
+         */
         const RGBRingEngine = {
             init() {
                 this.m = document.getElementById('rgb-modal'); 
@@ -1659,22 +1755,21 @@
                 this.c.width = 150; 
                 this.c.height = 150;
                 
-                for (let a = 0; a < 360; a++) {
+                for (let a = 0; a < 360; a++) { 
                     this.x.beginPath(); 
                     this.x.moveTo(r, r); 
-                    this.x.arc(r, r, r, a * Math.PI / 180, (a + 2) * Math.PI / 180);
+                    this.x.arc(r, r, r, a * Math.PI / 180, (a + 2) * Math.PI / 180); 
                     this.x.fillStyle = `hsl(${a}, 100%, 50%)`; 
-                    this.x.fill();
+                    this.x.fill(); 
                 }
                 
                 this.c.onclick = (e) => {
-                    const rect = this.c.getBoundingClientRect();
+                    const rect = this.c.getBoundingClientRect(); 
                     const p = this.x.getImageData(e.clientX - rect.left, e.clientY - rect.top, 1, 1).data;
                     
                     if (p[3] < 50) return;
                     
-                    const hex = "#" + ((1 << 24) + (p[0] << 16) + (p[1] << 8) + p[2]).toString(16).slice(1).toUpperCase();
-                    CanvasEngine.setColor(hex); 
+                    CanvasEngine.setColor("#" + ((1 << 24) + (p[0] << 16) + (p[1] << 8) + p[2]).toString(16).slice(1).toUpperCase()); 
                     this.toggle();
                 };
             },
@@ -1684,9 +1779,9 @@
             }
         };
 
-        // ======================================================================
-        // [Audio Engine & Recognition]
-        // ======================================================================
+        /**
+         * Audio Engine for Voice Recording, STT, and Playback
+         */
         const AudioEngine = {
             recognition: null, 
             mediaRecorder: null, 
@@ -1701,17 +1796,17 @@
                     this.recognition.interimResults = false; 
                     this.recognition.continuous = false;
                     
-                    this.recognition.onresult = (e) => {
-                        STATE.lastTranscript = e.results[0][0].transcript;
-                        STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100);
+                    this.recognition.onresult = (e) => { 
+                        STATE.lastTranscript = e.results[0][0].transcript; 
+                        STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); 
                     };
                     
                     const finish = () => { 
                         if (STATE.isRecording) { 
                             if (STATE.isChatMode) {
-                                this.toggleChat();
+                                this.toggleChat(); 
                             } else {
-                                this.toggle();
+                                this.toggle(); 
                             }
                         } 
                     };
@@ -1724,9 +1819,9 @@
                     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
                         this.mediaRecorder = new MediaRecorder(stream);
                         this.mediaRecorder.ondataavailable = e => this.audioChunks.push(e.data);
-                        this.mediaRecorder.onstop = () => {
-                            const blob = new Blob(this.audioChunks, { 'type' : 'audio/ogg; codecs=opus' });
-                            STATE.audioBlobUrl = window.URL.createObjectURL(blob);
+                        
+                        this.mediaRecorder.onstop = () => { 
+                            STATE.audioBlobUrl = window.URL.createObjectURL(new Blob(this.audioChunks, { 'type' : 'audio/ogg; codecs=opus' })); 
                         };
                     }).catch(err => console.warn("Mic access denied."));
                 }
@@ -1738,11 +1833,11 @@
                 STATE.sttConfidence = 0; 
                 STATE.audioStartTime = Date.now();
                 
-                const btn = document.getElementById(btnId);
+                const btn = document.getElementById(btnId); 
                 btn.classList.add('recording');
                 
                 if (textId) {
-                    document.getElementById(textId).innerText = activeText;
+                    document.getElementById(textId).innerText = activeText; 
                 } else {
                     btn.innerHTML = `🎤 <span>${activeText}</span>`;
                 }
@@ -1762,11 +1857,11 @@
                 STATE.isRecording = false; 
                 STATE.audioDurationSec = (Date.now() - STATE.audioStartTime) / 1000;
                 
-                const btn = document.getElementById(btnId);
+                const btn = document.getElementById(btnId); 
                 btn.classList.remove('recording');
                 
                 if (textId) {
-                    document.getElementById(textId).innerText = idleText;
+                    document.getElementById(textId).innerText = idleText; 
                 } else {
                     btn.innerHTML = `🎤 <span>${idleText}</span>`;
                 }
@@ -1784,22 +1879,22 @@
                 setTimeout(callback, 600); 
             },
             
-            toggle() {
+            toggle() { 
                 if (!STATE.isRecording) { 
                     STATE.isChatMode = false; 
                     this.startRecordingUI('btn-record', 'record-text', 'Listening...'); 
                 } else { 
                     this.stopRecordingUI('btn-record', 'record-text', 'Voice Log', () => AITutor.submit()); 
-                }
+                } 
             },
             
-            toggleChat() {
+            toggleChat() { 
                 if (!STATE.isRecording) { 
                     STATE.isChatMode = true; 
                     this.startRecordingUI('btn-chat-record', null, 'Listening...'); 
                 } else { 
                     this.stopRecordingUI('btn-chat-record', null, 'Speak to Reply', () => AITutor.processReply()); 
-                }
+                } 
             },
             
             playVoiceEffect(effect) {
@@ -1808,9 +1903,9 @@
                 const audio = new Audio(STATE.audioBlobUrl);
                 
                 if (effect === 'chipmunk') {
-                    audio.playbackRate = 1.6;
+                    audio.playbackRate = 1.6; 
                 } else if (effect === 'alien') {
-                    audio.playbackRate = 0.7;
+                    audio.playbackRate = 0.7; 
                 } else {
                     audio.playbackRate = 1.0;
                 }
@@ -1819,9 +1914,9 @@
             }
         };
 
-        // ======================================================================
-        // [Visual AI Engines]
-        // ======================================================================
+        /**
+         * External AI Cloud Engines (OCR & Vision)
+         */
         const VisualAI_OCR = {
             worker: null,
             async init() { 
@@ -1831,10 +1926,11 @@
                     } catch(e) {} 
                 } 
             },
-            async recognize(imgData) {
-                if (!this.worker) return null;
+            async recognize(imgData) { 
+                if (!this.worker) return null; 
+                
                 const { data: { text } } = await this.worker.recognize(imgData); 
-                return text;
+                return text; 
             }
         };
 
@@ -1853,15 +1949,12 @@
                 
                 return new Promise((resolve) => {
                     const timeout = setTimeout(() => resolve([]), 2000);
-                    try {
-                        this.classifier.classify(canvas, (err, results) => {
-                            clearTimeout(timeout);
-                            if (err || !results) {
-                                resolve([]); 
-                            } else {
-                                resolve(results);
-                            }
-                        });
+                    try { 
+                        this.classifier.classify(canvas, (err, results) => { 
+                            clearTimeout(timeout); 
+                            if (err || !results) resolve([]); 
+                            else resolve(results); 
+                        }); 
                     } catch(e) { 
                         clearTimeout(timeout); 
                         resolve([]); 
@@ -1871,7 +1964,7 @@
         };
 
         // ======================================================================
-        // [AI Tutor Main Logic]
+        // [AI Tutor Main Logic - V100.4 Objective & Detailed Engine]
         // ======================================================================
         const AITutor = {
             async submit() {
@@ -1892,7 +1985,7 @@
                 content.innerHTML = `
                     <div style="text-align:center; padding:50px;">
                         <div style="width:40px; height:40px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 15px;"></div>
-                        <p style="font-size:12px; font-weight:900; color:var(--br-muted);">LOOKING AT YOUR DISCOVERY...</p>
+                        <p style="font-size:12px; font-weight:900; color:var(--br-muted);">ANALYZING YOUR DETAILS...</p>
                     </div>
                 `;
 
@@ -1975,15 +2068,19 @@
                     STATE.isNameRegistered = true; 
                     StorageEngine.save();
                     
-                    const profileBox = document.getElementById('profile-box');
+                    const profileBox = document.getElementById('profile-box'); 
                     profileBox.classList.add('registered');
-                    document.getElementById('display-name').innerText = name;
+                    
+                    document.getElementById('display-name').innerText = name; 
                     document.getElementById('avatar-char').innerText = name.charAt(0).toUpperCase();
                     
                     this.generateFeedback(true, []);
                 }
             },
 
+            /**
+             * V100.4 FIX: Generates detailed, objective analysis of visuals and audio.
+             */
             generateFeedback(isFirstGreeting, topDoodles) {
                 const content = document.getElementById('ai-content');
                 const context = AI_CONTEXT_DB[STATE.id]?.pages[STATE.currentPage] || { keywords:[], target:"", question:"What's next?" };
@@ -1991,6 +2088,7 @@
                 
                 const transcript = STATE.lastTranscript.toLowerCase();
                 const hitKeywords = context.keywords.filter(k => transcript.includes(k));
+                const missedKeywords = context.keywords.filter(k => !transcript.includes(k));
                 
                 const scorePronunciation = STATE.sttConfidence || 0;
                 let scoreAccuracy = 100;
@@ -2014,65 +2112,62 @@
                     }, 500);
                 }
 
-                let finalDoodleLabel = ""; 
-                let isShoehorned = false;
-                
-                if (topDoodles.length > 0) {
-                    for (let d of topDoodles.slice(0, 15)) {
-                        if (transcript.includes(d) || context.keywords.includes(d)) { 
-                            finalDoodleLabel = d; 
-                            isShoehorned = true; 
-                            break; 
-                        }
-                    }
-                    if (!isShoehorned) {
-                        finalDoodleLabel = topDoodles[0]; 
-                    }
+                // Objective Visual Analysis Output
+                let drawingDetail = "";
+                let colorCount = CanvasEngine.colorsUsed.size;
+
+                if (topDoodles.length >= 2) {
+                    drawingDetail = `Let's look at your artwork... I can see shapes resembling a <b>${topDoodles[0]}</b>, or maybe a <b>${topDoodles[1]}</b>! `;
+                } else if (topDoodles.length === 1) {
+                    drawingDetail = `I carefully analyzed your drawing, and it looks a lot like a <b>${topDoodles[0]}</b>! `;
+                } else {
+                    drawingDetail = `Your drawing has very unique and abstract shapes! `;
+                }
+
+                if (colorCount >= 3) {
+                    drawingDetail += `I also noticed you used <b>${colorCount} different colors</b>, making it incredibly vibrant. `;
+                } else if (colorCount > 0) {
+                    drawingDetail += `The colors you chose really fit the mood. `;
+                }
+
+                // Objective Speech Analysis Output
+                let speechDetail = "";
+                if (!transcript) {
+                    speechDetail = `I couldn't hear your voice this time. Press the <b>Voice Log</b> to tell me about it!`;
+                } else if (missedKeywords.length === 0) {
+                    speechDetail = `Your speech was exceptionally accurate! You perfectly mentioned all the key words like <b>${hitKeywords.join(', ')}</b>.`;
+                } else if (hitKeywords.length > 0) {
+                    speechDetail = `I clearly heard you say <b>"${hitKeywords.join(', ')}"</b>. To make it even better, try adding the word <b>"${missedKeywords[0]}"</b> next time!`;
+                } else {
+                    speechDetail = `I heard you speaking, but I missed our magic words. Try focusing on saying <b>"${context.keywords[0]}"</b> clearly!`;
+                }
+
+                if (wpm > 0 && wpm < 30) {
+                    speechDetail += ` You spoke a bit slowly. Taking a deep breath and trying again will help!`;
+                } else if (wpm > 100) {
+                    speechDetail += ` You spoke very fast! Slowing down a little will make you sound like a pro.`;
                 }
 
                 let aiResponse = "";
-                
                 if (isFirstGreeting) {
-                    aiResponse = `Hi, <b>${callName}</b>! Welcome to our magical adventure! Are you ready to explore together? Let's go!`;
-                } else if (!transcript) {
-                    if (finalDoodleLabel) {
-                        aiResponse = `Wow! Did you draw a <b>${finalDoodleLabel}</b>? It looks so fun! Can you push the <b>Voice Log</b> button and tell me about it?`;
-                    } else {
-                        aiResponse = `What a beautiful drawing! I want to hear your voice. Press <b>Voice Log</b> and share your ideas with me!`;
-                    }
+                    aiResponse = `Hi, <b>${callName}</b>! Welcome to your Private Lab! Let's analyze your work together.`;
                 } else {
-                    if (isShoehorned) {
-                        aiResponse = `Yay! You said <b>"${transcript}"</b> and I see a <b>${finalDoodleLabel}</b>! You are a brilliant artist and speaker! ${context.question}`;
-                    } else if (finalDoodleLabel && scoreAccuracy > 0) {
-                        aiResponse = `Great job! I heard you say <b>"${transcript}"</b>. And your <b>${finalDoodleLabel}</b> is super cool! ${context.question}`;
-                    } else {
-                        aiResponse = `Good try! I heard <b>"${hitKeywords.length > 0 ? hitKeywords.join(', ') : transcript}"</b>. Let's keep exploring! ${context.question}`;
-                    }
+                    aiResponse = `${drawingDetail}<br><br>${speechDetail}<br><br><span style="color:var(--br-gold);">💡 ${context.question}</span>`;
                 }
 
                 let transcriptUI = "";
                 if (STATE.lastTranscript) {
-                    transcriptUI = `
-                        <div style="background:#F4F8F5; padding:12px; border-radius:10px; border-left:4px solid var(--br-green); font-style:italic; font-size:14px; margin-bottom:15px; color:var(--br-charcoal);">
-                            "${STATE.lastTranscript}"
-                        </div>
-                    `;
+                    transcriptUI = `<div style="background:#F4F8F5; padding:12px; border-radius:10px; border-left:4px solid var(--br-green); font-style:italic; font-size:14px; margin-bottom:15px; color:var(--br-charcoal);">"${STATE.lastTranscript}"</div>`;
                 }
                 
                 let voiceFxUI = "";
                 if (STATE.lastTranscript) {
-                    voiceFxUI = `
-                        <div class="voice-fx-group">
-                            <div class="btn-fx" onclick="AudioEngine.playVoiceEffect('normal')">▶️ Normal</div>
-                            <div class="btn-fx" onclick="AudioEngine.playVoiceEffect('chipmunk')">🐿️ Chipmunk</div>
-                            <div class="btn-fx" onclick="AudioEngine.playVoiceEffect('alien')">👽 Alien</div>
-                        </div>
-                    `;
+                    voiceFxUI = `<div class="voice-fx-group"><div class="btn-fx" onclick="AudioEngine.playVoiceEffect('normal')">▶️ Normal</div><div class="btn-fx" onclick="AudioEngine.playVoiceEffect('chipmunk')">🐿️ Chipmunk</div><div class="btn-fx" onclick="AudioEngine.playVoiceEffect('alien')">👽 Alien</div></div>`;
                 }
 
                 content.innerHTML = `
                     <div class="analytics-card">
-                        <div class="analytics-title" style="color:var(--br-gold); font-size:12px;">⭐ My Magic Scores ⭐</div>
+                        <div class="analytics-title" style="color:var(--br-gold); font-size:12px; margin-bottom:10px;">📊 AI Detailed Analysis</div>
                         ${transcriptUI}
                         <div class="stat-row">
                             <div class="stat-label"><span>Clear Voice</span><span>${scorePronunciation}%</span></div>
@@ -2083,7 +2178,7 @@
                             <div class="bar-bg"><div class="bar-fill" style="width:${scoreAccuracy}%; background:var(--br-green)"></div></div>
                         </div>
                         <div class="stat-row">
-                            <div class="stat-label"><span>Good Speed</span><span>${Math.round(wpm)} WPM</span></div>
+                            <div class="stat-label"><span>Speaking Speed</span><span>${Math.round(wpm)} WPM</span></div>
                             <div class="bar-bg"><div class="bar-fill" style="width:${speedPercentage}%; background:var(--br-gold)"></div></div>
                         </div>
                         ${voiceFxUI}
@@ -2099,6 +2194,7 @@
                 if (!STATE.lastTranscript) return;
                 
                 const content = document.getElementById('ai-content');
+                
                 const uBubble = document.createElement('div'); 
                 uBubble.className = "chat-bubble user"; 
                 uBubble.innerText = STATE.lastTranscript;
@@ -2107,7 +2203,7 @@
 
                 const followUps = [
                     "Wow, really? Tell me more!", 
-                    "That's so cool! Why is that?", 
+                    "That's an interesting detail! Why is that?", 
                     "I love your idea! What else can you imagine?"
                 ];
                 
@@ -2143,7 +2239,7 @@
         };
 
         // ======================================================================
-        // [System Boot]
+        // [System Boot Sequence]
         // ======================================================================
         window.onload = () => {
             StorageEngine.load();

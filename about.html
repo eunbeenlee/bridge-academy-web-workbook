@@ -4,71 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Bridge - 브릿지 아카데미 소개</title>
+    
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Pretendard', 'sans-serif'], serif: ['Playfair Display', 'serif'] },
-                    colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#F4F7F5' } }
-                }
-            }
+            theme: { extend: { fontFamily: { sans: ['Pretendard', 'sans-serif'], serif: ['Playfair Display', 'serif'] }, colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9' } } } }
         }
     </script>
     <style>
         html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
-<body class="bg-white">
+<body class="bg-[#FCFBF9]">
 
-    <nav class="fixed w-full top-0 z-[2000] bg-white/80 backdrop-blur-xl border-b border-gray-100 h-24 flex items-center transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-6 w-full flex justify-between items-center">
-            <a href="index.html" class="flex items-center gap-3 no-underline group">
-                <img src="logo.png" alt="Bridge Academy" class="h-10 w-auto group-hover:scale-105 transition">
-                <span class="text-xl font-black text-bridge-charcoal italic uppercase tracking-tighter hidden sm:block">Bridge Academy</span>
-            </a>
-            <div class="hidden lg:flex items-center space-x-8">
-                <a href="about.html" class="group text-center border-b-2 border-bridge-mint"><span class="block text-[13px] font-black text-bridge-mint">브랜드 소개</span><span class="block text-[9px] text-bridge-mint font-bold uppercase tracking-widest leading-none">About</span></a>
-                <a href="program.html" class="group text-center"><span class="block text-[13px] font-black text-gray-700 hover:text-bridge-mint transition">정규 프로그램</span></a>
-                <a href="special.html" class="group text-center"><span class="block text-[13px] font-black text-gray-700 hover:text-bridge-mint transition">시그니처 특강</span></a>
-                <a href="location.html" class="group text-center"><span class="block text-[13px] font-black text-gray-700 hover:text-bridge-mint transition">지점 안내</span></a>
+    <nav class="fixed w-full top-0 z-[2000] bg-white/90 backdrop-blur-xl border-b border-gray-100 h-[100px] flex items-center transition-all duration-500 shadow-sm">
+        <div class="max-w-[1400px] mx-auto px-6 w-full flex justify-between items-center">
+            <a href="index.html" class="block group"><img src="logo.png" alt="Bridge Academy" class="h-14 w-auto group-hover:scale-105 transition-transform duration-500"></a>
+
+            <div class="hidden xl:flex items-center space-x-10">
+                <a href="about.html" class="group text-center">
+                    <span class="block text-[15px] font-black text-bridge-mint transition-colors duration-300">브랜드 소개</span>
+                    <span class="block text-[10px] text-bridge-mint font-bold uppercase tracking-[0.2em] mt-1 transition-colors duration-300">About Bridge</span>
+                </a>
+                <a href="program.html" class="group text-center">
+                    <span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition-colors duration-300">정규 프로그램</span>
+                    <span class="block text-[10px] text-bridge-earth font-bold uppercase tracking-[0.2em] mt-1 group-hover:text-bridge-mint transition-colors duration-300">Regular Course</span>
+                </a>
+                <a href="special.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition-colors duration-300">특강 프로그램</span><span class="block text-[10px] text-bridge-earth font-bold uppercase tracking-[0.2em] mt-1 group-hover:text-bridge-mint">Special Course</span></a>
+                <a href="gallery.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition-colors duration-300">브릿지 스토리</span><span class="block text-[10px] text-bridge-earth font-bold uppercase tracking-[0.2em] mt-1 group-hover:text-bridge-mint">Gallery</span></a>
+                <a href="location.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition-colors duration-300">지점 찾기</span><span class="block text-[10px] text-bridge-earth font-bold uppercase tracking-[0.2em] mt-1 group-hover:text-bridge-mint">Locations</span></a>
+                <a href="franchise.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition-colors duration-300">가맹 문의</span><span class="block text-[10px] text-bridge-earth font-bold uppercase tracking-[0.2em] mt-1 group-hover:text-bridge-mint">Franchise</span></a>
             </div>
+
             <div class="flex items-center gap-4">
-                <a href="trial.html" class="hidden md:inline-block bg-bridge-mint text-white font-black px-6 py-2.5 rounded-full text-[11px] uppercase tracking-widest hover:shadow-lg transition">체험 신청</a>
-                <a href="dashboard.html" class="bg-bridge-charcoal text-white font-black px-7 py-3 rounded-full text-[11px] uppercase tracking-[0.2em] hover:bg-bridge-earth transition">Student Portal</a>
+                <a href="trial.html" class="hidden md:inline-flex items-center justify-center bg-bridge-mint text-white font-black px-7 py-3.5 rounded-full text-[12px] uppercase tracking-[0.15em] hover:bg-bridge-earth hover:shadow-lg transition-all duration-300">체험 신청</a>
+                <a href="dashboard.html" class="inline-flex items-center justify-center bg-bridge-charcoal text-white font-black px-8 py-3.5 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-[#CBAE75] hover:shadow-xl transition-all duration-300 gap-2"><i class="fa-solid fa-graduation-cap text-sm"></i> Student Portal</a>
             </div>
         </div>
     </nav>
 
-    <main class="pt-40 pb-32">
+    <main class="pt-40 pb-40">
         <section class="max-w-6xl mx-auto px-6">
-            <div class="bg-bridge-bg p-10 md:p-20 rounded-[3.5rem] shadow-sm border border-white reveal">
-                <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div class="bg-white p-12 md:p-24 rounded-[4rem] shadow-sm border border-gray-100 reveal">
+                <div class="grid lg:grid-cols-2 gap-20 items-center">
+                    
                     <div class="relative">
-                        <div class="absolute -inset-4 bg-bridge-mint/20 rounded-[4rem] blur-2xl opacity-60"></div>
-                        <div class="relative rounded-[3rem] shadow-xl w-full h-[500px] border-[8px] border-white bg-bridge-earth flex items-center justify-center overflow-hidden">
-                            <span class="text-white text-3xl font-serif italic opacity-50">Director's Profile</span>
+                        <div class="absolute -inset-6 bg-bridge-mint/10 rounded-[4rem] blur-2xl opacity-80"></div>
+                        <div class="relative rounded-[3rem] shadow-2xl w-full h-[600px] border-[10px] border-white bg-bridge-earth flex items-center justify-center overflow-hidden">
+                            <span class="text-white text-4xl font-serif italic opacity-40">Director's Profile</span>
                         </div>
                     </div>
 
                     <div class="flex flex-col justify-center">
-                        <span class="text-bridge-mint font-black text-sm mb-4 italic uppercase tracking-widest">Director's Message</span>
-                        <h2 class="text-3xl lg:text-4xl font-black text-bridge-earth mb-8 leading-tight">
-                            영어를 '학습'이 아닌<br><span class="text-bridge-mint">'삶과 문화'</span>로 만나는 곳
+                        <span class="text-bridge-mint font-black text-[13px] mb-6 italic uppercase tracking-[0.3em]">Director's Message</span>
+                        <h2 class="text-4xl lg:text-5xl font-black text-bridge-charcoal mb-10 leading-[1.3]">
+                            영어를 '학습'이 아닌<br><span class="text-bridge-earth underline decoration-bridge-mint decoration-4 underline-offset-8">'삶과 문화'</span>로 만나는 곳
                         </h2>
                         
-                        <div class="space-y-6 text-[15px] leading-relaxed font-bold text-gray-500 break-keep">
-                            <p>안녕하세요, 브릿지 아카데미 원장 <span class="text-bridge-earth font-black">이윤지</span>입니다.</p>
+                        <div class="space-y-6 text-[16px] leading-[1.9] font-medium text-gray-500 break-keep">
+                            <p>안녕하세요, 브릿지 아카데미 원장 <span class="text-bridge-earth font-black text-lg">이윤지</span>입니다.</p>
                             <p>저는 유치원 시절 미국에서 처음 영어를 접한 뒤, 미국 사립 초등학교를 거쳐 캐나다에서 대학을 졸업하기까지 학창 시절의 대부분을 북미권에서 보냈습니다.</p>
                             <p>저에게 영어는 책상에 앉아 외워야 하는 '과목'이 아니라, 피부로 느끼고 세상을 이해하는 '문화'이자 자연스러운 '삶의 일부'였습니다.</p>
                             
-                            <div class="bg-white border-l-8 border-bridge-mint rounded-2xl p-6 my-8 shadow-sm">
-                                <p class="text-bridge-charcoal font-black italic text-base">
+                            <div class="bg-[#F8FAFF] border-l-4 border-bridge-mint rounded-2xl p-8 my-10 shadow-sm">
+                                <p class="text-bridge-charcoal font-black italic text-lg leading-relaxed">
                                     "조기 유학생으로서 제가 직접 경험한 북미 교육의 핵심은 '자신감'이었습니다. 영어를 '학습'으로 접근하면 아이는 질리지만, '문화'로 접근하면 영어가 모국어처럼 편안해집니다."
                                 </p>
                             </div>
@@ -78,36 +83,36 @@
                     </div>
                 </div>
 
-                <div class="mt-24 pt-16 border-t border-gray-100">
+                <div class="mt-32 pt-20 border-t border-gray-100">
                     <div class="text-center mb-16 reveal">
-                        <p class="text-bridge-mint font-black text-xs mb-2 uppercase tracking-widest">Professionalism</p>
-                        <h3 class="text-3xl font-black text-bridge-earth">원장 약력</h3>
+                        <p class="text-bridge-mint font-black text-[11px] mb-3 uppercase tracking-[0.4em]">Professionalism</p>
+                        <h3 class="text-4xl font-black text-bridge-charcoal">원장 약력</h3>
                     </div>
 
-                    <div class="grid md:grid-cols-2 gap-12 bg-white p-10 rounded-[2.5rem] shadow-sm reveal">
-                        <div class="p-4">
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="w-12 h-12 bg-bridge-mint rounded-full flex items-center justify-center text-white text-lg"><i class="fa-solid fa-graduation-cap"></i></div>
-                                <h4 class="text-xl font-black text-bridge-charcoal uppercase tracking-widest">Education & Cert.</h4>
+                    <div class="grid md:grid-cols-2 gap-12 bg-[#F8FAFF] p-12 lg:p-16 rounded-[3rem] shadow-inner reveal">
+                        <div>
+                            <div class="flex items-center gap-5 mb-8">
+                                <div class="w-14 h-14 bg-bridge-mint rounded-full flex items-center justify-center text-white text-xl shadow-lg shadow-bridge-mint/30"><i class="fa-solid fa-graduation-cap"></i></div>
+                                <h4 class="text-2xl font-black text-bridge-charcoal uppercase tracking-widest font-serif italic">Education & Cert.</h4>
                             </div>
-                            <ul class="space-y-4 text-gray-500 font-bold text-sm">
-                                <li>• Canada Seneca College 졸업</li>
-                                <li>• 미국 사립 초등학교 및 캐나다 중·고등 과정 이수</li>
-                                <li>• 어린이 테솔 (YL TESOL / TEC) 자격증</li>
-                                <li>• <span class="text-bridge-mint">오감놀이지도사 / 영어독서지도사 1급</span></li>
-                                <li>• <span class="text-bridge-mint">방과후영어교육지도사 / 파닉스영어교육지도사 1급</span></li>
+                            <ul class="space-y-5 text-gray-600 font-bold text-[15px]">
+                                <li class="flex gap-3"><span class="text-bridge-mint">•</span> Canada Seneca College 졸업</li>
+                                <li class="flex gap-3"><span class="text-bridge-mint">•</span> 미국 사립 초등학교 및 캐나다 중·고등 과정 이수</li>
+                                <li class="flex gap-3"><span class="text-bridge-mint">•</span> 어린이 테솔 (YL TESOL / TEC) 자격증</li>
+                                <li class="flex gap-3 text-bridge-earth"><span class="text-bridge-earth">•</span> 오감놀이지도사 / 영어독서지도사 1급</li>
+                                <li class="flex gap-3 text-bridge-earth"><span class="text-bridge-earth">•</span> 방과후영어교육지도사 / 파닉스영어교육지도사 1급</li>
                             </ul>
                         </div>
-                        <div class="p-4 border-l border-gray-100 pl-10">
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="w-12 h-12 bg-bridge-earth rounded-full flex items-center justify-center text-white text-lg"><i class="fa-solid fa-briefcase"></i></div>
-                                <h4 class="text-xl font-black text-bridge-charcoal uppercase tracking-widest">Experience</h4>
+                        <div class="border-t md:border-t-0 md:border-l border-gray-200 pt-10 md:pt-0 md:pl-12">
+                            <div class="flex items-center gap-5 mb-8">
+                                <div class="w-14 h-14 bg-bridge-earth rounded-full flex items-center justify-center text-white text-xl shadow-lg shadow-bridge-earth/30"><i class="fa-solid fa-briefcase"></i></div>
+                                <h4 class="text-2xl font-black text-bridge-charcoal uppercase tracking-widest font-serif italic">Experience</h4>
                             </div>
-                            <ul class="space-y-4 text-gray-500 font-bold text-sm">
-                                <li>• (현) 브릿지 아카데미 원장</li>
-                                <li>• (전) 프뢰벨 유아·초등 영어 교육 진행</li>
-                                <li>• (전) 아이크미 유아·초등 영어 교육 진행</li>
-                                <li>• (전) 영유아~중등 대상 맞춤형 영어 전문 튜터링 다수</li>
+                            <ul class="space-y-5 text-gray-600 font-bold text-[15px]">
+                                <li class="flex gap-3"><span class="text-bridge-earth">•</span> (현) 브릿지 아카데미 원장</li>
+                                <li class="flex gap-3"><span class="text-bridge-earth">•</span> (전) 프뢰벨 유아·초등 영어 교육 진행</li>
+                                <li class="flex gap-3"><span class="text-bridge-earth">•</span> (전) 아이크미 유아·초등 영어 교육 진행</li>
+                                <li class="flex gap-3"><span class="text-bridge-earth">•</span> (전) 영유아~중등 대상 맞춤형 영어 전문 튜터링 다수</li>
                             </ul>
                         </div>
                     </div>
@@ -116,6 +121,19 @@
         </section>
     </main>
 
-    <footer class="py-20 bg-gray-50 text-center"><img src="logo.png" class="h-10 mx-auto opacity-30"></footer>
+    <footer class="py-24 bg-white border-t border-gray-100 text-center">
+        <img src="logo.png" alt="Logo" class="h-12 w-auto mx-auto mb-10 opacity-40 grayscale">
+        <p class="text-[11px] font-black uppercase tracking-[0.4em] text-bridge-earth italic mb-4">Inquiry-Based Learning Heritage : Bridge Academy</p>
+        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
+        });
+    </script>
 </body>
 </html>

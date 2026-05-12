@@ -3,208 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bridge Academy | Where Curiosity Meets Excellence</title>
+    <title>Bridge Academy | 영어를 문화로 경험하는 첫 다리</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-    
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Pretendard', 'sans-serif'], serif: ['Playfair Display', 'serif'] },
+                    colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#F4F7F5' } }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --bridge-green: #89BFA0;
-            --bridge-gold: #CBAE75;
-            --bridge-blue: #7CA6C1;
-            --bridge-charcoal: #363431;
-            --bridge-bg: #FCFBF9;
-            --bridge-paper: #FFFFFF;
-            --bridge-text-main: #2A2825;
-            --bridge-text-muted: #8C8985;
-            --bridge-border: #E8E6E1;
-            --ease-silk: cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
-        /* [Global Reset] */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { 
-            font-family: 'Noto Sans KR', sans-serif; 
-            background-color: var(--bridge-bg); 
-            color: var(--bridge-text-main); 
-            line-height: 1.8; 
-            overflow-x: hidden; 
-        }
-
-        /* [Header] */
-        header {
-            width: 100%; padding: 20px 6%;
-            position: fixed; top: 0; left: 0; z-index: 1000;
-            background: rgba(252, 251, 249, 0.8);
-            backdrop-filter: blur(20px);
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-        .brand-logo-img { height: 60px; width: auto; cursor: pointer; }
-
-        .btn-portal {
-            padding: 12px 30px; border-radius: 100px;
-            background: var(--bridge-charcoal); color: #FFF;
-            font-size: 13px; font-weight: 800; letter-spacing: 2px;
-            text-decoration: none; transition: 0.4s var(--ease-silk);
-            text-transform: uppercase;
-        }
-        .btn-portal:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); background: var(--bridge-gold); }
-
-        /* [Hero Section] */
-        .hero {
-            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 0 10%; position: relative;
-        }
-        .private-tag {
-            font-size: 12px; font-weight: 900; letter-spacing: 8px; color: var(--bridge-gold);
-            margin-bottom: 30px; animation: fadeInUp 1s var(--ease-silk);
-        }
-        .hero h1 {
-            font-family: 'Playfair Display', serif; font-size: clamp(45px, 8vw, 95px);
-            font-weight: 900; line-height: 1.1; color: var(--bridge-charcoal);
-            margin-bottom: 40px; animation: fadeInUp 1s var(--ease-silk) 0.2s backwards;
-        }
-        .hero h1 span { color: var(--bridge-green); font-style: italic; }
-
-        .hero p {
-            font-size: clamp(16px, 2vw, 22px); color: var(--bridge-text-muted);
-            max-width: 800px; font-weight: 300; margin-bottom: 50px;
-            animation: fadeInUp 1s var(--ease-silk) 0.4s backwards;
-        }
-
-        .cta-group { animation: fadeInUp 1s var(--ease-silk) 0.6s backwards; }
-        .btn-main-cta {
-            padding: 22px 60px; border-radius: 100px;
-            background: var(--bridge-green); color: #FFF;
-            font-size: 16px; font-weight: 900; letter-spacing: 3px;
-            text-decoration: none; transition: 0.5s var(--ease-silk);
-            display: inline-block; box-shadow: 0 20px 40px rgba(137, 191, 160, 0.3);
-        }
-        .btn-main-cta:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 30px 60px rgba(137, 191, 160, 0.4); }
-
-        /* [Section Styles] */
-        section { padding: 150px 10%; opacity: 0; transform: translateY(50px); transition: 1.2s var(--ease-silk); }
-        section.revealed { opacity: 1; transform: translateY(0); }
-
-        .section-label { font-size: 11px; font-weight: 900; color: var(--bridge-gold); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 20px; display: block; }
-        .section-title { font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 55px); font-weight: 900; margin-bottom: 40px; color: var(--bridge-charcoal); }
-
-        /* [Feature Grid] */
-        .feature-container {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 50px; margin-top: 80px;
-        }
-        .feature-card {
-            background: #FFF; padding: 60px 40px; border-radius: 40px; border: 1px solid var(--bridge-border);
-            transition: 0.5s var(--ease-silk);
-        }
-        .feature-card:hover { transform: translateY(-15px); box-shadow: 0 30px 60px rgba(0,0,0,0.04); border-color: var(--bridge-green); }
-        .f-icon { font-size: 40px; margin-bottom: 30px; display: block; }
-        .f-title { font-size: 24px; font-weight: 900; margin-bottom: 20px; }
-        .f-desc { font-size: 16px; color: var(--bridge-text-muted); font-weight: 400; }
-
-        /* [AI Visual Section] */
-        .ai-visual {
-            background: var(--bridge-charcoal); color: #FFF; border-radius: 60px;
-            display: flex; overflow: hidden; align-items: center; padding: 0; margin: 0 6%;
-        }
-        .ai-text { flex: 1; padding: 100px 80px; }
-        .ai-img { flex: 1; height: 100%; background: var(--bridge-green); min-height: 500px; display: flex; justify-content: center; align-items: center; font-size: 100px; }
-
-        /* [Footer] */
-        footer { padding: 100px 6%; background: #F5F4F1; border-top: 1px solid var(--bridge-border); text-align: center; }
-        .footer-logo { height: 50px; margin-bottom: 40px; opacity: 0.6; }
-        .copyright { font-size: 13px; color: var(--bridge-text-muted); letter-spacing: 1px; }
-
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* [Mobile Optimization] */
-        @media (max-width: 900px) {
-            header { padding: 15px 5%; }
-            .brand-logo-img { height: 40px; }
-            .btn-portal { display: none; }
-            .hero { padding: 0 5%; }
-            .ai-visual { flex-direction: column; margin: 0 5%; }
-            .ai-text { padding: 60px 40px; }
-            .ai-img { min-height: 300px; width: 100%; }
-        }
+        html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .nav-active { color: #91D3B4 !important; border-bottom: 2px solid #91D3B4; }
     </style>
 </head>
-<body>
+<body class="bg-[#FFF]">
 
-    <header>
-        <img src="logo.png" alt="Bridge Academy" class="brand-logo-img">
-        <a href="dashboard.html" class="btn-portal">Student Portal</a>
-    </header>
+    <nav class="fixed w-full top-0 z-[2000] bg-white/80 backdrop-blur-xl border-b border-gray-100 h-24 flex items-center">
+        <div class="max-w-7xl mx-auto px-6 w-full flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-3 no-underline group">
+                <img src="logo.png" alt="Bridge Academy" class="h-10 w-auto group-hover:scale-105 transition-transform duration-500">
+                <span class="text-xl font-black text-bridge-charcoal italic uppercase tracking-tighter hidden sm:block">Bridge Academy</span>
+            </a>
 
-    <main>
-        <section class="hero" style="opacity:1; transform:none;">
-            <span class="private-tag">THE PRIVATE HERITAGE</span>
-            <h1>Where <span>Curiosity</span><br>Meets Excellence.</h1>
-            <p>부산에서 만나는 북미 명문 사립학교의 철학. 질문하고 상상하는 아이들을 위한 혁신적인 멀티모달 AI 탐구 플랫폼, 브릿지 아카데미에 오신 것을 환영합니다.</p>
-            <div class="cta-group">
-                <a href="dashboard.html" class="btn-main-cta">START INQUIRY JOURNEY →</a>
+            <div class="hidden lg:flex items-center space-x-8">
+                <a href="about.html" class="group text-center"><span class="block text-[13px] font-black text-gray-700 group-hover:text-bridge-mint transition">브랜드 소개</span><span class="block text-[9px] text-gray-400 font-bold uppercase tracking-widest leading-none">About</span></a>
+                <a href="program.html" class="group text-center"><span class="block text-[13px] font-black text-gray-700 group-hover:text-bridge-mint transition">정규 프로그램</span><span class="block text-[9px] text-gray-400 font-bold uppercase tracking-widest leading-none">Regular</span></a>
+                <a href="special.html" class="group text-center"><span class="block text-[13px] font-black text-gray-700 group-hover:text-bridge-mint transition">시그니처 특강</span><span class="block text-[9px] text-gray-400 font-bold uppercase tracking-widest leading-none">Special</span></a>
+                <a href="gallery.html" class="group text-center"><span class="block text-[13px] font-black text-gray-700 group-hover:text-bridge-mint transition">브릿지 스토리</span><span class="block text-[9px] text-gray-400 font-bold uppercase tracking-widest leading-none">Story</span></a>
+                <a href="location.html" class="group text-center"><span class="block text-[13px] font-black text-gray-700 group-hover:text-bridge-mint transition">지점 안내</span><span class="block text-[9px] text-gray-400 font-bold uppercase tracking-widest leading-none">Location</span></a>
             </div>
-        </section>
 
-        <section id="philosophy">
-            <span class="section-label">Our Philosophy</span>
-            <h2 class="section-title">Inquiry-Based Learning</h2>
-            <div class="feature-container">
-                <div class="feature-card">
-                    <span class="f-icon">🎨</span>
-                    <h3 class="f-title">Creative Canvas</h3>
-                    <p class="f-desc">아이들의 추상적인 그림 속에서 의도를 읽어내는 비전 AI 기술로 상상력을 시각화합니다.</p>
+            <div class="flex items-center gap-4">
+                <a href="trial.html" class="hidden md:inline-block bg-bridge-mint text-white font-black px-6 py-2.5 rounded-full text-[11px] uppercase tracking-widest hover:shadow-lg transition">무료 체험 신청</a>
+                <a href="dashboard.html" class="bg-bridge-charcoal text-white font-black px-7 py-3 rounded-full text-[11px] uppercase tracking-[0.2em] hover:bg-bridge-earth transition shadow-xl flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap"></i> Student Portal
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="h-screen flex flex-col justify-center items-center text-center px-6 relative overflow-hidden">
+        <div class="absolute inset-0 z-[-1] opacity-30">
+            <div class="absolute top-20 left-20 w-96 h-96 bg-bridge-mint rounded-full blur-[100px]"></div>
+            <div class="absolute bottom-20 right-20 w-96 h-96 bg-bridge-earth rounded-full blur-[100px]"></div>
+        </div>
+        
+        <span class="text-bridge-earth font-black text-xs uppercase tracking-[0.6em] mb-6 reveal">The Private Heritage for Kids</span>
+        <h1 class="font-serif text-6xl lg:text-[7rem] font-black leading-[0.9] text-bridge-charcoal mb-10 reveal">Where <span class="text-bridge-mint italic">Curiosity</span><br>Meets Excellence.</h1>
+        <p class="text-gray-400 text-lg lg:text-2xl font-light max-w-3xl leading-relaxed reveal">부산에서 만나는 북미 명문 사립학교의 철학.<br>질문하고 상상하는 아이들을 위한 혁신적인 AI 탐구 플랫폼입니다.</p>
+        
+        <div class="mt-16 reveal">
+            <a href="dashboard.html" class="bg-bridge-charcoal text-white font-black px-12 py-5 rounded-full text-sm uppercase tracking-widest hover:scale-105 transition-transform duration-500 shadow-2xl">Start Exploration →</a>
+        </div>
+    </section>
+
+    <section class="py-32 bg-[#F8FAFF]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-24">
+                <span class="inline-block bg-blue-100 text-bridge-earth font-black px-6 py-2 rounded-full text-xs uppercase tracking-[0.2em] mb-4 reveal">Core Curriculum</span>
+                <h3 class="text-4xl lg:text-5xl font-black text-bridge-charcoal mb-6 italic uppercase reveal">Regular Course Roadmap</h3>
+                <p class="text-gray-400 font-bold text-lg uppercase tracking-tight reveal">아이의 성장 단계에 맞춘 브릿지만의 3단계 오감·탐구 로드맵</p>
+            </div>
+
+            <div class="mb-32 reveal">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                    <div class="flex items-center gap-5">
+                        <span class="w-16 h-16 bg-bridge-mint text-white rounded-[1.5rem] flex items-center justify-center text-2xl font-black shadow-xl">01</span>
+                        <div>
+                            <h4 class="text-3xl font-black text-bridge-charcoal italic">Exposure: Sensory Play</h4>
+                            <p class="text-bridge-mint font-bold text-sm uppercase tracking-widest mt-1">Age: 7 ~ 24 Months</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <span class="f-icon">🗣️</span>
-                    <h3 class="f-title">Vocal Fluency</h3>
-                    <p class="f-desc">실시간 음성 분석 시스템을 통해 아이가 영어를 자신 있게 표현하도록 정교하게 코칭합니다.</p>
-                </div>
-                <div class="feature-card">
-                    <span class="f-icon">🏆</span>
-                    <h3 class="f-title">Digital Heritage</h3>
-                    <p class="f-desc">모든 탐구의 과정은 배지와 수료증으로 기록되어 아이만의 특별한 학습 유산이 됩니다.</p>
+                <div class="bg-white rounded-[3rem] p-12 border border-gray-100 shadow-sm">
+                    <p class="text-gray-500 text-lg mb-10 leading-relaxed">전신의 감각을 자극하는 놀이를 통해 세상에 대한 호기심을 깨우는 단계입니다.</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b-2 border-gray-100"><th class="py-4 font-black uppercase text-xs tracking-widest text-gray-400">Week</th><th class="py-4 font-black uppercase text-xs tracking-widest text-gray-400">Theme</th><th class="py-4 font-black uppercase text-xs tracking-widest text-gray-400">Equipment</th></tr>
+                            </thead>
+                            <tbody class="text-gray-600 font-bold">
+                                <tr class="border-b border-gray-50"><td class="py-5">1</td><td>Five Monkeys</td><td>대형 트램펄린</td></tr>
+                                <tr class="border-b border-gray-50"><td class="py-5">2</td><td>Wake up!</td><td>컬러풀 낙하산 놀이</td></tr>
+                                <tr class="border-b border-gray-50"><td class="py-5">3</td><td>Kick & Jump</td><td>짐볼과 터널 통과</td></tr>
+                                <tr class="border-b border-gray-50"><td class="py-5">4</td><td>Shake it</td><td>리듬 마라카스 댄스</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </section>
-
-        <section class="ai-visual">
-            <div class="ai-text">
-                <span class="section-label" style="color:var(--bridge-green)">Interactive AI Lab</span>
-                <h2 class="section-title" style="color:#FFF">More than just a Tutor.</h2>
-                <p style="color:rgba(255,255,255,0.7); margin-bottom: 40px;">브릿지 아카데미의 AI는 단순한 채점기가 아닙니다. 아이의 발음 신뢰도, 그림의 역동성, 단어 사용의 유창성을 다각도로 분석하여 맞춤형 칭찬과 챌린지를 제공하는 지능형 파트너입니다.</p>
-                <a href="dashboard.html" style="color:var(--bridge-green); font-weight:900; text-decoration:none; letter-spacing:2px;">EXPLORE TECHNOLOGY ↗</a>
             </div>
-            <div class="ai-img">✨</div>
-        </section>
+    </section>
 
-        <section style="text-align:center; padding-bottom: 200px;">
-            <h2 class="section-title">Ready to Begin?</h2>
-            <p style="margin-bottom:50px;">지금 바로 브릿지 아카데미의 프리미엄 커리큘럼을 경험해보세요.</p>
-            <a href="dashboard.html" class="btn-main-cta">START ADVENTURE NOW</a>
-        </section>
-    </main>
-
-    <footer>
-        <img src="logo.png" alt="Bridge Academy" class="footer-logo">
-        <p class="copyright">© 2026 Bridge Academy. Developed for Premium Private Education.</p>
+    <footer class="py-24 bg-gray-50 border-t border-gray-100 text-center">
+        <img src="logo.png" alt="Logo" class="h-10 w-auto mx-auto mb-10 opacity-30 grayscale">
+        <div class="flex justify-center gap-10 mb-10 text-gray-400 font-black text-[10px] uppercase tracking-widest">
+            <a href="about.html">About</a><a href="program.html">Program</a><a href="dashboard.html">Dashboard</a>
+        </div>
+        <p class="text-[10px] font-black uppercase tracking-[0.4em] text-gray-300 italic mb-2">Inquiry-Based Learning Heritage : Bridge Academy</p>
+        <p class="text-[9px] font-bold text-gray-300 uppercase tracking-widest">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
     </footer>
 
     <script>
-        // [Scroll Reveal Logic]
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
         });
     </script>
 </body>

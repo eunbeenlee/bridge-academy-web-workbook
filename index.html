@@ -23,12 +23,11 @@
         html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
         .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.19, 1, 0.22, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
-        .nav-active { color: #91D3B4 !important; border-bottom: 2px solid #91D3B4; }
     </style>
 </head>
 <body class="bg-[#FFF]">
 
-    <nav class="fixed w-full top-0 z-[2000] bg-white/80 backdrop-blur-xl border-b border-gray-100 h-24 flex items-center">
+    <nav class="fixed w-full top-0 z-[2000] bg-white/80 backdrop-blur-xl border-b border-gray-100 h-24 flex items-center transition-all duration-300">
         <div class="max-w-7xl mx-auto px-6 w-full flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-3 no-underline group">
                 <img src="logo.png" alt="Bridge Academy" class="h-10 w-auto group-hover:scale-105 transition-transform duration-500">
@@ -44,7 +43,7 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <a href="trial.html" class="hidden md:inline-block bg-bridge-mint text-white font-black px-6 py-2.5 rounded-full text-[11px] uppercase tracking-widest hover:shadow-lg transition">무료 체험 신청</a>
+                <a href="trial.html" class="hidden md:inline-block bg-bridge-mint text-white font-black px-6 py-2.5 rounded-full text-[11px] uppercase tracking-widest hover:shadow-lg transition">체험 신청</a>
                 <a href="dashboard.html" class="bg-bridge-charcoal text-white font-black px-7 py-3 rounded-full text-[11px] uppercase tracking-[0.2em] hover:bg-bridge-earth transition shadow-xl flex items-center gap-2">
                     <i class="fa-solid fa-graduation-cap"></i> Student Portal
                 </a>
@@ -58,58 +57,18 @@
             <div class="absolute bottom-20 right-20 w-96 h-96 bg-bridge-earth rounded-full blur-[100px]"></div>
         </div>
         
-        <span class="text-bridge-earth font-black text-xs uppercase tracking-[0.6em] mb-6 reveal">The Private Heritage for Kids</span>
-        <h1 class="font-serif text-6xl lg:text-[7rem] font-black leading-[0.9] text-bridge-charcoal mb-10 reveal">Where <span class="text-bridge-mint italic">Curiosity</span><br>Meets Excellence.</h1>
-        <p class="text-gray-400 text-lg lg:text-2xl font-light max-w-3xl leading-relaxed reveal">부산에서 만나는 북미 명문 사립학교의 철학.<br>질문하고 상상하는 아이들을 위한 혁신적인 AI 탐구 플랫폼입니다.</p>
+        <span class="text-bridge-earth font-black text-xs uppercase tracking-[0.6em] mb-6 reveal">The Private Heritage</span>
+        <h1 class="font-serif text-5xl lg:text-[6rem] font-black leading-[1.1] text-bridge-charcoal mb-10 reveal">우리 아이의 첫 영어,<br><span class="text-bridge-mint italic">머리가 아닌 오감으로</span><br>기억하게 해주세요.</h1>
+        <p class="text-gray-400 text-lg lg:text-2xl font-light max-w-3xl leading-relaxed reveal">부산에서 만나는 북미 명문 사립학교의 철학.<br>질문하고 상상하는 아이들을 위한 혁신적인 프리미엄 탐구 플랫폼입니다.</p>
         
-        <div class="mt-16 reveal">
-            <a href="dashboard.html" class="bg-bridge-charcoal text-white font-black px-12 py-5 rounded-full text-sm uppercase tracking-widest hover:scale-105 transition-transform duration-500 shadow-2xl">Start Exploration →</a>
+        <div class="mt-16 reveal flex gap-4">
+            <a href="trial.html" class="bg-bridge-mint text-white font-black px-12 py-5 rounded-full text-sm uppercase tracking-widest hover:scale-105 transition-transform duration-500 shadow-2xl">체험 수업 신청 →</a>
+            <a href="dashboard.html" class="bg-bridge-charcoal text-white font-black px-12 py-5 rounded-full text-sm uppercase tracking-widest hover:scale-105 transition-transform duration-500 shadow-2xl">Portal 입장</a>
         </div>
-    </section>
-
-    <section class="py-32 bg-[#F8FAFF]">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-24">
-                <span class="inline-block bg-blue-100 text-bridge-earth font-black px-6 py-2 rounded-full text-xs uppercase tracking-[0.2em] mb-4 reveal">Core Curriculum</span>
-                <h3 class="text-4xl lg:text-5xl font-black text-bridge-charcoal mb-6 italic uppercase reveal">Regular Course Roadmap</h3>
-                <p class="text-gray-400 font-bold text-lg uppercase tracking-tight reveal">아이의 성장 단계에 맞춘 브릿지만의 3단계 오감·탐구 로드맵</p>
-            </div>
-
-            <div class="mb-32 reveal">
-                <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-                    <div class="flex items-center gap-5">
-                        <span class="w-16 h-16 bg-bridge-mint text-white rounded-[1.5rem] flex items-center justify-center text-2xl font-black shadow-xl">01</span>
-                        <div>
-                            <h4 class="text-3xl font-black text-bridge-charcoal italic">Exposure: Sensory Play</h4>
-                            <p class="text-bridge-mint font-bold text-sm uppercase tracking-widest mt-1">Age: 7 ~ 24 Months</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-[3rem] p-12 border border-gray-100 shadow-sm">
-                    <p class="text-gray-500 text-lg mb-10 leading-relaxed">전신의 감각을 자극하는 놀이를 통해 세상에 대한 호기심을 깨우는 단계입니다.</p>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="border-b-2 border-gray-100"><th class="py-4 font-black uppercase text-xs tracking-widest text-gray-400">Week</th><th class="py-4 font-black uppercase text-xs tracking-widest text-gray-400">Theme</th><th class="py-4 font-black uppercase text-xs tracking-widest text-gray-400">Equipment</th></tr>
-                            </thead>
-                            <tbody class="text-gray-600 font-bold">
-                                <tr class="border-b border-gray-50"><td class="py-5">1</td><td>Five Monkeys</td><td>대형 트램펄린</td></tr>
-                                <tr class="border-b border-gray-50"><td class="py-5">2</td><td>Wake up!</td><td>컬러풀 낙하산 놀이</td></tr>
-                                <tr class="border-b border-gray-50"><td class="py-5">3</td><td>Kick & Jump</td><td>짐볼과 터널 통과</td></tr>
-                                <tr class="border-b border-gray-50"><td class="py-5">4</td><td>Shake it</td><td>리듬 마라카스 댄스</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            </div>
     </section>
 
     <footer class="py-24 bg-gray-50 border-t border-gray-100 text-center">
         <img src="logo.png" alt="Logo" class="h-10 w-auto mx-auto mb-10 opacity-30 grayscale">
-        <div class="flex justify-center gap-10 mb-10 text-gray-400 font-black text-[10px] uppercase tracking-widest">
-            <a href="about.html">About</a><a href="program.html">Program</a><a href="dashboard.html">Dashboard</a>
-        </div>
         <p class="text-[10px] font-black uppercase tracking-[0.4em] text-gray-300 italic mb-2">Inquiry-Based Learning Heritage : Bridge Academy</p>
         <p class="text-[9px] font-bold text-gray-300 uppercase tracking-widest">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
     </footer>

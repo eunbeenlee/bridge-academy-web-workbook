@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Bridge - 브릿지 아카데미 소개</title>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Pretendard', 'sans-serif'], serif: ['Playfair Display', 'serif'] },
+                    colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#F4F7F5' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+    <nav class="fixed w-full top-0 z-[1000] bg-white/80 backdrop-blur-xl border-b border-gray-100 h-24 flex items-center">
+        <div class="max-w-7xl mx-auto px-6 w-full flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="logo.png" alt="Bridge Academy" class="h-10 w-auto">
+                <span class="text-xl font-black text-bridge-charcoal italic uppercase tracking-tighter">Bridge Academy</span>
+            </a>
+            <div class="hidden lg:flex space-x-8">
+                <a href="about.html" class="group text-center active"><span class="block text-[13px] font-black text-bridge-mint transition">브랜드 소개</span><span class="block text-[9px] text-gray-400 font-bold uppercase tracking-widest">About</span></a>
+                <a href="program.html" class="group text-center"><span class="block text-[13px] font-black group-hover:text-bridge-mint transition">정규 프로그램</span><span class="block text-[9px] text-gray-400 font-bold uppercase tracking-widest">Regular</span></a>
+                <a href="special.html" class="group text-center"><span class="block text-[13px] font-black group-hover:text-bridge-mint transition">시그니처 특강</span><span class="block text-[9px] text-gray-400 font-bold uppercase tracking-widest">Special</span></a>
+                <a href="gallery.html" class="group text-center"><span class="block text-[13px] font-black group-hover:text-bridge-mint transition">브릿지 스토리</span><span class="block text-[9px] text-gray-400 font-bold uppercase tracking-widest">Story</span></a>
+                <a href="location.html" class="group text-center"><span class="block text-[13px] font-black group-hover:text-bridge-mint transition">지점 안내</span><span class="block text-[9px] text-gray-400 font-bold uppercase tracking-widest">Location</span></a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="dashboard.html" class="bg-bridge-charcoal text-white font-black px-7 py-3 rounded-full text-[11px] uppercase tracking-[0.2em] hover:bg-bridge-earth transition shadow-xl flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap"></i> Student Portal
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-40">
+        <section class="max-w-7xl mx-auto px-6 text-center mb-32">
+            <span class="text-bridge-mint font-black text-sm uppercase tracking-[0.4em] mb-4 block reveal">The Bridge Philosophy</span>
+            <h2 class="text-5xl lg:text-7xl font-serif font-black text-bridge-charcoal mb-12 reveal">질문이 아이들의<br>세상을 바꿉니다.</h2>
+            <div class="grid lg:grid-cols-2 gap-20 items-center text-left">
+                <div class="reveal">
+                    <p class="text-xl text-gray-600 leading-relaxed font-light mb-8">브릿지 아카데미는 단순히 지식을 전달하는 곳이 아닙니다. 아이들이 스스로 질문을 던지고, 자신만의 답을 찾아가는 **탐구 기반 학습(Inquiry-Based Learning)**의 여정을 함께합니다.</p>
+                    <p class="text-xl text-gray-600 leading-relaxed font-light">우리는 북미 명문 사립학교의 교육 철학을 기반으로, AI 기술과 예술적 감각이 조화된 가장 혁신적인 학습 경험을 제공합니다.</p>
+                </div>
+                <div class="bg-bridge-bg rounded-[3rem] p-12 reveal">
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80" alt="Philosophy" class="rounded-[2rem] shadow-2xl">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-20 bg-gray-50 text-center">
+        </footer>
+</body>
+</html>

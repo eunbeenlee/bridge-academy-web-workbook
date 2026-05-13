@@ -2,312 +2,115 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trial Class - 브릿지 아카데미 체험 신청</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Trial Class - 체험 신청</title>
     
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { 
-                        sans: ['Pretendard', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif']
-                    },
-                    colors: { 
-                        bridge: { mint: '#91D3B4', earth: '#7D756D', bg: '#F4F7F5' } 
-                    },
-                    boxShadow: { 'premium': '0 30px 60px -15px rgba(125, 117, 109, 0.1)' }
-                }
-            }
-        }
-    </script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    
+    <script>
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Pretendard', 'sans-serif'], serif: ['Playfair Display', 'serif'] }, colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } } } } }
+    </script>
     <style>
-        body { background-color: #F4F7F5; color: #7D756D; scroll-behavior: smooth; }
-        
-        /* 네비게이션 스타일 */
-        .nav-item { text-align: center; display: flex; flex-direction: column; align-items: center; text-decoration: none; position: relative; }
-        .nav-main { font-size: 14px; font-weight: 800; color: #7D756D; transition: color 0.3s; }
-        .nav-sub { font-size: 9px; color: #ADB5BD; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-top: -2px; }
-        .group:hover .nav-main { color: #91D3B4; }
-        .nav-active .nav-main { color: #91D3B4; }
-        .nav-active .nav-sub { color: #91D3B4; opacity: 0.7; }
-        
-        /* 폼 요소 스타일 */
-        .input-premium { width: 100%; padding: 1.25rem 1.5rem; background-color: #F8FAF9; border: 2px solid #E9EDEA; border-radius: 1.25rem; font-size: 0.95rem; font-weight: 600; color: #475569; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); outline: none; }
-        .input-premium::placeholder { color: #CBD5E1; font-weight: 500; }
-        .input-premium:focus { border-color: #91D3B4; background-color: #FFFFFF; box-shadow: 0 0 0 4px rgba(145, 211, 180, 0.15); }
-        select.input-premium { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2391D3B4'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1.5rem center; background-size: 1.2em; padding-right: 3rem; }
-        
-        /* 체크박스 커스텀 */
-        .custom-checkbox { width: 1.4rem; height: 1.4rem; border-radius: 0.4rem; border: 2px solid #CBD5E1; appearance: none; cursor: pointer; position: relative; top: 2px; flex-shrink: 0; transition: all 0.2s; background-color: white; }
-        .custom-checkbox:checked { background-color: #91D3B4; border-color: #91D3B4; }
-        .custom-checkbox:checked::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: white; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 0.75rem; }
-        
-        /* 버튼 및 스피너 */
-        .btn-hover-effect { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
-        .btn-hover-effect:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(125, 117, 109, 0.3); }
-        .btn-hover-effect:active:not(:disabled) { transform: translateY(1px); }
-        .spinner { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; width: 1.5rem; height: 1.5rem; animation: spin 1s linear infinite; display: none; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        html { -webkit-font-smoothing: antialiased; }
+        body { background-color: #FCFBF9; color: #363431; overflow-x: hidden; }
+        .nav-link-main { font-size: 15px !important; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; }
+        .nav-link-sub { font-size: 9px !important; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.4; margin-top: 2px; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
-<body class="antialiased flex flex-col min-h-screen">
-    
-    <nav class="fixed w-full top-0 z-[1000] bg-white/95 backdrop-blur-md border-b border-gray-100 h-24 flex items-center shadow-sm transition-all duration-300">
-        <div class="max-w-[1400px] mx-auto px-6 w-full flex justify-between items-center">
+<body>
+
+    <nav class="fixed w-full top-0 z-[2000] bg-white/90 backdrop-blur-xl border-b border-gray-100 h-[110px] flex items-center shadow-sm">
+        <div class="max-w-[1440px] mx-auto px-8 w-full flex justify-between items-center">
             
-            <a href="index.html" class="flex items-center gap-3 no-underline group">
-                <img src="logo.jpg" alt="Bridge Academy Logo" class="h-11 w-auto group-hover:scale-105 transition-transform duration-300">
-                <span class="text-[22px] md:text-[26px] font-black italic tracking-tighter hidden sm:block font-serif leading-none mt-1">
+            <a href="index.html" class="flex items-center gap-4 no-underline group shrink-0">
+                <img src="logo.png" alt="Logo" class="h-12 w-auto group-hover:rotate-6 transition-transform duration-500">
+                <span class="text-[25px] font-black italic tracking-tighter hidden sm:block font-serif leading-none mt-1">
                     <span class="text-bridge-mint">Bridge</span> <span class="text-bridge-earth">Academy</span>
                 </span>
             </a>
 
-            <div class="hidden lg:flex items-center space-x-6 xl:space-x-10">
-                <a href="about.html" class="nav-item group">
-                    <span class="nav-main">브랜드 소개</span><span class="nav-sub">About Bridge</span>
+            <div class="hidden xl:flex items-center space-x-9">
+                <a href="about.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브랜드 소개</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">About Bridge</span></a>
+                <a href="program.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">정규 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Regular Course</span></a>
+                <a href="special.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">특강 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Special Course</span></a>
+                <a href="trial.html" class="group text-center flex flex-col items-center">
+                    <span class="nav-link-main text-bridge-mint transition-colors">체험 신청</span>
+                    <span class="nav-link-sub text-bridge-mint transition-colors">Trial Class</span>
                 </a>
-                <a href="program.html" class="nav-item group">
-                    <span class="nav-main">정규 프로그램</span><span class="nav-sub">Regular Course</span>
-                </a>
-                <a href="special.html" class="nav-item group">
-                    <span class="nav-main">특강 프로그램</span><span class="nav-sub">Special Course</span>
-                </a>
-                <a href="trial.html" class="nav-item nav-active">
-                    <span class="nav-main relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-1 after:bg-bridge-mint after:rounded-full">체험 신청</span><span class="nav-sub">Trial Class</span>
-                </a>
-                <a href="location.html" class="nav-item group">
-                    <span class="nav-main">지점 찾기</span><span class="nav-sub">Locations</span>
-                </a>
-                <a href="franchise.html" class="nav-item group">
-                    <span class="nav-main">가맹 문의</span><span class="nav-sub">Franchise</span>
-                </a>
-                <a href="gallery.html" class="nav-item group">
-                    <span class="nav-main">브릿지 스토리</span><span class="nav-sub">Gallery</span>
+                <a href="location.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">지점 찾기</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Locations</span></a>
+                <a href="franchise.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">가맹 문의</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Franchise</span></a>
+                <a href="gallery.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브릿지 스토리</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Gallery</span></a>
+            </div>
+
+            <div class="flex items-center shrink-0">
+                <a href="dashboard.html" class="inline-flex bg-bridge-charcoal text-white font-black px-8 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-bridge-gold transition-all duration-300 gap-2 shadow-lg">
+                    <i class="fa-solid fa-graduation-cap"></i> Student Portal
                 </a>
             </div>
         </div>
     </nav>
 
-    <section class="pt-48 pb-16 bg-gradient-to-b from-white to-bridge-bg text-center">
-        <div class="max-w-3xl mx-auto px-6">
-            <span class="inline-block py-1.5 px-5 rounded-full bg-green-50 text-bridge-mint font-black text-[11px] uppercase tracking-[0.25em] mb-5 border border-green-100">Premium Experience</span>
-            <h1 class="text-4xl md:text-5xl font-black text-bridge-earth mb-6 tracking-tight">프리미엄 체험 신청</h1>
-            <p class="text-base text-gray-400 font-medium break-keep">
-                우리아이의 성향을 전문가와 함께 분석하고,<br class="hidden md:block"> 
-                세상에 단 하나뿐인 영어 로드맵을 설계하는 첫 단계입니다.
-            </p>
-        </div>
-    </section>
-
-    <section class="pb-32 relative -mt-4">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6">
-            <form id="trialForm" class="bg-white p-8 md:p-14 lg:p-20 rounded-[3.5rem] shadow-premium border border-white">
+    <main class="pt-[110px] pb-40">
+        <section class="max-w-4xl mx-auto px-6 mt-20 reveal">
+            <div class="bg-white p-14 md:p-24 rounded-[4rem] border border-gray-100 shadow-xl shadow-bridge-earth/5 text-center relative overflow-hidden">
                 
-                <div class="space-y-16">
+                <div class="w-20 h-20 bg-[#F4F8F5] text-bridge-mint rounded-full mx-auto flex items-center justify-center text-3xl mb-8 shadow-inner"><i class="fa-solid fa-envelope-open-text"></i></div>
+                
+                <span class="text-bridge-earth font-black text-[12px] uppercase tracking-[0.5em] mb-4 block font-serif italic">Premium Experience</span>
+                <h2 class="text-5xl font-black text-bridge-charcoal mb-8">체험 수업 신청</h2>
+                
+                <p class="text-gray-500 font-medium text-[16px] mb-12 leading-relaxed break-keep max-w-2xl mx-auto">
+                    브릿지 아카데미의 혁신적인 오감 영어와 프리미엄 포트폴리오를 직접 경험해보세요.<br>
+                    작성해주신 이메일로 <b>스케줄 예약 링크 및 체험 수업 비용 안내</b>가 <span class="text-bridge-mint font-black">자동 회신</span>됩니다.
+                </p>
+
+                <form id="trialForm" class="space-y-8 text-left max-w-xl mx-auto relative z-10" onsubmit="event.preventDefault(); alert('체험 신청이 접수되었습니다! 입력하신 이메일로 비용 및 스케줄 안내가 자동 발송됩니다.'); location.reload();">
+                    
                     <div>
-                        <div class="flex items-center gap-4 mb-8">
-                            <div class="w-10 h-10 rounded-full bg-bridge-mint flex items-center justify-center text-white font-black shadow-lg shadow-bridge-mint/30">1</div>
-                            <h3 class="text-2xl font-black text-bridge-earth">보호자 정보</h3>
+                        <label class="block text-[11px] font-black text-bridge-earth uppercase tracking-[0.2em] mb-3">Parent Name</label>
+                        <input type="text" placeholder="학부모님 성함" required class="w-full bg-[#F8FAFF] border-2 border-transparent p-5 rounded-[2rem] font-bold text-gray-700 outline-none focus:border-bridge-mint transition-all placeholder:text-gray-300">
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-[11px] font-black text-bridge-earth uppercase tracking-[0.2em] mb-3">Child Age</label>
+                            <select required class="w-full bg-[#F8FAFF] border-2 border-transparent p-5 rounded-[2rem] font-bold text-gray-700 outline-none focus:border-bridge-mint transition-all cursor-pointer">
+                                <option value="" disabled selected class="text-gray-300">아이 월령/나이 선택</option>
+                                <option>7~24개월 (Sensory Play)</option>
+                                <option>4~5세 (Project Art)</option>
+                                <option>6세 이상 (IBL Project)</option>
+                            </select>
                         </div>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="flex flex-col gap-2">
-                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2">Parent Name <span class="text-bridge-mint">*</span></label>
-                                <input type="text" id="parent_name" placeholder="보호자 성함" class="input-premium" required>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2">Phone Number <span class="text-bridge-mint">*</span></label>
-                                <input type="tel" id="contact" placeholder="010-0000-0000" maxlength="13" class="input-premium" oninput="autoHyphen(this)" required>
-                            </div>
-                            <div class="flex flex-col gap-2 md:col-span-2">
-                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2">Email Address <span class="text-bridge-mint">*</span></label>
-                                <input type="email" id="parent_email" placeholder="안내문을 받으실 이메일을 입력해 주세요" class="input-premium" required>
-                            </div>
+                        <div>
+                            <label class="block text-[11px] font-black text-bridge-earth uppercase tracking-[0.2em] mb-3">Contact</label>
+                            <input type="tel" placeholder="연락처 (010-0000-0000)" required class="w-full bg-[#F8FAFF] border-2 border-transparent p-5 rounded-[2rem] font-bold text-gray-700 outline-none focus:border-bridge-mint transition-all placeholder:text-gray-300">
                         </div>
                     </div>
-
-                    <div class="w-full h-px bg-gray-100"></div>
 
                     <div>
-                        <div class="flex items-center gap-4 mb-8">
-                            <div class="w-10 h-10 rounded-full bg-bridge-mint flex items-center justify-center text-white font-black shadow-lg shadow-bridge-mint/30">2</div>
-                            <h3 class="text-2xl font-black text-bridge-earth">아이 진단 정보</h3>
-                        </div>
-                        <div class="grid md:grid-cols-2 gap-6 mb-6">
-                            <div class="flex flex-col gap-2">
-                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2">Child Name <span class="text-bridge-mint">*</span></label>
-                                <input type="text" id="child_name" placeholder="아이 이름" class="input-premium" required>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2">Gender <span class="text-bridge-mint">*</span></label>
-                                <select id="child_gender" class="input-premium appearance-none">
-                                    <option value="" disabled selected>성별 선택</option>
-                                    <option>남아 (Boy)</option>
-                                    <option>여아 (Girl)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="flex flex-col gap-2">
-                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2">Age Range</label>
-                                <select id="child_age" class="input-premium appearance-none">
-                                    <option value="" disabled selected>연령(월령) 선택</option>
-                                    <option>7~12개월</option><option>13~18개월</option><option>19~24개월</option>
-                                    <option>4~5세</option><option>6세 이상</option>
-                                </select>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2">Personality</label>
-                                <select id="personality" class="input-premium appearance-none">
-                                    <option value="" disabled selected>아이 성향 선택</option>
-                                    <option>내성적/관찰형</option><option>외향적/활동형</option>
-                                    <option>호기심형</option><option>신중형</option>
-                                </select>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2">Experience</label>
-                                <select id="experience" class="input-premium appearance-none">
-                                    <option value="" disabled selected>영어 노출 경험</option>
-                                    <option>없음</option><option>가정 내 미디어</option><option>기관 수업 유경험</option>
-                                </select>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2">Sensory</label>
-                                <select id="sensory" class="input-premium appearance-none">
-                                    <option value="" disabled selected>오감 민감도</option>
-                                    <option>적극적임</option><option>조심스러운 편</option><option>손에 묻는 것에 예민함</option>
-                                </select>
-                            </div>
-                        </div>
+                        <label class="block text-[11px] font-black text-bridge-earth uppercase tracking-[0.2em] mb-3">Email for Guide</label>
+                        <input type="email" placeholder="비용 및 예약 안내를 받을 이메일 주소" required class="w-full bg-[#F8FAFF] border-2 border-transparent p-5 rounded-[2rem] font-bold text-gray-700 outline-none focus:border-bridge-mint transition-all placeholder:text-gray-300">
+                        <p class="text-[11px] text-gray-400 font-medium mt-3 ml-2"><i class="fa-solid fa-circle-info mr-1"></i> 이메일 주소가 정확한지 다시 한번 확인해 주세요.</p>
                     </div>
-
-                    <div class="bg-bridge-bg p-8 md:p-10 rounded-[2.5rem] border border-green-50">
-                        <label class="flex items-center gap-4 cursor-pointer group border-b border-gray-200 pb-5 mb-6">
-                            <input type="checkbox" id="check_all" class="custom-checkbox">
-                            <span class="text-[15px] font-black text-bridge-earth group-hover:text-bridge-mint pt-1">약관 및 안내 사항에 전체 동의합니다.</span>
-                        </label>
-
-                        <div class="space-y-5 pl-1">
-                            <label class="flex items-start gap-4 cursor-pointer">
-                                <input type="checkbox" class="custom-checkbox term-check required">
-                                <span class="text-[13px] font-bold text-gray-600 mt-1">[필수] 개인정보 수집 및 이용 동의</span>
-                            </label>
-                            <label class="flex items-start gap-4 cursor-pointer">
-                                <input type="checkbox" class="custom-checkbox term-check required">
-                                <div class="mt-0.5">
-                                    <span class="text-[13px] font-black text-bridge-mint underline underline-offset-4 decoration-bridge-mint/40">[필수] 유료 체험 프로세스 및 환불 규정 동의</span>
-                                    <p class="text-[11px] text-gray-400 mt-2.5 leading-relaxed font-bold break-keep">
-                                        본 수업은 식재료 및 교구 준비를 위해 <strong>유료</strong>로 운영됩니다. 담당자의 해피콜 이후 결제가 완료되어야 예약이 확정되며, 수업 1일 전까지만 환불이 가능합니다.
-                                    </p>
-                                </div>
-                            </label>
-                            <label class="flex items-start gap-4 cursor-pointer">
-                                <input type="checkbox" class="custom-checkbox term-check">
-                                <span class="text-[13px] font-bold text-gray-400 mt-1">[선택] 마케팅 정보 수신 및 활동 사진 촬영 동의</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <button type="button" id="submitBtn" onclick="submitApplication()" class="btn-hover-effect w-full bg-bridge-earth text-white font-black py-7 rounded-[2rem] text-xl shadow-2xl flex items-center justify-center gap-3">
-                        <span id="btnText">프리미엄 체험 신청하기</span>
-                        <i id="btnIcon" class="fa-solid fa-paper-plane text-sm"></i>
-                        <div id="btnSpinner" class="spinner"></div>
+                    
+                    <button type="submit" class="w-full bg-bridge-charcoal hover:bg-bridge-mint text-white font-black py-6 rounded-[3rem] text-[16px] tracking-widest shadow-xl transition-all duration-500 mt-10">
+                        체험 비용 및 스케줄 안내받기
                     </button>
-                    <p class="text-center text-[11px] font-bold text-gray-400 mt-8 tracking-tight italic">
-                        * 모든 신청 내역은 원장님이 직접 확인 후 24시간 이내에 안내 전화를 드립니다.
-                    </p>
-                </div>
-            </form>
-        </div>
-    </section>
-    
-    <footer class="bg-bridge-earth py-16 text-white text-center mt-auto">
-        <img src="logo.jpg" alt="Logo" class="h-8 w-auto mx-auto mb-6 brightness-0 invert opacity-50">
-        <p class="text-[10px] font-bold uppercase tracking-[0.4em] opacity-40 italic">Play & Grow : Bridge Academy</p>
-        <p class="text-[9px] font-bold uppercase tracking-[0.3em] opacity-30 mt-4">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
+                </form>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10">
+        <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
     </footer>
-
-    <script type="text/javascript">
-        // EmailJS 로직 원본 유지
-        (function() { emailjs.init("Yit4vJKJB5Uk3Lipi"); })();
-
-        function autoHyphen(target) {
-            let val = target.value.replace(/[^0-9]/g, '');
-            if (val.length > 3 && val.length <= 7) {
-                target.value = val.replace(/(\d{3})(\d+)/, '$1-$2');
-            } else if (val.length > 7) {
-                target.value = val.replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3');
-            } else { target.value = val; }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const checkAll = document.getElementById('check_all');
-            const termChecks = document.querySelectorAll('.term-check');
-            checkAll.addEventListener('change', e => termChecks.forEach(cb => cb.checked = e.target.checked));
-            termChecks.forEach(cb => cb.addEventListener('change', () => {
-                checkAll.checked = Array.from(termChecks).every(c => c.checked);
-            }));
-        });
-
-        async function submitApplication() {
-            const btn = document.getElementById('submitBtn');
-            const btnText = document.getElementById('btnText');
-            const btnIcon = document.getElementById('btnIcon');
-            const btnSpinner = document.getElementById('btnSpinner');
-            
-            const pName = document.getElementById('parent_name').value.trim();
-            const contact = document.getElementById('contact').value.trim();
-            const pEmail = document.getElementById('parent_email').value.trim();
-            const cName = document.getElementById('child_name').value.trim();
-            const cGender = document.getElementById('child_gender').value;
-            
-            const requiredChecks = document.querySelectorAll('.term-check.required');
-            const allChecked = Array.from(requiredChecks).every(cb => cb.checked);
-
-            if(!pName || contact.length < 12 || !pEmail || !cName || !cGender) return alert("필수 입력 항목을 모두 채워주세요.");
-            if(!allChecked) return alert("[필수] 약관 동의가 필요합니다.");
-
-            btn.disabled = true;
-            btnText.innerText = "신청서를 전송 중입니다...";
-            btnIcon.style.display = 'none';
-            btnSpinner.style.display = 'block';
-            btn.classList.replace('bg-bridge-earth', 'bg-gray-400');
-
-            const templateParams = {
-                parent_name: pName,
-                contact: contact,
-                parent_email: pEmail,
-                child_name: cName,
-                child_gender: cGender,
-                child_age: document.getElementById('child_age').value || '미선택',
-                personality: document.getElementById('personality').value || '미선택',
-                experience: document.getElementById('experience').value || '미선택',
-                sensory: document.getElementById('sensory').value || '미선택',
-                to_email: 'yjleego@gmail.com'
-            };
-
-            try {
-                await emailjs.send('service_nyy7xhe', 'template_qplrcb3', templateParams);
-                await emailjs.send('service_nyy7xhe', 'template_d007dzb', templateParams);
-                alert('신청이 성공적으로 접수되었습니다.\n원장님이 확인 후 연락 드릴 예정입니다.');
-                location.reload();
-            } catch (error) {
-                console.error('FAILED...', error);
-                alert('전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
-                btn.disabled = false;
-                btnText.innerText = "프리미엄 체험 신청하기";
-                btnIcon.style.display = 'block';
-                btnSpinner.style.display = 'none';
-                btn.classList.replace('bg-gray-400', 'bg-bridge-earth');
-            }
-        }
-    </script>
+    <script> document.querySelectorAll('.reveal').forEach(r => new IntersectionObserver(e => e.forEach(en => { if(en.isIntersecting) en.target.classList.add('active'); })).observe(r)); </script>
 </body>
 </html>

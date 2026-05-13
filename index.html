@@ -15,95 +15,122 @@
             theme: {
                 extend: {
                     fontFamily: { sans: ['Pretendard', 'sans-serif'], serif: ['Playfair Display', 'serif'] },
-                    colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } }
+                    colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } },
+                    boxShadow: { 'premium': '0 30px 60px -15px rgba(125, 117, 109, 0.1)' }
                 }
             }
         }
     </script>
     <style>
         html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
-        body { background-color: var(--br-bg); overflow-x: hidden; }
+        body { background-color: var(--bridge-bg); overflow-x: hidden; }
         .reveal { opacity: 0; transform: translateY(50px); transition: 1s cubic-bezier(0.19, 1, 0.22, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
-        /* 둥글고 귀여운 곡선 모티브 */
-        .kid-friendly-shape { border-radius: 4rem 1rem 4rem 1rem; }
+        .hover-lift { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease; }
+        .hover-lift:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(125, 117, 109, 0.25); }
     </style>
 </head>
 <body class="bg-[#FCFBF9]">
 
-    <nav class="fixed w-full top-0 z-[2000] bg-white/90 backdrop-blur-xl border-b border-gray-100 h-[100px] flex items-center transition-all duration-500 shadow-sm">
+    <nav class="fixed w-full top-0 z-[2000] bg-white/90 backdrop-blur-xl border-b border-gray-100 h-[100px] flex items-center shadow-sm transition-all duration-500">
         <div class="max-w-[1400px] mx-auto px-6 w-full flex justify-between items-center">
             
             <a href="index.html" class="flex items-center gap-3 no-underline group">
                 <img src="logo.png" alt="Logo" class="h-12 w-auto group-hover:rotate-6 transition-transform duration-500">
-                <span class="text-2xl font-black italic tracking-tighter hidden sm:block font-serif">
-                    <span class="text-bridge-mint">Bridge</span> 
-                    <span class="text-bridge-earth">Academy</span>
+                <span class="text-2xl lg:text-[26px] font-black italic tracking-tighter hidden sm:block font-serif drop-shadow-sm">
+                    <span class="text-bridge-mint">Bridge</span> <span class="text-bridge-earth">Academy</span>
                 </span>
             </a>
 
             <div class="hidden xl:flex items-center space-x-10">
-                <a href="about.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition">브랜드 소개</span><span class="block text-[10px] text-bridge-earth font-bold uppercase tracking-[0.2em] mt-1 group-hover:text-bridge-mint transition">About Bridge</span></a>
-                <a href="program.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition">정규 프로그램</span><span class="block text-[10px] text-bridge-earth font-bold uppercase tracking-[0.2em] mt-1 group-hover:text-bridge-mint transition">Regular Course</span></a>
-                <a href="special.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition">특강 프로그램</span><span class="block text-[10px] text-bridge-earth font-bold uppercase tracking-[0.2em] mt-1 group-hover:text-bridge-mint transition">Special Course</span></a>
-                <a href="gallery.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition">브릿지 스토리</span><span class="block text-[10px] text-bridge-earth font-bold uppercase tracking-[0.2em] mt-1 group-hover:text-bridge-mint transition">Gallery</span></a>
-                <a href="location.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition">지점 찾기</span><span class="block text-[10px] text-bridge-earth font-bold uppercase tracking-[0.2em] mt-1 group-hover:text-bridge-mint transition">Locations</span></a>
+                <a href="about.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition">브랜드 소개</span><span class="block text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-1">About</span></a>
+                <a href="program.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition">정규 프로그램</span><span class="block text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-1">Regular</span></a>
+                <a href="special.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition">특강 프로그램</span><span class="block text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-1">Special</span></a>
+                <a href="gallery.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition">브릿지 스토리</span><span class="block text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-1">Gallery</span></a>
+                <a href="location.html" class="group text-center"><span class="block text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition">지점 찾기</span><span class="block text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] mt-1">Locations</span></a>
             </div>
 
             <div class="flex items-center gap-4">
-                <a href="trial.html" class="hidden md:inline-flex bg-bridge-mint text-white font-black px-7 py-3.5 rounded-full text-[12px] uppercase tracking-[0.15em] hover:bg-bridge-earth hover:shadow-lg transition-all duration-300">체험 신청</a>
+                <a href="franchise.html" class="hidden md:inline-flex text-bridge-earth font-black px-4 text-[12px] hover:text-bridge-mint transition-colors">가맹 문의</a>
                 <a href="dashboard.html" class="inline-flex bg-bridge-charcoal text-white font-black px-8 py-3.5 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-bridge-gold hover:shadow-xl transition-all duration-300 gap-2"><i class="fa-solid fa-graduation-cap text-sm"></i> Student Portal</a>
             </div>
         </div>
     </nav>
 
     <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative overflow-hidden pt-20 bg-white">
-        <div class="absolute inset-0 z-0 opacity-40">
-            <div class="absolute top-0 left-[-10%] w-[600px] h-[600px] bg-bridge-mint/30 rounded-full blur-[120px]"></div>
-            <div class="absolute bottom-0 right-[-10%] w-[600px] h-[600px] bg-bridge-earth/20 rounded-full blur-[120px]"></div>
+        <div class="absolute inset-0 z-0 opacity-40 pointer-events-none">
+            <div class="absolute top-[0%] left-[-10%] w-[600px] h-[600px] bg-bridge-mint/30 rounded-full blur-[120px]"></div>
+            <div class="absolute bottom-[0%] right-[-10%] w-[600px] h-[600px] bg-bridge-earth/20 rounded-full blur-[120px]"></div>
         </div>
         
-        <div class="relative z-10 w-full max-w-5xl mx-auto">
-            <span class="text-bridge-earth font-black text-[13px] uppercase tracking-[0.6em] mb-8 block reveal">The Private Heritage</span>
-            <h1 class="font-serif text-5xl md:text-7xl lg:text-[7.5rem] font-black leading-[1.05] text-bridge-charcoal mb-12 reveal">
+        <div class="relative z-10 w-full max-w-5xl mx-auto mt-10">
+            <span class="inline-block py-2 px-6 rounded-full bg-[#F4F8F5] text-bridge-mint font-black text-[11px] uppercase tracking-[0.3em] mb-8 border border-green-50 shadow-sm reveal">Premium Baby & Toddler Education</span>
+            
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-[7.5rem] font-black leading-[1.05] text-bridge-charcoal mb-10 reveal">
                 우리 아이의 첫 영어,<br>
-                <span class="text-bridge-mint italic">머리가 아닌 오감으로</span><br>
+                <span class="text-bridge-mint italic drop-shadow-sm">머리가 아닌 오감으로</span><br>
                 기억하게 해주세요.
             </h1>
-            <p class="text-gray-500 text-lg lg:text-2xl font-medium max-w-3xl mx-auto leading-[1.8] reveal">
-                부산에서 만나는 북미 명문 사립학교의 철학.<br>질문하고 상상하는 아이들을 위한 프리미엄 IBL 탐구 플랫폼입니다.
+            
+            <p class="text-gray-500 text-lg lg:text-2xl font-medium max-w-3xl mx-auto leading-[1.8] reveal break-keep">
+                부산에서 만나는 북미 명문 사립학교의 철학.<br>
+                질문하고 상상하는 아이들을 위한 혁신적인 IBL 탐구 플랫폼입니다.
             </p>
-            <div class="mt-20 reveal flex flex-col sm:flex-row justify-center gap-6">
-                <a href="trial.html" class="bg-bridge-mint text-white font-black px-14 py-6 rounded-[3rem] text-[15px] uppercase tracking-widest hover:scale-105 hover:shadow-2xl hover:shadow-bridge-mint/40 transition-all duration-500">체험 수업 신청 →</a>
+            
+            <div class="mt-16 reveal flex justify-center">
+                <a href="trial.html" class="bg-bridge-mint text-white font-black px-14 py-6 rounded-[3rem] text-[15px] uppercase tracking-widest hover:scale-105 hover:shadow-2xl hover:shadow-bridge-mint/40 transition-all duration-500 flex items-center gap-3">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> 프리미엄 체험 수업 신청
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-bridge-earth relative z-10">
+        <div class="max-w-[1200px] mx-auto px-6 reveal">
+            <div class="grid md:grid-cols-4 gap-8 divide-y md:divide-y-0 md:divide-x divide-white/20">
+                <div class="text-center p-6">
+                    <p class="text-5xl font-black text-bridge-mint mb-3 font-serif italic">98%</p>
+                    <p class="text-xs font-bold text-white/80 uppercase tracking-widest">학부모 만족도</p>
+                </div>
+                <div class="text-center p-6">
+                    <p class="text-5xl font-black text-bridge-mint mb-3 font-serif italic">3.5Y</p>
+                    <p class="text-xs font-bold text-white/80 uppercase tracking-widest">평균 재원 기간</p>
+                </div>
+                <div class="text-center p-6">
+                    <p class="text-5xl font-black text-bridge-mint mb-3 font-serif italic">100+</p>
+                    <p class="text-xs font-bold text-white/80 uppercase tracking-widest">오감 융합 테마</p>
+                </div>
+                <div class="text-center p-6">
+                    <p class="text-5xl font-black text-bridge-mint mb-3 font-serif italic">1:1</p>
+                    <p class="text-xs font-bold text-white/80 uppercase tracking-widest">유학파 원장 밀착케어</p>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="py-32 bg-[#F8FAFF]">
-        <div class="max-w-[1200px] mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
-            <div class="reveal relative">
-                <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80" alt="Kids Learning" class="rounded-[4rem] shadow-2xl">
-                <div class="absolute -bottom-10 -right-10 bg-white p-8 rounded-[3rem] shadow-xl border border-gray-100 hidden md:block">
-                    <span class="font-serif text-5xl font-black text-bridge-gold">100%</span>
-                    <p class="text-bridge-charcoal font-black mt-2">Natural Materials</p>
-                </div>
+        <div class="max-w-[1200px] mx-auto px-6">
+            <div class="text-center mb-24 reveal">
+                <span class="text-bridge-mint font-black text-[13px] uppercase tracking-[0.4em] mb-4 block">Our Philosophy</span>
+                <h2 class="text-4xl lg:text-5xl font-black text-bridge-charcoal mb-6 leading-tight">영어를 '학습'이 아닌<br><span class="text-bridge-earth underline decoration-bridge-mint decoration-4 underline-offset-8">'삶과 문화'</span>로 만납니다.</h2>
+                <p class="text-gray-500 text-lg leading-relaxed font-medium break-keep max-w-3xl mx-auto">언어는 외우는 것이 아니라 체화하는 것입니다. 북미 정통 커리큘럼을 기반으로 아이들이 영어를 모국어처럼 편안하게 느낄 수 있는 완벽한 환경을 제공합니다.</p>
             </div>
-            <div class="reveal">
-                <span class="text-bridge-mint font-black text-[13px] uppercase tracking-[0.4em] mb-4 block">Bridge Philosophy</span>
-                <h2 class="text-4xl lg:text-5xl font-black text-bridge-charcoal mb-8 leading-tight">영어를 '학습'이 아닌<br><span class="text-bridge-earth underline decoration-bridge-mint decoration-4 underline-offset-8">'삶과 문화'</span>로 만납니다.</h2>
-                <p class="text-gray-500 text-lg leading-relaxed font-medium mb-12 break-keep">북미 유학파 출신 원장님의 직강! 언어는 외우는 것이 아니라 체화하는 것입니다. 마더구스(Mother Goose) 동요와 100% 천연 식재료 오감 놀이를 결합하여 영어가 모국어처럼 편안해지는 마법을 경험하세요.</p>
-                
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-50">
-                        <i class="fa-solid fa-music text-3xl text-bridge-mint mb-4"></i>
-                        <h4 class="font-black text-bridge-charcoal mb-2">마더구스 연계</h4>
-                        <p class="text-sm text-gray-400 font-bold">오감 활동과 영어 동요를 매칭하여 자연스러운 발화 유도</p>
-                    </div>
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-50">
-                        <i class="fa-solid fa-palette text-3xl text-bridge-earth mb-4"></i>
-                        <h4 class="font-black text-bridge-charcoal mb-2">프리미엄 포트폴리오</h4>
-                        <p class="text-sm text-gray-400 font-bold">아이들의 모든 작품과 상상력을 정성스럽게 기록</p>
-                    </div>
+
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="bg-white p-12 rounded-[3rem] shadow-premium hover-lift reveal border border-gray-50 text-center">
+                    <div class="w-20 h-20 bg-[#F4F8F5] text-bridge-mint rounded-full mx-auto flex items-center justify-center text-3xl mb-8 shadow-inner"><i class="fa-solid fa-music"></i></div>
+                    <h4 class="text-xl font-black text-bridge-charcoal mb-4 font-serif italic">Mother Goose</h4>
+                    <p class="text-[14px] font-medium text-gray-500 leading-relaxed break-keep">모든 오감 활동은 테마에 맞는 영어 동요와 연결됩니다. 영어를 신나는 놀이의 배경음악으로 흡수합니다.</p>
+                </div>
+                <div class="bg-white p-12 rounded-[3rem] shadow-premium hover-lift reveal border border-gray-50 text-center" style="transition-delay: 100ms;">
+                    <div class="w-20 h-20 bg-[#F4F8F5] text-bridge-earth rounded-full mx-auto flex items-center justify-center text-3xl mb-8 shadow-inner"><i class="fa-solid fa-leaf"></i></div>
+                    <h4 class="text-xl font-black text-bridge-charcoal mb-4 font-serif italic">100% Natural Safe</h4>
+                    <p class="text-[14px] font-medium text-gray-500 leading-relaxed break-keep">구강기 아기들을 위해 쌀가루, 감자 전분, 신선한 채소 등 철저하게 검증된 100% 자연 식재료만 고집합니다.</p>
+                </div>
+                <div class="bg-white p-12 rounded-[3rem] shadow-premium hover-lift reveal border border-gray-50 text-center" style="transition-delay: 200ms;">
+                    <div class="w-20 h-20 bg-[#F4F8F5] text-bridge-gold rounded-full mx-auto flex items-center justify-center text-3xl mb-8 shadow-inner"><i class="fa-solid fa-palette"></i></div>
+                    <h4 class="text-xl font-black text-bridge-charcoal mb-4 font-serif italic">Premium Portfolio</h4>
+                    <p class="text-[14px] font-medium text-gray-500 leading-relaxed break-keep">집에서는 도저히 엄두가 나지 않는 물감 놀이, 국수 놀이! 브릿지 아카데미에서 마음껏 어지르고 놀게 해주세요.</p>
                 </div>
             </div>
         </div>
@@ -117,28 +144,52 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-10">
-                <div class="bg-[#F8FAFF] p-12 rounded-[4rem] border border-gray-100 hover:shadow-2xl transition-all duration-500 reveal group">
-                    <div class="w-16 h-16 bg-bridge-mint text-white rounded-full flex items-center justify-center text-2xl font-black mb-8 group-hover:scale-110 transition">01</div>
+                <div class="bg-[#F8FAFF] p-12 rounded-[4rem] border border-gray-100 hover-lift reveal group cursor-pointer" onclick="location.href='program.html'">
+                    <div class="w-16 h-16 bg-bridge-mint text-white rounded-full flex items-center justify-center text-2xl font-black mb-8 group-hover:scale-110 transition shadow-lg">01</div>
                     <h3 class="text-2xl font-black text-bridge-charcoal mb-4">Sensory Play</h3>
                     <p class="text-bridge-mint font-bold text-sm mb-6 uppercase tracking-widest">7 ~ 24 Months</p>
-                    <p class="text-gray-500 font-medium leading-relaxed mb-8">구강기 아기들을 위한 100% 자연 식재료 오감 영어. 엄마와 함께하는 애착 형성 클래스.</p>
-                    <a href="program.html" class="text-bridge-charcoal font-black text-sm hover:text-bridge-mint transition">자세히 보기 →</a>
+                    <p class="text-gray-500 font-medium leading-relaxed mb-8">구강기 아기들을 위한 자연 식재료 오감 영어. 엄마와 함께하는 첫 애착 형성 클래스.</p>
+                    <span class="text-bridge-charcoal font-black text-sm group-hover:text-bridge-mint transition">자세히 보기 →</span>
                 </div>
-
-                <div class="bg-[#F8FAFF] p-12 rounded-[4rem] border border-gray-100 hover:shadow-2xl transition-all duration-500 reveal group" style="transition-delay: 100ms;">
-                    <div class="w-16 h-16 bg-[#7CA6C1] text-white rounded-full flex items-center justify-center text-2xl font-black mb-8 group-hover:scale-110 transition">02</div>
+                <div class="bg-[#F8FAFF] p-12 rounded-[4rem] border border-gray-100 hover-lift reveal group cursor-pointer" style="transition-delay: 100ms;" onclick="location.href='program.html'">
+                    <div class="w-16 h-16 bg-[#7CA6C1] text-white rounded-full flex items-center justify-center text-2xl font-black mb-8 group-hover:scale-110 transition shadow-lg">02</div>
                     <h3 class="text-2xl font-black text-bridge-charcoal mb-4">Project Art</h3>
                     <p class="text-[#7CA6C1] font-bold text-sm mb-6 uppercase tracking-widest">4 ~ 5 Years</p>
                     <p class="text-gray-500 font-medium leading-relaxed mb-8">명화 기반 통합 미술교육. 예술적 감각을 높이고 AI 캔버스로 상상을 현실로 만듭니다.</p>
-                    <a href="program.html" class="text-bridge-charcoal font-black text-sm hover:text-[#7CA6C1] transition">자세히 보기 →</a>
+                    <span class="text-bridge-charcoal font-black text-sm group-hover:text-[#7CA6C1] transition">자세히 보기 →</span>
                 </div>
-
-                <div class="bg-[#F8FAFF] p-12 rounded-[4rem] border border-gray-100 hover:shadow-2xl transition-all duration-500 reveal group" style="transition-delay: 200ms;">
-                    <div class="w-16 h-16 bg-bridge-gold text-white rounded-full flex items-center justify-center text-2xl font-black mb-8 group-hover:scale-110 transition">03</div>
+                <div class="bg-[#F8FAFF] p-12 rounded-[4rem] border border-gray-100 hover-lift reveal group cursor-pointer" style="transition-delay: 200ms;" onclick="location.href='program.html'">
+                    <div class="w-16 h-16 bg-bridge-gold text-white rounded-full flex items-center justify-center text-2xl font-black mb-8 group-hover:scale-110 transition shadow-lg">03</div>
                     <h3 class="text-2xl font-black text-bridge-charcoal mb-4">IBL Project</h3>
                     <p class="text-bridge-gold font-bold text-sm mb-6 uppercase tracking-widest">6 Years +</p>
                     <p class="text-gray-500 font-medium leading-relaxed mb-8">캐나다식 탐구 기반 학습(IBL). 스스로 질문하고 발표하는 4주 완성 프리미엄 클래스.</p>
-                    <a href="program.html" class="text-bridge-charcoal font-black text-sm hover:text-bridge-gold transition">자세히 보기 →</a>
+                    <span class="text-bridge-charcoal font-black text-sm group-hover:text-bridge-gold transition">자세히 보기 →</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 bg-[#F8FAFF]">
+        <div class="max-w-[1200px] mx-auto px-6 reveal">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl font-black text-bridge-earth mb-4 italic tracking-tighter font-serif">Voice of Bridge Parents</h2>
+                <p class="text-sm text-gray-400 font-bold uppercase tracking-widest">학부모님이 인증한 진짜 영어 성장기</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-10 bg-white rounded-[3rem] shadow-sm hover-lift border border-gray-50">
+                    <div class="flex text-bridge-mint gap-1 mb-6"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-[15px] text-gray-500 font-medium leading-relaxed mb-10 break-keep italic">"주입식 수업은 아이가 거부했는데, 브릿지에서 오감으로 시작하니 어느새 집에서 영어로 문장을 말하고 있어요. 진짜 말하기를 원한다면 무조건 추천합니다."</p>
+                    <p class="text-xs font-black text-bridge-charcoal uppercase tracking-widest">- 민준맘 (6세 재원 중)</p>
+                </div>
+                <div class="p-10 bg-white rounded-[3rem] shadow-sm hover-lift border border-gray-50">
+                    <div class="flex text-bridge-mint gap-1 mb-6"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-[15px] text-gray-500 font-medium leading-relaxed mb-10 break-keep italic">"원장님이 직접 상담해주시는 교육 철학에 믿음이 갔어요. 캐나다 정통 방식이라 그런지 아이의 발음과 자신감 자체가 달라요. 아이가 가는 날만 손꼽아 기다립니다."</p>
+                    <p class="text-xs font-black text-bridge-charcoal uppercase tracking-widest">- 서윤맘 (18개월 재원 중)</p>
+                </div>
+                <div class="p-10 bg-white rounded-[3rem] shadow-sm hover-lift border border-gray-50">
+                    <div class="flex text-bridge-mint gap-1 mb-6"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-[15px] text-gray-500 font-medium leading-relaxed mb-10 break-keep italic">"놀이만 하는 게 아니라 체계적인 로드맵이 있어서 안심이에요. 오감으로 감각을 깨우고 아트와 사이언스로 심화학습이 이어지는 과정이 완벽합니다."</p>
+                    <p class="text-xs font-black text-bridge-charcoal uppercase tracking-widest">- 지후맘 (7세 재원 중)</p>
                 </div>
             </div>
         </div>
@@ -146,13 +197,13 @@
 
     <section class="py-32 bg-bridge-charcoal text-white rounded-t-[5rem] lg:rounded-t-[8rem]">
         <div class="max-w-[1200px] mx-auto px-6 text-center reveal">
-            <span class="text-bridge-mint font-black text-[13px] uppercase tracking-[0.5em] mb-6 block">Interactive AI Lab</span>
-            <h2 class="text-4xl lg:text-6xl font-serif font-black text-white mb-10">마법 같은 AI 선생님과 함께해요</h2>
-            <p class="text-gray-400 text-lg lg:text-xl font-light max-w-3xl mx-auto leading-relaxed mb-16">
-                아이의 목소리를 듣고, 그림을 분석하여 맞춤형 칭찬을 건네는<br>브릿지 아카데미만의 독자적인 디지털 포털을 만나보세요.
+            <span class="text-bridge-mint font-black text-[13px] uppercase tracking-[0.5em] mb-6 block">Premium AI Workbook</span>
+            <h2 class="text-4xl lg:text-6xl font-serif font-black text-white mb-10">AI 선생님과 대화하며 그림을 그려요</h2>
+            <p class="text-gray-400 text-lg lg:text-xl font-light max-w-3xl mx-auto leading-relaxed mb-16 break-keep">
+                아이의 터치와 목소리를 실시간으로 분석하여 맞춤형 피드백을 건네는<br>브릿지 아카데미만의 독자적인 에듀테크 포털을 지금 체험해 보세요.
             </p>
-            <a href="dashboard.html" class="inline-flex items-center justify-center bg-white text-bridge-charcoal font-black px-12 py-6 rounded-full text-[15px] uppercase tracking-widest hover:bg-bridge-gold hover:text-white transition-all duration-300 shadow-2xl">
-                <i class="fa-solid fa-graduation-cap mr-3"></i> Student Portal 입장
+            <a href="trial.html" class="inline-flex items-center justify-center bg-bridge-mint text-white font-black px-12 py-6 rounded-full text-[15px] uppercase tracking-widest hover:bg-white hover:text-bridge-charcoal transition-all duration-300 shadow-2xl hover:scale-105">
+                <i class="fa-solid fa-wand-magic-sparkles mr-3"></i> AI 워크북 체험하기
             </a>
         </div>
     </section>

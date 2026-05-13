@@ -2,8 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Franchise - 가맹 문의</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Franchise - 브릿지 아카데미 가맹 문의</title>
     
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nunito:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -11,23 +11,43 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <script>
-        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] }, colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } }, boxShadow: { 'premium': '0 30px 60px -15px rgba(125, 117, 109, 0.15)' } } } }
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] },
+                    colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } },
+                    boxShadow: { 'premium': '0 30px 60px -15px rgba(125, 117, 109, 0.15)' }
+                }
+            }
+        }
     </script>
     <style>
         html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
         body { background-color: #FCFBF9; color: #363431; overflow-x: hidden; }
+        
         .nav-link-main { font-size: 15px !important; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; transition: color 0.3s; }
         .nav-link-sub { font-family: 'Nunito', sans-serif; font-size: 9px !important; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.4; margin-top: 2px; transition: color 0.3s; }
-        .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
         
         /* Premium Form Styles */
-        .input-premium { width: 100%; padding: 1.25rem 1.5rem; background-color: #F8FAFF; border: 2px solid transparent; border-radius: 2rem; font-size: 1rem; font-weight: 700; color: #475569; transition: all 0.3s; outline: none; font-family: 'Pretendard', sans-serif; }
+        .input-premium { width: 100%; padding: 1.25rem 1.5rem; background-color: #F8FAFF; border: 2px solid transparent; border-radius: 2rem; font-size: 1rem; font-weight: 700; color: #475569; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); outline: none; font-family: 'Pretendard', sans-serif; }
+        .input-premium::placeholder { color: #CBD5E1; font-weight: 500; }
         .input-premium:focus { border-color: #91D3B4; background-color: #FFFFFF; box-shadow: 0 10px 25px -5px rgba(145, 211, 180, 0.2); }
+        select.input-premium { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2391D3B4'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1.5rem center; background-size: 1.2em; padding-right: 3rem; cursor: pointer; }
+        
+        .custom-checkbox { width: 1.5rem; height: 1.5rem; border-radius: 0.5rem; border: 2px solid #CBD5E1; appearance: none; cursor: pointer; position: relative; top: 2px; flex-shrink: 0; transition: all 0.2s; background-color: white; }
+        .custom-checkbox:checked { background-color: #91D3B4; border-color: #91D3B4; }
+        .custom-checkbox:checked::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: white; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 0.8rem; }
+        
+        .spinner { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; width: 1.5rem; height: 1.5rem; animation: spin 1s linear infinite; display: none; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
-<body>
+<body class="antialiased flex flex-col min-h-screen">
 
     <nav class="fixed w-full top-0 z-[2000] bg-white/90 backdrop-blur-xl border-b border-gray-100 h-[110px] flex items-center shadow-sm transition-all duration-500">
         <div class="max-w-[1440px] mx-auto px-8 w-full flex justify-between items-center">
@@ -44,99 +64,246 @@
                 <a href="special.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">특강 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Special</span></a>
                 <a href="trial.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">체험 신청</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Trial</span></a>
                 <a href="location.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">지점 찾기</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Locations</span></a>
-                
                 <a href="franchise.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-mint">가맹 문의</span>
+                    <span class="nav-link-main text-bridge-mint relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-1 after:bg-bridge-mint after:rounded-full">가맹 문의</span>
                     <span class="nav-link-sub text-bridge-mint">Franchise</span>
                 </a>
-                
                 <a href="gallery.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브릿지 스토리</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Gallery</span></a>
             </div>
 
             <div class="flex items-center shrink-0">
-                <a href="dashboard.html" class="inline-flex bg-bridge-charcoal text-white font-black px-8 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-bridge-gold transition-all duration-300 gap-2 shadow-lg font-nunito"><i class="fa-solid fa-graduation-cap"></i> Student Portal</a>
+                <a href="dashboard.html" class="inline-flex bg-bridge-charcoal text-white font-black px-8 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-bridge-gold transition-all duration-300 gap-2 shadow-lg shadow-gray-200 font-nunito">
+                    <i class="fa-solid fa-graduation-cap"></i> Student Portal
+                </a>
             </div>
         </div>
     </nav>
 
-    <main class="pt-[110px] pb-40">
-        <section class="max-w-4xl mx-auto px-6 mt-20 reveal">
-            <div class="bg-white p-14 md:p-24 rounded-[4rem] border border-gray-100 shadow-premium text-center relative overflow-hidden">
-                <div class="w-20 h-20 bg-bridge-earth/10 text-bridge-earth rounded-full mx-auto flex items-center justify-center text-3xl mb-8 shadow-inner"><i class="fa-solid fa-handshake"></i></div>
-                <span class="text-bridge-earth font-black text-[12px] uppercase tracking-[0.5em] mb-4 block font-nunito italic">Partnership</span>
-                <h2 class="text-5xl font-black text-bridge-charcoal mb-8 font-jua tracking-wide">가맹 상담 문의</h2>
-                <p class="text-gray-500 font-medium text-[16px] mb-16 leading-relaxed break-keep max-w-2xl mx-auto">
-                    브릿지 아카데미의 혁신적인 교육 철학과 함께할 파트너 원장님을 모십니다.<br>
-                    문의 사항을 남겨주시면 본사 담당자가 꼼꼼히 확인 후 연락드리겠습니다.
-                </p>
+    <section class="pt-48 pb-16 text-center reveal">
+        <div class="max-w-3xl mx-auto px-6">
+            <span class="inline-block py-1.5 px-5 rounded-full bg-bridge-mint/10 text-bridge-mint font-black text-[11px] uppercase tracking-[0.25em] mb-5 border border-bridge-mint/20 font-nunito">Global Partnership</span>
+            <h1 class="text-4xl md:text-5xl font-black text-bridge-charcoal mb-6 tracking-tight font-jua">브릿지 아카데미 가맹 문의</h1>
+            <p class="text-base text-gray-500 font-medium break-keep font-sans leading-relaxed">
+                압도적인 IBL 커리큘럼과 프리미엄 에듀테크 시스템.<br class="hidden md:block"> 
+                성공적인 교육 사업의 미래를 브릿지 아카데미와 함께 설계하세요.
+            </p>
+        </div>
+    </section>
 
-                <form id="franchiseForm" class="space-y-8 text-left max-w-xl mx-auto relative z-10" onsubmit="submitFranchise(event)">
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="flex flex-col gap-3">
-                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Name <span class="text-bridge-mint">*</span></label>
-                            <input type="text" id="f_name" placeholder="성함" class="input-premium" required>
-                        </div>
-                        <div class="flex flex-col gap-3">
-                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Contact <span class="text-bridge-mint">*</span></label>
-                            <input type="tel" id="f_contact" placeholder="연락처" class="input-premium" required>
-                        </div>
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="flex flex-col gap-3">
-                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Email</label>
-                            <input type="email" id="f_email" placeholder="이메일" class="input-premium">
-                        </div>
-                        <div class="flex flex-col gap-3">
-                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Region <span class="text-bridge-mint">*</span></label>
-                            <input type="text" id="f_region" placeholder="희망 가맹 지역 (예: 해운대구)" class="input-premium" required>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-3">
-                        <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Inquiry Message</label>
-                        <textarea id="f_message" rows="4" placeholder="운영 중인 학원이 있으신지, 특별히 궁금하신 점 등을 남겨주세요." class="input-premium rounded-[2rem] resize-none"></textarea>
-                    </div>
+    <section class="pb-32 relative -mt-4 reveal">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <form id="franchiseForm" class="bg-white p-8 md:p-14 lg:p-20 rounded-[3.5rem] shadow-premium border border-gray-50">
+                
+                <div class="space-y-16">
                     
-                    <button type="submit" id="f_submitBtn" class="w-full bg-bridge-charcoal hover:bg-bridge-earth text-white font-black py-6 rounded-[3rem] text-[16px] tracking-widest shadow-xl transition-all duration-500 mt-10 font-jua">
-                        가맹 문의 보내기
-                    </button>
-                </form>
-            </div>
-        </section>
-    </main>
+                    <div>
+                        <div class="flex items-center gap-4 mb-8">
+                            <div class="w-10 h-10 rounded-full bg-bridge-mint flex items-center justify-center text-white font-black shadow-lg shadow-bridge-mint/30 font-nunito">1</div>
+                            <h3 class="text-2xl font-black text-bridge-charcoal font-jua tracking-wide">기본 정보</h3>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Name <span class="text-bridge-mint">*</span></label>
+                                <input type="text" id="f_name" placeholder="성함 (원장님)" class="input-premium" required>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Phone Number <span class="text-bridge-mint">*</span></label>
+                                <input type="tel" id="f_contact" placeholder="010-0000-0000" maxlength="13" class="input-premium" oninput="autoHyphen(this)" required>
+                            </div>
+                            <div class="flex flex-col gap-2 md:col-span-2">
+                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Email Address <span class="text-bridge-mint">*</span></label>
+                                <input type="email" id="f_email" placeholder="가맹 제안서를 받아보실 이메일 주소" class="input-premium" required>
+                            </div>
+                        </div>
+                    </div>
 
-    <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10 font-nunito">
+                    <div class="w-full h-px bg-gray-100"></div>
+
+                    <div>
+                        <div class="flex items-center gap-4 mb-8">
+                            <div class="w-10 h-10 rounded-full bg-bridge-earth flex items-center justify-center text-white font-black shadow-lg shadow-bridge-earth/30 font-nunito">2</div>
+                            <h3 class="text-2xl font-black text-bridge-charcoal font-jua tracking-wide">창업 계획 및 환경</h3>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Target Region <span class="text-bridge-mint">*</span></label>
+                                <input type="text" id="f_region" placeholder="개원 희망 지역 (예: 부산 해운대구)" class="input-premium" required>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Current Status <span class="text-bridge-mint">*</span></label>
+                                <select id="f_occupation" class="input-premium" required>
+                                    <option value="" disabled selected>현재 종사 업종</option>
+                                    <option>학원/교습소/어린이집 운영 중</option>
+                                    <option>교육업계 종사 (강사 등)</option>
+                                    <option>타 업종 종사 (신규 창업)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Budget</label>
+                                <select id="f_budget" class="input-premium">
+                                    <option value="" disabled selected>예상 창업 자금 (임대료 제외)</option>
+                                    <option>5천만 원 미만</option>
+                                    <option>5천만 원 ~ 1억 원</option>
+                                    <option>1억 원 ~ 2억 원</option>
+                                    <option>2억 원 이상</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Building Status</label>
+                                <select id="f_building" class="input-premium">
+                                    <option value="" disabled selected>상가/건물 확보 여부</option>
+                                    <option>상가 보유 (자가)</option>
+                                    <option>상가 보유 (임대 계약 완료)</option>
+                                    <option>입지 탐색 중 (미정)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-2">
+                            <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Expected Open Date</label>
+                            <select id="f_timeline" class="input-premium">
+                                <option value="" disabled selected>희망 오픈 시기</option>
+                                <option>3개월 이내 (즉시 진행 가능)</option>
+                                <option>6개월 이내</option>
+                                <option>1년 이내</option>
+                                <option>상담 후 결정</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="w-full h-px bg-gray-100"></div>
+
+                    <div>
+                        <div class="flex items-center gap-4 mb-8">
+                            <div class="w-10 h-10 rounded-full bg-[#7CA6C1] flex items-center justify-center text-white font-black shadow-lg shadow-[#7CA6C1]/30 font-nunito">3</div>
+                            <h3 class="text-2xl font-black text-bridge-charcoal font-jua tracking-wide">문의 내용</h3>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <textarea id="f_message" rows="5" placeholder="궁금하신 사항이나 브릿지 아카데미 본사에 전달하실 내용을 자유롭게 작성해 주세요." class="input-premium rounded-[2rem] resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-8 md:p-10 rounded-[2.5rem] border border-gray-200">
+                        <div class="space-y-4 pl-1">
+                            <label class="flex items-start gap-4 cursor-pointer group">
+                                <input type="checkbox" id="f_privacy" class="custom-checkbox term-check required">
+                                <div class="mt-0.5">
+                                    <span class="text-[13px] font-bold text-bridge-charcoal transition">[필수] 개인정보 수집 및 이용 동의</span>
+                                    <p class="text-[11px] text-gray-400 mt-1 leading-relaxed font-bold break-keep">
+                                        가맹 상담 및 안내를 목적으로 이름, 연락처, 이메일, 창업 희망 지역 등의 개인정보를 수집하며, 수집된 정보는 상담 완료 후 1년간 보관된 뒤 파기됩니다.
+                                    </p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="button" id="submitBtn" onclick="submitFranchise()" class="w-full bg-bridge-charcoal text-white font-black py-7 rounded-[3rem] text-[18px] shadow-2xl flex items-center justify-center gap-4 hover:bg-bridge-mint hover:-translate-y-1 transition-all duration-300">
+                            <span id="btnText" class="font-jua tracking-wide">프리미엄 가맹 상담 신청</span>
+                            <i id="btnIcon" class="fa-solid fa-paper-plane text-sm"></i>
+                            <div id="btnSpinner" class="spinner"></div>
+                        </button>
+                        <p class="text-center text-[12px] font-bold text-gray-400 mt-6 tracking-tight font-nunito">
+                            * 접수된 내용은 본사 가맹 담당자가 꼼꼼히 확인 후 신속하게 연락을 드립니다.
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    
+    <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10 font-nunito mt-auto">
         <p class="text-[11px] font-black uppercase tracking-[0.5em] text-bridge-earth italic mb-4">The First Bridge to Global Culture</p>
         <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
     </footer>
 
-    <script> 
-        document.querySelectorAll('.reveal').forEach(r => new IntersectionObserver(e => e.forEach(en => { if(en.isIntersecting) en.target.classList.add('active'); })).observe(r)); 
-        
-        // 원장님 기존 가맹 문의용 EmailJS 로직
-        (function() { emailjs.init("Yit4vJKJB5Uk3Lipi"); })(); 
-        async function submitFranchise(e) {
-            e.preventDefault();
-            const btn = document.getElementById('f_submitBtn');
-            btn.innerText = "전송 중입니다...";
+    <script type="text/javascript">
+        // 1. EmailJS 초기화
+        (function() { emailjs.init("Yit4vJKJB5Uk3Lipi"); })();
+
+        // 2. 전화번호 자동 하이픈
+        function autoHyphen(target) {
+            let val = target.value.replace(/[^0-9]/g, '');
+            if (val.length > 3 && val.length <= 7) { target.value = val.replace(/(\d{3})(\d+)/, '$1-$2'); } 
+            else if (val.length > 7) { target.value = val.replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3'); } 
+            else { target.value = val; }
+        }
+
+        // 3. 폼 전송 로직 (추가된 모든 필드를 message 변수에 병합하여 템플릿 수정 없이 발송)
+        async function submitFranchise() {
+            const btn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+            const btnSpinner = document.getElementById('btnSpinner');
+            
+            const fName = document.getElementById('f_name').value.trim();
+            const fContact = document.getElementById('f_contact').value.trim();
+            const fEmail = document.getElementById('f_email').value.trim();
+            const fRegion = document.getElementById('f_region').value.trim();
+            const fOccupation = document.getElementById('f_occupation').value;
+            
+            // 필수 체크
+            if(!fName || fContact.length < 12 || !fEmail || !fRegion || !fOccupation) {
+                return alert("필수 입력 항목(* 표시)을 모두 채워주세요.");
+            }
+            if(!document.getElementById('f_privacy').checked) {
+                return alert("개인정보 수집 및 이용에 동의해 주셔야 상담이 가능합니다.");
+            }
+
+            // 추가 선택 값
+            const fBudget = document.getElementById('f_budget').value || '미선택';
+            const fBuilding = document.getElementById('f_building').value || '미선택';
+            const fTimeline = document.getElementById('f_timeline').value || '미선택';
+            const rawMessage = document.getElementById('f_message').value.trim() || '특이사항 없음';
+
+            // 원장님 EmailJS 템플릿에 맞추기 위한 데이터 병합 (엔터프라이즈 리포트 형태)
+            const compiledMessage = `
+[창업 환경 상세 정보]
+- 현재 업종: ${fOccupation}
+- 상가 확보: ${fBuilding}
+- 창업 예산: ${fBudget}
+- 오픈 시기: ${fTimeline}
+
+[문의 내용]
+${rawMessage}
+            `.trim();
+
             btn.disabled = true;
+            btnText.innerText = "제안서를 전송 중입니다...";
+            btnIcon.style.display = 'none';
+            btnSpinner.style.display = 'block';
+            btn.classList.replace('bg-bridge-charcoal', 'bg-gray-400');
+            btn.classList.remove('hover:bg-bridge-mint');
 
             const params = {
-                from_name: document.getElementById('f_name').value,
-                contact: document.getElementById('f_contact').value,
-                email: document.getElementById('f_email').value,
-                region: document.getElementById('f_region').value,
-                message: document.getElementById('f_message').value,
+                from_name: fName,
+                contact: fContact,
+                email: fEmail,
+                region: fRegion,
+                message: compiledMessage,
                 to_email: 'yjleego@gmail.com'
             };
 
             try {
+                // 기존 템플릿 재활용
                 await emailjs.send('service_nyy7xhe', 'template_qplrcb3', params); 
-                alert('가맹 문의가 성공적으로 접수되었습니다. 본사 담당자가 빠른 시일 내에 연락드리겠습니다.');
+                alert('가맹 상담 신청이 성공적으로 접수되었습니다.\n작성해주신 정보를 바탕으로 본사 담당자가 신속히 연락드리겠습니다.');
                 location.reload();
             } catch (err) {
-                alert('전송 중 오류가 발생했습니다.');
-                btn.innerText = "가맹 문의 보내기";
+                console.error('FAILED...', err);
+                alert('전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+                
+                // 에러 시 버튼 복구
                 btn.disabled = false;
+                btnText.innerText = "프리미엄 가맹 상담 신청";
+                btnIcon.style.display = 'block';
+                btnSpinner.style.display = 'none';
+                btn.classList.replace('bg-gray-400', 'bg-bridge-charcoal');
+                btn.classList.add('hover:bg-bridge-mint');
             }
         }
     </script>

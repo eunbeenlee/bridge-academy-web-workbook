@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>AI Lab - 브릿지 아카데미 디지털 랩</title>
+    
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nunito:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] },
+                    colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } },
+                    boxShadow: { 'premium': '0 30px 60px -15px rgba(125, 117, 109, 0.15)' }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+        body { background-color: #FCFBF9; color: #363431; overflow-x: hidden; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        .nav-link-main { font-size: 15px !important; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; transition: color 0.3s; }
+        .nav-link-sub { font-family: 'Nunito', sans-serif; font-size: 9px !important; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.4; margin-top: 2px; transition: color 0.3s; }
+        .hover-lift { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease; }
+        .hover-lift:hover { transform: translateY(-10px); box-shadow: 0 40px 80px -20px rgba(125, 117, 109, 0.2); }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed w-full top-0 z-[2000] bg-white/90 backdrop-blur-xl border-b border-gray-100 h-[110px] flex items-center shadow-sm transition-all duration-500">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-8 w-full flex justify-between items-center">
+            
+            <a href="index.html" class="flex items-center gap-4 no-underline group shrink-0">
+                <img src="logo.png" alt="Logo" class="h-12 w-auto group-hover:rotate-6 transition-transform duration-500">
+                <span class="text-[24px] xl:text-[26px] font-black tracking-tighter hidden sm:block font-nunito leading-none mt-1">
+                    <span class="text-bridge-mint">BRIDGE</span> <span class="text-bridge-earth font-bold">ACADEMY</span>
+                </span>
+            </a>
+
+            <div class="hidden xl:flex items-center space-x-7">
+                <a href="about.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브랜드 소개</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">About</span></a>
+                <a href="program.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">정규 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Regular</span></a>
+                <a href="special.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">특강 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Special</span></a>
+                
+                <a href="ailab.html" class="group text-center flex flex-col items-center">
+                    <span class="nav-link-main text-bridge-mint relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-1 after:bg-bridge-mint after:rounded-full">AI 디지털 랩</span>
+                    <span class="nav-link-sub text-bridge-mint">AI Lab</span>
+                </a>
+                
+                <a href="trial.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">체험 신청</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Trial</span></a>
+                <a href="location.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">지점 찾기</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Locations</span></a>
+                <a href="franchise.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">가맹 문의</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Franchise</span></a>
+                <a href="gallery.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브릿지 스토리</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Gallery</span></a>
+            </div>
+
+            <div class="flex items-center shrink-0">
+                <a href="dashboard.html" class="inline-flex bg-bridge-charcoal text-white font-black px-8 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-bridge-gold transition-all duration-300 gap-2 shadow-lg shadow-gray-200 font-nunito">
+                    <i class="fa-solid fa-graduation-cap"></i> Student Portal
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-[110px]">
+        
+        <section class="min-h-[85vh] flex flex-col justify-center items-center text-center px-6 relative bg-bridge-charcoal text-white overflow-hidden">
+            <div class="absolute inset-0 z-0 opacity-30">
+                <div class="absolute top-[-20%] left-[10%] w-[600px] h-[600px] bg-bridge-mint/40 rounded-full blur-[120px]"></div>
+                <div class="absolute bottom-[-10%] right-[10%] w-[600px] h-[600px] bg-[#7CA6C1]/30 rounded-full blur-[120px]"></div>
+            </div>
+            
+            <div class="relative z-10 w-full max-w-5xl mx-auto mt-10">
+                <div class="flex justify-center gap-3 mb-6 reveal">
+                    <span class="bg-white/10 text-white border border-white/20 font-black text-[10px] uppercase tracking-widest px-4 py-1.5 rounded-full font-nunito backdrop-blur-sm">O2O Platform</span>
+                    <span class="bg-bridge-mint/20 text-bridge-mint border border-bridge-mint/30 font-black text-[10px] uppercase tracking-widest px-4 py-1.5 rounded-full font-nunito backdrop-blur-sm">Digital Transformation</span>
+                </div>
+                
+                <h1 class="font-jua text-5xl md:text-6xl lg:text-[6rem] leading-[1.2] mb-10 reveal tracking-wide">
+                    Screen-Free 교실,<br>
+                    AI가 이어가는 <span class="text-bridge-mint font-nunito italic pr-2">가정 학습</span>
+                </h1>
+                
+                <p class="text-gray-300 text-lg lg:text-xl font-medium max-w-3xl mx-auto leading-relaxed reveal mb-16 break-keep font-sans">
+                    학원에서는 태블릿 없이 100% 아날로그로 깊게 몰입합니다.<br>
+                    학원이 끝난 후에는 브릿지만의 독자적인 클라우드 AI 시스템이 바통을 이어받아<br>아이의 성장을 초 단위로 기록하는 든든한 온라인 동반자가 되어드립니다.
+                </p>
+            </div>
+        </section>
+
+        <section class="py-32 bg-[#F8FAFF]">
+            <div class="max-w-[1400px] mx-auto px-6">
+                <div class="text-center mb-24 reveal">
+                    <span class="text-bridge-earth font-black text-[13px] uppercase tracking-[0.6em] mb-6 block font-nunito">Core Technologies</span>
+                    <h2 class="text-4xl lg:text-5xl font-black text-bridge-charcoal font-jua">데이터가 증명하는 우리 아이의 성장</h2>
+                    <p class="text-gray-500 font-bold text-lg mt-6 tracking-widest font-sans">오프라인 활동을 온라인 데이터로 완벽하게 연동하는 자체 기술력</p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-10">
+                    <div class="bg-white p-12 rounded-[3.5rem] border border-gray-100 shadow-premium hover-lift text-left reveal">
+                        <div class="flex justify-between items-start mb-8">
+                            <div class="w-16 h-16 bg-bridge-mint/10 rounded-2xl flex items-center justify-center text-bridge-mint text-3xl border border-bridge-mint/20">
+                                <i class="fa-solid fa-server"></i>
+                            </div>
+                            <span class="bg-[#F4F8F5] text-bridge-mint text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full font-nunito">Cloud LMS Data</span>
+                        </div>
+                        <h4 class="text-2xl font-black text-bridge-charcoal mb-4 font-jua">아날로그의 완벽한 디지털화</h4>
+                        <p class="text-[15px] font-medium text-gray-500 leading-relaxed break-keep mb-6">
+                            전국 가맹점에서 종이 교재와 교구로 진행된 오프라인 활동이 자체 클라우드 서버(Data Pipeline)에 실시간으로 연동됩니다. 학부모님은 장소에 구애받지 않고 포털에서 아이의 스마트 성장 리포트를 확인할 수 있습니다.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-12 rounded-[3.5rem] border border-gray-100 shadow-premium hover-lift text-left reveal" style="transition-delay: 100ms;">
+                        <div class="flex justify-between items-start mb-8">
+                            <div class="w-16 h-16 bg-[#7CA6C1]/10 rounded-2xl flex items-center justify-center text-[#7CA6C1] text-3xl border border-[#7CA6C1]/20">
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <span class="bg-[#F8FAFF] text-[#7CA6C1] text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full font-nunito">Vision Recognition</span>
+                        </div>
+                        <h4 class="text-2xl font-black text-bridge-charcoal mb-4 font-jua">상상을 읽어주는 AI 캔버스</h4>
+                        <p class="text-[15px] font-medium text-gray-500 leading-relaxed break-keep mb-6">
+                            아이가 집에서 디지털 캔버스에 직접 그린 비정형적인 그림의 궤적과 형태를 인공지능 알고리즘이 실시간으로 연산합니다. 아이의 예술적 시도를 정확히 파악하여 창의적인 양방향 피드백을 제공합니다.
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-12 rounded-[3.5rem] border border-gray-100 shadow-premium hover-lift text-left reveal" style="transition-delay: 200ms;">
+                        <div class="flex justify-between items-start mb-8">
+                            <div class="w-16 h-16 bg-bridge-gold/10 rounded-2xl flex items-center justify-center text-bridge-gold text-3xl border border-bridge-gold/20">
+                                <i class="fa-solid fa-microphone-lines"></i>
+                            </div>
+                            <span class="bg-orange-50 text-bridge-gold text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full font-nunito">NLP Voice Engine</span>
+                        </div>
+                        <h4 class="text-2xl font-black text-bridge-charcoal mb-4 font-jua">집으로 찾아온 다정한 원어민</h4>
+                        <p class="text-[15px] font-medium text-gray-500 leading-relaxed break-keep mb-6">
+                            자연어 처리(NLP) 엔진이 아이의 영어 발음과 발화 유창성을 정량적으로 분석합니다. 학원을 나선 후에도 아이의 눈높이에 꼭 맞춘 다정한 AI 튜터가 1:1 밀착 학습 동반자가 되어줍니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-16 flex flex-wrap justify-center gap-6 reveal">
+                    <div class="flex items-center gap-3 bg-white px-6 py-3 rounded-full border border-gray-200 shadow-sm">
+                        <i class="fa-solid fa-shield-halved text-bridge-mint"></i>
+                        <span class="font-bold text-gray-600 text-sm font-sans">글로벌 스탠다드 데이터 보안 규격 준수</span>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white px-6 py-3 rounded-full border border-gray-200 shadow-sm">
+                        <i class="fa-solid fa-building-columns text-bridge-earth"></i>
+                        <span class="font-bold text-gray-600 text-sm font-sans">가맹점 전용 자체 에듀테크 시스템 (SaaS) 연동</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 bg-white overflow-hidden relative">
+            <div class="max-w-[1200px] mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
+                
+                <div class="reveal relative order-2 lg:order-1">
+                    <div class="absolute -inset-10 bg-bridge-bg rounded-[5rem] -rotate-3"></div>
+                    <div class="relative z-10 w-full h-[550px] bg-[#1E1E1E] rounded-[3.5rem] border-[12px] border-gray-100 shadow-2xl flex flex-col items-center justify-center overflow-hidden">
+                        <i class="fa-solid fa-tablet-screen-button text-6xl text-white/20 mb-6"></i>
+                        <p class="font-nunito font-black text-white/40 tracking-widest text-lg">AI Interactive App Preview</p>
+                        
+                        <div class="absolute bottom-10 bg-white/10 backdrop-blur-md px-6 py-4 rounded-3xl border border-white/20 flex items-center gap-4">
+                            <div class="w-10 h-10 bg-bridge-mint rounded-full flex items-center justify-center text-white"><i class="fa-solid fa-check"></i></div>
+                            <div class="text-left">
+                                <p class="text-white font-jua text-lg tracking-wide">Excellent Drawing!</p>
+                                <p class="text-white/60 text-xs font-nunito font-bold">Accuracy: 98% | NLP Analyzing...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal order-1 lg:order-2">
+                    <span class="text-bridge-mint font-black text-[13px] uppercase tracking-[0.5em] mb-6 block font-nunito">Global Standard System</span>
+                    <h2 class="text-4xl lg:text-5xl font-black text-bridge-charcoal mb-10 leading-[1.3] break-keep font-jua tracking-wide">
+                        글로벌 수준의 에듀테크를<br>우리 아이의 방 안에서.
+                    </h2>
+                    <ul class="space-y-8 mb-12">
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-bridge-mint/10 text-bridge-mint flex items-center justify-center shrink-0 mt-1"><i class="fa-solid fa-fingerprint"></i></div>
+                            <div>
+                                <h5 class="text-lg font-black text-bridge-charcoal mb-2 font-jua">개인 맞춤형 Student Portal</h5>
+                                <p class="text-[15px] font-medium text-gray-500 break-keep leading-relaxed">부여받은 고유 계정으로 로그인하면, 우리 아이만을 위해 큐레이션된 복습 과제와 초 단위로 누적된 성장 그래프를 실시간으로 확인할 수 있습니다.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-[#7CA6C1]/10 text-[#7CA6C1] flex items-center justify-center shrink-0 mt-1"><i class="fa-solid fa-bullseye"></i></div>
+                            <div>
+                                <h5 class="text-lg font-black text-bridge-charcoal mb-2 font-jua">미디어 노출 최소화 철칙</h5>
+                                <p class="text-[15px] font-medium text-gray-500 break-keep leading-relaxed">디지털 학습은 철저히 학원 수업의 '복습과 데이터 수집' 용도로만 제한된 시간 사용되어, 아이의 시력과 정서를 안전하게 보호합니다.</p>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="dashboard.html" class="inline-flex justify-center bg-bridge-charcoal text-white font-black px-10 py-5 rounded-[2rem] text-[15px] tracking-widest hover:bg-bridge-mint hover:scale-105 transition-all shadow-lg font-jua">
+                            Student Portal 입장 <i class="fa-solid fa-arrow-right ml-2 mt-1"></i>
+                        </a>
+                        <a href="trial.html" class="inline-flex justify-center bg-white border-2 border-gray-100 text-bridge-charcoal font-black px-10 py-5 rounded-[2rem] text-[15px] tracking-widest hover:border-bridge-mint hover:text-bridge-mint transition-all shadow-sm font-jua">
+                            체험 예약하기
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10">
+        <div class="flex items-center justify-center gap-4 mb-12 opacity-60">
+            <img src="logo.png" alt="Logo" class="h-12 w-auto grayscale transition-all hover:grayscale-0">
+            <span class="text-[25px] font-black font-nunito leading-none mt-1"><span class="text-bridge-mint">BRIDGE</span> <span class="text-bridge-earth font-bold">ACADEMY</span></span>
+        </div>
+        <div class="flex flex-wrap justify-center gap-x-10 gap-y-6 mb-12 text-gray-400 font-black text-[11px] uppercase tracking-widest px-6 font-nunito">
+            <a href="about.html" class="hover:text-bridge-mint transition">About</a>
+            <a href="program.html" class="hover:text-bridge-mint transition">Program</a>
+            <a href="special.html" class="hover:text-bridge-mint transition">Special</a>
+            <a href="ailab.html" class="hover:text-bridge-mint transition">AI Lab</a>
+            <a href="trial.html" class="hover:text-bridge-mint transition">Trial</a>
+            <a href="location.html" class="hover:text-bridge-mint transition">Locations</a>
+            <a href="franchise.html" class="hover:text-bridge-mint transition">Franchise</a>
+            <a href="gallery.html" class="hover:text-bridge-mint transition">Gallery</a>
+        </div>
+        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-bridge-earth italic mb-4 font-nunito">The First Bridge to Global Culture</p>
+        <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest font-nunito">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
+        });
+    </script>
+</body>
+</html>

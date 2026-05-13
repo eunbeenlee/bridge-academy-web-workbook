@@ -2,8 +2,8 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Locations - 지점 찾기</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Locations - 브릿지 아카데미 지점 안내</title>
     
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nunito:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
@@ -11,15 +11,35 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] }, colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } }, boxShadow: { 'premium': '0 30px 60px -15px rgba(125, 117, 109, 0.15)' } } } }
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] },
+                    colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } },
+                    boxShadow: { 'premium': '0 30px 60px -15px rgba(125, 117, 109, 0.12)' }
+                }
+            }
+        }
     </script>
     <style>
         html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
         body { background-color: #FCFBF9; color: #363431; overflow-x: hidden; }
-        .nav-link-main { font-size: 15px !important; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; transition: color 0.3s; }
-        .nav-link-sub { font-family: 'Nunito', sans-serif; font-size: 9px !important; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.4; margin-top: 2px; transition: color 0.3s; }
-        .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1s cubic-bezier(0.19, 1, 0.22, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        /* [V17.0 네비게이션 폰트 정렬] */
+        .nav-link-main { font-size: 15px !important; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; }
+        .nav-link-sub { font-family: 'Nunito', sans-serif; font-size: 9px !important; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.4; margin-top: 2px; }
+        
+        /* 지점 카드 호버 효과 */
+        .campus-card { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; border: 2px solid transparent; }
+        .campus-card:hover { border-color: #91D3B4; transform: translateY(-5px); background: #FFF; box-shadow: 0 40px 80px -20px rgba(125, 117, 109, 0.15); }
+        .campus-card.active { border-color: #91D3B4; background: #F4F8F5; }
+        
+        /* 스크롤바 커스텀 */
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #91D3B4; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -35,18 +55,34 @@
             </a>
 
             <div class="hidden xl:flex items-center space-x-9">
-                <a href="about.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브랜드 소개</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">About</span></a>
-                <a href="program.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">정규 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Regular</span></a>
-                <a href="special.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">특강 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Special</span></a>
-                <a href="trial.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">체험 신청</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Trial</span></a>
-                
-                <a href="location.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-mint">지점 찾기</span>
-                    <span class="nav-link-sub text-bridge-mint">Locations</span>
+                <a href="about.html" class="group text-center flex flex-col items-center">
+                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브랜드 소개</span>
+                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">About</span>
                 </a>
-                
-                <a href="franchise.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">가맹 문의</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Franchise</span></a>
-                <a href="gallery.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브릿지 스토리</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Gallery</span></a>
+                <a href="program.html" class="group text-center flex flex-col items-center">
+                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">정규 프로그램</span>
+                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Regular</span>
+                </a>
+                <a href="special.html" class="group text-center flex flex-col items-center">
+                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">특강 프로그램</span>
+                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Special</span>
+                </a>
+                <a href="trial.html" class="group text-center flex flex-col items-center">
+                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">체험 신청</span>
+                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Trial</span>
+                </a>
+                <a href="location.html" class="group text-center flex flex-col items-center">
+                    <span class="nav-link-main text-bridge-mint transition-colors">지점 찾기</span>
+                    <span class="nav-link-sub text-bridge-mint transition-colors font-nunito">Locations</span>
+                </a>
+                <a href="franchise.html" class="group text-center flex flex-col items-center">
+                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">가맹 문의</span>
+                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Franchise</span>
+                </a>
+                <a href="gallery.html" class="group text-center flex flex-col items-center">
+                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브릿지 스토리</span>
+                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors font-nunito">Gallery</span>
+                </a>
             </div>
 
             <div class="flex items-center shrink-0">
@@ -57,50 +93,155 @@
         </div>
     </nav>
 
-    <main class="pt-[110px] pb-40">
-        <section class="max-w-6xl mx-auto px-6 mt-32 reveal">
-            <div class="text-center mb-20">
-                <span class="text-bridge-earth font-black text-[13px] uppercase tracking-[0.6em] mb-6 block font-nunito">Campus Network</span>
-                <h2 class="text-5xl lg:text-7xl font-black text-bridge-charcoal tracking-tight leading-tight font-jua">지점 안내</h2>
+    <main class="pt-[110px]">
+        
+        <section class="bg-white py-32 text-center border-b border-gray-50">
+            <div class="max-w-4xl mx-auto px-6 reveal">
+                <span class="text-bridge-earth font-black text-[13px] uppercase tracking-[0.6em] mb-6 block font-nunito">Find your Campus</span>
+                <h1 class="text-5xl lg:text-7xl font-black text-bridge-charcoal mb-10 font-jua">가까운 브릿지를 찾아보세요</h1>
+                <p class="text-gray-400 text-lg lg:text-xl font-medium leading-relaxed break-keep">
+                    전국 어디서나 동일한 북미 명문 사립학교의 가치를 경험할 수 있습니다.<br>
+                    아이들의 무한한 가능성이 시작되는 곳, 브릿지 캠퍼스 네트워크입니다.
+                </p>
             </div>
-            
-            <div class="bg-white p-12 lg:p-20 rounded-[4rem] shadow-premium border border-gray-100 flex flex-col lg:flex-row gap-16">
-                <div class="w-full lg:w-1/2 h-[400px] lg:h-auto bg-[#F8FAFF] rounded-[3rem] border border-white flex items-center justify-center overflow-hidden shadow-inner relative">
-                    <i class="fa-solid fa-map-location-dot text-6xl text-bridge-mint/30 absolute"></i>
-                    <span class="text-gray-400 font-bold tracking-widest relative z-10 bg-white/80 px-6 py-2 rounded-full backdrop-blur-sm text-xs font-nunito">Map Area</span>
-                </div>
+        </section>
+
+        <section class="bg-white py-12 lg:py-24">
+            <div class="max-w-[1400px] mx-auto px-6 flex flex-col lg:flex-row gap-10 min-h-[700px]">
                 
-                <div class="w-full lg:w-1/2 flex flex-col justify-center">
-                    <span class="inline-block py-1.5 px-4 rounded-full bg-bridge-mint/10 text-bridge-mint font-black text-[10px] uppercase mb-6 tracking-widest w-max border border-bridge-mint/20 font-nunito">Main Campus</span>
-                    <h3 class="text-4xl font-black text-bridge-charcoal mb-8 font-jua">부산 본원</h3>
-                    
-                    <ul class="space-y-8">
-                        <li class="flex items-start gap-5">
-                            <div class="w-10 h-10 rounded-full bg-[#F4F8F5] flex items-center justify-center text-bridge-earth shrink-0"><i class="fa-solid fa-location-dot"></i></div>
-                            <div>
-                                <h5 class="font-black text-bridge-charcoal mb-1 font-nunito tracking-widest">Address</h5>
-                                <p class="text-[15px] font-medium text-gray-500 leading-relaxed">부산광역시 [상세 주소를 입력해주세요]<br><span class="text-xs text-gray-400 font-bold">주차 안내: 건물 내 전용 주차장 이용 가능</span></p>
+                <div class="w-full lg:w-[450px] flex flex-col reveal">
+                    <div class="bg-[#F8FAFF] p-8 rounded-[3rem] border border-white shadow-inner mb-8">
+                        <h4 class="text-lg font-black text-bridge-charcoal mb-6 font-jua">캠퍼스 검색</h4>
+                        <div class="flex gap-3 mb-6">
+                            <select class="flex-1 bg-white border border-gray-100 p-4 rounded-2xl text-sm font-bold text-gray-500 outline-none focus:border-bridge-mint transition">
+                                <option>전체 지역</option><option selected>부산광역시</option><option>서울특별시 (Coming Soon)</option>
+                            </select>
+                            <button class="w-14 h-14 bg-bridge-charcoal text-white rounded-2xl flex items-center justify-center hover:bg-bridge-mint transition shadow-lg"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                        <p class="text-[11px] text-gray-400 font-bold ml-2">검색 결과 : <span class="text-bridge-mint">1</span> 개의 캠퍼스가 있습니다.</p>
+                    </div>
+
+                    <div class="flex-1 space-y-4 overflow-y-auto custom-scroll pr-4 max-h-[500px]">
+                        <div class="campus-card active p-8 rounded-[2.5rem] bg-[#F4F8F5]">
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <span class="inline-block py-1 px-3 rounded-lg bg-bridge-mint text-white text-[10px] font-black uppercase tracking-widest mb-3">Main Campus</span>
+                                    <h3 class="text-2xl font-black text-bridge-charcoal font-jua">부산 본원</h3>
+                                </div>
+                                <i class="fa-solid fa-circle-check text-bridge-mint text-2xl"></i>
                             </div>
-                        </li>
-                        <li class="flex items-start gap-5">
-                            <div class="w-10 h-10 rounded-full bg-[#F4F8F5] flex items-center justify-center text-bridge-earth shrink-0"><i class="fa-solid fa-phone"></i></div>
-                            <div>
-                                <h5 class="font-black text-bridge-charcoal mb-1 font-nunito tracking-widest">Contact</h5>
-                                <p class="text-[15px] font-medium text-gray-500 leading-relaxed">상담 문의: [전화번호 입력]<br><span class="text-xs text-gray-400 font-bold">운영 시간: 평일 10:00 - 19:00</span></p>
+                            <ul class="space-y-3 text-[14px] text-gray-500 font-medium">
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-location-dot w-4 text-bridge-earth"></i> 부산광역시 [상세 주소를 입력하세요]</li>
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-phone w-4 text-bridge-earth"></i> [전화번호 입력]</li>
+                                <li class="flex items-center gap-3"><i class="fa-solid fa-clock w-4 text-bridge-earth"></i> 평일 10:00 - 19:00 (주말 휴무)</li>
+                            </ul>
+                            <div class="mt-8 flex gap-3">
+                                <a href="trial.html" class="flex-1 bg-bridge-charcoal text-white text-center py-3.5 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-bridge-mint transition">상담 예약</a>
+                                <button class="w-12 h-12 bg-white border border-gray-100 rounded-xl flex items-center justify-center hover:bg-gray-50 transition"><i class="fa-solid fa-share-nodes text-gray-400"></i></button>
                             </div>
-                        </li>
-                    </ul>
-                    
-                    <a href="trial.html" class="mt-12 bg-bridge-charcoal text-white text-center py-5 rounded-[2rem] font-black text-[15px] uppercase tracking-widest hover:bg-bridge-mint hover:-translate-y-1 transition-all shadow-xl font-jua tracking-wide">방문 상담 예약하기</a>
+                        </div>
+
+                        <div class="p-8 rounded-[2.5rem] bg-gray-50 border-2 border-dashed border-gray-100 opacity-60">
+                            <h3 class="text-xl font-black text-gray-400 font-jua italic">Next Bridge is Loading...</h3>
+                            <p class="text-xs text-gray-400 mt-2 font-bold">서울 및 경기 지역 가맹점 모집 중</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-1 flex flex-col gap-10 reveal" style="transition-delay: 200ms;">
+                    <div class="flex-1 bg-[#F8FAFF] rounded-[4rem] border border-gray-100 overflow-hidden shadow-premium relative min-h-[500px]">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center bg-gray-50">
+                            <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-lg mb-6">
+                                <i class="fa-solid fa-map-location-dot text-4xl text-bridge-mint"></i>
+                            </div>
+                            <p class="font-jua text-xl text-gray-400 mb-8 tracking-widest">MAP AREA INTERACTIVE</p>
+                            <div class="flex gap-4">
+                                <button class="bg-white px-6 py-2.5 rounded-full border border-gray-200 text-xs font-bold text-gray-500 hover:border-bridge-mint transition">Kakao Map</button>
+                                <button class="bg-white px-6 py-2.5 rounded-full border border-gray-200 text-xs font-bold text-gray-500 hover:border-bridge-mint transition">Naver Map</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="bg-white p-8 rounded-[3rem] border border-gray-100 text-center hover-lift">
+                            <i class="fa-solid fa-square-parking text-2xl text-bridge-earth mb-4"></i>
+                            <h5 class="text-xs font-black text-bridge-charcoal mb-1">Free Parking</h5>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">주차 가능</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-[3rem] border border-gray-100 text-center hover-lift">
+                            <i class="fa-solid fa-wifi text-2xl text-bridge-earth mb-4"></i>
+                            <h5 class="text-xs font-black text-bridge-charcoal mb-1">Kids Wi-Fi</h5>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">내부 와이파이</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-[3rem] border border-gray-100 text-center hover-lift">
+                            <i class="fa-solid fa-mug-saucer text-2xl text-bridge-earth mb-4"></i>
+                            <h5 class="text-xs font-black text-bridge-charcoal mb-1">Parent Lounge</h5>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">학부모 대기실</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-[3rem] border border-gray-100 text-center hover-lift">
+                            <i class="fa-solid fa-shield-cat text-2xl text-bridge-earth mb-4"></i>
+                            <h5 class="text-xs font-black text-bridge-charcoal mb-1">Premium Care</h5>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">프리미엄 보안</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="py-32 bg-[#F8FAFF]">
+            <div class="max-w-[1400px] mx-auto px-6 reveal">
+                <div class="flex justify-between items-end mb-16">
+                    <div>
+                        <span class="text-bridge-mint font-black text-[11px] uppercase tracking-[0.4em] mb-3 block font-nunito">Campus Atmosphere</span>
+                        <h2 class="text-4xl font-black text-bridge-charcoal font-jua">교육 시설 갤러리</h2>
+                    </div>
+                    <p class="text-gray-400 font-bold text-sm">최고의 환경이 최고의 교육을 만듭니다.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="h-[400px] bg-white rounded-[3rem] overflow-hidden border border-gray-100 shadow-sm relative group">
+                        <div class="absolute inset-0 bg-bridge-earth/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-10">
+                            <span class="text-white font-jua text-xl">메인 로비</span>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80" alt="Lobby" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    </div>
+                    <div class="h-[400px] bg-white rounded-[3rem] overflow-hidden border border-gray-100 shadow-sm relative group">
+                        <div class="absolute inset-0 bg-bridge-earth/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-10">
+                            <span class="text-white font-jua text-xl">오감 실습실</span>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80" alt="Sensory Room" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    </div>
+                    <div class="h-[400px] bg-white rounded-[3rem] overflow-hidden border border-gray-100 shadow-sm relative group">
+                        <div class="absolute inset-0 bg-bridge-earth/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all z-10">
+                            <span class="text-white font-jua text-xl">IBL 프로젝트룸</span>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=800&q=80" alt="IBL Room" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    </div>
                 </div>
             </div>
         </section>
+
     </main>
 
-    <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10 font-nunito">
-        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-bridge-earth italic mb-4">The First Bridge to Global Culture</p>
-        <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
+    <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10">
+        <div class="flex items-center justify-center gap-4 mb-12 opacity-60">
+            <img src="logo.png" alt="Logo" class="h-10 w-auto grayscale">
+            <span class="text-[22px] font-black italic font-nunito leading-none mt-1">
+                <span class="text-bridge-mint">BRIDGE</span> <span class="text-bridge-earth font-bold">ACADEMY</span>
+            </span>
+        </div>
+        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-bridge-earth italic mb-4 font-nunito">The First Bridge to Global Culture</p>
+        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest font-nunito">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
     </footer>
-    <script> document.querySelectorAll('.reveal').forEach(r => new IntersectionObserver(e => e.forEach(en => { if(en.isIntersecting) en.target.classList.add('active'); })).observe(r)); </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
+        });
+    </script>
 </body>
 </html>

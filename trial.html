@@ -35,7 +35,6 @@
         .input-premium:focus { border-color: #91D3B4; background-color: #FFFFFF; box-shadow: 0 10px 25px -5px rgba(145, 211, 180, 0.2); }
         select.input-premium { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2391D3B4'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1.5rem center; background-size: 1.2em; padding-right: 3rem; cursor: pointer; }
         
-        /* Custom Checkbox */
         .custom-checkbox { width: 1.5rem; height: 1.5rem; border-radius: 0.5rem; border: 2px solid #CBD5E1; appearance: none; cursor: pointer; position: relative; top: 2px; flex-shrink: 0; transition: all 0.2s; background-color: white; }
         .custom-checkbox:checked { background-color: #91D3B4; border-color: #91D3B4; }
         .custom-checkbox:checked::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: white; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 0.8rem; }
@@ -50,25 +49,26 @@
 <body class="antialiased flex flex-col min-h-screen">
 
     <nav class="fixed w-full top-0 z-[2000] bg-white/90 backdrop-blur-xl border-b border-gray-100 h-[110px] flex items-center shadow-sm transition-all duration-500">
-        <div class="max-w-[1440px] mx-auto px-8 w-full flex justify-between items-center">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-8 w-full flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-4 no-underline group shrink-0">
                 <img src="logo.png" alt="Logo" class="h-12 w-auto group-hover:rotate-6 transition-transform duration-500">
-                <span class="text-[26px] font-black tracking-tighter hidden sm:block font-nunito leading-none mt-1">
+                <span class="text-[24px] xl:text-[26px] font-black tracking-tighter hidden sm:block font-nunito leading-none mt-1">
                     <span class="text-bridge-mint">BRIDGE</span> <span class="text-bridge-earth font-bold">ACADEMY</span>
                 </span>
             </a>
 
-            <div class="hidden xl:flex items-center space-x-9">
-                <a href="about.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브랜드 소개</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">About</span></a>
-                <a href="program.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">정규 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Regular</span></a>
-                <a href="special.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">특강 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Special</span></a>
+            <div class="hidden xl:flex items-center space-x-7">
+                <a href="about.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브랜드 소개</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">About</span></a>
+                <a href="program.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">정규 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Regular</span></a>
+                <a href="special.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">특강 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Special</span></a>
+                <a href="dashboard.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">AI 디지털 랩</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">AI Lab</span></a>
                 <a href="trial.html" class="group text-center flex flex-col items-center">
                     <span class="nav-link-main text-bridge-mint relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-1 after:bg-bridge-mint after:rounded-full">체험 신청</span>
                     <span class="nav-link-sub text-bridge-mint">Trial</span>
                 </a>
-                <a href="location.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">지점 찾기</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Locations</span></a>
-                <a href="franchise.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">가맹 문의</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Franchise</span></a>
-                <a href="gallery.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브릿지 스토리</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Gallery</span></a>
+                <a href="location.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">지점 찾기</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Locations</span></a>
+                <a href="franchise.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">가맹 문의</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Franchise</span></a>
+                <a href="gallery.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브릿지 스토리</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Gallery</span></a>
             </div>
 
             <div class="flex items-center shrink-0">
@@ -214,9 +214,7 @@
                                 <input type="checkbox" class="custom-checkbox term-check required">
                                 <div class="mt-0.5">
                                     <span class="text-[13px] font-bold text-bridge-charcoal transition">[필수] 개인정보 수집 및 이용 동의</span>
-                                    <p class="text-[11px] text-gray-400 mt-1 leading-relaxed font-bold break-keep">
-                                        체험 수업 진행 및 상담 목적으로 수집되며, 수집된 정보는 관계 법령에 따라 목적 달성 후 지체 없이 파기됩니다.
-                                    </p>
+                                    <p class="text-[11px] text-gray-400 mt-1 leading-relaxed font-bold break-keep">체험 수업 진행 및 상담 목적으로 수집되며, 수집된 정보는 관계 법령에 따라 목적 달성 후 지체 없이 파기됩니다.</p>
                                 </div>
                             </label>
                             
@@ -224,19 +222,14 @@
                                 <input type="checkbox" class="custom-checkbox term-check required">
                                 <div class="mt-0.5">
                                     <span class="text-[13px] font-black text-bridge-alert underline underline-offset-4 decoration-bridge-alert/40 transition">[필수] 식품 알레르기 미고지 및 안전사고 면책 동의</span>
-                                    <p class="text-[11px] text-gray-500 mt-2.5 leading-relaxed font-bold break-keep">
-                                        본원은 천연 식재료를 이용한 오감 수업을 진행합니다. 학부모가 <strong>사전에 고지하지 않은 알레르기 반응이나 특이 체질로 인한 문제, 학원의 통제를 벗어난 돌발적인 안전사고</strong>에 대하여 본원은 민·형사상 책임을 지지 않음에 동의합니다.
-                                    </p>
+                                    <p class="text-[11px] text-gray-500 mt-2.5 leading-relaxed font-bold break-keep">학부모가 <strong>사전에 고지하지 않은 알레르기 반응이나 특이 체질로 인한 문제, 학원의 통제를 벗어난 돌발적인 사고</strong>에 대하여 본원은 책임을 지지 않음에 동의합니다.</p>
                                 </div>
                             </label>
                             
                             <label class="flex items-start gap-4 cursor-pointer group">
                                 <input type="checkbox" class="custom-checkbox term-check required">
                                 <div class="mt-0.5">
-                                    <span class="text-[13px] font-bold text-bridge-charcoal transition">[필수] 응급 상황 발생 시 응급 처치 및 의료 기관 이송 동의</span>
-                                    <p class="text-[11px] text-gray-400 mt-1 leading-relaxed font-bold break-keep">
-                                        응급 상황 발생 시 부모님께 즉각 연락을 취하며, 연락이 닿지 않거나 촌각을 다투는 경우 보호자를 대신하여 응급 처치 및 인근 의료 기관으로 이송함에 동의합니다.
-                                    </p>
+                                    <span class="text-[13px] font-bold text-bridge-charcoal transition">[필수] 응급 처치 및 의료 기관 이송 동의</span>
                                 </div>
                             </label>
 
@@ -244,33 +237,18 @@
                                 <input type="checkbox" class="custom-checkbox term-check required">
                                 <div class="mt-0.5">
                                     <span class="text-[13px] font-black text-bridge-mint underline underline-offset-4 decoration-bridge-mint/40">[필수] 유료 체험 및 노쇼(No-Show) 환불 규정 동의</span>
-                                    <p class="text-[11px] text-gray-500 mt-2.5 leading-relaxed font-bold break-keep">
-                                        본 체험 수업은 식재료 사전 준비를 위해 <strong>선결제 유료</strong>로 운영됩니다. 결제 후 예약이 최종 확정되며, 재료가 이미 준비되는 <strong>수업 전일 및 당일 취소(노쇼 포함) 시 환불이 절대 불가</strong>함에 동의합니다.
-                                    </p>
-                                </div>
-                            </label>
-
-                            <label class="flex items-start gap-4 cursor-pointer group">
-                                <input type="checkbox" id="photo_consent" class="custom-checkbox term-check">
-                                <div class="mt-0.5">
-                                    <span class="text-[13px] font-bold text-gray-500 transition">[선택] 활동 사진/영상 촬영 및 공식 홍보물(SNS 등) 활용 동의</span>
-                                    <p class="text-[11px] text-gray-400 mt-1 leading-relaxed font-bold break-keep">
-                                        아이의 즐거운 수업 모습이 브릿지 아카데미 공식 인스타그램 및 홍보 자료에 사용될 수 있습니다. 동의하지 않으셔도 체험 신청은 가능합니다.
-                                    </p>
+                                    <p class="text-[11px] text-gray-500 mt-2.5 leading-relaxed font-bold break-keep">본 체험 수업은 식재료 사전 준비를 위해 <strong>선결제 유료</strong>로 운영됩니다. 결제 후 예약이 최종 확정되며, <strong>수업 전일 및 당일 취소 시 환불 불가</strong>함에 동의합니다.</p>
                                 </div>
                             </label>
                         </div>
                     </div>
 
                     <div>
-                        <button type="button" id="submitBtn" onclick="submitApplication()" class="btn-hover-effect w-full bg-bridge-charcoal text-white font-black py-7 rounded-[3rem] text-[18px] shadow-2xl flex items-center justify-center gap-3 font-jua tracking-wide hover:bg-bridge-mint transition-colors duration-300 mt-8">
+                        <button type="button" id="submitBtn" onclick="submitApplication()" class="w-full bg-bridge-charcoal text-white font-black py-7 rounded-[3rem] text-[18px] shadow-2xl flex items-center justify-center gap-3 font-jua tracking-wide hover:bg-bridge-mint transition-colors duration-300 mt-8">
                             <span id="btnText">프리미엄 체험 신청 및 약관 동의</span>
                             <i id="btnIcon" class="fa-solid fa-paper-plane text-sm"></i>
                             <div id="btnSpinner" class="spinner"></div>
                         </button>
-                        <p class="text-center text-[12px] font-bold text-gray-400 mt-6 tracking-tight font-nunito">
-                            * 신청 후 즉시 안내 이메일이 발송되며, 확인 후 원장님이 개별 연락을 드립니다.
-                        </p>
                     </div>
                 </div>
             </form>
@@ -278,7 +256,6 @@
     </section>
     
     <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10 font-nunito mt-auto">
-        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-bridge-earth italic mb-4">The First Bridge to Global Culture</p>
         <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
     </footer>
 
@@ -287,24 +264,18 @@
 
         function autoHyphen(target) {
             let val = target.value.replace(/[^0-9]/g, '');
-            if (val.length > 3 && val.length <= 7) {
-                target.value = val.replace(/(\d{3})(\d+)/, '$1-$2');
-            } else if (val.length > 7) {
-                target.value = val.replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3');
-            } else { target.value = val; }
+            if (val.length > 3 && val.length <= 7) { target.value = val.replace(/(\d{3})(\d+)/, '$1-$2'); } 
+            else if (val.length > 7) { target.value = val.replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3'); } 
+            else { target.value = val; }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             const checkAll = document.getElementById('check_all');
             const termChecks = document.querySelectorAll('.term-check');
             checkAll.addEventListener('change', e => termChecks.forEach(cb => cb.checked = e.target.checked));
-            termChecks.forEach(cb => cb.addEventListener('change', () => {
-                checkAll.checked = Array.from(termChecks).every(c => c.checked);
-            }));
+            termChecks.forEach(cb => cb.addEventListener('change', () => { checkAll.checked = Array.from(termChecks).every(c => c.checked); }));
 
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); });
-            }, { threshold: 0.1 });
+            const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); }); }, { threshold: 0.1 });
             document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
         });
 
@@ -335,23 +306,11 @@
             btn.classList.replace('bg-bridge-charcoal', 'bg-gray-400');
             btn.classList.remove('hover:bg-bridge-mint');
 
-            const photoConsent = document.getElementById('photo_consent').checked ? '동의함' : '동의하지 않음';
-
             const templateParams = {
-                parent_name: pName,
-                contact: contact,
-                parent_email: pEmail,
-                child_name: cName,
-                child_gender: cGender,
-                child_age: cAge,
-                allergies: allergies,
-                sensory: document.getElementById('sensory').value || '미선택',
-                separation: document.getElementById('separation').value || '미선택',
-                naptime: document.getElementById('naptime').value || '미선택',
-                personality: document.getElementById('personality').value || '미선택',
-                experience: document.getElementById('experience').value || '미선택',
-                photo_consent: photoConsent,
-                to_email: 'yjleego@gmail.com'
+                parent_name: pName, contact: contact, parent_email: pEmail, child_name: cName, child_gender: cGender, child_age: cAge, allergies: allergies,
+                sensory: document.getElementById('sensory').value || '미선택', separation: document.getElementById('separation').value || '미선택',
+                naptime: document.getElementById('naptime').value || '미선택', personality: document.getElementById('personality').value || '미선택',
+                experience: document.getElementById('experience').value || '미선택', to_email: 'yjleego@gmail.com'
             };
 
             try {
@@ -360,14 +319,9 @@
                 alert('프리미엄 체험 신청이 성공적으로 접수되었습니다.\n안전한 수업을 위해 작성해주신 정보를 바탕으로 원장님이 확인 후 연락 드리겠습니다.');
                 location.reload();
             } catch (error) {
-                console.error('FAILED...', error);
                 alert('전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
-                btn.disabled = false;
-                btnText.innerText = "프리미엄 체험 신청 및 약관 동의";
-                btnIcon.style.display = 'block';
-                btnSpinner.style.display = 'none';
-                btn.classList.replace('bg-gray-400', 'bg-bridge-charcoal');
-                btn.classList.add('hover:bg-bridge-mint');
+                btn.disabled = false; btnText.innerText = "프리미엄 체험 신청 및 약관 동의"; btnIcon.style.display = 'block'; btnSpinner.style.display = 'none';
+                btn.classList.replace('bg-gray-400', 'bg-bridge-charcoal'); btn.classList.add('hover:bg-bridge-mint');
             }
         }
     </script>

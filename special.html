@@ -6,87 +6,65 @@
     <title>Special Course - 특강 프로그램</title>
     
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nunito:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Pretendard', 'sans-serif'], serif: ['Playfair Display', 'serif'] }, colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } } } } }
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] }, colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } } } } }
     </script>
     <style>
         html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
         body { background-color: #FCFBF9; color: #363431; overflow-x: hidden; }
         .nav-link-main { font-size: 15px !important; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; }
-        .nav-link-sub { font-size: 9px !important; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.4; margin-top: 2px; }
+        .nav-link-sub { font-family: 'Nunito', sans-serif; font-size: 9px !important; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.4; margin-top: 2px; }
         .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
 
-    <nav class="fixed w-full top-0 z-[2000] bg-white/90 backdrop-blur-xl border-b border-gray-100 h-[110px] flex items-center shadow-sm">
+    <nav class="fixed w-full top-0 z-[2000] bg-white/90 backdrop-blur-xl border-b border-gray-100 h-[110px] flex items-center shadow-sm transition-all duration-500">
         <div class="max-w-[1440px] mx-auto px-8 w-full flex justify-between items-center">
-            
             <a href="index.html" class="flex items-center gap-4 no-underline group shrink-0">
                 <img src="logo.png" alt="Logo" class="h-12 w-auto group-hover:rotate-6 transition-transform duration-500">
-                <span class="text-[25px] font-black italic tracking-tighter hidden sm:block font-serif leading-none mt-1">
-                    <span class="text-bridge-mint">Bridge</span> <span class="text-bridge-earth">Academy</span>
+                <span class="text-[26px] font-black tracking-tighter hidden sm:block font-nunito leading-none mt-1">
+                    <span class="text-bridge-mint">BRIDGE</span> <span class="text-bridge-earth font-bold">ACADEMY</span>
                 </span>
             </a>
 
             <div class="hidden xl:flex items-center space-x-9">
-                <a href="about.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브랜드 소개</span>
-                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">About Bridge</span>
-                </a>
-                <a href="program.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">정규 프로그램</span>
-                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Regular Course</span>
-                </a>
+                <a href="about.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브랜드 소개</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">About</span></a>
+                <a href="program.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">정규 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Regular</span></a>
                 <a href="special.html" class="group text-center flex flex-col items-center">
                     <span class="nav-link-main text-bridge-mint transition-colors">특강 프로그램</span>
-                    <span class="nav-link-sub text-bridge-mint transition-colors">Special Course</span>
+                    <span class="nav-link-sub text-bridge-mint transition-colors">Special</span>
                 </a>
-                <a href="trial.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">체험 신청</span>
-                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Trial Class</span>
-                </a>
-                <a href="location.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">지점 찾기</span>
-                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Locations</span>
-                </a>
-                <a href="franchise.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">가맹 문의</span>
-                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Franchise</span>
-                </a>
-                <a href="gallery.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브릿지 스토리</span>
-                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Gallery</span>
-                </a>
+                <a href="trial.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">체험 신청</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Trial</span></a>
+                <a href="location.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">지점 찾기</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Locations</span></a>
+                <a href="franchise.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">가맹 문의</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Franchise</span></a>
+                <a href="gallery.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브릿지 스토리</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Gallery</span></a>
             </div>
 
             <div class="flex items-center shrink-0">
-                <a href="dashboard.html" class="inline-flex bg-bridge-charcoal text-white font-black px-8 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-bridge-gold transition-all duration-300 gap-2 shadow-lg">
-                    <i class="fa-solid fa-graduation-cap"></i> Student Portal
-                </a>
+                <a href="dashboard.html" class="inline-flex bg-bridge-charcoal text-white font-black px-8 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-bridge-gold transition-all duration-300 gap-2 shadow-lg font-nunito"><i class="fa-solid fa-graduation-cap"></i> Student Portal</a>
             </div>
         </div>
     </nav>
 
     <main class="pt-[110px] pb-40">
         <section class="max-w-6xl mx-auto px-6 mt-32 text-center reveal">
-            <span class="text-bridge-earth font-black text-[13px] uppercase tracking-[0.6em] mb-6 block">Seasonal Signature</span>
-            <h2 class="text-5xl lg:text-7xl font-serif font-black text-bridge-charcoal tracking-tight leading-tight mb-10">Special Course</h2>
-            <div class="bg-white p-20 rounded-[4rem] shadow-sm border border-gray-100 flex flex-col items-center justify-center min-h-[400px]">
-                <div class="w-24 h-24 bg-[#F8FAFF] rounded-full flex items-center justify-center text-bridge-mint text-4xl mb-6"><i class="fa-solid fa-calendar-star"></i></div>
-                <h3 class="text-2xl font-black text-bridge-charcoal mb-4">현재 준비 중인 시그니처 특강이 없습니다.</h3>
-                <p class="text-gray-500 font-medium">여름/겨울 방학 및 특별한 시즌에 맞춰 가장 다채로운 프리미엄 특강이 오픈될 예정입니다.</p>
+            <span class="text-bridge-earth font-black text-[13px] uppercase tracking-[0.6em] mb-6 block font-nunito">Signature Events</span>
+            <h2 class="text-5xl lg:text-7xl font-black text-bridge-charcoal tracking-tight leading-tight mb-10 font-nunito">Special Course</h2>
+            <div class="bg-white p-20 rounded-[4rem] shadow-sm border border-gray-100 flex flex-col items-center justify-center min-h-[450px]">
+                <div class="w-24 h-24 bg-[#F8FAFF] rounded-full flex items-center justify-center text-bridge-mint text-4xl mb-6 shadow-inner"><i class="fa-solid fa-calendar-star"></i></div>
+                <h3 class="text-2xl font-black text-bridge-charcoal mb-4 font-jua">현재 준비 중인 시그니처 특강이 없습니다.</h3>
+                <p class="text-gray-500 font-medium break-keep">여름/겨울 방학 및 특별한 시즌에 맞춰 브릿지만의 프리미엄 원데이 클래스가 오픈될 예정입니다.</p>
             </div>
         </section>
     </main>
 
-    <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10">
-        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-bridge-earth italic mb-4">The First Bridge to Global Culture</p>
+    <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10 font-nunito">
         <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
     </footer>
     <script> document.querySelectorAll('.reveal').forEach(r => new IntersectionObserver(e => e.forEach(en => { if(en.isIntersecting) en.target.classList.add('active'); })).observe(r)); </script>

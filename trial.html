@@ -30,7 +30,6 @@
         .nav-link-main { font-size: 15px !important; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; transition: color 0.3s; }
         .nav-link-sub { font-family: 'Nunito', sans-serif; font-size: 9px !important; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.4; margin-top: 2px; transition: color 0.3s; }
         
-        /* Premium Form Styles */
         .input-premium { width: 100%; padding: 1.25rem 1.5rem; background-color: #F8FAFF; border: 2px solid transparent; border-radius: 2rem; font-size: 1rem; font-weight: 700; color: #475569; transition: all 0.3s; outline: none; font-family: 'Pretendard', sans-serif; }
         .input-premium:focus { border-color: #91D3B4; background-color: #FFFFFF; box-shadow: 0 10px 25px -5px rgba(145, 211, 180, 0.2); }
         select.input-premium { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2391D3B4'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1.5rem center; background-size: 1.2em; padding-right: 3rem; cursor: pointer; }
@@ -41,7 +40,6 @@
         
         .spinner { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; width: 1.5rem; height: 1.5rem; animation: spin 1s linear infinite; display: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        
         .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
@@ -58,17 +56,19 @@
             </a>
 
             <div class="hidden xl:flex items-center space-x-7">
-                <a href="about.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브랜드 소개</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">About</span></a>
-                <a href="program.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">정규 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Regular</span></a>
-                <a href="special.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">특강 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Special</span></a>
-                <a href="dashboard.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">AI 디지털 랩</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">AI Lab</span></a>
+                <a href="about.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브랜드 소개</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">About</span></a>
+                <a href="program.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">정규 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Regular</span></a>
+                <a href="special.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">특강 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Special</span></a>
+                <a href="ailab.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">AI 디지털 랩</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">AI Lab</span></a>
+                
                 <a href="trial.html" class="group text-center flex flex-col items-center">
                     <span class="nav-link-main text-bridge-mint relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-1 after:bg-bridge-mint after:rounded-full">체험 신청</span>
                     <span class="nav-link-sub text-bridge-mint">Trial</span>
                 </a>
-                <a href="location.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">지점 찾기</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Locations</span></a>
-                <a href="franchise.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">가맹 문의</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Franchise</span></a>
-                <a href="gallery.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브릿지 스토리</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Gallery</span></a>
+                
+                <a href="location.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">지점 찾기</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Locations</span></a>
+                <a href="franchise.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">가맹 문의</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Franchise</span></a>
+                <a href="gallery.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브릿지 스토리</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Gallery</span></a>
             </div>
 
             <div class="flex items-center shrink-0">
@@ -256,6 +256,21 @@
     </section>
     
     <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10 font-nunito mt-auto">
+        <div class="flex items-center justify-center gap-4 mb-12 opacity-60">
+            <img src="logo.png" alt="Logo" class="h-12 w-auto grayscale transition-all hover:grayscale-0">
+            <span class="text-[25px] font-black font-nunito leading-none mt-1"><span class="text-bridge-mint">BRIDGE</span> <span class="text-bridge-earth font-bold">ACADEMY</span></span>
+        </div>
+        <div class="flex flex-wrap justify-center gap-x-10 gap-y-6 mb-12 text-gray-400 font-black text-[11px] uppercase tracking-widest px-6 font-nunito">
+            <a href="about.html" class="hover:text-bridge-mint transition">About</a>
+            <a href="program.html" class="hover:text-bridge-mint transition">Program</a>
+            <a href="special.html" class="hover:text-bridge-mint transition">Special</a>
+            <a href="ailab.html" class="hover:text-bridge-mint transition">AI Lab</a>
+            <a href="trial.html" class="text-bridge-mint transition">Trial</a>
+            <a href="location.html" class="hover:text-bridge-mint transition">Locations</a>
+            <a href="franchise.html" class="hover:text-bridge-mint transition">Franchise</a>
+            <a href="gallery.html" class="hover:text-bridge-mint transition">Gallery</a>
+        </div>
+        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-bridge-earth italic mb-4 font-nunito">The First Bridge to Global Culture</p>
         <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
     </footer>
 

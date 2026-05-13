@@ -16,41 +16,30 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { 
-                        sans: ['Pretendard', 'sans-serif'], 
-                        jua: ['Jua', 'sans-serif'],
-                        nunito: ['Nunito', 'sans-serif']
-                    },
-                    colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } },
+                    fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] },
+                    colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75', alert: '#FF7675' } },
                     boxShadow: { 'premium': '0 30px 60px -15px rgba(125, 117, 109, 0.15)' }
                 }
             }
         }
     </script>
     <style>
-        /* 원본 CSS 100% 보존 및 V17.0 테마 병합 */
         html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
-        body { background-color: #FCFBF9; color: #7D756D; overflow-x: hidden; }
+        body { background-color: #FCFBF9; color: #363431; overflow-x: hidden; }
         
-        /* [V17.0 네비게이션 폰트 시스템] */
         .nav-link-main { font-size: 15px !important; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; transition: color 0.3s; }
         .nav-link-sub { font-family: 'Nunito', sans-serif; font-size: 9px !important; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.4; margin-top: 2px; transition: color 0.3s; }
         
-        /* [원본 Form Input 스타일 보존] */
-        .input-premium { width: 100%; padding: 1.25rem 1.5rem; background-color: #F8FAF9; border: 2px solid #E9EDEA; border-radius: 1.25rem; font-size: 0.95rem; font-weight: 600; color: #475569; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); outline: none; font-family: 'Pretendard', sans-serif; }
-        .input-premium::placeholder { color: #CBD5E1; font-weight: 500; }
-        .input-premium:focus { border-color: #91D3B4; background-color: #FFFFFF; box-shadow: 0 0 0 4px rgba(145, 211, 180, 0.15); }
-        select.input-premium { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2391D3B4'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1.5rem center; background-size: 1.2em; padding-right: 3rem; }
+        /* Premium Form Styles */
+        .input-premium { width: 100%; padding: 1.25rem 1.5rem; background-color: #F8FAFF; border: 2px solid transparent; border-radius: 2rem; font-size: 1rem; font-weight: 700; color: #475569; transition: all 0.3s; outline: none; font-family: 'Pretendard', sans-serif; }
+        .input-premium:focus { border-color: #91D3B4; background-color: #FFFFFF; box-shadow: 0 10px 25px -5px rgba(145, 211, 180, 0.2); }
+        select.input-premium { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2391D3B4'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1.5rem center; background-size: 1.2em; padding-right: 3rem; cursor: pointer; }
         
-        /* [원본 Checkbox 커스텀 보존] */
-        .custom-checkbox { width: 1.4rem; height: 1.4rem; border-radius: 0.4rem; border: 2px solid #CBD5E1; appearance: none; cursor: pointer; position: relative; top: 2px; flex-shrink: 0; transition: all 0.2s; background-color: white; }
+        /* Custom Checkbox */
+        .custom-checkbox { width: 1.5rem; height: 1.5rem; border-radius: 0.5rem; border: 2px solid #CBD5E1; appearance: none; cursor: pointer; position: relative; top: 2px; flex-shrink: 0; transition: all 0.2s; background-color: white; }
         .custom-checkbox:checked { background-color: #91D3B4; border-color: #91D3B4; }
-        .custom-checkbox:checked::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: white; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 0.75rem; }
+        .custom-checkbox:checked::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: white; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 0.8rem; }
         
-        /* [원본 Button & Spinner 애니메이션 보존] */
-        .btn-hover-effect { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
-        .btn-hover-effect:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 20px 40px -10px rgba(125, 117, 109, 0.3); }
-        .btn-hover-effect:active:not(:disabled) { transform: translateY(1px); }
         .spinner { border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; width: 1.5rem; height: 1.5rem; animation: spin 1s linear infinite; display: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
@@ -62,7 +51,6 @@
 
     <nav class="fixed w-full top-0 z-[2000] bg-white/90 backdrop-blur-xl border-b border-gray-100 h-[110px] flex items-center shadow-sm transition-all duration-500">
         <div class="max-w-[1440px] mx-auto px-8 w-full flex justify-between items-center">
-            
             <a href="index.html" class="flex items-center gap-4 no-underline group shrink-0">
                 <img src="logo.png" alt="Logo" class="h-12 w-auto group-hover:rotate-6 transition-transform duration-500">
                 <span class="text-[26px] font-black tracking-tighter hidden sm:block font-nunito leading-none mt-1">
@@ -71,34 +59,16 @@
             </a>
 
             <div class="hidden xl:flex items-center space-x-9">
-                <a href="about.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브랜드 소개</span>
-                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">About</span>
-                </a>
-                <a href="program.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">정규 프로그램</span>
-                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Regular</span>
-                </a>
-                <a href="special.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">특강 프로그램</span>
-                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Special</span>
-                </a>
+                <a href="about.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브랜드 소개</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">About</span></a>
+                <a href="program.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">정규 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Regular</span></a>
+                <a href="special.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">특강 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Special</span></a>
                 <a href="trial.html" class="group text-center flex flex-col items-center">
                     <span class="nav-link-main text-bridge-mint relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-full after:h-1 after:bg-bridge-mint after:rounded-full">체험 신청</span>
                     <span class="nav-link-sub text-bridge-mint">Trial</span>
                 </a>
-                <a href="location.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">지점 찾기</span>
-                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Locations</span>
-                </a>
-                <a href="franchise.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">가맹 문의</span>
-                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Franchise</span>
-                </a>
-                <a href="gallery.html" class="group text-center flex flex-col items-center">
-                    <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브릿지 스토리</span>
-                    <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Gallery</span>
-                </a>
+                <a href="location.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">지점 찾기</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Locations</span></a>
+                <a href="franchise.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">가맹 문의</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Franchise</span></a>
+                <a href="gallery.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브릿지 스토리</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Gallery</span></a>
             </div>
 
             <div class="flex items-center shrink-0">
@@ -109,12 +79,12 @@
         </div>
     </nav>
 
-    <section class="pt-48 pb-16 bg-gradient-to-b from-white to-[#FCFBF9] text-center reveal">
+    <section class="pt-48 pb-16 text-center reveal">
         <div class="max-w-3xl mx-auto px-6">
-            <span class="inline-block py-1.5 px-5 rounded-full bg-green-50 text-bridge-mint font-black text-[11px] uppercase tracking-[0.25em] mb-5 border border-green-100 font-nunito">Premium Experience</span>
+            <span class="inline-block py-1.5 px-5 rounded-full bg-bridge-mint/10 text-bridge-mint font-black text-[11px] uppercase tracking-[0.25em] mb-5 border border-bridge-mint/20 font-nunito">Premium Experience</span>
             <h1 class="text-4xl md:text-5xl font-black text-bridge-charcoal mb-6 tracking-tight font-jua">프리미엄 체험 신청</h1>
-            <p class="text-base text-gray-500 font-medium break-keep font-sans">
-                우리아이의 성향을 전문가와 함께 분석하고,<br class="hidden md:block"> 
+            <p class="text-base text-gray-500 font-medium break-keep font-sans leading-relaxed">
+                아이의 성향과 발달 단계를 전문가와 함께 꼼꼼하게 분석하고,<br class="hidden md:block"> 
                 세상에 단 하나뿐인 영어 로드맵을 설계하는 첫 단계입니다.
             </p>
         </div>
@@ -122,7 +92,7 @@
 
     <section class="pb-32 relative -mt-4 reveal">
         <div class="max-w-4xl mx-auto px-4 sm:px-6">
-            <form id="trialForm" class="bg-white p-8 md:p-14 lg:p-20 rounded-[3.5rem] shadow-premium border border-white">
+            <form id="trialForm" class="bg-white p-8 md:p-14 lg:p-20 rounded-[3.5rem] shadow-premium border border-gray-50">
                 
                 <div class="space-y-16">
                     <div>
@@ -141,7 +111,7 @@
                             </div>
                             <div class="flex flex-col gap-2 md:col-span-2">
                                 <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Email Address <span class="text-bridge-mint">*</span></label>
-                                <input type="email" id="parent_email" placeholder="안내문을 받으실 이메일을 입력해 주세요" class="input-premium" required>
+                                <input type="email" id="parent_email" placeholder="결제 및 예약 안내문을 받으실 이메일을 입력해 주세요" class="input-premium" required>
                             </div>
                         </div>
                     </div>
@@ -151,8 +121,15 @@
                     <div>
                         <div class="flex items-center gap-4 mb-8">
                             <div class="w-10 h-10 rounded-full bg-bridge-earth flex items-center justify-center text-white font-black shadow-lg shadow-bridge-earth/30 font-nunito">2</div>
-                            <h3 class="text-2xl font-black text-bridge-charcoal font-jua tracking-wide">아이 진단 정보</h3>
+                            <h3 class="text-2xl font-black text-bridge-charcoal font-jua tracking-wide">아이 진단 및 성향 정보</h3>
                         </div>
+                        <div class="bg-[#F8FAFF] p-6 rounded-3xl mb-8 border border-bridge-mint/20">
+                            <p class="text-xs text-bridge-earth font-bold leading-relaxed">
+                                <i class="fa-solid fa-circle-info text-bridge-mint mr-1"></i>
+                                본원의 오감 놀이는 <strong>100% 천연 식재료</strong>를 사용합니다. 안전한 수업 준비와 최적의 스케줄 배정을 위해 아래 항목을 정확하게 체크해 주시기 바랍니다.
+                            </p>
+                        </div>
+                        
                         <div class="grid md:grid-cols-2 gap-6 mb-6">
                             <div class="flex flex-col gap-2">
                                 <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Child Name <span class="text-bridge-mint">*</span></label>
@@ -167,95 +144,142 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="grid md:grid-cols-2 gap-6">
                             <div class="flex flex-col gap-2">
-                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Age Range</label>
-                                <select id="child_age" class="input-premium">
+                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Age Range <span class="text-bridge-mint">*</span></label>
+                                <select id="child_age" class="input-premium" required>
                                     <option value="" disabled selected>연령(월령) 선택</option>
                                     <option>7~12개월</option><option>13~18개월</option><option>19~24개월</option>
                                     <option>4~5세</option><option>6세 이상</option>
                                 </select>
                             </div>
                             <div class="flex flex-col gap-2">
-                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Personality</label>
-                                <select id="personality" class="input-premium">
-                                    <option value="" disabled selected>아이 성향 선택</option>
-                                    <option>내성적/관찰형</option><option>외향적/활동형</option>
-                                    <option>호기심형</option><option>신중형</option>
-                                </select>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Experience</label>
-                                <select id="experience" class="input-premium">
-                                    <option value="" disabled selected>영어 노출 경험</option>
-                                    <option>없음</option><option>가정 내 미디어</option><option>기관 수업 유경험</option>
+                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Allergies (중요) <span class="text-bridge-mint">*</span></label>
+                                <select id="allergies" class="input-premium border-bridge-mint/30 bg-white" required>
+                                    <option value="" disabled selected>식품 알레르기 여부</option>
+                                    <option>없음 (특이사항 없음)</option>
+                                    <option>특정 식품 알레르기 있음 (상담 시 상세 전달)</option>
+                                    <option>접촉성 피부염 등 민감성 피부</option>
                                 </select>
                             </div>
                             <div class="flex flex-col gap-2">
                                 <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Sensory</label>
                                 <select id="sensory" class="input-premium">
                                     <option value="" disabled selected>오감 민감도</option>
-                                    <option>적극적임</option><option>조심스러운 편</option><option>손에 묻는 것에 예민함</option>
+                                    <option>적극적임 (새로운 재료를 잘 만짐)</option>
+                                    <option>조심스러운 편 (탐색 시간이 필요함)</option>
+                                    <option>손에 이물질이 묻는 것에 예민함</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Separation Anxiety</label>
+                                <select id="separation" class="input-premium">
+                                    <option value="" disabled selected>분리 불안 정도</option>
+                                    <option>전혀 없음 (독립 수업 가능)</option>
+                                    <option>처음엔 낯가리나 금방 적응함</option>
+                                    <option>부모님과 떨어지기 힘들어함</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Nap Time</label>
+                                <select id="naptime" class="input-premium">
+                                    <option value="" disabled selected>주 낮잠 시간대</option>
+                                    <option>낮잠 안잠</option>
+                                    <option>오전 (10시 ~ 12시 경)</option>
+                                    <option>오후 (1시 ~ 3시 경)</option>
+                                    <option>늦은 오후 (3시 ~ 5시 경)</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-xs font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Experience</label>
+                                <select id="experience" class="input-premium">
+                                    <option value="" disabled selected>영어 노출 경험</option>
+                                    <option>전혀 없음</option>
+                                    <option>가정 내 미디어 노출</option>
+                                    <option>타 교육 기관 수업 유경험</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-[#F8FAFF] p-8 md:p-10 rounded-[2.5rem] border border-gray-100">
-                        <label class="flex items-center gap-4 cursor-pointer group border-b border-gray-200 pb-5 mb-6">
+                    <div class="bg-gray-50 p-8 md:p-10 rounded-[2.5rem] border border-gray-200">
+                        <label class="flex items-center gap-4 cursor-pointer group border-b border-gray-300 pb-5 mb-6">
                             <input type="checkbox" id="check_all" class="custom-checkbox">
-                            <span class="text-[15px] font-black text-bridge-charcoal group-hover:text-bridge-mint pt-1 transition">약관 및 안내 사항에 전체 동의합니다.</span>
+                            <span class="text-[16px] font-black text-bridge-charcoal group-hover:text-bridge-mint transition pt-1 font-jua">아래 이용 약관 및 책임 면책 사항에 모두 동의합니다.</span>
                         </label>
 
-                        <div class="space-y-5 pl-1">
-                            <label class="flex items-start gap-4 cursor-pointer">
-                                <input type="checkbox" class="custom-checkbox term-check required">
-                                <span class="text-[13px] font-bold text-gray-600 mt-1">[필수] 개인정보 수집 및 이용 동의</span>
-                            </label>
-                            <label class="flex items-start gap-4 cursor-pointer">
+                        <div class="space-y-6 pl-1">
+                            <label class="flex items-start gap-4 cursor-pointer group">
                                 <input type="checkbox" class="custom-checkbox term-check required">
                                 <div class="mt-0.5">
-                                    <span class="text-[13px] font-black text-bridge-mint underline underline-offset-4 decoration-bridge-mint/40">[필수] 유료 체험 프로세스 및 환불 규정 동의</span>
-                                    <p class="text-[11px] text-gray-400 mt-2.5 leading-relaxed font-bold break-keep">
-                                        본 수업은 식재료 및 교구 준비를 위해 <strong>유료</strong>로 운영됩니다. 담당자의 해피콜 이후 결제가 완료되어야 예약이 확정되며, 수업 1일 전까지만 환불이 가능합니다.
+                                    <span class="text-[13px] font-bold text-bridge-charcoal transition">[필수] 개인정보 수집 및 이용 동의</span>
+                                    <p class="text-[11px] text-gray-400 mt-1 leading-relaxed font-bold break-keep">
+                                        체험 수업 진행 및 상담 목적으로 수집되며, 수집된 정보는 관계 법령에 따라 목적 달성 후 지체 없이 파기됩니다.
                                     </p>
                                 </div>
                             </label>
-                            <label class="flex items-start gap-4 cursor-pointer">
-                                <input type="checkbox" class="custom-checkbox term-check">
-                                <span class="text-[13px] font-bold text-gray-400 mt-1">[선택] 마케팅 정보 수신 및 활동 사진 촬영 동의</span>
+                            
+                            <label class="flex items-start gap-4 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox term-check required">
+                                <div class="mt-0.5">
+                                    <span class="text-[13px] font-black text-bridge-alert underline underline-offset-4 decoration-bridge-alert/40 transition">[필수] 식품 알레르기 미고지 및 안전사고 면책 동의</span>
+                                    <p class="text-[11px] text-gray-500 mt-2.5 leading-relaxed font-bold break-keep">
+                                        본원은 천연 식재료를 이용한 오감 수업을 진행합니다. 학부모가 <strong>사전에 고지하지 않은 알레르기 반응이나 특이 체질로 인한 문제, 학원의 통제를 벗어난 돌발적인 안전사고</strong>에 대하여 본원은 민·형사상 책임을 지지 않음에 동의합니다.
+                                    </p>
+                                </div>
+                            </label>
+                            
+                            <label class="flex items-start gap-4 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox term-check required">
+                                <div class="mt-0.5">
+                                    <span class="text-[13px] font-bold text-bridge-charcoal transition">[필수] 응급 상황 발생 시 응급 처치 및 의료 기관 이송 동의</span>
+                                    <p class="text-[11px] text-gray-400 mt-1 leading-relaxed font-bold break-keep">
+                                        응급 상황 발생 시 부모님께 즉각 연락을 취하며, 연락이 닿지 않거나 촌각을 다투는 경우 보호자를 대신하여 응급 처치 및 인근 의료 기관으로 이송함에 동의합니다.
+                                    </p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start gap-4 cursor-pointer group">
+                                <input type="checkbox" class="custom-checkbox term-check required">
+                                <div class="mt-0.5">
+                                    <span class="text-[13px] font-black text-bridge-mint underline underline-offset-4 decoration-bridge-mint/40">[필수] 유료 체험 및 노쇼(No-Show) 환불 규정 동의</span>
+                                    <p class="text-[11px] text-gray-500 mt-2.5 leading-relaxed font-bold break-keep">
+                                        본 체험 수업은 식재료 사전 준비를 위해 <strong>선결제 유료</strong>로 운영됩니다. 결제 후 예약이 최종 확정되며, 재료가 이미 준비되는 <strong>수업 전일 및 당일 취소(노쇼 포함) 시 환불이 절대 불가</strong>함에 동의합니다.
+                                    </p>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start gap-4 cursor-pointer group">
+                                <input type="checkbox" id="photo_consent" class="custom-checkbox term-check">
+                                <div class="mt-0.5">
+                                    <span class="text-[13px] font-bold text-gray-500 transition">[선택] 활동 사진/영상 촬영 및 공식 홍보물(SNS 등) 활용 동의</span>
+                                    <p class="text-[11px] text-gray-400 mt-1 leading-relaxed font-bold break-keep">
+                                        아이의 즐거운 수업 모습이 브릿지 아카데미 공식 인스타그램 및 홍보 자료에 사용될 수 있습니다. 동의하지 않으셔도 체험 신청은 가능합니다.
+                                    </p>
+                                </div>
                             </label>
                         </div>
                     </div>
 
-                    <button type="button" id="submitBtn" onclick="submitApplication()" class="btn-hover-effect w-full bg-bridge-charcoal text-white font-black py-7 rounded-[2rem] text-xl shadow-2xl flex items-center justify-center gap-3 font-jua tracking-wide hover:bg-bridge-mint transition-colors duration-300 mt-8">
-                        <span id="btnText">프리미엄 체험 신청하기</span>
-                        <i id="btnIcon" class="fa-solid fa-paper-plane text-sm"></i>
-                        <div id="btnSpinner" class="spinner"></div>
-                    </button>
-                    <p class="text-center text-[11px] font-bold text-gray-400 mt-8 tracking-tight font-nunito">
-                        * 모든 신청 내역은 원장님이 직접 확인 후 24시간 이내에 안내 이메일과 전화를 드립니다.
-                    </p>
+                    <div>
+                        <button type="button" id="submitBtn" onclick="submitApplication()" class="btn-hover-effect w-full bg-bridge-charcoal text-white font-black py-7 rounded-[3rem] text-[18px] shadow-2xl flex items-center justify-center gap-3 font-jua tracking-wide hover:bg-bridge-mint transition-colors duration-300 mt-8">
+                            <span id="btnText">프리미엄 체험 신청 및 약관 동의</span>
+                            <i id="btnIcon" class="fa-solid fa-paper-plane text-sm"></i>
+                            <div id="btnSpinner" class="spinner"></div>
+                        </button>
+                        <p class="text-center text-[12px] font-bold text-gray-400 mt-6 tracking-tight font-nunito">
+                            * 신청 후 즉시 안내 이메일이 발송되며, 확인 후 원장님이 개별 연락을 드립니다.
+                        </p>
+                    </div>
                 </div>
             </form>
         </div>
     </section>
     
-    <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10 mt-auto">
-        <div class="flex items-center justify-center gap-4 mb-12 opacity-60">
-            <img src="logo.png" alt="Logo" class="h-12 w-auto grayscale transition-all hover:grayscale-0">
-            <span class="text-[25px] font-black font-nunito leading-none mt-1"><span class="text-bridge-mint">BRIDGE</span> <span class="text-bridge-earth font-bold">ACADEMY</span></span>
-        </div>
-        <div class="flex flex-wrap justify-center gap-x-12 gap-y-6 mb-12 text-gray-400 font-black text-[11px] uppercase tracking-widest px-6 font-nunito">
-            <a href="about.html" class="hover:text-bridge-mint transition">About</a>
-            <a href="program.html" class="hover:text-bridge-mint transition">Program</a>
-            <a href="special.html" class="hover:text-bridge-mint transition">Special</a>
-            <a href="trial.html" class="text-bridge-mint transition">Trial</a>
-            <a href="location.html" class="hover:text-bridge-mint transition">Locations</a>
-            <a href="franchise.html" class="hover:text-bridge-mint transition">Franchise</a>
-        </div>
-        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-bridge-earth italic mb-4 font-nunito">The First Bridge to Global Culture</p>
-        <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest font-nunito">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
+    <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10 font-nunito mt-auto">
+        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-bridge-earth italic mb-4">The First Bridge to Global Culture</p>
+        <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
     </footer>
 
     <script type="text/javascript">
@@ -295,18 +319,23 @@
             const pEmail = document.getElementById('parent_email').value.trim();
             const cName = document.getElementById('child_name').value.trim();
             const cGender = document.getElementById('child_gender').value;
+            const cAge = document.getElementById('child_age').value;
+            const allergies = document.getElementById('allergies').value;
             
             const requiredChecks = document.querySelectorAll('.term-check.required');
             const allChecked = Array.from(requiredChecks).every(cb => cb.checked);
 
-            if(!pName || contact.length < 12 || !pEmail || !cName || !cGender) return alert("필수 입력 항목을 모두 채워주세요.");
-            if(!allChecked) return alert("[필수] 약관 동의가 필요합니다.");
+            if(!pName || contact.length < 12 || !pEmail || !cName || !cGender || !cAge || !allergies) return alert("필수 입력 항목(* 표시)을 모두 채워주세요.");
+            if(!allChecked) return alert("[필수] 약관 및 면책 동의란에 모두 체크해 주셔야 신청이 가능합니다.");
 
             btn.disabled = true;
             btnText.innerText = "신청서를 전송 중입니다...";
             btnIcon.style.display = 'none';
             btnSpinner.style.display = 'block';
             btn.classList.replace('bg-bridge-charcoal', 'bg-gray-400');
+            btn.classList.remove('hover:bg-bridge-mint');
+
+            const photoConsent = document.getElementById('photo_consent').checked ? '동의함' : '동의하지 않음';
 
             const templateParams = {
                 parent_name: pName,
@@ -314,26 +343,31 @@
                 parent_email: pEmail,
                 child_name: cName,
                 child_gender: cGender,
-                child_age: document.getElementById('child_age').value || '미선택',
+                child_age: cAge,
+                allergies: allergies,
+                sensory: document.getElementById('sensory').value || '미선택',
+                separation: document.getElementById('separation').value || '미선택',
+                naptime: document.getElementById('naptime').value || '미선택',
                 personality: document.getElementById('personality').value || '미선택',
                 experience: document.getElementById('experience').value || '미선택',
-                sensory: document.getElementById('sensory').value || '미선택',
+                photo_consent: photoConsent,
                 to_email: 'yjleego@gmail.com'
             };
 
             try {
                 await emailjs.send('service_nyy7xhe', 'template_qplrcb3', templateParams);
                 await emailjs.send('service_nyy7xhe', 'template_d007dzb', templateParams);
-                alert('신청이 성공적으로 접수되었습니다.\n원장님이 확인 후 연락 드릴 예정입니다.');
+                alert('프리미엄 체험 신청이 성공적으로 접수되었습니다.\n안전한 수업을 위해 작성해주신 정보를 바탕으로 원장님이 확인 후 연락 드리겠습니다.');
                 location.reload();
             } catch (error) {
                 console.error('FAILED...', error);
                 alert('전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
                 btn.disabled = false;
-                btnText.innerText = "프리미엄 체험 신청하기";
+                btnText.innerText = "프리미엄 체험 신청 및 약관 동의";
                 btnIcon.style.display = 'block';
                 btnSpinner.style.display = 'none';
                 btn.classList.replace('bg-gray-400', 'bg-bridge-charcoal');
+                btn.classList.add('hover:bg-bridge-mint');
             }
         }
     </script>

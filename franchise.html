@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Franchise - 가맹 문의</title>
+    
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nunito:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] }, colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } }, boxShadow: { 'premium': '0 30px 60px -15px rgba(125, 117, 109, 0.15)' } } } }
+    </script>
+    <style>
+        html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+        body { background-color: #FCFBF9; color: #363431; overflow-x: hidden; }
+        .nav-link-main { font-size: 15px !important; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; transition: color 0.3s; }
+        .nav-link-sub { font-family: 'Nunito', sans-serif; font-size: 9px !important; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.4; margin-top: 2px; transition: color 0.3s; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        /* Premium Form Styles */
+        .input-premium { width: 100%; padding: 1.25rem 1.5rem; background-color: #F8FAFF; border: 2px solid transparent; border-radius: 2rem; font-size: 1rem; font-weight: 700; color: #475569; transition: all 0.3s; outline: none; font-family: 'Pretendard', sans-serif; }
+        .input-premium:focus { border-color: #91D3B4; background-color: #FFFFFF; box-shadow: 0 10px 25px -5px rgba(145, 211, 180, 0.2); }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed w-full top-0 z-[2000] bg-white/90 backdrop-blur-xl border-b border-gray-100 h-[110px] flex items-center shadow-sm transition-all duration-500">
+        <div class="max-w-[1440px] mx-auto px-8 w-full flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-4 no-underline group shrink-0">
+                <img src="logo.png" alt="Logo" class="h-12 w-auto group-hover:rotate-6 transition-transform duration-500">
+                <span class="text-[26px] font-black tracking-tighter hidden sm:block font-nunito leading-none mt-1">
+                    <span class="text-bridge-mint">BRIDGE</span> <span class="text-bridge-earth font-bold">ACADEMY</span>
+                </span>
+            </a>
+
+            <div class="hidden xl:flex items-center space-x-9">
+                <a href="about.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브랜드 소개</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">About</span></a>
+                <a href="program.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">정규 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Regular</span></a>
+                <a href="special.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">특강 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Special</span></a>
+                <a href="trial.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">체험 신청</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Trial</span></a>
+                <a href="location.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">지점 찾기</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Locations</span></a>
+                
+                <a href="franchise.html" class="group text-center flex flex-col items-center">
+                    <span class="nav-link-main text-bridge-mint">가맹 문의</span>
+                    <span class="nav-link-sub text-bridge-mint">Franchise</span>
+                </a>
+                
+                <a href="gallery.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint">브릿지 스토리</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint">Gallery</span></a>
+            </div>
+
+            <div class="flex items-center shrink-0">
+                <a href="dashboard.html" class="inline-flex bg-bridge-charcoal text-white font-black px-8 py-4 rounded-full text-[12px] uppercase tracking-[0.2em] hover:bg-bridge-gold transition-all duration-300 gap-2 shadow-lg font-nunito"><i class="fa-solid fa-graduation-cap"></i> Student Portal</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-[110px] pb-40">
+        <section class="max-w-4xl mx-auto px-6 mt-20 reveal">
+            <div class="bg-white p-14 md:p-24 rounded-[4rem] border border-gray-100 shadow-premium text-center relative overflow-hidden">
+                <div class="w-20 h-20 bg-bridge-earth/10 text-bridge-earth rounded-full mx-auto flex items-center justify-center text-3xl mb-8 shadow-inner"><i class="fa-solid fa-handshake"></i></div>
+                <span class="text-bridge-earth font-black text-[12px] uppercase tracking-[0.5em] mb-4 block font-nunito italic">Partnership</span>
+                <h2 class="text-5xl font-black text-bridge-charcoal mb-8 font-jua tracking-wide">가맹 상담 문의</h2>
+                <p class="text-gray-500 font-medium text-[16px] mb-16 leading-relaxed break-keep max-w-2xl mx-auto">
+                    브릿지 아카데미의 혁신적인 교육 철학과 함께할 파트너 원장님을 모십니다.<br>
+                    문의 사항을 남겨주시면 본사 담당자가 꼼꼼히 확인 후 연락드리겠습니다.
+                </p>
+
+                <form id="franchiseForm" class="space-y-8 text-left max-w-xl mx-auto relative z-10" onsubmit="submitFranchise(event)">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="flex flex-col gap-3">
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Name <span class="text-bridge-mint">*</span></label>
+                            <input type="text" id="f_name" placeholder="성함" class="input-premium" required>
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Contact <span class="text-bridge-mint">*</span></label>
+                            <input type="tel" id="f_contact" placeholder="연락처" class="input-premium" required>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="flex flex-col gap-3">
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Email</label>
+                            <input type="email" id="f_email" placeholder="이메일" class="input-premium">
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Region <span class="text-bridge-mint">*</span></label>
+                            <input type="text" id="f_region" placeholder="희망 가맹 지역 (예: 해운대구)" class="input-premium" required>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Inquiry Message</label>
+                        <textarea id="f_message" rows="4" placeholder="운영 중인 학원이 있으신지, 특별히 궁금하신 점 등을 남겨주세요." class="input-premium rounded-[2rem] resize-none"></textarea>
+                    </div>
+                    
+                    <button type="submit" id="f_submitBtn" class="w-full bg-bridge-charcoal hover:bg-bridge-earth text-white font-black py-6 rounded-[3rem] text-[16px] tracking-widest shadow-xl transition-all duration-500 mt-10 font-jua">
+                        가맹 문의 보내기
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10 font-nunito">
+        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-bridge-earth italic mb-4">The First Bridge to Global Culture</p>
+        <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script> 
+        document.querySelectorAll('.reveal').forEach(r => new IntersectionObserver(e => e.forEach(en => { if(en.isIntersecting) en.target.classList.add('active'); })).observe(r)); 
+        
+        // 원장님 기존 가맹 문의용 EmailJS 로직
+        (function() { emailjs.init("Yit4vJKJB5Uk3Lipi"); })(); 
+        async function submitFranchise(e) {
+            e.preventDefault();
+            const btn = document.getElementById('f_submitBtn');
+            btn.innerText = "전송 중입니다...";
+            btn.disabled = true;
+
+            const params = {
+                from_name: document.getElementById('f_name').value,
+                contact: document.getElementById('f_contact').value,
+                email: document.getElementById('f_email').value,
+                region: document.getElementById('f_region').value,
+                message: document.getElementById('f_message').value,
+                to_email: 'yjleego@gmail.com'
+            };
+
+            try {
+                await emailjs.send('service_nyy7xhe', 'template_qplrcb3', params); 
+                alert('가맹 문의가 성공적으로 접수되었습니다. 본사 담당자가 빠른 시일 내에 연락드리겠습니다.');
+                location.reload();
+            } catch (err) {
+                alert('전송 중 오류가 발생했습니다.');
+                btn.innerText = "가맹 문의 보내기";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

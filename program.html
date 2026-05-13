@@ -11,7 +11,7 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] }, colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } } } } }
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] }, colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } }, boxShadow: { 'premium': '0 30px 60px -15px rgba(125, 117, 109, 0.15)' } } } }
     </script>
     <style>
         html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
@@ -28,21 +28,23 @@
 <body>
 
     <nav class="fixed w-full top-0 z-[2000] bg-white/90 backdrop-blur-xl border-b border-gray-100 h-[110px] flex items-center shadow-sm transition-all duration-500">
-        <div class="max-w-[1440px] mx-auto px-8 w-full flex justify-between items-center">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-8 w-full flex justify-between items-center">
+            
             <a href="index.html" class="flex items-center gap-4 no-underline group shrink-0">
                 <img src="logo.png" alt="Logo" class="h-12 w-auto group-hover:rotate-6 transition-transform duration-500">
-                <span class="text-[26px] font-black tracking-tighter hidden sm:block font-nunito leading-none mt-1">
+                <span class="text-[24px] xl:text-[26px] font-black tracking-tighter hidden sm:block font-nunito leading-none mt-1">
                     <span class="text-bridge-mint">BRIDGE</span> <span class="text-bridge-earth font-bold">ACADEMY</span>
                 </span>
             </a>
 
-            <div class="hidden xl:flex items-center space-x-9">
+            <div class="hidden xl:flex items-center space-x-7">
                 <a href="about.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브랜드 소개</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">About</span></a>
                 <a href="program.html" class="group text-center flex flex-col items-center">
                     <span class="nav-link-main text-bridge-mint transition-colors">정규 프로그램</span>
                     <span class="nav-link-sub text-bridge-mint transition-colors">Regular</span>
                 </a>
                 <a href="special.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">특강 프로그램</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Special</span></a>
+                <a href="dashboard.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">AI 디지털 랩</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">AI Lab</span></a>
                 <a href="trial.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">체험 신청</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Trial</span></a>
                 <a href="location.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">지점 찾기</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Locations</span></a>
                 <a href="franchise.html" class="group text-center flex flex-col items-center"><span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">가맹 문의</span><span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Franchise</span></a>
@@ -113,7 +115,7 @@
                         <div class="w-20 h-20 bg-bridge-gold text-white rounded-[2rem] flex items-center justify-center text-3xl font-black shadow-lg mb-8 font-nunito">03</div>
                         <h3 class="text-3xl font-black text-bridge-charcoal mb-4 font-nunito uppercase">Sophomore : <span class="text-bridge-gold">IBL</span></h3>
                         <p class="text-bridge-gold font-black text-sm mb-8 uppercase tracking-widest font-nunito">Age: 6 Years +</p>
-                        <p class="text-gray-500 font-medium text-[15px] leading-relaxed break-keep mb-8">캐나다식 탐구 기반 학습. 아이 스스로 질문하고, 발표하며 진짜 영어 자신감을 길러주는 프리미엄 클래스입니다.</p>
+                        <p class="text-gray-500 font-medium text-[15px] leading-relaxed break-keep mb-8">글로벌 탐구 기반 학습(IBL). 아이 스스로 질문하고, 발표하며 진짜 영어 자신감을 길러주는 프리미엄 클래스입니다.</p>
                         <div class="grid grid-cols-2 gap-4 text-center">
                             <div class="bg-bridge-bg p-4 rounded-3xl border border-white shadow-sm font-nunito"><span class="block text-bridge-gold font-black mb-1">1주차</span><p class="text-[11px] font-bold text-gray-400">Wonder</p></div>
                             <div class="bg-bridge-bg p-4 rounded-3xl border border-white shadow-sm font-nunito"><span class="block text-bridge-gold font-black mb-1">2주차</span><p class="text-[11px] font-bold text-gray-400">Inquiry</p></div>
@@ -127,7 +129,7 @@
     </main>
 
     <footer class="py-24 bg-white border-t border-gray-100 text-center relative z-10 font-nunito">
-        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-bridge-earth italic">The First Bridge to Global Culture</p>
+        <p class="text-[10px] font-bold text-gray-300 uppercase tracking-widest">© 2026 BRIDGE ACADEMY. ALL RIGHTS RESERVED.</p>
     </footer>
     <script> document.querySelectorAll('.reveal').forEach(r => new IntersectionObserver(e => e.forEach(en => { if(en.isIntersecting) en.target.classList.add('active'); })).observe(r)); </script>
 </body>

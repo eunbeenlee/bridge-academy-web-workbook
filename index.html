@@ -14,11 +14,7 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { 
-                        sans: ['Pretendard', 'sans-serif'], 
-                        jua: ['Jua', 'sans-serif'],
-                        nunito: ['Nunito', 'sans-serif']
-                    },
+                    fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] },
                     colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } },
                     boxShadow: { 'premium': '0 30px 60px -15px rgba(125, 117, 109, 0.15)' }
                 }
@@ -31,11 +27,11 @@
         .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.19, 1, 0.22, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
         
-        /* [네비게이션 폰트 사이즈 완벽 고정] */
+        /* [네비게이션 폰트 사이즈] */
         .nav-link-main { font-size: 15px !important; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; }
         .nav-link-sub { font-family: 'Nunito', sans-serif; font-size: 9px !important; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.4; margin-top: 2px; }
         
-        /* [프리미엄 커리큘럼 테이블] */
+        /* [커리큘럼 테이블] */
         .curriculum-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 1.5rem; overflow: hidden; border: 1px solid #E9EDEA; background: #FFF; }
         .curriculum-table th { background-color: #F8FAFF; padding: 14px; font-size: 11px; font-weight: 900; color: #7D756D; text-transform: uppercase; border-bottom: 1px solid #E9EDEA; font-family: 'Nunito', sans-serif; letter-spacing: 1px; }
         .curriculum-table td { padding: 14px; text-align: center; font-size: 13px; font-weight: 700; color: #555; border-bottom: 1px solid #F1F3F1; }
@@ -48,16 +44,16 @@
 <body>
 
     <nav class="fixed w-full top-0 z-[2000] bg-white/90 backdrop-blur-xl border-b border-gray-100 h-[110px] flex items-center shadow-sm transition-all duration-500">
-        <div class="max-w-[1440px] mx-auto px-8 w-full flex justify-between items-center">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-8 w-full flex justify-between items-center">
             
             <a href="index.html" class="flex items-center gap-4 no-underline group shrink-0">
                 <img src="logo.png" alt="Logo" class="h-12 w-auto group-hover:rotate-6 transition-transform duration-500">
-                <span class="text-[26px] font-black tracking-tighter hidden sm:block font-nunito leading-none mt-1">
+                <span class="text-[24px] xl:text-[26px] font-black tracking-tighter hidden sm:block font-nunito leading-none mt-1">
                     <span class="text-bridge-mint">BRIDGE</span> <span class="text-bridge-earth font-bold">ACADEMY</span>
                 </span>
             </a>
 
-            <div class="hidden xl:flex items-center space-x-9">
+            <div class="hidden xl:flex items-center space-x-7">
                 <a href="about.html" class="group text-center flex flex-col items-center">
                     <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">브랜드 소개</span>
                     <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">About</span>
@@ -70,6 +66,12 @@
                     <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">특강 프로그램</span>
                     <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Special</span>
                 </a>
+                
+                <a href="dashboard.html" class="group text-center flex flex-col items-center">
+                    <span class="nav-link-main text-bridge-mint transition-colors">AI 디지털 랩</span>
+                    <span class="nav-link-sub text-bridge-mint transition-colors">AI Lab</span>
+                </a>
+
                 <a href="trial.html" class="group text-center flex flex-col items-center">
                     <span class="nav-link-main text-bridge-charcoal group-hover:text-bridge-mint transition-colors">체험 신청</span>
                     <span class="nav-link-sub text-bridge-earth group-hover:text-bridge-mint transition-colors">Trial</span>
@@ -106,17 +108,15 @@
             
             <div class="relative z-10 w-full max-w-6xl mx-auto">
                 <span class="inline-block py-2 px-6 rounded-full bg-bridge-mint/10 text-bridge-mint font-black text-[12px] uppercase tracking-[0.4em] mb-10 shadow-sm reveal font-nunito border border-bridge-mint/20">Premium Baby & Toddler Education</span>
-                
                 <h1 class="font-jua text-5xl md:text-7xl lg:text-[7.5rem] leading-[1.15] text-bridge-charcoal mb-12 reveal tracking-tight drop-shadow-sm">
                     우리 아이의 첫 영어,<br>
                     <span class="text-bridge-mint">머리가 아닌 오감으로</span><br>
                     기억하게 해주세요.
                 </h1>
-                
                 <p class="text-gray-500 text-lg lg:text-xl font-medium max-w-4xl mx-auto leading-relaxed reveal mb-16 break-keep">
                     부산에서 만나는 북미 명문 사립학교의 철학.<br>질문하고 상상하는 아이들을 위한 혁신적인 프리미엄 탐구 플랫폼입니다.
                 </p>
-                <div class="reveal flex flex-col sm:flex-row justify-center gap-6">
+                <div class="reveal flex justify-center">
                     <a href="trial.html" class="bg-bridge-mint text-white font-black px-14 py-6 rounded-[3.5rem] text-[16px] uppercase tracking-widest hover:scale-105 hover:shadow-2xl hover:shadow-bridge-mint/40 transition-all duration-500">
                         프리미엄 체험 수업 신청 →
                     </a>
@@ -200,7 +200,7 @@
                     <div class="grid lg:grid-cols-3 gap-8">
                         <div class="bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-white">
                             <h5 class="font-black text-xl text-bridge-charcoal mb-2 font-nunito">Phase 1. Animals & Nature</h5>
-                            <p class="text-bridge-mint font-black text-[12px] mb-4">7~12개월 (첫 오감의 문을 열어요)</p>
+                            <p class="text-bridge-mint font-black text-[12px] mb-4">7~12개월</p>
                             <table class="curriculum-table shadow-sm">
                                 <thead><tr><th>Week</th><th>Theme</th><th>Material</th></tr></thead>
                                 <tbody>
@@ -213,7 +213,7 @@
                         </div>
                         <div class="bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-white">
                             <h5 class="font-black text-xl text-bridge-charcoal mb-2 font-nunito">Phase 2. Colors & Shapes</h5>
-                            <p class="text-[#7CA6C1] font-black text-[12px] mb-4">13~18개월 (인지와 소근육 폭발)</p>
+                            <p class="text-[#7CA6C1] font-black text-[12px] mb-4">13~18개월</p>
                             <table class="curriculum-table shadow-sm">
                                 <thead><tr><th>Week</th><th>Theme</th><th>Material</th></tr></thead>
                                 <tbody>
@@ -226,7 +226,7 @@
                         </div>
                         <div class="bg-[#F8FAFF] p-8 rounded-[2.5rem] border border-white">
                             <h5 class="font-black text-xl text-bridge-charcoal mb-2 font-nunito">Phase 3. Action & Body</h5>
-                            <p class="text-bridge-earth font-black text-[12px] mb-4">19~23개월 (온몸으로 영어를 표현해요)</p>
+                            <p class="text-bridge-earth font-black text-[12px] mb-4">19~23개월</p>
                             <table class="curriculum-table shadow-sm">
                                 <thead><tr><th>Week</th><th>Theme</th><th>Equip</th></tr></thead>
                                 <tbody>
@@ -239,54 +239,57 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="grid lg:grid-cols-2 gap-10">
-                    <div class="bg-white p-12 lg:p-16 rounded-[4rem] border border-gray-100 shadow-premium hover-lift reveal">
-                        <div class="w-20 h-20 bg-[#7CA6C1] text-white rounded-[2rem] flex items-center justify-center text-3xl font-black shadow-lg mb-8 font-nunito">02</div>
-                        <h3 class="text-3xl font-black text-bridge-charcoal mb-4 font-nunito uppercase">Freshman : <span class="text-[#7CA6C1]">Project Art</span></h3>
-                        <p class="text-[#7CA6C1] font-black text-sm mb-8 uppercase tracking-widest font-nunito">Age: 4 ~ 5 Years</p>
-                        <p class="text-gray-500 font-medium text-[15px] leading-relaxed break-keep mb-10">명화 기반 통합 미술교육. 동, 서양 화가들의 그림을 통해 예술적인 감각을 높이고 창의력을 발달시킵니다. AI 캔버스를 통해 자신이 본 것을 구체화하고 첫 영어 대화를 시작합니다.</p>
-                        <div class="p-8 bg-[#F8FAFF] rounded-[2.5rem] border border-white text-center">
-                            <i class="fa-solid fa-palette text-5xl text-[#7CA6C1] mb-4"></i>
-                            <h5 class="font-black text-bridge-charcoal font-nunito">Visual Discovery Focus</h5>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-12 lg:p-16 rounded-[4rem] border border-gray-100 shadow-premium hover-lift reveal" style="transition-delay: 100ms;">
-                        <div class="w-20 h-20 bg-bridge-gold text-white rounded-[2rem] flex items-center justify-center text-3xl font-black shadow-lg mb-8 font-nunito">03</div>
-                        <h3 class="text-3xl font-black text-bridge-charcoal mb-4 font-nunito uppercase">Sophomore : <span class="text-bridge-gold">IBL</span></h3>
-                        <p class="text-bridge-gold font-black text-sm mb-8 uppercase tracking-widest font-nunito">Age: 6 Years +</p>
-                        <p class="text-gray-500 font-medium text-[15px] leading-relaxed break-keep mb-8">캐나다식 탐구 기반 학습(Inquiry Based Learning). 아이 스스로 질문하고, 탐구하고, 발표하며 진짜 영어 자신감을 길러주는 4주 완성 프리미엄 클래스입니다.</p>
-                        <div class="grid grid-cols-2 gap-4 text-center">
-                            <div class="bg-bridge-bg p-4 rounded-3xl border border-white shadow-sm"><span class="block text-bridge-gold font-black mb-1 font-nunito">1주차</span><p class="text-[11px] font-bold text-gray-500">Wonder & Story</p></div>
-                            <div class="bg-bridge-bg p-4 rounded-3xl border border-white shadow-sm"><span class="block text-bridge-gold font-black mb-1 font-nunito">2주차</span><p class="text-[11px] font-bold text-gray-500">Inquiry & Gather</p></div>
-                            <div class="bg-bridge-bg p-4 rounded-3xl border border-white shadow-sm"><span class="block text-bridge-gold font-black mb-1 font-nunito">3주차</span><p class="text-[11px] font-bold text-gray-500">Hands-on Board</p></div>
-                            <div class="bg-bridge-bg p-4 rounded-3xl border border-white shadow-sm"><span class="block text-bridge-gold font-black mb-1 font-nunito">4주차</span><p class="text-[11px] font-bold text-gray-500">Show & Tell</p></div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </section>
 
-        <section class="py-40 bg-bridge-charcoal text-white rounded-t-[5rem] lg:rounded-t-[8rem]">
-            <div class="max-w-[1200px] mx-auto px-6 text-center reveal">
-                <div class="w-24 h-24 bg-bridge-mint/10 rounded-full flex items-center justify-center mx-auto mb-10 border border-bridge-mint/20">
-                    <i class="fa-solid fa-wand-magic-sparkles text-bridge-mint text-4xl"></i>
+        <section class="py-32 bg-bridge-charcoal text-white rounded-[4rem] mx-4 lg:mx-8 my-10 overflow-hidden relative shadow-2xl">
+            <div class="absolute inset-0 opacity-20 pointer-events-none">
+                <div class="absolute top-[-20%] right-[-10%] w-[500px] h-[500px] bg-bridge-mint/40 rounded-full blur-[100px]"></div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center relative z-10">
+                <div class="reveal">
+                    <span class="text-bridge-mint font-black text-[12px] uppercase tracking-[0.4em] mb-6 block font-nunito">World's First IBL + AI</span>
+                    <h2 class="text-4xl lg:text-6xl font-black mb-10 font-jua leading-tight tracking-wide">
+                        아이의 상상이<br>데이터가 되는 <span class="text-bridge-mint font-nunito italic pr-2">AI Workbook</span>
+                    </h2>
+                    <p class="text-gray-400 font-medium text-lg mb-12 break-keep leading-relaxed">
+                        브릿지 아카데미의 AI는 단순한 채점기가 아닙니다. 구글 최신 Gemini 3.0 모델이 아이의 음성과 드로잉 궤적을 실시간으로 분석하여 논리적이고 따뜻한 칭찬을 건넵니다. 학원에서의 탐구가 집에서도 그대로 이어집니다.
+                    </p>
+                    
+                    <div class="space-y-8 mb-12">
+                        <div class="flex gap-6 items-center">
+                            <div class="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center shrink-0 border border-white/20"><i class="fa-solid fa-microphone-lines text-bridge-mint text-xl"></i></div>
+                            <div>
+                                <h4 class="text-xl font-black font-jua mb-1 text-white">실시간 음성 분석 튜터</h4>
+                                <p class="text-gray-400 text-sm font-bold">아이의 발화 자신감과 유창성을 다각도로 분석합니다.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6 items-center">
+                            <div class="w-14 h-14 bg-white/10 rounded-full flex items-center justify-center shrink-0 border border-white/20"><i class="fa-solid fa-wand-magic-sparkles text-[#7CA6C1] text-xl"></i></div>
+                            <div>
+                                <h4 class="text-xl font-black font-jua mb-1 text-white">디지털 캔버스 궤적 트래킹</h4>
+                                <p class="text-gray-400 text-sm font-bold">손으로 그린 그림과 선을 인식하여 연관된 피드백을 제공합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="dashboard.html" class="inline-flex bg-bridge-mint text-white font-black px-10 py-5 rounded-[2rem] text-[15px] uppercase tracking-widest hover:bg-white hover:text-bridge-charcoal transition-all shadow-lg hover:scale-105 font-nunito">
+                        AI 디지털 랩 체험하기 <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
                 </div>
-                <span class="text-bridge-mint font-black text-[13px] uppercase tracking-[0.5em] mb-6 block font-nunito">Interactive AI Lab</span>
-                <h2 class="text-5xl lg:text-7xl font-black text-white mb-10 tracking-tight font-nunito">Digital Transformation</h2>
-                <p class="text-gray-400 text-lg lg:text-xl font-light max-w-4xl mx-auto leading-relaxed mb-16 break-keep">
-                    브릿지 아카데미의 AI는 단순한 채점기가 아닙니다.<br>
-                    아이의 터치와 목소리를 실시간으로 분석하여 맞춤형 칭찬을 건네는 마법 같은 디지털 포털을 만나보세요.
-                </p>
-                <div class="flex flex-col md:flex-row justify-center gap-6">
-                    <a href="trial.html" class="inline-flex items-center justify-center bg-bridge-mint text-white font-black px-12 py-6 rounded-full text-[15px] uppercase tracking-widest hover:bg-white hover:text-bridge-charcoal transition-all duration-300 shadow-2xl hover:scale-105">
-                        프리미엄 체험 신청
-                    </a>
-                    <a href="dashboard.html" class="inline-flex items-center justify-center bg-transparent border-2 border-white/20 text-white font-black px-12 py-6 rounded-full text-[15px] uppercase tracking-widest hover:bg-white hover:text-bridge-charcoal transition-all duration-300 shadow-2xl">
-                        <i class="fa-solid fa-graduation-cap mr-3"></i> Student Portal
-                    </a>
+
+                <div class="reveal relative">
+                    <div class="bg-white/5 backdrop-blur-2xl p-8 rounded-[3.5rem] border border-white/10 shadow-2xl relative">
+                        <div class="absolute top-10 left-10 z-20 bg-bridge-charcoal/80 backdrop-blur-md px-5 py-2 rounded-full border border-white/20 flex items-center gap-3">
+                            <div class="w-2 h-2 rounded-full bg-bridge-mint animate-pulse"></div>
+                            <span class="text-white font-nunito font-bold text-[10px] tracking-widest uppercase">AI Analyzing...</span>
+                        </div>
+                        <div class="w-full h-[450px] bg-[#1E1E1E] rounded-[2.5rem] border-4 border-gray-800 flex flex-col items-center justify-center overflow-hidden relative">
+                            <i class="fa-solid fa-graduation-cap text-6xl text-white/20 mb-6"></i>
+                            <p class="font-nunito font-black text-white/40 tracking-widest text-lg">Student Portal Preview</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -298,10 +301,11 @@
             <img src="logo.png" alt="Logo" class="h-12 w-auto grayscale transition-all hover:grayscale-0">
             <span class="text-[25px] font-black font-nunito leading-none mt-1"><span class="text-bridge-mint">BRIDGE</span> <span class="text-bridge-earth font-bold">ACADEMY</span></span>
         </div>
-        <div class="flex flex-wrap justify-center gap-x-12 gap-y-6 mb-12 text-gray-400 font-black text-[11px] uppercase tracking-widest px-6 font-nunito">
+        <div class="flex flex-wrap justify-center gap-x-10 gap-y-6 mb-12 text-gray-400 font-black text-[11px] uppercase tracking-widest px-6 font-nunito">
             <a href="about.html" class="hover:text-bridge-mint transition">About</a>
             <a href="program.html" class="hover:text-bridge-mint transition">Program</a>
             <a href="special.html" class="hover:text-bridge-mint transition">Special</a>
+            <a href="dashboard.html" class="hover:text-bridge-mint transition">AI Lab</a>
             <a href="trial.html" class="hover:text-bridge-mint transition">Trial</a>
             <a href="location.html" class="hover:text-bridge-mint transition">Locations</a>
             <a href="franchise.html" class="hover:text-bridge-mint transition">Franchise</a>

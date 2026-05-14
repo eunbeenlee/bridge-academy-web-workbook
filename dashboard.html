@@ -12,142 +12,24 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
-<script>
-    // 1. 파이어베이스 설정값 (이미 입력됨)
-    const firebaseConfig = {
-        apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk",
-        authDomain: "bridge-academy-6d6a9.firebaseapp.com",
-        projectId: "bridge-academy-6d6a9",
-        storageBucket: "bridge-academy-6d6a9.firebasestorage.app",
-        messagingSenderId: "581314243350",
-        appId: "1:581314243350:web:57897ed73d787eb02efe37",
-        measurementId: "G-JV5H1V8X34"
-    };
-
-    // 2. 파이어베이스 초기화
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    // 3. [핵심] 로그인 감시자 (Login Guard)
-    // 이 코드가 script 태그 안에 있어야 정상 작동합니다.
-    auth.onAuthStateChanged(user => {
-        const loginSec = document.getElementById('loginSection');
-        const dashSec = document.getElementById('dashboardSection');
-        const navUserInfo = document.getElementById('nav-user-info');
-
-        if (user) {
-            // 로그인 상태: 대시보드 보여주기
-            loginSec.classList.add('hidden-section');
-            dashSec.classList.remove('hidden-section');
-            navUserInfo.classList.remove('hidden');
-            document.getElementById('nav-name').innerText = user.email.split('@')[0].toUpperCase();
-            
-            // 데이터 불러오기 시작
-            App.init(user.uid);
-        } else {
-            // 로그아웃 상태: 로그인 화면만 보여주기
-            loginSec.classList.remove('hidden-section');
-            dashSec.classList.add('hidden-section');
-            navUserInfo.classList.add('hidden');
-        }
-    });
-
-    // 4. 로그인 함수
-    async function handleLogin(e) {
-        e.preventDefault();
-        const email = document.getElementById('email').value;
-        const pw = document.getElementById('password').value;
-        const btn = document.getElementById('loginBtn');
-        const err = document.getElementById('error-msg');
-
-        btn.innerText = "Verifying...";
-        try {
-            await auth.signInWithEmailAndPassword(email, pw);
-        } catch (error) {
-            err.classList.remove('hidden');
-            btn.innerText = "로그인하기";
-            alert("로그인 실패: " + error.message);
-        }
-    }
-
-    // 5. 로그아웃 함수
-    function handleLogout() {
-        auth.signOut().then(() => {
-            alert("로그아웃 되었습니다.");
-        });
-    }
-
-    // 6. 대시보드 데이터 로직
-    const CURRICULUM = [
-        { id: "A-1", series: "A", theme: "All About Me", question: "나는 누구일까요?" },
-        { id: "A-2", series: "A", theme: "Little Crawlers", question: "곤충들의 세상은 어떨까?" },
-        { id: "B-1", series: "B", theme: "Me on the Map", question: "나는 어디에 살고 있을까?" }
-    ];
-
-    const App = {
-        currentFilter: 'ALL',
-        uid: null,
-        progressData: {},
-
-        async init(uid) {
-            this.uid = uid;
-            await this.fetchProgress();
-            this.render();
-        },
-
-        async fetchProgress() {
-            try {
-                const snapshot = await db.collection("students").doc(this.uid).get();
-                if (snapshot.exists) {
-                    this.progressData = snapshot.data();
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] },
+                    colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } }
                 }
-            } catch (e) { console.log("DB Fetch Error:", e); }
-        },
-
-        filter(f) {
-            this.currentFilter = f;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            if (event) event.target.classList.add('active');
-            this.render();
-        },
-
-        render() {
-            const roadmap = document.getElementById('roadmap');
-            roadmap.innerHTML = "";
-            const items = CURRICULUM.filter(d => this.currentFilter === 'ALL' || d.series === this.currentFilter);
-            
-            items.forEach(t => {
-                const card = document.createElement('div');
-                card.className = `workbook-card series-${t.series}`;
-                card.onclick = () => { window.location.href = `workbook.html?id=${t.id}`; };
-                
-                const progress = (t.id === "A-1") ? (this.progressData.page ? Math.min(Math.round((this.progressData.page / 17) * 100), 100) : 0) : 0;
-
-                card.innerHTML = `
-                    <div class="card-accent"></div>
-                    <div class="p-8">
-                        <div class="unit-badge">UNIT ${t.id}</div>
-                        <h2 class="theme-h2 text-xl font-bold mt-2">${t.theme}</h2>
-                        <p class="text-sm text-gray-400 font-medium mb-8">"${t.question}"</p>
-                        <div class="flex items-center justify-between mt-auto">
-                            <span class="text-[11px] font-black text-bridge-charcoal tracking-widest uppercase">Start adventure →</span>
-                            <div class="flex items-center gap-2">
-                                <span class="text-[10px] font-bold text-bridge-mint">${progress}%</span>
-                                <div class="w-12 h-1 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-bridge-mint" style="width:${progress}%"></div></div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                roadmap.appendChild(card);
-            });
+            }
         }
-    };
-</script>
+    </script>
 
     <style>
         /* ======================================================================
-         * [CSS Variables & Design Tokens - V23 Merged Theme]
+         * [CSS Variables & Design Tokens - V100.8 Premium Theme]
          * ====================================================================== */
         :root {
             --bridge-mint: #91D3B4; 
@@ -181,17 +63,33 @@
         button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
 
         /* ======================================================================
-         * [View Transitions & Login Form Styles]
+         * [View Transitions & Premium Login Form Styles]
          * ====================================================================== */
-        .fade-transition { transition: opacity 0.5s ease, transform 0.5s ease; }
-        .fade-out { opacity: 0; transform: translateY(-20px); pointer-events: none; position: absolute; width: 100%; visibility: hidden; }
-        .fade-in { opacity: 1; transform: translateY(0); position: relative; visibility: visible; }
+        .fade-transition { transition: opacity 0.6s var(--ease-silk), transform 0.6s var(--ease-silk); }
+        .fade-out { opacity: 0; transform: translateY(-20px) scale(0.98); pointer-events: none; position: absolute; width: 100%; visibility: hidden; }
+        .fade-in { opacity: 1; transform: translateY(0) scale(1); position: relative; visibility: visible; }
         
-        .input-premium { width: 100%; padding: 1.25rem 1.5rem; background-color: #F8FAFF; border: 2px solid transparent; border-radius: 1.5rem; font-size: 1rem; font-weight: 700; color: #475569; transition: all 0.3s; outline: none; font-family: 'Pretendard', sans-serif; }
-        .input-premium:focus { border-color: var(--bridge-mint); background-color: #FFFFFF; box-shadow: 0 10px 25px -5px rgba(145, 211, 180, 0.2); }
+        .input-premium { 
+            width: 100%; 
+            padding: 1.25rem 1.5rem 1.25rem 3.5rem; 
+            background-color: #F8FAFF; 
+            border: 2px solid transparent; 
+            border-radius: 1.25rem; 
+            font-size: 1rem; 
+            font-weight: 700; 
+            color: var(--bridge-charcoal); 
+            transition: all 0.3s var(--ease-silk); 
+            outline: none; 
+            font-family: 'Pretendard', sans-serif; 
+        }
+        .input-premium:focus { 
+            border-color: var(--bridge-mint); 
+            background-color: #FFFFFF; 
+            box-shadow: 0 10px 25px -5px rgba(145, 211, 180, 0.25); 
+        }
 
         /* ======================================================================
-         * [Original Dashboard Styles (Re-themed with Jua & Nunito)]
+         * [Original Dashboard Styles (Re-themed)]
          * ====================================================================== */
         .dashboard-bg {
             background-image: 
@@ -381,7 +279,7 @@
         <div class="max-w-[1440px] mx-auto px-6 lg:px-8 w-full flex justify-between items-center">
             
             <a href="index.html" class="flex items-center gap-4 no-underline group shrink-0">
-                <img src="logo.png" alt="Logo" class="h-10 w-auto group-hover:rotate-6 transition-transform duration-500">
+                <img src="logo.png" alt="Logo" class="h-10 w-auto group-hover:rotate-6 transition-transform duration-500" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3074/3074058.png'">
                 <span class="text-[20px] font-black tracking-tighter hidden sm:block font-nunito leading-none mt-1">
                     <span class="text-bridge-mint">BRIDGE</span> <span class="text-bridge-earth font-bold">PORTAL</span>
                 </span>
@@ -389,7 +287,7 @@
 
             <div class="flex items-center shrink-0 gap-4">
                 <a href="index.html" class="text-gray-400 hover:text-bridge-mint text-sm font-bold transition flex items-center gap-2 font-sans bg-gray-50 px-5 py-2.5 rounded-full border border-gray-100 shadow-sm">
-                    <i class="fa-solid fa-house"></i> 홈페이지로 <span class="hidden sm:inline">돌아가기</span>
+                    <i class="fa-solid fa-house"></i> <span class="hidden sm:inline">홈페이지로 돌아가기</span>
                 </a>
             </div>
         </div>
@@ -397,53 +295,70 @@
 
     <main class="flex-1 w-full pt-[90px] relative">
 
-        <section id="loginSection" class="fade-in min-h-[calc(100vh-90px)] flex items-center justify-center py-12 px-4 relative overflow-hidden bg-bridge-charcoal">
-            <div class="absolute inset-0 z-0 opacity-20 pointer-events-none">
-                <div class="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-bridge-mint/50 rounded-full blur-[120px]"></div>
-                <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-[#7CA6C1]/40 rounded-full blur-[120px]"></div>
+        <section id="loginSection" class="fade-transition min-h-[calc(100vh-90px)] flex items-center justify-center px-4 relative overflow-hidden" style="background-color: #363431;">
+            
+            <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                <div class="absolute -top-[20%] -left-[10%] w-[600px] h-[600px] rounded-full blur-[150px] opacity-20" style="background-color: #CBAE75;"></div>
+                <div class="absolute -bottom-[20%] -right-[10%] w-[600px] h-[600px] rounded-full blur-[150px] opacity-10" style="background-color: #91D3B4;"></div>
             </div>
 
-            <div class="max-w-md w-full relative z-10">
-                <div class="bg-white p-10 md:p-14 rounded-[3.5rem] shadow-2xl border border-white text-center">
-                    <div class="mb-10">
-                        <div class="w-16 h-16 bg-bridge-mint/10 text-bridge-mint rounded-2xl mx-auto flex items-center justify-center text-3xl mb-6 border border-bridge-mint/20">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                        </div>
-                        <h2 class="text-3xl font-black text-bridge-charcoal font-jua">Student Portal</h2>
-                        <p class="text-sm font-bold text-gray-400 mt-2 font-nunito">Welcome back to Bridge Academy</p>
-                    </div>
-
-                    <form onsubmit="handleLogin(event)" class="space-y-6 text-left">
-                        <div>
-                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Student ID</label>
-                            <input type="text" id="student_id" placeholder="원생 아이디를 입력하세요" class="input-premium mt-2" required>
-                        </div>
-                        <div>
-                            <label class="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-2 font-nunito">Password</label>
-                            <input type="password" id="student_pw" placeholder="비밀번호" class="input-premium mt-2" required>
-                        </div>
-                        
-                        <div class="flex items-center justify-between px-2">
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-bridge-mint focus:ring-bridge-mint">
-                                <span class="text-xs font-bold text-gray-500">로그인 유지</span>
-                            </label>
-                            <a href="#" class="text-xs font-bold text-bridge-mint hover:underline">비밀번호 찾기</a>
-                        </div>
-
-                        <button type="submit" class="w-full bg-bridge-charcoal text-white font-black py-5 rounded-full text-[16px] shadow-lg flex items-center justify-center gap-3 font-jua tracking-wide hover:bg-bridge-mint transition-colors duration-300 mt-8">
-                            포털 접속하기 <i class="fa-solid fa-arrow-right-to-bracket text-sm mt-1"></i>
-                        </button>
-                    </form>
-                    
-                    <p class="text-[11px] font-bold text-gray-400 mt-8 break-keep">
-                        * 계정 정보는 오프라인 등원 시 원장님이 개별 부여해 드립니다. 임의의 아이디/비번을 입력하여 데모(Demo) 모드로 진입할 수 있습니다.
-                    </p>
+            <div class="max-w-md w-full bg-white p-10 md:p-14 rounded-[2.5rem] text-center relative z-10 transition-transform duration-700" 
+                 style="box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.8);">
+                
+                <div class="w-16 h-16 mx-auto flex items-center justify-center text-2xl mb-6 rounded-2xl bg-[#91D3B4]/15 text-[#91D3B4] border border-[#91D3B4]/30 shadow-inner">
+                    <i class="fa-solid fa-lock"></i>
                 </div>
+                
+                <h2 class="text-3xl font-black font-jua mb-2" style="color: #363431; letter-spacing: 0.5px;">Bridge Portal</h2>
+                <p class="text-[13px] font-bold mb-10 tracking-wide font-nunito" style="color: #CBAE75;">가맹점 전용 프리미엄 디지털 랩</p>
+                
+                <form onsubmit="handleLogin(event)" class="space-y-5 text-left">
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest pl-2 mb-2 font-nunito">Student ID</label>
+                        <div class="relative group">
+                            <i class="fa-solid fa-user absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#91D3B4] transition-colors"></i>
+                            <input type="text" id="student_id" placeholder="원생 아이디를 입력하세요" 
+                                   class="input-premium pl-12" required autocomplete="off">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest pl-2 mb-2 font-nunito">Password</label>
+                        <div class="relative group">
+                            <i class="fa-solid fa-key absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#91D3B4] transition-colors"></i>
+                            <input type="password" id="student_pw" placeholder="비밀번호" 
+                                   class="input-premium pl-12" required>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between px-2 pt-1 pb-2">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-[#91D3B4] focus:ring-[#91D3B4]">
+                            <span class="text-[11px] font-bold text-gray-500">로그인 유지</span>
+                        </label>
+                        <a href="#" class="text-[11px] font-bold text-[#91D3B4] hover:underline">비밀번호 찾기</a>
+                    </div>
+                    
+                    <button type="submit" id="loginBtn" 
+                            class="w-full flex items-center justify-center gap-3 text-white font-black py-[18px] rounded-full text-lg transition-all duration-300 mt-4 font-jua tracking-wide"
+                            style="background-color: #363431; box-shadow: 0 10px 25px rgba(54,52,49,0.3); cursor: pointer;"
+                            onmouseover="this.style.backgroundColor='#CBAE75'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(203,174,117,0.4)';"
+                            onmouseout="this.style.backgroundColor='#363431'; this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(54,52,49,0.3)';">
+                        포털 접속하기 <i class="fa-solid fa-arrow-right-to-bracket text-sm mt-[2px]"></i>
+                    </button>
+                </form>
+                
+                <p id="error-msg" class="text-[12px] font-bold mt-5 hidden text-[#E74C3C] bg-[#FFF0F0] py-3 px-4 rounded-xl text-left flex items-center gap-2">
+                    <i class="fa-solid fa-circle-exclamation"></i> 아이디 또는 비밀번호를 확인해주세요.
+                </p>
+
+                <p class="text-[11px] font-bold text-gray-400 mt-8 break-keep leading-relaxed">
+                    * 계정 정보는 오프라인 등원 시 원장님이 개별 부여해 드립니다. 데모 심사용 아이디를 입력해주세요.
+                </p>
             </div>
         </section>
 
-        <section id="dashboardSection" class="fade-out dashboard-bg hidden min-h-[calc(100vh-90px)] relative">
+        <section id="dashboardSection" class="fade-transition fade-out dashboard-bg hidden min-h-[calc(100vh-90px)] relative">
             <div class="creative-float cf-1">A</div>
             <div class="creative-float cf-2">?</div>
             <div class="creative-float cf-3">B</div>
@@ -484,182 +399,240 @@
 
     <script>
         // ======================================================================
-        // [Login / View Transition Logic]
+        // [1. Firebase Setup]
         // ======================================================================
-        function handleLogin(e) {
-            e.preventDefault(); 
+        const firebaseConfig = {
+            apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk",
+            authDomain: "bridge-academy-6d6a9.firebaseapp.com",
+            projectId: "bridge-academy-6d6a9",
+            storageBucket: "bridge-academy-6d6a9.firebasestorage.app",
+            messagingSenderId: "581314243350",
+            appId: "1:581314243350:web:57897ed73d787eb02efe37",
+            measurementId: "G-JV5H1V8X34"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // ======================================================================
+        // [2. Login Guard & Transitions]
+        // ======================================================================
+        auth.onAuthStateChanged(user => {
+            const loginSec = document.getElementById('loginSection');
+            const dashSec = document.getElementById('dashboardSection');
+
+            if (user) {
+                // 로그인 성공 -> 대시보드 표시
+                loginSec.classList.remove('fade-in');
+                loginSec.classList.add('fade-out');
+
+                setTimeout(() => {
+                    loginSec.style.display = 'none';
+                    dashSec.classList.remove('hidden');
+                    
+                    void dashSec.offsetWidth; // Reflow
+                    
+                    dashSec.classList.remove('fade-out');
+                    dashSec.classList.add('fade-in');
+                    
+                    // UID 기반으로 데이터 로드 시작
+                    App.init(user.uid, user.email);
+                }, 400);
+
+            } else {
+                // 로그아웃 상태 -> 로그인 창 표시
+                dashSec.classList.remove('fade-in');
+                dashSec.classList.add('fade-out');
+
+                setTimeout(() => {
+                    dashSec.classList.add('hidden');
+                    loginSec.style.display = 'flex';
+                    
+                    void loginSec.offsetWidth; // Reflow
+                    
+                    loginSec.classList.remove('fade-out');
+                    loginSec.classList.add('fade-in');
+                }, 400);
+            }
+        });
+
+        // ======================================================================
+        // [3. Auth Actions]
+        // ======================================================================
+        async function handleLogin(e) {
+            e.preventDefault();
             
             const idInput = document.getElementById('student_id').value.trim();
             const pwInput = document.getElementById('student_pw').value.trim();
-            
-            // 로그인 아이디를 앱 내부의 이름으로 전달 (Demo 목적)
-            if (idInput) {
-                // 임시로 localStorage 에 이름 세팅 (A-1 유닛 기준)
-                const saved = JSON.parse(localStorage.getItem(`br_v100_A-1`) || "{}");
+            const btn = document.getElementById('loginBtn');
+            const err = document.getElementById('error-msg');
+
+            // [KIBO 핵심 매핑 기술] 
+            // 아이디만 입력해도 자동으로 @bridge.com 을 붙여 구글 서버 인증을 통과시킴
+            const email = idInput.includes('@') ? idInput : `${idInput}@bridge.com`;
+
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> 접속 중...`;
+            err.classList.add('hidden');
+
+            try {
+                // Firebase 인증 요청
+                await auth.signInWithEmailAndPassword(email, pwInput);
+                
+                // Demo 목적: 로컬스토리지에도 학생 이름 연동
+                const saved = JSON.parse(localStorage.getItem(`br_v105_A-1`) || "{}");
                 saved.name = idInput;
-                localStorage.setItem(`br_v100_A-1`, JSON.stringify(saved));
+                localStorage.setItem(`br_v105_A-1`, JSON.stringify(saved));
+
+            } catch (error) {
+                console.error("Login Fail:", error.message);
+                err.classList.remove('hidden');
+                btn.innerHTML = `포털 접속하기 <i class="fa-solid fa-arrow-right-to-bracket text-sm mt-[2px]"></i>`;
             }
-
-            const loginSec = document.getElementById('loginSection');
-            const dashSec = document.getElementById('dashboardSection');
-
-            // 1. 로그인 페이드 아웃
-            loginSec.classList.remove('fade-in');
-            loginSec.classList.add('fade-out');
-
-            // 2. 대시보드 페이드 인
-            setTimeout(() => {
-                loginSec.style.display = 'none'; // 숨김 처리
-                dashSec.classList.remove('hidden');
-                
-                // 리플로우 강제 발생 (display block 적용 후 애니메이션을 위해)
-                void dashSec.offsetWidth; 
-                
-                dashSec.classList.remove('fade-out');
-                dashSec.classList.add('fade-in');
-                
-                // 대시보드 로직 초기화
-                App.init();
-            }, 300);
         }
 
         function handleLogout() {
-            const loginSec = document.getElementById('loginSection');
-            const dashSec = document.getElementById('dashboardSection');
-
-            dashSec.classList.remove('fade-in');
-            dashSec.classList.add('fade-out');
-
-            setTimeout(() => {
-                dashSec.classList.add('hidden');
-                loginSec.style.display = 'flex';
-                
-                void loginSec.offsetWidth;
-                
-                loginSec.classList.remove('fade-out');
-                loginSec.classList.add('fade-in');
-                
+            auth.signOut().then(() => {
                 document.getElementById('student_id').value = '';
                 document.getElementById('student_pw').value = '';
-            }, 300);
+                document.getElementById('error-msg').classList.add('hidden');
+            });
         }
 
         // ======================================================================
-        // [Curriculum Database]
+        // [4. Dashboard Core App]
         // ======================================================================
-        const DB = [
-            { unit: "A1", series: "A", theme: "All About Me", question: "나는 누구일까요?", id: "A-1" },
-            { unit: "A2", series: "A", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?", id: "A-2" },
-            { unit: "A3", series: "A", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?", id: "A-3" },
-            { unit: "A4", series: "A", theme: "Under the Sea", question: "바다 밑에는 누가 살고 있을까?", id: "A-4" },
-            { unit: "A5", series: "A", theme: "Colors of Weather", question: "날씨에도 색깔이 있을까?", id: "A-5" },
-            { unit: "A6", series: "A", theme: "Space Adventure", question: "달나라 소풍을 가면 무엇이 필요할까?", id: "A-6" },
-            { unit: "B1", series: "B", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?", id: "B-1" },
-            { unit: "B2", series: "B", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?", id: "B-2" },
-            { unit: "B3", series: "B", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?", id: "B-3" },
-            { unit: "B4", series: "B", theme: "Water Wonders", question: "무거운 배는 어떻게 물에 뜰까?", id: "B-4" },
-            { unit: "B5", series: "B", theme: "Inside My Body", question: "밥을 먹으면 배 속에서 무슨 일이 생길까?", id: "B-5" },
-            { unit: "B6", series: "B", theme: "Little Inventors", question: "아이디어를 어떻게 진짜로 만들까?", id: "B-6" }
+        const CURRICULUM = [
+            { id: "A-1", series: "A", theme: "All About Me", question: "나는 누구일까요?" },
+            { id: "A-2", series: "A", theme: "Little Crawlers", question: "작은 곤충들의 세상은 어떨까?" },
+            { id: "A-3", series: "A", theme: "My Super Family", question: "우리 가족은 어떤 초능력이 있을까?" },
+            { id: "A-4", series: "A", theme: "Under the Sea", question: "바다 밑에는 누가 살고 있을까?" },
+            { id: "A-5", series: "A", theme: "Colors of Weather", question: "날씨에도 색깔이 있을까?" },
+            { id: "A-6", series: "A", theme: "Space Adventure", question: "달나라 소풍을 가면 무엇이 필요할까?" },
+            { id: "B-1", series: "B", theme: "Me on the Map", question: "나는 세상 어디에 살고 있을까?" },
+            { id: "B-2", series: "B", theme: "How Things Grow", question: "아주 작은 씨앗은 어떻게 꽃이 될까?" },
+            { id: "B-3", series: "B", theme: "Animal Homes", question: "동물들은 왜 각자 다른 집에 살까?" },
+            { id: "B-4", series: "B", theme: "Water Wonders", question: "무거운 배는 어떻게 물에 뜰까?" },
+            { id: "B-5", series: "B", theme: "Inside My Body", question: "밥을 먹으면 배 속에서 무슨 일이 생길까?" },
+            { id: "B-6", series: "B", theme: "Little Inventors", question: "아이디어를 어떻게 진짜로 만들까?" }
         ];
 
-        // ======================================================================
-        // [Application Logic]
-        // ======================================================================
         const App = {
             currentFilter: 'ALL',
-            studentData: {}, 
+            uid: null,
+            studentData: {},
 
-            init() { 
-                this.loadStudentData();
-                this.updateProfileUI();
+            async init(uid, emailStr) { 
+                this.uid = uid;
+                
+                // 프로필 이름 세팅 (이메일 앞부분 추출)
+                const displayName = emailStr.split('@')[0].toUpperCase();
+                
+                // 1. 기존 로컬 데이터 로드 (호환성 유지)
+                this.loadLocalData();
+                
+                // 2. 파이어베이스 클라우드 데이터 로드 (동기화)
+                await this.fetchCloudData();
+
+                // 3. UI 업데이트
+                this.updateProfileUI(displayName);
                 this.render(); 
                 
                 setTimeout(() => {
-                    if(this.studentData['A-1'] && this.studentData['A-1'].name) {
-                        this.celebrate(true);
-                    }
+                    this.celebrate(true);
                 }, 1000);
             },
 
-            loadStudentData() {
-                DB.forEach(item => {
-                    const saved = localStorage.getItem(`br_v100_${item.id}`);
+            loadLocalData() {
+                CURRICULUM.forEach(item => {
+                    const saved = localStorage.getItem(`br_v105_${item.id}`);
                     if(saved) {
-                        try {
-                            this.studentData[item.id] = JSON.parse(saved);
-                        } catch(e) {}
+                        try { this.studentData[item.id] = JSON.parse(saved); } catch(e) {}
                     }
                 });
             },
 
-            updateProfileUI() {
-                const mainData = this.studentData['A-1'];
-                
-                if (mainData && mainData.name) {
-                    const firstName = mainData.name.split(' ')[0];
-                    
-                    const widget = document.getElementById('profile-widget');
-                    widget.classList.add('active');
-                    document.getElementById('nav-name').innerText = mainData.name;
-                    document.getElementById('nav-avatar').innerText = mainData.name.charAt(0).toUpperCase();
-                    
-                    document.getElementById('hero-title').innerHTML = `Welcome back to your <br><span class="highlight italic-gold font-nunito pr-2">Private Lab,</span> ${firstName}.`;
-                    document.getElementById('hero-subtitle').innerHTML = `마법 같은 캔버스와 AI 선생님이 기다리고 있습니다.<br><strong>${firstName}</strong>만의 멋진 탐구 여정을 계속해볼까요?`;
-
-                    let allBadges = [];
-                    Object.values(this.studentData).forEach(data => {
-                        if(data.badges && Array.isArray(data.badges)) {
-                            allBadges = allBadges.concat(data.badges);
+            async fetchCloudData() {
+                try {
+                    // 클라우드에서 학생 진도율 병합
+                    const snapshot = await db.collection("students").doc(this.uid).get();
+                    if (snapshot.exists) {
+                        const cloudData = snapshot.data();
+                        if(cloudData.page) {
+                            if(!this.studentData['A-1']) this.studentData['A-1'] = {};
+                            this.studentData['A-1'].page = cloudData.page;
+                            this.studentData['A-1'].badges = cloudData.badges || [];
                         }
-                    });
-
-                    const uniqueBadges = [...new Set(allBadges)];
-                    if (uniqueBadges.length > 0) {
-                        const showcase = document.getElementById('badge-showcase');
-                        const list = document.getElementById('badge-list');
-                        showcase.style.display = 'flex';
-                        list.innerHTML = '';
-                        
-                        uniqueBadges.forEach(badge => {
-                            const bEl = document.createElement('div');
-                            bEl.className = 'badge-item';
-                            bEl.innerText = badge;
-                            list.appendChild(bEl);
-                        });
                     }
+                } catch (e) { console.log("Cloud Fetch Error:", e); }
+            },
+
+            updateProfileUI(displayName) {
+                const widget = document.getElementById('profile-widget');
+                widget.classList.add('active');
+                
+                document.getElementById('nav-name').innerText = displayName;
+                document.getElementById('nav-avatar').innerText = displayName.charAt(0);
+                
+                document.getElementById('hero-title').innerHTML = `Welcome back to your <br><span class="highlight italic-gold font-nunito pr-2">Private Lab,</span> ${displayName}.`;
+                document.getElementById('hero-subtitle').innerHTML = `마법 같은 캔버스와 AI 선생님이 기다리고 있습니다.<br><strong>${displayName}</strong>만의 멋진 탐구 여정을 계속해볼까요?`;
+
+                // 배지 렌더링
+                let allBadges = [];
+                Object.values(this.studentData).forEach(data => {
+                    if(data.badges && Array.isArray(data.badges)) {
+                        allBadges = allBadges.concat(data.badges);
+                    }
+                });
+
+                const uniqueBadges = [...new Set(allBadges)];
+                if (uniqueBadges.length > 0) {
+                    const showcase = document.getElementById('badge-showcase');
+                    const list = document.getElementById('badge-list');
+                    showcase.style.display = 'flex';
+                    list.innerHTML = '';
+                    
+                    uniqueBadges.forEach(badge => {
+                        const bEl = document.createElement('div');
+                        bEl.className = 'badge-item';
+                        bEl.innerText = badge;
+                        list.appendChild(bEl);
+                    });
                 }
             },
 
             filter(f) { 
                 this.currentFilter = f; 
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                document.getElementById(`f-${f}`).classList.add('active');
+                
+                // 이벤트 타겟이 있으면 해당 버튼 액티브
+                if (event && event.target) {
+                    event.target.classList.add('active');
+                } else {
+                    document.getElementById(`f-${f}`).classList.add('active');
+                }
                 
                 this.render();
 
-                // 오토 스크롤: 헤더 높이를 감안하여 그리드 상단으로 정확히 이동
                 const roadmapEl = document.getElementById('roadmap');
-                const headerHeight = document.querySelector('nav').offsetHeight;
+                const headerHeight = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 90;
                 const offsetPosition = roadmapEl.getBoundingClientRect().top + window.scrollY - headerHeight - 30;
                 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
             },
 
             render() {
                 const roadmap = document.getElementById('roadmap');
                 roadmap.innerHTML = "";
                 
-                const items = DB.filter(d => this.currentFilter === 'ALL' || d.series === this.currentFilter);
+                const items = CURRICULUM.filter(d => this.currentFilter === 'ALL' || d.series === this.currentFilter);
                 
                 items.forEach((t, index) => {
                     const card = document.createElement('div');
                     card.className = `workbook-card series-${t.series}`;
                     card.style.animationDelay = `${index * 0.05}s`;
                     
-                    // 실제 워크북(포털)로 이동하는 로직 (workbook.html 파일이 있다는 가정)
+                    // 워크북 이동 (UID 연동)
                     card.onclick = () => { window.location.href = `workbook.html?id=${t.id}`; };
                     
                     let progressUI = '';

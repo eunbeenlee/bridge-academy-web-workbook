@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bridge Academy | Premium AI Lab V100.6 (Enterprise)</title>
+    <title>Bridge Academy | Premium AI Lab V100.7 (Enterprise Cloud)</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@300;500;700;900&display=swap" rel="stylesheet">
     
@@ -11,6 +11,9 @@
     <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <style>
         /* ======================================================================
@@ -1064,12 +1067,25 @@
     <script>
         /**
          * [System Configuration & API Setup]
+         * (수정됨) 원장님의 Firebase 설정값을 추가했습니다.
          */
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
-            // 🚨 원장님의 구글 Cloud Vision API 키를 여기에 입력하세요. (KIBO 시연용)
-            GOOGLE_API_KEY: "AIzaSyDofQFS8_KaD4kwzArYfBQw4oG4kvkZNrk"
+            GOOGLE_API_KEY: "AIzaSyDofQFS8_KaD4kwzArYfBQw4oG4kvkZNrk",
+            FIREBASE_CONFIG: {
+                apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk",
+                authDomain: "bridge-academy-6d6a9.firebaseapp.com",
+                projectId: "bridge-academy-6d6a9",
+                storageBucket: "bridge-academy-6d6a9.firebasestorage.app",
+                messagingSenderId: "581314243350",
+                appId: "1:581314243350:web:57897ed73d787eb02efe37",
+                measurementId: "G-JV5H1V8X34"
+            }
         };
+
+        // Firebase 초기화 (호환 라이브러리 사용)
+        firebase.initializeApp(CONFIG.FIREBASE_CONFIG);
+        const db = firebase.firestore();
 
         /**
          * Global Application State Management
@@ -1094,7 +1110,8 @@
         };
 
         /**
-         * Storage Engine for Local Data Persistence
+         * Storage Engine for Local & Cloud Data Persistence
+         * (수정됨) 이제 데이터가 로컬과 구글 클라우드에 동시에 저장됩니다!
          */
         const StorageEngine = {
             save() { 
@@ -1104,38 +1121,50 @@
                     page: STATE.currentPage, 
                     badges: STATE.badges 
                 };
+                // 로컬 백업
                 localStorage.setItem(`br_v105_${STATE.id}`, JSON.stringify(stateData)); 
+
+                // 클라우드 저장 (학생 기본 정보)
+                db.collection("students").doc(STATE.id).set({
+                    ...stateData,
+                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true }).catch(e => console.error("Cloud Save Error:", e));
             },
             
             load() {
                 const s = JSON.parse(localStorage.getItem(`br_v105_${STATE.id}`) || "{}");
                 
-                if (s.name) {
-                    STATE.studentName = s.name; 
-                }
-                if (s.reg) {
-                    STATE.isNameRegistered = s.reg; 
-                }
-                if (s.page) {
-                    STATE.currentPage = s.page; 
-                }
-                if (s.badges) {
-                    STATE.badges = s.badges;
-                }
+                if (s.name) STATE.studentName = s.name; 
+                if (s.reg) STATE.isNameRegistered = s.reg; 
+                if (s.page) STATE.currentPage = s.page; 
+                if (s.badges) STATE.badges = s.badges;
             },
             
             saveCanvas() {
-                if (!CanvasEngine.cvs) {
-                    return;
-                }
-                const canvasData = CanvasEngine.cvs.toDataURL();
+                if (!CanvasEngine.cvs) return;
+                
+                // 최적화된 WebP 포맷으로 용량 압축 후 저장
+                const canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.5);
+                
+                // 로컬 백업
                 localStorage.setItem(`br_cvs_${STATE.id}_${STATE.currentPage}`, canvasData);
+
+                // 클라우드 저장 (실시간 그림, 음성 텍스트, 점수 데이터)
+                db.collection("student_drawings").doc(`${STATE.id}_P${STATE.currentPage}`).set({
+                    studentID: STATE.id,
+                    page: STATE.currentPage,
+                    image: canvasData,
+                    transcript: STATE.lastTranscript || "",
+                    confidence: STATE.sttConfidence || 0,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch(e => console.error("Cloud Canvas Error:", e));
             },
             
             loadCanvas() {
-                const data = localStorage.getItem(`br_cvs_${STATE.id}_${STATE.currentPage}`);
+                // 빠른 렌더링을 위해 로컬에서 먼저 로드
+                const localData = localStorage.getItem(`br_cvs_${STATE.id}_${STATE.currentPage}`);
                 
-                if (data) {
+                if (localData) {
                     const img = new Image();
                     img.onload = () => {
                         CanvasEngine.ctx.drawImage(
@@ -1147,7 +1176,7 @@
                         );
                         CanvasEngine.saveHistory();
                     };
-                    img.src = data;
+                    img.src = localData;
                 } else {
                     CanvasEngine.saveHistory();
                 }

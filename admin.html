@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bridge Academy | HQ Admin Control Tower</title>
+    <title>Bridge Admin | 실시간 학습 리포트 시스템</title>
     
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nunito:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -19,7 +19,7 @@
             theme: {
                 extend: {
                     fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] },
-                    colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#F4F5F7', gold: '#CBAE75' } }
+                    colors: { bridge: { mint: '#91D3B4', charcoal: '#363431', bg: '#F9FAFB', gold: '#CBAE75' } }
                 }
             }
         }
@@ -27,82 +27,58 @@
 
     <style>
         body { background-color: var(--bridge-bg); font-family: 'Pretendard', sans-serif; }
-        /* 스크롤바 숨기기 (깔끔한 UI) */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background-color: #E2E8F0; border-radius: 10px; }
+        .table-container { animation: fadeIn 0.6s var(--ease-silk); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .pulse-live {
-            animation: pulse-red 2s infinite;
-        }
-        @keyframes pulse-red {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-        }
-
-        .data-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: slideUp 0.5s ease forwards;
-        }
-        .data-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
-        
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        /* 엑셀 느낌의 테이블 스타일 */
+        th { background-color: #F3F4F6; color: #4B5563; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+        tr:hover { background-color: #F9FAFB; }
     </style>
 </head>
 <body class="text-bridge-charcoal">
 
     <nav class="bg-bridge-charcoal text-white h-[70px] flex items-center px-8 justify-between shadow-lg sticky top-0 z-50">
-        <div class="flex items-center gap-4">
-            <div class="w-3 h-3 bg-red-500 rounded-full pulse-live"></div>
-            <h1 class="text-xl font-black font-nunito tracking-wide">BRIDGE <span class="text-bridge-mint">HQ TOWER</span></h1>
-            <span class="text-[11px] font-bold bg-white/10 px-3 py-1 rounded-full text-bridge-gold ml-2">실시간 통합 관제 시스템</span>
+        <div class="flex items-center gap-3">
+            <div class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"></div>
+            <h1 class="text-xl font-black font-nunito">BRIDGE <span class="text-bridge-mint">HQ TOWER</span></h1>
         </div>
-        <div class="flex items-center gap-4 text-sm font-bold">
-            <span id="admin-email" class="text-gray-300">관리자 확인 중...</span>
-            <button onclick="auth.signOut()" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-colors text-xs">로그아웃</button>
+        <div class="flex items-center gap-6">
+            <span id="admin-info" class="text-xs font-bold text-gray-400"></span>
+            <button onclick="ExportEngine.toCSV()" class="bg-bridge-mint hover:bg-opacity-90 text-bridge-charcoal px-5 py-2 rounded-full text-xs font-black flex items-center gap-2 transition-all">
+                <i class="fa-solid fa-file-excel"></i> 전체 리포트 다운로드
+            </button>
+            <button onclick="auth.signOut()" class="text-xs font-bold opacity-60 hover:opacity-100">로그아웃</button>
         </div>
     </nav>
 
     <main class="max-w-[1600px] mx-auto p-8">
-        
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-5">
-                <div class="w-14 h-14 rounded-full bg-bridge-mint/15 text-bridge-mint flex items-center justify-center text-2xl"><i class="fa-solid fa-users"></i></div>
-                <div><p class="text-xs font-black text-gray-400 uppercase tracking-wider">오늘의 접속자</p><p class="text-2xl font-black font-nunito mt-1">128</p></div>
-            </div>
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-5">
-                <div class="w-14 h-14 rounded-full bg-bridge-gold/15 text-bridge-gold flex items-center justify-center text-2xl"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-                <div><p class="text-xs font-black text-gray-400 uppercase tracking-wider">실시간 제출 데이터</p><p id="total-submissions" class="text-2xl font-black font-nunito mt-1">0</p></div>
-            </div>
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-5">
-                <div class="w-14 h-14 rounded-full bg-blue-500/15 text-blue-500 flex items-center justify-center text-2xl"><i class="fa-solid fa-robot"></i></div>
-                <div><p class="text-xs font-black text-gray-400 uppercase tracking-wider">AI 분석 처리 건수</p><p class="text-2xl font-black font-nunito mt-1">4,209</p></div>
-            </div>
-            <div class="bg-bridge-mint rounded-2xl p-6 shadow-sm text-white flex items-center justify-between">
-                <div><p class="text-xs font-black uppercase tracking-wider opacity-80">클라우드 서버 상태</p><p class="text-2xl font-black font-nunito mt-1">OPTIMAL</p></div>
-                <i class="fa-solid fa-server text-4xl opacity-50"></i>
-            </div>
-        </div>
+        <header class="mb-10">
+            <h2 class="text-3xl font-black font-jua">실시간 원생별 학습 리포트</h2>
+            <p class="text-gray-500 mt-2 font-medium">전국 가맹점에서 제출된 모든 데이터를 아이별, 날짜별로 자동 정렬합니다.</p>
+        </header>
 
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 min-h-[600px]">
-            <div class="flex justify-between items-end mb-8 border-b border-gray-100 pb-4">
-                <div>
-                    <h2 class="text-2xl font-black text-bridge-charcoal font-jua">Live Submissions 피드</h2>
-                    <p class="text-sm font-bold text-gray-400 mt-1">전국 가맹점에서 제출된 원생들의 그림과 음성 데이터가 실시간으로 동기화됩니다.</p>
-                </div>
-                <div class="flex items-center gap-2 text-xs font-bold text-bridge-mint bg-bridge-mint/10 px-4 py-2 rounded-full">
-                    <i class="fa-solid fa-rotate fa-spin"></i> 실시간 연동 중
-                </div>
+        <div class="bg-white rounded-[2rem] shadow-xl border border-gray-100 overflow-hidden table-container">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="px-8 py-5 font-black">Student ID (아이디)</th>
+                            <th class="px-6 py-5 font-black">작성일자</th>
+                            <th class="px-6 py-5 font-black">요일</th>
+                            <th class="px-6 py-5 font-black">진도 (Unit)</th>
+                            <th class="px-6 py-5 font-black text-center">AI 그림 분석</th>
+                            <th class="px-6 py-5 font-black">발음 정확도</th>
+                            <th class="px-6 py-5 font-black">학습 내용 (Transcript)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="report-body" class="text-[14px]">
+                        </tbody>
+                </table>
             </div>
-
-            <div id="feed-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <div class="col-span-full text-center py-20 text-gray-400">
-                    <i class="fa-solid fa-spinner fa-spin text-4xl mb-4 text-gray-200"></i>
-                    <p class="font-bold">클라우드 금고에서 실시간 데이터를 불러오는 중입니다...</p>
-                </div>
+            
+            <div id="no-data" class="hidden py-40 text-center text-gray-300">
+                <i class="fa-solid fa-folder-open text-6xl mb-4"></i>
+                <p class="font-bold">아직 제출된 학습 리포트가 없습니다.</p>
             </div>
         </div>
     </main>
@@ -121,96 +97,108 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // 2. 로그인 가드 (관리자만 볼 수 있게)
+        let allDataForExport = []; // 엑셀 출력을 위한 전역 변수
+
+        // 2. 인증 체크 및 시작
         auth.onAuthStateChanged(user => {
             if (!user) {
-                alert("본사 관리자 로그인이 필요합니다.");
-                location.href = 'login.html'; // 로그인 안되어있으면 로그인 창으로 튕김
+                location.href = 'login.html';
             } else {
-                document.getElementById('admin-email').innerText = `접속 계정: ${user.email}`;
-                startRealtimeListener();
+                document.getElementById('admin-info').innerText = `Admin: ${user.email}`;
+                loadRealtimeReport();
             }
         });
 
-        // 3. [기보 핵심 기술] 실시간 데이터 리스너 (onSnapshot)
-        function startRealtimeListener() {
-            const container = document.getElementById('feed-container');
-            const countEl = document.getElementById('total-submissions');
+        // 3. 실시간 리포트 로드
+        function loadRealtimeReport() {
+            const tableBody = document.getElementById('report-body');
+            const noData = document.getElementById('no-data');
 
-            // student_drawings 컬렉션의 데이터를 시간 역순(최신순)으로 실시간 감시
             db.collection("student_drawings")
               .orderBy("timestamp", "desc")
-              .limit(20) // 최신 20개만 보여주기
-              .onSnapshot((querySnapshot) => {
-                  
-                  if (querySnapshot.empty) {
-                      container.innerHTML = `<div class="col-span-full text-center py-20 text-gray-400"><p class="font-bold">아직 제출된 데이터가 없습니다.</p></div>`;
+              .onSnapshot(async (snapshot) => {
+                  if (snapshot.empty) {
+                      noData.classList.remove('hidden');
                       return;
                   }
+                  noData.classList.add('hidden');
+                  tableBody.innerHTML = '';
+                  allDataForExport = [];
 
-                  // 화면 초기화
-                  container.innerHTML = '';
-                  countEl.innerText = querySnapshot.size; // 총 제출 건수 업데이트
+                  // 요일 배열 (한글)
+                  const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
 
-                  // 실시간으로 들어온 데이터 카드 만들기
-                  querySnapshot.forEach((doc) => {
+                  // [KIBO 핵심 로직] UID를 읽기 쉬운 이름이나 ID로 변환하는 작업 포함
+                  for (const doc of snapshot.docs) {
                       const data = doc.data();
                       
-                      // 시간 계산 로직
-                      let timeString = "방금 전";
+                      // 1. Student ID 정리 (UID가 아닌 이메일 앞자리 사용 권장)
+                      // 만약 students 컬렉션에 이름 정보가 있다면 나중에 병합 가능합니다.
+                      const rawID = data.studentID || "Unknown";
+                      const cleanID = rawID.split('@')[0].toUpperCase();
+
+                      // 2. 날짜 및 요일 계산
+                      let dateStr = "-", dayStr = "-";
                       if (data.timestamp) {
-                          const date = data.timestamp.toDate();
-                          timeString = `${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')}`;
+                          const d = data.timestamp.toDate();
+                          dateStr = `${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getDate().toString().padStart(2,'0')}`;
+                          dayStr = weekDays[d.getDay()] + "요일";
                       }
 
-                      // 발음 정확도 시각화 처리
-                      const sttScore = data.confidence || 0;
-                      let scoreColor = "bg-green-500";
-                      if (sttScore < 60) scoreColor = "bg-red-500";
-                      else if (sttScore < 80) scoreColor = "bg-yellow-500";
+                      const confidence = data.confidence || 0;
+                      
+                      // 엑셀용 데이터 저장
+                      allDataForExport.push({ cleanID, dateStr, dayStr, page: data.page, confidence, transcript: data.transcript });
 
-                      // 카드 HTML 조립
-                      const card = document.createElement('div');
-                      card.className = "data-card bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm flex flex-col";
-                      card.innerHTML = `
-                          <div class="relative w-full h-48 bg-gray-50 border-b border-gray-100 flex items-center justify-center p-2">
-                              ${data.image ? `<img src="${data.image}" class="max-w-full max-h-full object-contain drop-shadow-md rounded-lg" alt="학생 그림">` : '<i class="fa-solid fa-image text-gray-200 text-4xl"></i>'}
-                              <div class="absolute top-3 right-3 bg-bridge-charcoal text-white text-[10px] font-black px-3 py-1 rounded-full shadow-md opacity-90">
-                                  UNIT P.${data.page || '?'}
-                              </div>
-                          </div>
-                          
-                          <div class="p-5 flex-1 flex flex-col">
-                              <div class="flex justify-between items-start mb-3">
-                                  <div>
-                                      <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Student ID</p>
-                                      <p class="text-lg font-black text-bridge-charcoal font-nunito leading-tight">${data.studentID || 'Unknown'}</p>
+                      // 테이블 행 추가
+                      const tr = document.createElement('tr');
+                      tr.className = "border-b border-gray-50";
+                      tr.innerHTML = `
+                          <td class="px-8 py-5 font-black text-blue-600">${cleanID}</td>
+                          <td class="px-6 py-5 font-medium text-gray-500">${dateStr}</td>
+                          <td class="px-6 py-5 font-bold text-gray-400">${dayStr}</td>
+                          <td class="px-6 py-5 font-black"><span class="bg-gray-100 px-3 py-1 rounded-md text-[11px]">UNIT P.${data.page || '?'}</span></td>
+                          <td class="px-6 py-5 text-center">
+                              <img src="${data.image}" class="h-10 w-10 object-contain mx-auto rounded border border-gray-100 shadow-sm" onerror="this.style.display='none'">
+                          </td>
+                          <td class="px-6 py-5">
+                              <div class="flex items-center gap-2">
+                                  <div class="w-12 h-1 bg-gray-100 rounded-full overflow-hidden">
+                                      <div class="h-full ${confidence > 80 ? 'bg-bridge-mint' : 'bg-yellow-400'}" style="width: ${confidence}%"></div>
                                   </div>
-                                  <div class="text-right">
-                                      <span class="text-[10px] font-bold text-gray-400"><i class="fa-regular fa-clock"></i> ${timeString}</span>
-                                  </div>
+                                  <span class="font-black text-[12px]">${confidence}%</span>
                               </div>
-
-                              <div class="mt-2 bg-bridge-bg p-3 rounded-xl border border-gray-100 flex-1">
-                                  <p class="text-[10px] font-black text-bridge-gold uppercase tracking-widest mb-1"><i class="fa-solid fa-microphone-lines"></i> AI Voice Log</p>
-                                  <p class="text-sm font-medium text-gray-600 italic leading-snug">"${data.transcript || '(음성 데이터 없음)'}"</p>
-                              </div>
-
-                              <div class="mt-4 flex items-center justify-between">
-                                  <span class="text-xs font-black text-gray-500 uppercase tracking-wider">발음 정확도</span>
-                                  <div class="flex items-center gap-2">
-                                      <div class="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                          <div class="h-full ${scoreColor}" style="width: ${sttScore}%"></div>
-                                      </div>
-                                      <span class="text-xs font-black font-nunito ${sttScore >= 80 ? 'text-bridge-mint' : 'text-gray-500'}">${sttScore}%</span>
-                                  </div>
-                              </div>
-                          </div>
+                          </td>
+                          <td class="px-6 py-5 text-gray-500 italic max-w-xs truncate" title="${data.transcript}">"${data.transcript || 'N/A'}"</td>
                       `;
-                      container.appendChild(card);
-                  });
+                      tableBody.appendChild(tr);
+                  }
               });
         }
+
+        // 4. [기보 심사 필살기] 데이터 파일화 추출 엔진
+        const ExportEngine = {
+            toCSV() {
+                if (allDataForExport.length === 0) return alert("추출할 데이터가 없습니다.");
+
+                let csvContent = "\uFEFF"; // 한글 깨짐 방지 BOM
+                csvContent += "Student ID,작성일자,요일,진도(Page),발음점수,학습내용\n";
+
+                allDataForExport.forEach(row => {
+                    csvContent += `${row.cleanID},${row.dateStr},${row.dayStr},${row.page},${row.confidence},"${row.transcript.replace(/"/g, '""')}"\n`;
+                });
+
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement("a");
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", `Bridge_Academy_Report_${new Date().toLocaleDateString()}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        };
     </script>
 </body>
 </html>

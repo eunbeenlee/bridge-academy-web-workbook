@@ -1,9 +1,3 @@
-// [로그인 가드] 로그인되지 않은 사용자는 로그인 페이지로 튕겨냄
-firebase.auth().onAuthStateChanged((user) => {
-    if (!user) {
-        location.href = 'login.html';
-    }
-});
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -18,16 +12,138 @@ firebase.auth().onAuthStateChanged((user) => {
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Pretendard', 'sans-serif'], jua: ['Jua', 'sans-serif'], nunito: ['Nunito', 'sans-serif'] },
-                    colors: { bridge: { mint: '#91D3B4', earth: '#7D756D', charcoal: '#363431', bg: '#FCFBF9', gold: '#CBAE75' } }
-                }
-            }
+<script>
+    // 1. 파이어베이스 설정값 (이미 입력됨)
+    const firebaseConfig = {
+        apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk",
+        authDomain: "bridge-academy-6d6a9.firebaseapp.com",
+        projectId: "bridge-academy-6d6a9",
+        storageBucket: "bridge-academy-6d6a9.firebasestorage.app",
+        messagingSenderId: "581314243350",
+        appId: "1:581314243350:web:57897ed73d787eb02efe37",
+        measurementId: "G-JV5H1V8X34"
+    };
+
+    // 2. 파이어베이스 초기화
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // 3. [핵심] 로그인 감시자 (Login Guard)
+    // 이 코드가 script 태그 안에 있어야 정상 작동합니다.
+    auth.onAuthStateChanged(user => {
+        const loginSec = document.getElementById('loginSection');
+        const dashSec = document.getElementById('dashboardSection');
+        const navUserInfo = document.getElementById('nav-user-info');
+
+        if (user) {
+            // 로그인 상태: 대시보드 보여주기
+            loginSec.classList.add('hidden-section');
+            dashSec.classList.remove('hidden-section');
+            navUserInfo.classList.remove('hidden');
+            document.getElementById('nav-name').innerText = user.email.split('@')[0].toUpperCase();
+            
+            // 데이터 불러오기 시작
+            App.init(user.uid);
+        } else {
+            // 로그아웃 상태: 로그인 화면만 보여주기
+            loginSec.classList.remove('hidden-section');
+            dashSec.classList.add('hidden-section');
+            navUserInfo.classList.add('hidden');
         }
-    </script>
+    });
+
+    // 4. 로그인 함수
+    async function handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const pw = document.getElementById('password').value;
+        const btn = document.getElementById('loginBtn');
+        const err = document.getElementById('error-msg');
+
+        btn.innerText = "Verifying...";
+        try {
+            await auth.signInWithEmailAndPassword(email, pw);
+        } catch (error) {
+            err.classList.remove('hidden');
+            btn.innerText = "로그인하기";
+            alert("로그인 실패: " + error.message);
+        }
+    }
+
+    // 5. 로그아웃 함수
+    function handleLogout() {
+        auth.signOut().then(() => {
+            alert("로그아웃 되었습니다.");
+        });
+    }
+
+    // 6. 대시보드 데이터 로직
+    const CURRICULUM = [
+        { id: "A-1", series: "A", theme: "All About Me", question: "나는 누구일까요?" },
+        { id: "A-2", series: "A", theme: "Little Crawlers", question: "곤충들의 세상은 어떨까?" },
+        { id: "B-1", series: "B", theme: "Me on the Map", question: "나는 어디에 살고 있을까?" }
+    ];
+
+    const App = {
+        currentFilter: 'ALL',
+        uid: null,
+        progressData: {},
+
+        async init(uid) {
+            this.uid = uid;
+            await this.fetchProgress();
+            this.render();
+        },
+
+        async fetchProgress() {
+            try {
+                const snapshot = await db.collection("students").doc(this.uid).get();
+                if (snapshot.exists) {
+                    this.progressData = snapshot.data();
+                }
+            } catch (e) { console.log("DB Fetch Error:", e); }
+        },
+
+        filter(f) {
+            this.currentFilter = f;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            if (event) event.target.classList.add('active');
+            this.render();
+        },
+
+        render() {
+            const roadmap = document.getElementById('roadmap');
+            roadmap.innerHTML = "";
+            const items = CURRICULUM.filter(d => this.currentFilter === 'ALL' || d.series === this.currentFilter);
+            
+            items.forEach(t => {
+                const card = document.createElement('div');
+                card.className = `workbook-card series-${t.series}`;
+                card.onclick = () => { window.location.href = `workbook.html?id=${t.id}`; };
+                
+                const progress = (t.id === "A-1") ? (this.progressData.page ? Math.min(Math.round((this.progressData.page / 17) * 100), 100) : 0) : 0;
+
+                card.innerHTML = `
+                    <div class="card-accent"></div>
+                    <div class="p-8">
+                        <div class="unit-badge">UNIT ${t.id}</div>
+                        <h2 class="theme-h2 text-xl font-bold mt-2">${t.theme}</h2>
+                        <p class="text-sm text-gray-400 font-medium mb-8">"${t.question}"</p>
+                        <div class="flex items-center justify-between mt-auto">
+                            <span class="text-[11px] font-black text-bridge-charcoal tracking-widest uppercase">Start adventure →</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-bold text-bridge-mint">${progress}%</span>
+                                <div class="w-12 h-1 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-bridge-mint" style="width:${progress}%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                roadmap.appendChild(card);
+            });
+        }
+    };
+</script>
 
     <style>
         /* ======================================================================

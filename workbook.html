@@ -1,9 +1,3 @@
-// [로그인 가드] 로그인되지 않은 사용자는 로그인 페이지로 튕겨냄
-firebase.auth().onAuthStateChanged((user) => {
-    if (!user) {
-        location.href = 'login.html';
-    }
-});
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +13,7 @@ firebase.auth().onAuthStateChanged((user) => {
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <style>
@@ -1091,7 +1086,21 @@ firebase.auth().onAuthStateChanged((user) => {
 
         // Firebase 초기화 (호환 라이브러리 사용)
         firebase.initializeApp(CONFIG.FIREBASE_CONFIG);
+        // [추가됨] 인증(Auth) 인스턴스 생성
+        const auth = firebase.auth();
         const db = firebase.firestore();
+
+        // [추가됨] 로그인 가드: 로그인 안 된 사용자는 쫓아내기
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                alert("로그인이 필요한 서비스입니다.");
+                location.href = 'login.html'; 
+            } else {
+                console.log("Logged in as:", user.email);
+                // 사용자의 고유 UID를 STATE.id로 설정하여 독립된 데이터 저장
+                STATE.id = user.uid; 
+            }
+        });
 
         /**
          * Global Application State Management

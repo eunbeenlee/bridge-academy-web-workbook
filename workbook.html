@@ -1,3 +1,9 @@
+// [로그인 가드] 로그인되지 않은 사용자는 로그인 페이지로 튕겨냄
+firebase.auth().onAuthStateChanged((user) => {
+    if (!user) {
+        location.href = 'login.html';
+    }
+});
 <!DOCTYPE html>
 <html lang="en">
 <head>

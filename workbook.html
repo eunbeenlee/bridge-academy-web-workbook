@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bridge Academy | Premium AI Lab V100.5</title>
+    <title>Bridge Academy | Premium AI Lab V100.6 (Enterprise)</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@300;500;700;900&display=swap" rel="stylesheet">
     
@@ -1063,10 +1063,12 @@
 
     <script>
         /**
-         * System Configuration
+         * [System Configuration & API Setup]
          */
         const CONFIG = { 
-            STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/" 
+            STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
+            // 🚨 원장님의 구글 Cloud Vision API 키를 여기에 입력하세요. (KIBO 시연용)
+            GOOGLE_API_KEY: "AIzaSyBHoenIgyVeqh-CaArpmnBXnior4XW8L7g"
         };
 
         /**
@@ -1095,9 +1097,6 @@
          * Storage Engine for Local Data Persistence
          */
         const StorageEngine = {
-            /**
-             * Saves the current user profile state to localStorage.
-             */
             save() { 
                 const stateData = { 
                     name: STATE.studentName, 
@@ -1108,9 +1107,6 @@
                 localStorage.setItem(`br_v105_${STATE.id}`, JSON.stringify(stateData)); 
             },
             
-            /**
-             * Loads user profile state from localStorage.
-             */
             load() {
                 const s = JSON.parse(localStorage.getItem(`br_v105_${STATE.id}`) || "{}");
                 
@@ -1128,9 +1124,6 @@
                 }
             },
             
-            /**
-             * Saves the current canvas drawing to localStorage for the specific page.
-             */
             saveCanvas() {
                 if (!CanvasEngine.cvs) {
                     return;
@@ -1139,9 +1132,6 @@
                 localStorage.setItem(`br_cvs_${STATE.id}_${STATE.currentPage}`, canvasData);
             },
             
-            /**
-             * Loads the canvas drawing from localStorage for the specific page.
-             */
             loadCanvas() {
                 const data = localStorage.getItem(`br_cvs_${STATE.id}_${STATE.currentPage}`);
                 
@@ -1155,12 +1145,10 @@
                             CanvasEngine.cvs.width / CanvasEngine.dpr, 
                             CanvasEngine.cvs.height / CanvasEngine.dpr
                         );
-                        // Save restored image to history stack
                         CanvasEngine.saveHistory();
                     };
                     img.src = data;
                 } else {
-                    // Ensure empty state is pushed to history stack
                     CanvasEngine.saveHistory();
                 }
             }
@@ -1170,9 +1158,6 @@
          * Certificate Engine for generating and downloading awards
          */
         const CertificateEngine = {
-            /**
-             * Opens the certificate modal and populates it with user data.
-             */
             open(weekNum) {
                 const modal = document.getElementById('cert-modal');
                 
@@ -1199,7 +1184,6 @@
                 
                 modal.classList.add('active');
                 
-                // Trigger celebratory confetti
                 if (window.confetti) {
                     confetti({ 
                         particleCount: 150, 
@@ -1210,28 +1194,20 @@
                 }
             },
             
-            /**
-             * Closes the certificate modal and proceeds to next page.
-             */
             close() {
                 document.getElementById('cert-modal').classList.remove('active');
                 AppEngine.smoothMove(1); 
             },
             
-            /**
-             * Generates a PNG download of the certificate using html2canvas.
-             */
             print() {
                 const card = document.getElementById('cert-card-content');
                 const closeBtn = document.querySelector('.cert-close');
                 const printBtn = document.querySelector('.btn-print');
                 
-                // Hide interactive UI elements before capturing
                 closeBtn.style.display = 'none'; 
                 printBtn.style.display = 'none';
                 
                 html2canvas(card, { backgroundColor: '#FFFFFF', scale: 2 }).then(canvas => {
-                    // Restore interactive UI elements
                     closeBtn.style.display = 'block'; 
                     printBtn.style.display = 'inline-flex';
                     
@@ -1248,9 +1224,6 @@
          * Main Application Flow Engine
          */
         const AppEngine = {
-            /**
-             * Handles smooth transitions between pages.
-             */
             smoothMove(dir) {
                 StorageEngine.saveCanvas();
 
@@ -1264,7 +1237,7 @@
                         STATE.currentPage = 1;
                     }
                     if (STATE.currentPage > 33) {
-                        STATE.currentPage = 33; // Cap at max pages provided in context
+                        STATE.currentPage = 33; 
                     }
                     
                     PageEngine.load(STATE.currentPage);
@@ -1275,14 +1248,10 @@
                 }, 400);
             },
             
-            /**
-             * Handles logic for the "Next Adventure" button in AI Tutor.
-             */
             handleNextAdventure() {
                 AITutor.close();
                 StorageEngine.saveCanvas();
 
-                // Check if week completed (every 4 pages)
                 if (STATE.currentPage % 4 === 0) {
                     CertificateEngine.open(STATE.currentPage / 4);
                 } else {
@@ -1305,9 +1274,6 @@
                 }
             },
             
-            /**
-             * Renders earned badges in the sidebar.
-             */
             renderBadges() {
                 const container = document.getElementById('badge-container');
                 container.innerHTML = "";
@@ -1322,9 +1288,6 @@
                 });
             },
             
-            /**
-             * Awards a new badge and triggers celebration.
-             */
             awardBadge(badgeName) {
                 if (!STATE.badges.includes(badgeName)) {
                     STATE.badges.push(badgeName);
@@ -1347,8 +1310,6 @@
          * ======================================================================
          * [V100.5 Master Intelligence DB - Full 33 Page Map]
          * ======================================================================
-         * Provides context, goals, expected interactions, hit-zones, and AI questions
-         * for every single page in Unit A-1 and A-2.
          */
         const PAGE_INTELLIGENCE = {
             "A-1": {
@@ -1995,7 +1956,45 @@
         };
 
         // ======================================================================
-        // [V100.5 AITutor Engine: Coordinate-Aware & Detailed Feedback]
+        // [V100.6 Enterprise Cloud AI Engine Integration]
+        // ======================================================================
+        const CloudAI = {
+            async analyzeDrawing(canvas) {
+                if (!CONFIG.GOOGLE_API_KEY || CONFIG.GOOGLE_API_KEY === "YOUR_GOOGLE_API_KEY_HERE") {
+                    console.warn("Google API Key is missing. Falling back to local AI.");
+                    return null;
+                }
+                
+                try {
+                    const imageData = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
+                    const url = `https://vision.googleapis.com/v1/images:annotate?key=${CONFIG.GOOGLE_API_KEY}`;
+                    
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            requests: [{
+                                image: { content: imageData },
+                                features: [{ type: 'LABEL_DETECTION', maxResults: 5 }]
+                            }]
+                        })
+                    });
+                    
+                    if (!response.ok) throw new Error("Cloud API request failed");
+                    
+                    const data = await response.json();
+                    if (data.responses && data.responses[0].labelAnnotations) {
+                        return data.responses[0].labelAnnotations.map(anno => anno.description.toLowerCase());
+                    }
+                    return null;
+                } catch (error) {
+                    console.error("Cloud AI Error:", error);
+                    return null;
+                }
+            }
+        };
+
+        // ======================================================================
+        // [V100.6 AITutor Engine: Coordinate-Aware & Detailed Feedback]
         // ======================================================================
         const AITutor = {
             async submit() {
@@ -2016,13 +2015,19 @@
                 content.innerHTML = `
                     <div style="text-align:center; padding:50px;">
                         <div style="width:40px; height:40px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 15px;"></div>
-                        <p style="font-size:12px; font-weight:900; color:var(--br-muted);">ANALYZING YOUR DETAILS...</p>
+                        <p style="font-size:12px; font-weight:900; color:var(--br-muted);">SYNCING WITH CLOUD AI...</p>
                     </div>
                 `;
 
                 try {
-                    let doodleResults = await VisionAI_Doodle.classifyCanvas(CanvasEngine.cvs);
-                    let topDoodles = doodleResults ? doodleResults.map(r => r.label.replace(/_/g, ' ')) : [];
+                    // 1. Try Google Cloud Vision API first
+                    let topDoodles = await CloudAI.analyzeDrawing(CanvasEngine.cvs);
+                    
+                    // 2. Fallback to local ml5.js DoodleNet if Cloud fails or no key
+                    if (!topDoodles) {
+                        let doodleResults = await VisionAI_Doodle.classifyCanvas(CanvasEngine.cvs);
+                        topDoodles = doodleResults ? doodleResults.map(r => r.label.replace(/_/g, ' ')) : [];
+                    }
                     
                     setTimeout(() => { 
                         this.generateFeedback(false, topDoodles); 
@@ -2109,7 +2114,6 @@
                 }
             },
 
-            // 🚨 V100.5 IQ Logic: Coordinate Matching & Logic validation
             simulateMatchingLogic(pairs) {
                 if (!pairs || pairs.length === 0) return "You connected the lines perfectly! Great spatial awareness.";
                 const labels = pairs.map(p => p.label);
@@ -2148,7 +2152,6 @@
                     }, 500);
                 }
 
-                // Objective Visual/Logic Analysis Output (V100.5)
                 let visualDetail = "";
                 
                 if (context.type === "matching") {
@@ -2171,7 +2174,6 @@
                     }
                 }
 
-                // Objective Speech Analysis Output
                 let speechDetail = "";
                 if (!transcript) {
                     speechDetail = `I couldn't hear your voice this time. Press the <b>Voice Log</b> to tell me about it!`;

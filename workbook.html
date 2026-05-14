@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bridge Academy | Premium AI Lab V100.7 (Enterprise Cloud)</title>
+    <title>Bridge Academy | Premium AI Lab V100.8 (Enterprise Cloud)</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@300;500;700;900&display=swap" rel="stylesheet">
     
@@ -958,7 +958,7 @@
                 <div class="profile-top">
                     <div class="profile-avatar" id="avatar-char">?</div>
                     <div class="profile-info">
-                        <span class="profile-name" id="display-name">Inquirer</span>
+                        <span class="profile-name" id="display-name">Loading...</span>
                         <span class="profile-role">Bridge Explorer</span>
                     </div>
                 </div>
@@ -1068,7 +1068,6 @@
     <script>
         /**
          * [System Configuration & API Setup]
-         * (수정됨) 원장님의 Firebase 설정값을 추가했습니다.
          */
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
@@ -1086,29 +1085,19 @@
 
         // Firebase 초기화 (호환 라이브러리 사용)
         firebase.initializeApp(CONFIG.FIREBASE_CONFIG);
-        // [추가됨] 인증(Auth) 인스턴스 생성
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // [추가됨] 로그인 가드: 로그인 안 된 사용자는 쫓아내기
-        auth.onAuthStateChanged((user) => {
-            if (!user) {
-                alert("로그인이 필요한 서비스입니다.");
-                location.href = 'login.html'; 
-            } else {
-                console.log("Logged in as:", user.email);
-                // 사용자의 고유 UID를 STATE.id로 설정하여 독립된 데이터 저장
-                STATE.id = user.uid; 
-            }
-        });
-
         /**
          * Global Application State Management
+         * [수정됨] UID와 ID의 역할을 완벽하게 분리했습니다.
          */
         const STATE = {
-            studentName: "", 
+            uid: null,             // 파이어베이스 인증 고유키 (유저 식별용)
+            studentEmail: "",      // 파이어베이스 이메일
+            studentName: "",       // 화면 표시용 이름
             isNameRegistered: false,
-            id: new URLSearchParams(window.location.search).get('id') || "A-1",
+            id: new URLSearchParams(window.location.search).get('id') || "A-1", // [중요] 교재 유닛 번호
             currentPage: 1, 
             isRecording: false, 
             lastTranscript: "",
@@ -1124,30 +1113,58 @@
             rainbowHue: 0
         };
 
+        // [수정됨] 로그인 가드 & 시스템 부팅 통합
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                alert("로그인이 필요한 서비스입니다.");
+                location.href = 'login.html'; 
+            } else {
+                console.log("Logged in as:", user.email);
+                
+                // 1. 유저 정보 세팅
+                STATE.uid = user.uid; 
+                STATE.studentEmail = user.email;
+                STATE.studentName = user.email.split('@')[0].toUpperCase();
+                STATE.isNameRegistered = true;
+                
+                // 2. UI 즉시 업데이트
+                const profileBox = document.getElementById('profile-box');
+                profileBox.classList.add('registered');
+                document.getElementById('display-name').innerText = STATE.studentName;
+                document.getElementById('avatar-char').innerText = STATE.studentName.charAt(0);
+                
+                // 3. [핵심] 유저 정보가 세팅된 후에 전체 시스템을 부팅합니다 (Race Condition 해결)
+                SystemBoot();
+            }
+        });
+
         /**
          * Storage Engine for Local & Cloud Data Persistence
-         * (수정됨) 이제 데이터가 로컬과 구글 클라우드에 동시에 저장됩니다!
          */
         const StorageEngine = {
             save() { 
+                if(!STATE.uid) return;
                 const stateData = { 
                     name: STATE.studentName, 
                     reg: STATE.isNameRegistered, 
                     page: STATE.currentPage, 
                     badges: STATE.badges 
                 };
-                // 로컬 백업
-                localStorage.setItem(`br_v105_${STATE.id}`, JSON.stringify(stateData)); 
+                
+                // 로컬 백업 (유저별/유닛별 완벽 분리)
+                localStorage.setItem(`br_v105_${STATE.uid}_${STATE.id}`, JSON.stringify(stateData)); 
 
                 // 클라우드 저장 (학생 기본 정보)
-                db.collection("students").doc(STATE.id).set({
+                db.collection("students").doc(STATE.uid).set({
                     ...stateData,
+                    email: STATE.studentEmail,
                     lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                 }, { merge: true }).catch(e => console.error("Cloud Save Error:", e));
             },
             
             load() {
-                const s = JSON.parse(localStorage.getItem(`br_v105_${STATE.id}`) || "{}");
+                if(!STATE.uid) return;
+                const s = JSON.parse(localStorage.getItem(`br_v105_${STATE.uid}_${STATE.id}`) || "{}");
                 
                 if (s.name) STATE.studentName = s.name; 
                 if (s.reg) STATE.isNameRegistered = s.reg; 
@@ -1156,17 +1173,20 @@
             },
             
             saveCanvas() {
-                if (!CanvasEngine.cvs) return;
+                if (!CanvasEngine.cvs || !STATE.uid) return;
                 
                 // 최적화된 WebP 포맷으로 용량 압축 후 저장
                 const canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.5);
                 
                 // 로컬 백업
-                localStorage.setItem(`br_cvs_${STATE.id}_${STATE.currentPage}`, canvasData);
+                localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.id}_${STATE.currentPage}`, canvasData);
 
-                // 클라우드 저장 (실시간 그림, 음성 텍스트, 점수 데이터)
-                db.collection("student_drawings").doc(`${STATE.id}_P${STATE.currentPage}`).set({
-                    studentID: STATE.id,
+                // 클라우드 저장 (유저UID_유닛ID_페이지번호 형식으로 유일값 생성)
+                const docId = `${STATE.uid}_${STATE.id}_P${STATE.currentPage}`;
+                
+                db.collection("student_drawings").doc(docId).set({
+                    studentID: STATE.studentEmail, // 어드민에서 쉽게 읽도록 이메일 저장
+                    unitId: STATE.id,
                     page: STATE.currentPage,
                     image: canvasData,
                     transcript: STATE.lastTranscript || "",
@@ -1176,8 +1196,9 @@
             },
             
             loadCanvas() {
+                if(!STATE.uid) return;
                 // 빠른 렌더링을 위해 로컬에서 먼저 로드
-                const localData = localStorage.getItem(`br_cvs_${STATE.id}_${STATE.currentPage}`);
+                const localData = localStorage.getItem(`br_cvs_${STATE.uid}_${STATE.id}_${STATE.currentPage}`);
                 
                 if (localData) {
                     const img = new Image();
@@ -1257,7 +1278,7 @@
                     
                     const imgData = canvas.toDataURL('image/png');
                     const link = document.createElement('a');
-                    link.download = `Bridge_Certificate_Week_${Math.ceil(STATE.currentPage / 4)}.png`;
+                    link.download = `Bridge_Certificate_${STATE.studentName}.png`;
                     link.href = imgData;
                     link.click();
                 });
@@ -1463,6 +1484,8 @@
                 img.style.opacity = '0';
                 
                 const seriesChar = STATE.id.charAt(0);
+                
+                // [안정성 확보] 이제 STATE.id가 정상적인 'A-1' 형태를 유지하므로 이미지를 정확히 불러옵니다.
                 const imgPath = `${CONFIG.STORAGE_URL}${seriesChar}/${STATE.id}/${STATE.id}-${n}.png?t=${new Date().getTime()}`;
                 img.src = imgPath;
                 
@@ -2328,17 +2351,11 @@
         };
 
         // ======================================================================
-        // [System Boot Sequence]
+        // [System Boot Sequence - V100.8 FIXED]
+        // 로그인이 완전히 검증된 후 호출되어야 데이터 꼬임 현상이 없습니다.
         // ======================================================================
-        window.onload = () => {
+        function SystemBoot() {
             StorageEngine.load();
-            
-            if (STATE.isNameRegistered) {
-                const profileBox = document.getElementById('profile-box');
-                profileBox.classList.add('registered');
-                document.getElementById('display-name').innerText = STATE.studentName;
-                document.getElementById('avatar-char').innerText = STATE.studentName.charAt(0);
-            }
             
             UIEngine.renderBadges();
             
@@ -2353,7 +2370,7 @@
                 CanvasEngine.resizeCanvas(); 
                 StorageEngine.loadCanvas(); 
             }, 300);
-        };
+        }
     </script>
 </body>
 </html>

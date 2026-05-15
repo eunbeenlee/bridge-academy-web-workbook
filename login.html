@@ -2,39 +2,100 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bridge Academy | Portal Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Bridge Portal | Student Login</title>
+    
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Pretendard', 'sans-serif'], 
+                        playfair: ['Playfair Display', 'serif'], 
+                        nunito: ['Nunito', 'sans-serif'] 
+                    },
+                    colors: { bridge: { mint: '#91D3B4', gold: '#CBAE75', charcoal: '#363431' } }
+                }
+            }
+        }
+    </script>
     <style>
-        :root { --br-green: #89BFA0; --br-charcoal: #363431; --br-bg: #FCFBF9; }
-        body { background-color: var(--br-bg); font-family: 'Noto Sans KR', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .login-card { background: white; padding: 50px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); width: 100%; max-width: 400px; text-align: center; }
-        .logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: var(--br-charcoal); margin-bottom: 40px; }
-        .logo span { color: var(--br-green); font-style: italic; }
-        input { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #EEE; border-radius: 12px; box-sizing: border-box; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--br-green); box-shadow: 0 0 10px rgba(137,191,160,0.1); }
-        button { width: 100%; padding: 16px; background: var(--br-charcoal); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        button:hover { background: var(--br-green); transform: translateY(-2px); }
-        .error-msg { color: #E74C3C; font-size: 13px; margin-top: 15px; display: none; }
+        body { background-color: #363431; font-family: 'Pretendard', sans-serif; overflow: hidden; }
+        
+        .input-premium { 
+            width: 100%; padding: 1.25rem 1.5rem 1.25rem 3.5rem; 
+            background-color: #F8FAFF; border: 2px solid transparent; 
+            border-radius: 1.25rem; font-size: 1rem; font-weight: 600; 
+            color: #363431; transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1); outline: none; 
+            letter-spacing: 0.02em;
+        }
+        .input-premium:focus { 
+            border-color: #91D3B4; background-color: #FFFFFF; 
+            box-shadow: 0 10px 25px -5px rgba(145, 211, 180, 0.25); 
+        }
+        .input-premium::placeholder {
+            color: #A0AABF; font-weight: 500;
+        }
     </style>
 </head>
-<body>
+<body class="flex items-center justify-center min-h-screen relative">
 
-    <div class="login-card">
-        <div class="logo">Bridge<span>Academy</span></div>
-        <p style="color:#888; font-size: 14px; margin-bottom: 30px;">Student & Parent Portal</p>
+    <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute -top-[20%] -left-[10%] w-[600px] h-[600px] rounded-full blur-[150px] opacity-20 bg-bridge-gold"></div>
+        <div class="absolute -bottom-[20%] -right-[10%] w-[600px] h-[600px] rounded-full blur-[150px] opacity-10 bg-bridge-mint"></div>
+    </div>
+
+    <div class="max-w-md w-full bg-white p-10 md:p-14 rounded-[2.5rem] text-center relative z-10" style="box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.8);">
         
-        <input type="email" id="email" placeholder="Email Address">
-        <input type="password" id="password" placeholder="Password">
+        <div class="w-[72px] h-[72px] mx-auto flex items-center justify-center text-[28px] mb-6 rounded-2xl bg-bridge-mint/15 text-bridge-mint border border-bridge-mint/30 shadow-inner">
+            <i class="fa-solid fa-lock"></i>
+        </div>
         
-        <button onclick="handleLogin()">Login to Portal</button>
-        <div id="error-msg" class="error-msg">이메일 또는 비밀번호가 일치하지 않습니다.</div>
+        <h2 class="text-4xl font-black font-playfair mb-2 text-bridge-charcoal tracking-tight">Bridge Portal</h2>
+        
+        <p class="text-[12px] font-bold mb-10 tracking-[0.2em] font-sans text-bridge-gold">가맹점 전용 프리미엄 디지털 랩</p>
+        
+        <form onsubmit="handleLogin(event)" class="space-y-6 text-left">
+            <div>
+                <label class="block text-[11px] font-black text-gray-400 uppercase tracking-[0.15em] pl-2 mb-2 font-nunito">Student ID</label>
+                <div class="relative group">
+                    <i class="fa-solid fa-user absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-bridge-mint transition-colors"></i>
+                    <input type="text" id="student_id" placeholder="원생 아이디를 입력하세요" class="input-premium" required autocomplete="off">
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-[11px] font-black text-gray-400 uppercase tracking-[0.15em] pl-2 mb-2 font-nunito">Password</label>
+                <div class="relative group">
+                    <i class="fa-solid fa-key absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-bridge-mint transition-colors"></i>
+                    <input type="password" id="student_pw" placeholder="비밀번호" class="input-premium" required>
+                </div>
+            </div>
+            
+            <button type="submit" id="loginBtn" class="w-full flex items-center justify-center gap-3 text-white font-bold py-[18px] rounded-full text-[17px] transition-all duration-300 mt-8 font-sans tracking-wide bg-bridge-charcoal shadow-lg hover:bg-bridge-gold hover:-translate-y-1 hover:shadow-xl cursor-pointer">
+                포털 접속하기 <i class="fa-solid fa-arrow-right-to-bracket text-[15px] mt-[2px]"></i>
+            </button>
+        </form>
+        
+        <p id="error-msg" class="text-[12px] font-bold mt-5 hidden text-red-500 bg-red-50 py-3 px-4 rounded-xl text-left flex items-center gap-2 font-sans">
+            <i class="fa-solid fa-circle-exclamation"></i> 아이디 또는 비밀번호를 확인해주세요.
+        </p>
+        <p class="text-[12px] font-medium text-gray-400 mt-8 break-keep leading-relaxed font-sans">
+            * 계정 정보는 오프라인 등원 시<br>원장님이 개별 부여해 드립니다.
+        </p>
     </div>
 
     <script>
-        // 원장님의 Firebase 설정값
+        // 파이어베이스 초기화
         const firebaseConfig = {
             apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk",
             authDomain: "bridge-academy-6d6a9.firebaseapp.com",
@@ -43,21 +104,35 @@
             messagingSenderId: "581314243350",
             appId: "1:581314243350:web:57897ed73d787eb02efe37"
         };
-
         firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
-        async function handleLogin() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const errorEl = document.getElementById('error-msg');
+        // 이미 로그인 되어있으면 바로 대시보드로 이동
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const idInput = document.getElementById('student_id').value.trim();
+            const pwInput = document.getElementById('student_pw').value.trim();
+            const btn = document.getElementById('loginBtn');
+            const err = document.getElementById('error-msg');
+
+            // [매핑 로직] 아이디에 @가 없으면 자동으로 bridge.com을 붙여서 구글 인증 우회
+            const email = idInput.includes('@') ? idInput : `${idInput}@bridge.com`;
+
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> 접속 중...`;
+            err.classList.add('hidden');
 
             try {
-                await firebase.auth().signInWithEmailAndPassword(email, password);
-                // 로그인 성공 시 대시보드로 이동
-                location.href = 'dashboard.html';
+                await auth.signInWithEmailAndPassword(email, pwInput);
+                // 성공 시 onAuthStateChanged가 발동하여 dashboard.html로 넘어감
             } catch (error) {
-                errorEl.style.display = 'block';
-                console.error("Login Error:", error.message);
+                err.classList.remove('hidden');
+                btn.innerHTML = `포털 접속하기 <i class="fa-solid fa-arrow-right-to-bracket text-[15px] mt-[2px]"></i>`;
             }
         }
     </script>

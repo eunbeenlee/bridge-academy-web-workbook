@@ -20,7 +20,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <style>
-        /* 핵심 컬러 팔레트 */
         :root {
             --br-green: #91D3B4; 
             --br-gold: #CBAE75; 
@@ -32,13 +31,11 @@
             --br-muted: #8C8985;
             --br-border: #F0EFEB; 
             --br-error: #E74C3C; 
-            --br-ai: #F8FAFF;
+            --br-ai-soft: #F8FAFF;
             --sidebar-width: 320px;
+            --transition-smooth: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* ----------------------------------------------------------------------
-           RESET & BASE STYLES
-        ---------------------------------------------------------------------- */
         * { 
             margin: 0; 
             padding: 0; 
@@ -74,9 +71,6 @@
             pointer-events: auto !important; 
         }
         
-        /* ----------------------------------------------------------------------
-           SIDEBAR (Curriculum Navigation)
-        ---------------------------------------------------------------------- */
         .sidebar { 
             width: var(--sidebar-width); 
             height: 100%; 
@@ -86,11 +80,11 @@
             flex-direction: column; 
             z-index: 1000; 
             flex-shrink: 0; 
-            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); 
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); 
         }
 
         .sidebar-header { 
-            padding: 30px; 
+            padding: 35px 30px; 
             text-align: center; 
             border-bottom: 1px solid var(--br-border); 
             cursor: pointer; 
@@ -98,7 +92,7 @@
 
         .brand-logo { 
             font-family: 'Playfair Display', serif; 
-            font-size: 26px; 
+            font-size: 28px; 
             font-weight: 900; 
             color: var(--br-charcoal); 
             letter-spacing: -0.5px; 
@@ -107,12 +101,8 @@
         .brand-logo span { 
             color: var(--br-green); 
             font-style: italic; 
-            font-weight: 700; 
         }
         
-        /* ----------------------------------------------------------------------
-           STUDENT PROFILE WIDGET
-        ---------------------------------------------------------------------- */
         .student-profile { 
             padding: 25px 30px; 
             border-bottom: 1px solid var(--br-border); 
@@ -120,11 +110,11 @@
             flex-direction: column; 
             gap: 15px; 
             background: #FAFAFA; 
-            transition: background-color 0.3s ease; 
+            transition: 0.3s; 
         }
 
         .student-profile.registered { 
-            background: var(--br-ai); 
+            background: var(--br-ai-soft); 
         }
 
         .profile-top { 
@@ -134,8 +124,8 @@
         }
 
         .profile-avatar { 
-            width: 48px; 
-            height: 48px; 
+            width: 52px; 
+            height: 52px; 
             border-radius: 50%; 
             background: var(--br-border); 
             color: #FFF; 
@@ -143,14 +133,15 @@
             justify-content: center; 
             align-items: center; 
             font-weight: 900; 
-            font-size: 20px; 
+            font-size: 22px; 
             font-family: 'Nunito', sans-serif; 
-            transition: all 0.3s ease; 
+            transition: 0.4s; 
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .student-profile.registered .profile-avatar { 
             background: var(--br-gold); 
-            box-shadow: 0 5px 15px rgba(203,174,117,0.3); 
+            box-shadow: 0 8px 20px rgba(203,174,117,0.3); 
         }
 
         .profile-info { 
@@ -161,24 +152,20 @@
 
         .profile-name { 
             font-family: 'Nunito', sans-serif; 
-            font-size: 17px; 
+            font-size: 18px; 
             font-weight: 900; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            text-transform: uppercase; 
             color: var(--br-charcoal); 
-            letter-spacing: 0.5px; 
+            text-transform: uppercase; 
         }
 
         .profile-role { 
-            font-family: 'Pretendard', sans-serif; 
             font-size: 11px; 
             font-weight: 700; 
             color: var(--br-muted); 
-            letter-spacing: 1px; 
+            letter-spacing: 1.5px; 
+            text-transform: uppercase; 
         }
-        
+
         .badge-container { 
             display: flex; 
             flex-wrap: wrap; 
@@ -200,60 +187,53 @@
             animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
-        /* ----------------------------------------------------------------------
-           NAVIGATION LIST
-        ---------------------------------------------------------------------- */
         .nav-list { 
             flex: 1; 
             overflow-y: auto; 
             padding: 15px; 
+            scroll-behavior: smooth; 
         }
 
         .nav-list::-webkit-scrollbar { 
             width: 5px; 
         }
-        
+
         .nav-list::-webkit-scrollbar-thumb { 
             background: #E8E6E1; 
             border-radius: 10px; 
         }
 
         .nav-item { 
-            padding: 16px 18px; 
-            margin-bottom: 8px; 
-            border-radius: 12px; 
+            padding: 18px 20px; 
+            margin-bottom: 10px; 
+            border-radius: 15px; 
             background: #FAFAFA; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
             cursor: pointer; 
-            transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1); 
+            transition: var(--transition-smooth); 
             border: 1px solid transparent; 
         }
 
         .nav-item:hover { 
             background: #FFF; 
             border-color: var(--br-border); 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02); 
-            transform: translateY(-1px); 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02); 
         }
 
         .nav-item.active { 
-            background: var(--br-ai); 
-            border-left: 5px solid var(--br-green); 
+            background: var(--br-ai-soft); 
+            border-left: 6px solid var(--br-green); 
             border-color: transparent; 
-            box-shadow: 0 4px 15px rgba(145, 211, 180, 0.1); 
+            box-shadow: 0 10px 25px rgba(145, 211, 180, 0.12); 
         }
 
         .nav-title { 
-            font-family: 'Pretendard', sans-serif; 
-            font-size: 13px; 
+            font-size: 14px; 
             font-weight: 700; 
             color: var(--br-charcoal); 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            max-width: 170px; 
         }
 
         .nav-item.active .nav-title { 
@@ -266,17 +246,8 @@
             font-size: 10px; 
             font-weight: 900; 
             color: var(--br-muted); 
-            letter-spacing: 0.5px; 
-        }
-        
-        .nav-item.active .nav-badge { 
-            color: var(--br-green); 
-            opacity: 1; 
         }
 
-        /* ----------------------------------------------------------------------
-           MAIN WORKSPACE & STAGE
-        ---------------------------------------------------------------------- */
         .workspace { 
             flex: 1; 
             display: flex; 
@@ -289,20 +260,19 @@
         }
 
         .top-bar { 
-            height: 80px; 
-            padding: 0 40px; 
+            height: 85px; 
+            padding: 0 45px; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
             border-bottom: 1px solid var(--br-border); 
-            flex-shrink: 0; 
-            z-index: 10; 
             background: #FFF; 
+            z-index: 10; 
         }
 
         .unit-info { 
             font-family: 'Nunito', sans-serif; 
-            font-size: 11px; 
+            font-size: 12px; 
             font-weight: 900; 
             color: var(--br-gold); 
             letter-spacing: 3px; 
@@ -311,10 +281,9 @@
 
         .page-info { 
             font-family: 'Playfair Display', serif; 
-            font-size: 32px; 
+            font-size: 34px; 
             font-weight: 900; 
             color: var(--br-charcoal); 
-            margin-top: 2px; 
             letter-spacing: -0.5px; 
         }
         
@@ -323,38 +292,35 @@
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            padding: 30px 40px; 
+            padding: 40px; 
             background: var(--br-bg); 
-            perspective: 1000px; 
-            pointer-events: auto !important; 
+            perspective: 1200px; 
             overflow: hidden; 
         }
 
         .drawing-board { 
             position: relative; 
             display: inline-flex; 
-            line-height: 0; 
-            border-radius: 15px; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.08); 
+            border-radius: 20px; 
+            box-shadow: 0 25px 70px rgba(0,0,0,0.07); 
             background: #FFF; 
-            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transition: var(--transition-smooth); 
             transform-origin: center; 
             pointer-events: auto !important; 
         }
 
         .drawing-board.fade-out { 
             opacity: 0; 
-            transform: scale(0.96) translateY(15px); 
-            pointer-events: none !important; 
+            transform: scale(0.95) translateY(20px); 
         }
 
         #worksheet-img { 
             display: block; 
             max-width: 100%; 
-            max-height: calc(100dvh - 240px); 
+            max-height: calc(100dvh - 250px); 
             width: auto; 
             height: auto; 
-            border-radius: 15px; 
+            border-radius: 20px; 
             pointer-events: none !important; 
             opacity: 0; 
             transition: opacity 0.3s; 
@@ -369,61 +335,54 @@
             height: 100%; 
             z-index: 9999 !important; 
             touch-action: none; 
-            pointer-events: auto !important; 
-            border-radius: 15px; 
+            border-radius: 20px; 
             cursor: crosshair; 
         }
 
-        /* ----------------------------------------------------------------------
-           BOTTOM DOCK & TOOLS
-        ---------------------------------------------------------------------- */
         .bottom-dock { 
-            height: 100px; 
+            height: 110px; 
             background: rgba(255, 255, 255, 0.98); 
             border-top: 1px solid var(--br-border); 
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
-            padding: 0 40px; 
-            flex-shrink: 0; 
+            padding: 0 50px; 
             z-index: 500; 
         }
 
         .tool-group { 
             display: flex; 
             align-items: center; 
-            gap: 12px; 
-            background: #FAFAFA; 
-            padding: 10px 25px; 
+            gap: 15px; 
+            background: #F8F9FA; 
+            padding: 12px 30px; 
             border-radius: 100px; 
             border: 1px solid var(--br-border); 
         }
 
         .color-preview { 
-            width: 40px; 
-            height: 40px; 
+            width: 44px; 
+            height: 44px; 
             border-radius: 50%; 
             border: 3px solid #FFF; 
             cursor: pointer; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-            transition: transform 0.2s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            transition: 0.3s; 
         }
 
-        .color-preview:active {
-            transform: scale(0.9);
-        }
-        
         .btn-magic { 
-            font-size: 20px; 
+            font-size: 24px; 
             padding: 5px; 
             cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             filter: grayscale(100%); 
+            opacity: 0.6; 
         }
 
         .btn-magic.active { 
             filter: grayscale(0%); 
-            transform: scale(1.25); 
+            opacity: 1; 
+            transform: scale(1.3); 
         }
 
         .brush-slider { 
@@ -434,15 +393,15 @@
         }
 
         .btn-tool { 
-            font-size: 16px; 
+            font-size: 18px; 
             font-weight: 900; 
-            padding: 8px 12px; 
+            padding: 10px 14px; 
             color: var(--br-charcoal); 
             cursor: pointer; 
             transition: 0.2s; 
             background: #FFF; 
             border: 1px solid var(--br-border); 
-            border-radius: 10px; 
+            border-radius: 12px; 
         }
 
         .btn-tool:active { 
@@ -450,10 +409,10 @@
         }
 
         .btn-erase { 
-            font-size: 13px; 
+            font-size: 14px; 
             font-weight: 900; 
-            padding: 10px 15px; 
-            border-radius: 12px; 
+            padding: 12px 18px; 
+            border-radius: 14px; 
             background: #FFF; 
             border: 1px solid var(--br-border); 
             cursor: pointer; 
@@ -466,30 +425,27 @@
             color: #FFF; 
             border-color: var(--br-error); 
         }
-        
-        /* ----------------------------------------------------------------------
-           ACTION BUTTONS
-        ---------------------------------------------------------------------- */
+
         .action-group { 
             display: flex; 
-            gap: 12px; 
+            gap: 15px; 
             align-items: center; 
         }
 
         .btn-nav { 
-            width: 55px; 
-            height: 55px; 
-            border-radius: 15px; 
+            width: 60px; 
+            height: 60px; 
+            border-radius: 18px; 
             border: 1px solid var(--br-border); 
             background: #FFF; 
-            font-size: 22px; 
+            font-size: 24px; 
             cursor: pointer; 
-            transition: all 0.2s ease; 
+            transition: var(--transition-smooth); 
             color: var(--br-charcoal); 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03); 
         }
 
         .btn-nav:hover {
@@ -502,17 +458,17 @@
         }
 
         .btn-main { 
-            height: 55px; 
-            padding: 0 25px; 
-            border-radius: 15px; 
+            height: 60px; 
+            padding: 0 35px; 
+            border-radius: 18px; 
             font-weight: 900; 
-            font-size: 14px; 
+            font-size: 15px; 
             letter-spacing: 1px; 
             cursor: pointer; 
             display: flex; 
             align-items: center; 
-            gap: 10px; 
-            transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1); 
+            gap: 12px; 
+            transition: var(--transition-smooth); 
             text-transform: uppercase; 
             font-family: 'Nunito', sans-serif; 
         }
@@ -536,8 +492,8 @@
         }
 
         .btn-record .dot { 
-            width: 10px; 
-            height: 10px; 
+            width: 12px; 
+            height: 12px; 
             background: var(--br-error); 
             border-radius: 50%; 
             opacity: 0; 
@@ -552,32 +508,28 @@
         .btn-submit { 
             background: var(--br-charcoal); 
             color: #FFF; 
-            box-shadow: 0 10px 20px rgba(54,52,49,0.2);
+            box-shadow: 0 10px 30px rgba(54,52,49,0.2); 
         }
 
         .btn-submit:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 15px 25px rgba(54,52,49,0.3); 
-            background: var(--br-gold);
-        }
-
-        .btn-submit:active { 
-            transform: scale(0.95); 
+            background: var(--br-gold); 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 35px rgba(203,174,117,0.4); 
         }
 
         /* ----------------------------------------------------------------------
-           AI TUTOR PANEL (Gemini Integration)
+           AI PANEL & CHAT
         ---------------------------------------------------------------------- */
         .ai-panel { 
             position: absolute; 
             top: 0; 
-            right: -450px; 
-            width: 450px; 
+            right: -480px; 
+            width: 480px; 
             height: 100%; 
             background: #FFF; 
-            box-shadow: -20px 0 50px rgba(0,0,0,0.15); 
+            box-shadow: -25px 0 60px rgba(0,0,0,0.12); 
             z-index: 10001; 
-            transition: right 0.5s cubic-bezier(0.19, 1, 0.22, 1); 
+            transition: right 0.6s cubic-bezier(0.19, 1, 0.22, 1); 
             display: flex; 
             flex-direction: column; 
             border-left: 1px solid var(--br-border); 
@@ -588,26 +540,25 @@
         }
 
         .ai-header { 
-            padding: 25px 30px; 
-            background: var(--br-ai); 
+            padding: 30px 35px; 
+            background: var(--br-ai-soft); 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
             border-bottom: 1px solid var(--br-border); 
-            flex-shrink: 0; 
         }
 
         .ai-title { 
             font-family: 'Jua', sans-serif; 
-            font-size: 22px; 
+            font-size: 24px; 
             color: var(--br-green); 
             display: flex; 
             align-items: center; 
-            gap: 10px; 
+            gap: 12px; 
         }
 
         .btn-close-ai { 
-            font-size: 32px; 
+            font-size: 34px; 
             color: var(--br-muted); 
             line-height: 1; 
             cursor: pointer; 
@@ -620,30 +571,30 @@
         }
         
         .ai-content { 
-            padding: 25px 30px; 
+            padding: 30px 35px; 
             flex: 1; 
             overflow-y: auto; 
             display: flex; 
             flex-direction: column; 
-            gap: 15px; 
+            gap: 20px; 
             scroll-behavior: smooth; 
         }
         
         .chat-bubble { 
-            max-width: 85%; 
-            padding: 18px 22px; 
-            border-radius: 20px; 
-            font-size: 15px; 
-            line-height: 1.6; 
+            max-width: 90%; 
+            padding: 20px 25px; 
+            border-radius: 22px; 
+            font-size: 16px; 
+            line-height: 1.7; 
             font-weight: 500; 
             word-break: keep-all; 
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
         .chat-bubble.ai { 
             align-self: flex-start; 
             background: #F8F9FA; 
-            border-bottom-left-radius: 5px; 
+            border-bottom-left-radius: 4px; 
             border: 1px solid var(--br-border); 
             color: var(--br-text); 
         }
@@ -652,41 +603,37 @@
             align-self: flex-end; 
             background: var(--br-green); 
             color: #FFF; 
-            border-bottom-right-radius: 5px; 
-            box-shadow: 0 5px 15px rgba(137,191,160,0.25); 
+            border-bottom-right-radius: 4px; 
+            box-shadow: 0 8px 20px rgba(145, 211, 180, 0.3); 
         }
 
-        /* ----------------------------------------------------------------------
-           AI ANALYTICS CARD
-        ---------------------------------------------------------------------- */
         .analytics-card { 
             background: #FAFAFA; 
             border: 1px solid var(--br-border); 
-            border-radius: 20px; 
+            border-radius: 24px; 
             padding: 25px; 
             align-self: stretch; 
-            animation: popIn 0.4s ease; 
-            margin-bottom: 5px; 
+            margin-bottom: 10px; 
         }
 
         .analytics-title { 
             font-family: 'Nunito', sans-serif; 
             color: var(--br-gold); 
-            font-size: 13px; 
+            font-size: 14px; 
             margin-bottom: 20px; 
             font-weight: 900; 
             text-transform: uppercase; 
-            letter-spacing: 1px; 
+            letter-spacing: 2px; 
             border-bottom: 1px dashed var(--br-border); 
-            padding-bottom: 10px; 
+            padding-bottom: 12px; 
         }
 
         .stat-row { 
-            margin-bottom: 15px; 
+            margin-bottom: 18px; 
         }
 
         .stat-label { 
-            font-size: 12px; 
+            font-size: 13px; 
             font-weight: 800; 
             display: flex; 
             justify-content: space-between; 
@@ -696,31 +643,31 @@
 
         .bar-bg { 
             width: 100%; 
-            height: 8px; 
+            height: 10px; 
             background: #E8E6E1; 
-            border-radius: 10px; 
+            border-radius: 12px; 
             overflow: hidden; 
         }
 
         .bar-fill { 
             height: 100%; 
-            transition: width 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            border-radius: 10px; 
+            transition: width 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            border-radius: 12px; 
         }
 
         .voice-fx-group { 
             display: flex; 
-            gap: 10px; 
-            margin-top: 25px; 
+            gap: 12px; 
+            margin-top: 30px; 
             justify-content: center; 
             border-top: 1px dashed var(--br-border); 
-            padding-top: 20px; 
+            padding-top: 25px; 
         }
 
         .btn-fx { 
-            padding: 10px 15px; 
-            border-radius: 12px; 
-            font-size: 12px; 
+            padding: 12px 18px; 
+            border-radius: 14px; 
+            font-size: 13px; 
             font-weight: 800; 
             cursor: pointer; 
             border: 1px solid var(--br-border); 
@@ -728,24 +675,21 @@
             transition: 0.2s; 
             display: flex; 
             align-items: center; 
-            gap: 6px; 
+            gap: 8px; 
             color: var(--br-charcoal); 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03); 
         }
 
         .btn-fx:hover { 
-            background: var(--br-ai); 
+            background: var(--br-ai-soft); 
             border-color: var(--br-green); 
             transform: translateY(-2px); 
-            box-shadow: 0 5px 15px rgba(145,211,180,0.2); 
+            box-shadow: 0 8px 20px rgba(145,211,180,0.25); 
             color: var(--br-green); 
         }
 
-        /* ----------------------------------------------------------------------
-           CHAT FOOTER (Input Area)
-        ---------------------------------------------------------------------- */
         .chat-footer { 
-            padding: 25px 30px; 
+            padding: 30px 35px; 
             border-top: 1px solid var(--br-border); 
             display: flex; 
             flex-direction: column; 
@@ -753,76 +697,17 @@
             background: #FFF; 
         }
 
-        .btn-reply { 
-            width: 100%; 
-            height: 60px; 
-            background: var(--br-charcoal); 
-            color: #FFF; 
-            border-radius: 18px; 
-            font-weight: 900; 
-            cursor: pointer; 
-            transition: 0.2s; 
-            font-size: 16px; 
-            letter-spacing: 1px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 10px; 
-            font-family: 'Nunito', sans-serif; 
-            box-shadow: 0 10px 20px rgba(54,52,49,0.2); 
-        }
-
-        .btn-reply:hover { 
-            background: var(--br-gold); 
-            transform: translateY(-2px); 
-            box-shadow: 0 15px 25px rgba(203,174,117,0.3); 
-        }
-
-        .btn-reply.recording { 
-            background: var(--br-error); 
-            animation: pulse 1.5s infinite; 
-            box-shadow: 0 10px 20px rgba(231,76,60,0.3); 
-        }
-
-        .btn-next-page { 
-            width: 100%; 
-            height: 60px; 
-            background: var(--br-blue); 
-            color: #FFF; 
-            border-radius: 18px; 
-            font-weight: 900; 
-            cursor: pointer; 
-            transition: 0.2s; 
-            box-shadow: 0 10px 20px rgba(124,166,193,0.3); 
-            font-size: 16px; 
-            letter-spacing: 1px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            font-family: 'Nunito', sans-serif; 
-        }
-
-        .btn-next-page:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 15px 25px rgba(124,166,193,0.4); 
-            filter: brightness(1.1); 
-        }
-
-        .btn-next-page:active { 
-            transform: scale(0.95); 
-        }
-
         /* ----------------------------------------------------------------------
-           MODALS & OVERLAYS
+           MODALS
         ---------------------------------------------------------------------- */
         .rgb-modal { 
             position: absolute; 
-            bottom: 120px; 
-            left: 40px; 
+            bottom: 130px; 
+            left: 50px; 
             background: #FFF; 
             border-radius: 25px; 
-            padding: 20px; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15); 
+            padding: 25px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15); 
             z-index: 5000; 
             opacity: 0; 
             pointer-events: none; 
@@ -842,7 +727,7 @@
             left: 0; 
             width: 100vw; 
             height: 100dvh; 
-            background: rgba(0,0,0,0.8); 
+            background: rgba(0,0,0,0.85); 
             z-index: 30000; 
             display: flex; 
             justify-content: center; 
@@ -850,7 +735,7 @@
             opacity: 0; 
             pointer-events: none; 
             transition: 0.4s ease; 
-            backdrop-filter: blur(10px); 
+            backdrop-filter: blur(15px); 
         }
 
         .cert-modal-overlay.active { 
@@ -860,14 +745,14 @@
 
         .cert-card { 
             background: #FFF; 
-            width: 800px; 
+            width: 850px; 
             max-width: 90%; 
-            border-radius: 30px; 
-            padding: 50px; 
+            border-radius: 35px; 
+            padding: 60px; 
             text-align: center; 
             position: relative; 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3); 
-            transform: scale(0.8); 
+            box-shadow: 0 40px 80px rgba(0,0,0,0.4); 
+            transform: scale(0.85); 
             transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
@@ -876,47 +761,47 @@
         }
 
         .cert-border { 
-            border: 8px solid var(--br-gold); 
-            border-radius: 20px; 
-            padding: 40px; 
+            border: 10px solid var(--br-gold); 
+            border-radius: 25px; 
+            padding: 50px; 
             position: relative; 
         }
 
         .cert-title { 
             font-family: 'Playfair Display', serif; 
-            font-size: 45px; 
+            font-size: 50px; 
             color: var(--br-charcoal); 
             font-weight: 900; 
-            margin-bottom: 10px; 
+            margin-bottom: 15px; 
         }
 
         .cert-subtitle { 
             font-family: 'Nunito', sans-serif; 
-            font-size: 16px; 
+            font-size: 18px; 
             color: var(--br-muted); 
             font-weight: 900; 
-            letter-spacing: 3px; 
+            letter-spacing: 4px; 
             text-transform: uppercase; 
-            margin-bottom: 30px; 
+            margin-bottom: 35px; 
         }
 
         .cert-name { 
             font-family: 'Nunito', sans-serif; 
-            font-size: 35px; 
+            font-size: 40px; 
             color: var(--br-green); 
             font-weight: 900; 
-            margin-bottom: 20px; 
+            margin-bottom: 25px; 
             text-decoration: underline; 
             text-decoration-color: var(--br-gold); 
         }
 
         .cert-img-container { 
             width: 100%; 
-            max-width: 400px; 
-            height: 250px; 
-            margin: 0 auto 30px; 
-            border-radius: 15px; 
-            border: 2px dashed var(--br-border); 
+            max-width: 450px; 
+            height: 280px; 
+            margin: 0 auto 35px; 
+            border-radius: 18px; 
+            border: 3px dashed var(--br-border); 
             overflow: hidden; 
             display: flex; 
             justify-content: center; 
@@ -931,40 +816,40 @@
         }
 
         .cert-msg { 
-            font-size: 16px; 
+            font-size: 18px; 
             color: var(--br-text); 
             line-height: 1.6; 
             font-weight: 600; 
-            margin-bottom: 30px; 
+            margin-bottom: 35px; 
             font-style: italic; 
         }
 
         .btn-print { 
             background: var(--br-charcoal); 
             color: #FFF; 
-            padding: 15px 40px; 
-            font-size: 16px; 
+            padding: 18px 45px; 
+            font-size: 18px; 
             font-weight: 900; 
             border-radius: 100px; 
             cursor: pointer; 
             display: inline-flex; 
             align-items: center; 
-            gap: 10px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+            gap: 12px; 
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15); 
             transition: 0.3s; 
         }
 
         .btn-print:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 15px 25px rgba(0,0,0,0.15); 
+            transform: translateY(-4px); 
+            box-shadow: 0 20px 35px rgba(203,174,117,0.3); 
             background: var(--br-gold); 
         }
 
         .cert-close { 
             position: absolute; 
-            top: 20px; 
-            right: 30px; 
-            font-size: 30px; 
+            top: 25px; 
+            right: 35px; 
+            font-size: 35px; 
             color: var(--br-muted); 
             cursor: pointer; 
             font-weight: 900; 
@@ -976,11 +861,8 @@
             transform: rotate(90deg); 
         }
 
-        /* ----------------------------------------------------------------------
-           ANIMATIONS & MEDIA QUERIES
-        ---------------------------------------------------------------------- */
         @keyframes popIn { 
-            from { opacity: 0; transform: scale(0.9) translateY(10px); } 
+            from { opacity: 0; transform: scale(0.9) translateY(15px); } 
             to { opacity: 1; transform: scale(1) translateY(0); } 
         }
 
@@ -988,43 +870,11 @@
             50% { opacity: 0.3; } 
         }
 
-        @keyframes pulse { 
-            0% { opacity: 0.8; transform: scale(0.98); } 
-            50% { opacity: 1; transform: scale(1.02); } 
-            100% { opacity: 0.8; transform: scale(0.98); } 
-        }
-
-        .mobile-menu-btn { 
-            display: none; 
-            font-size: 28px; 
-            padding: 10px; 
-            color: var(--br-charcoal); 
-            z-index: 1500; 
-        }
-
         @media (max-width: 1024px) {
-            :root { --sidebar-width: 260px; }
-            .top-bar { height: 70px; padding: 0 20px; }
-            .bottom-dock { height: 100px; padding: 0 20px; }
-            .stage-wrapper { padding: 10px 20px; }
-            .rgb-modal { left: 20px; bottom: 110px; }
-        }
-
-        @media (max-width: 800px) {
-            .mobile-menu-btn { display: block; }
-            .sidebar { position: fixed; left: calc(var(--sidebar-width) * -1); top: 0; box-shadow: none; }
-            .sidebar.open { left: 0; box-shadow: 20px 0 50px rgba(0,0,0,0.1); }
-            #worksheet-img { max-height: calc(100dvh - 210px); }
-            .bottom-dock { height: 140px; flex-direction: column; justify-content: center; padding: 10px 20px; gap: 12px; border-radius: 25px 25px 0 0; }
-            .tool-group { width: 100%; justify-content: center; padding: 8px 20px; }
-            .action-group { width: 100%; justify-content: space-between; }
-            .btn-nav, .btn-main { height: 50px; font-size: 13px; }
-            .ai-panel { width: 100%; right: -100%; border-left: none; }
-            .rgb-modal { left: 50%; transform: translateX(-50%) translateY(20px); bottom: 160px; }
-            .rgb-modal.active { transform: translateX(-50%) translateY(0); }
-            .cert-card { padding: 30px 20px; }
-            .cert-border { padding: 20px; }
-            .cert-title { font-size: 30px; }
+            :root { --sidebar-width: 280px; }
+            .top-bar { height: 75px; padding: 0 25px; }
+            .bottom-dock { height: 100px; padding: 0 25px; }
+            .stage-wrapper { padding: 15px 25px; }
         }
     </style>
 </head>
@@ -1041,22 +891,19 @@
                 <div class="profile-top">
                     <div class="profile-avatar" id="avatar-char">?</div>
                     <div class="profile-info">
-                        <span class="profile-name" id="display-name">Loading...</span>
-                        <span class="profile-role">Bridge Explorer</span>
+                        <span class="profile-name" id="display-name">Guest</span>
+                        <span class="profile-role">Private Explorer</span>
                     </div>
                 </div>
                 <div class="badge-container" id="badge-container"></div>
             </div>
             
-            <div class="nav-list" id="nav-list">
-                </div>
+            <div class="nav-list" id="nav-list"></div>
         </nav>
 
         <div class="workspace">
-            
             <div class="top-bar">
-                <div style="display:flex; align-items:center; gap:15px;">
-                    <button class="mobile-menu-btn" onclick="UIEngine.toggleSidebar()">☰</button>
+                <div style="display:flex; align-items:center; gap:20px;">
                     <div>
                         <div id="unit-info" class="unit-info">UNIT LOADING...</div>
                         <div id="page-info" class="page-info">Inquiry P.01</div>
@@ -1072,33 +919,37 @@
             </main>
 
             <div class="bottom-dock">
-                
                 <div class="tool-group">
                     <div class="color-preview" id="btn-color" onclick="RGBRingEngine.toggle()"></div>
                     <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;">
-                    
                     <div class="btn-magic active" id="btn-brush-normal" onclick="CanvasEngine.setBrush('normal')" title="Normal Pen">🖍️</div>
                     <div class="btn-magic" id="btn-brush-neon" onclick="CanvasEngine.setBrush('neon')" title="Neon Magic">🌟</div>
                     <div class="btn-magic" id="btn-brush-rainbow" onclick="CanvasEngine.setBrush('rainbow')" title="Rainbow Magic">🌈</div>
-
-                    <input type="range" class="brush-slider" id="brush-size" min="2" max="35" value="6" style="margin-left:5px;">
-                    
-                    <button class="btn-tool" onclick="CanvasEngine.undo()" title="Undo">↺</button>
-                    <button class="btn-tool" onclick="CanvasEngine.redo()" title="Redo">↻</button>
-                    
-                    <button class="btn-erase" id="btn-eraser" style="margin-left: 5px;" onclick="CanvasEngine.toggleEraser()">ERASER</button>
-                    <button style="font-size: 10px; font-weight: 900; color: var(--br-muted); padding: 5px; margin-left: 5px; cursor: pointer; border: none; background: transparent;" onclick="CanvasEngine.clearAll()">CLEAR</button>
+                    <input type="range" class="brush-slider" id="brush-size" min="2" max="35" value="6">
+                    <button class="btn-tool" onclick="CanvasEngine.undo()">↺</button>
+                    <button class="btn-erase" id="btn-eraser" onclick="CanvasEngine.toggleEraser()">ERASER</button>
                 </div>
                 
                 <div class="action-group">
                     <button class="btn-nav" onclick="AppEngine.smoothMove(-1)">◀</button>
                     <button class="btn-main btn-record" id="btn-record" onclick="AudioEngine.toggle()">
-                        <div class="dot"></div> 
-                        <span id="record-text">Voice Log</span>
+                        <div class="dot"></div> <span id="record-text">Voice Log</span>
                     </button>
                     <button class="btn-main btn-submit" onclick="AITutor.submit()">Submit ✨</button>
                     <button class="btn-nav" onclick="AppEngine.smoothMove(1)">▶</button>
                 </div>
+            </div>
+        </div>
+
+        <div class="ai-panel" id="ai-panel">
+            <div class="ai-header">
+                <div class="ai-title">✨ Private Tutor</div>
+                <button class="btn-close-ai" onclick="AITutor.close()">×</button>
+            </div>
+            <div class="ai-content" id="ai-content"></div>
+            <div class="chat-footer" id="chat-footer" style="display:none;">
+                <button class="btn-reply" id="btn-chat-record" onclick="AudioEngine.toggleChat()">🎤 Speak to Teacher</button>
+                <button class="btn-next-page" onclick="AppEngine.handleNextAdventure()">Next Page 🚀</button>
             </div>
         </div>
 
@@ -1107,52 +958,18 @@
             <p style="text-align:center; font-size:10px; margin-top:12px; font-weight:900; color:var(--br-muted); cursor:pointer;" onclick="RGBRingEngine.toggle()">CLOSE</p>
         </div>
 
-        <div class="ai-panel" id="ai-panel">
-            <div class="ai-header">
-                <div class="ai-title">✨ AI Tutor</div>
-                <button class="btn-close-ai" onclick="AITutor.close()">×</button>
-            </div>
-            
-            <div class="ai-content" id="ai-content">
-                </div>
-            
-            <div class="chat-footer" id="chat-footer" style="display:none;">
-                <button class="btn-reply" id="btn-chat-record" onclick="AudioEngine.toggleChat()">🎤 Speak to Reply</button>
-                <button class="btn-next-page" onclick="AppEngine.handleNextAdventure()">Next Adventure 🚀</button>
-            </div>
-        </div>
-
-        <div class="cert-modal-overlay" id="cert-modal">
-            <div class="cert-card" id="cert-card-content">
-                <div class="cert-close" onclick="CertificateEngine.close()">×</div>
-                <div class="cert-border">
-                    <div class="cert-subtitle" id="cert-week">WEEK 1 COMPLETED</div>
-                    <div class="cert-title">Certificate of Exploration</div>
-                    <p style="margin-bottom: 20px; color: var(--br-muted); font-weight: 500;">This magical certificate is proudly presented to</p>
-                    <div class="cert-name" id="cert-student-name">Student Name</div>
-                    
-                    <div class="cert-img-container">
-                        <img id="cert-canvas-img" src="" alt="My Masterpiece">
-                    </div>
-                    
-                    <div class="cert-msg" id="cert-ai-msg">"For showing amazing creativity and speaking with a clear, beautiful voice."</div>
-                    
-                    <button class="btn-print" onclick="CertificateEngine.print()">🖨️ Save & Print</button>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <script>
         /**
-         * 1. CONFIGURATION & SECRETS
-         * Replace YOUR_GEMINI_API_KEY_HERE with actual Gemini 1.5 Pro API key.
+         * [CONFIG] 
+         * API Keys and Environment Variables
          */
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
-            GOOGLE_API_KEY: "AIzaSyDofQFS8_KaD4kwzArYfBQw4oG4kvkZNrk", // Fallback Vision API
-            GEMINI_API_KEY: "AIzaSyAbYyapSRH3n9Dk8L6OCUKXQVKwBIu4eZw", // 🔥 Gemini 1.5 Pro Key
+            GOOGLE_API_KEY: "AIzaSyDofQFS8_KaD4kwzArYfBQw4oG4kvkZNrk", // Legacy Vision
+            GEMINI_API_KEY: "YOUR_GEMINI_API_KEY_HERE", // 🔥 필수: Gemini API Key 입력
+            MODEL_NAME: "gemini-1.5-pro", // 최고의 추론 능력을 가진 모델
             FIREBASE_CONFIG: {
                 apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk",
                 authDomain: "bridge-academy-6d6a9.firebaseapp.com",
@@ -1164,894 +981,368 @@
             }
         };
 
-        // Firebase Init
+        // Firebase Initialization
         firebase.initializeApp(CONFIG.FIREBASE_CONFIG);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
         /**
-         * 2. GLOBAL STATE MANAGEMENT
-         * Keeps track of all interactive parameters.
+         * [STATE]
+         * Global application state management
          */
         const STATE = {
-            uid: null,             
-            studentEmail: "",      
-            studentName: "",       
+            uid: null, 
+            studentEmail: "", 
+            studentName: "", 
             isNameRegistered: false,
-            id: new URLSearchParams(window.location.search).get('id') || "A-1",
+            unitId: new URLSearchParams(window.location.search).get('id') || "A-1",
             currentPage: 1, 
             isRecording: false, 
-            lastTranscript: "",
-            audioStartTime: 0, 
-            audioDurationSec: 0, 
+            lastTranscript: "", 
             sttConfidence: 0,
-            isChatMode: false, 
             historyStack: [], 
-            historyIndex: -1,
-            audioBlobUrl: null, 
-            badges: [], 
-            brushType: 'normal', 
-            rainbowHue: 0,
-            chatHistory: [] // LLM Context Memory
+            historyIndex: -1, 
+            chatHistory: []
         };
 
-        // AUTHENTICATION GUARD
+        // Authentication Guard
         auth.onAuthStateChanged((user) => {
-            if (!user) {
-                alert("This area is for registered students. Redirecting to login...");
+            if (!user) { 
                 location.href = 'login.html'; 
             } else {
                 STATE.uid = user.uid; 
                 STATE.studentEmail = user.email;
                 STATE.studentName = user.email.split('@')[0].toUpperCase();
-                STATE.isNameRegistered = true;
                 
-                const profileBox = document.getElementById('profile-box');
-                profileBox.classList.add('registered');
                 document.getElementById('display-name').innerText = STATE.studentName;
                 document.getElementById('avatar-char').innerText = STATE.studentName.charAt(0);
                 
-                SystemBoot(); // Start application after auth
+                SystemBoot();
             }
         });
 
         /**
-         * 3. CLOUD & LOCAL STORAGE ENGINE
-         * Handles bidirectional syncing of canvas and progress.
+         * [STORAGE ENGINE]
          */
         const StorageEngine = {
-            save() { 
+            save() {
                 if(!STATE.uid) return;
-                const stateData = { 
+                const data = { 
                     name: STATE.studentName, 
-                    reg: STATE.isNameRegistered, 
                     page: STATE.currentPage, 
-                    badges: STATE.badges 
+                    badges: STATE.badges || [] 
                 };
                 
-                try {
-                    localStorage.setItem(`br_v105_${STATE.uid}_${STATE.id}`, JSON.stringify(stateData)); 
-                    db.collection("students").doc(STATE.uid).set({
-                        ...stateData,
-                        email: STATE.studentEmail,
-                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
-                } catch (e) {
-                    console.error("Storage Error:", e);
-                }
-            },
-            
-            load() {
-                if(!STATE.uid) return;
-                try {
-                    const s = JSON.parse(localStorage.getItem(`br_v105_${STATE.uid}_${STATE.id}`) || "{}");
-                    if (s.name) STATE.studentName = s.name; 
-                    if (s.reg) STATE.isNameRegistered = s.reg; 
-                    if (s.page) STATE.currentPage = s.page; 
-                    if (s.badges) STATE.badges = s.badges;
-                } catch (e) {
-                    console.error("Load Error:", e);
-                }
+                localStorage.setItem(`br_data_${STATE.uid}_${STATE.unitId}`, JSON.stringify(data));
+                
+                db.collection("students").doc(STATE.uid).set({ 
+                    ...data, 
+                    email: STATE.studentEmail, 
+                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
+                }, { merge: true });
             },
             
             saveCanvas() {
                 if (!CanvasEngine.cvs || !STATE.uid) return;
-                try {
-                    const canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.5);
-                    localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.id}_${STATE.currentPage}`, canvasData);
-
-                    const docId = `${STATE.uid}_${STATE.id}_P${STATE.currentPage}`;
-                    db.collection("student_drawings").doc(docId).set({
-                        studentID: STATE.studentEmail,
-                        unitId: STATE.id,
-                        page: STATE.currentPage,
-                        image: canvasData,
-                        transcript: STATE.lastTranscript || "",
-                        confidence: STATE.sttConfidence || 0,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                } catch (e) {
-                    console.error("Canvas Save Error:", e);
-                }
+                const canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6);
+                
+                localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, canvasData);
+                
+                db.collection("student_drawings").doc(`${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`).set({
+                    studentID: STATE.studentEmail, 
+                    unitId: STATE.unitId, 
+                    page: STATE.currentPage,
+                    image: canvasData, 
+                    transcript: STATE.lastTranscript, 
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
             },
             
             loadCanvas() {
-                if(!STATE.uid) return;
-                try {
-                    const localData = localStorage.getItem(`br_cvs_${STATE.uid}_${STATE.id}_${STATE.currentPage}`);
-                    if (localData) {
-                        const img = new Image();
-                        img.onload = () => {
-                            CanvasEngine.ctx.drawImage(img, 0, 0, CanvasEngine.cvs.width / CanvasEngine.dpr, CanvasEngine.cvs.height / CanvasEngine.dpr);
-                            CanvasEngine.saveHistory();
-                        };
-                        img.src = localData;
-                    } else {
-                        CanvasEngine.saveHistory();
-                    }
-                } catch (e) {
-                    console.error("Canvas Load Error:", e);
-                    CanvasEngine.saveHistory();
+                const localData = localStorage.getItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`);
+                if (localData) {
+                    const img = new Image();
+                    img.onload = () => { 
+                        CanvasEngine.ctx.drawImage(img, 0, 0, CanvasEngine.cvs.width/CanvasEngine.dpr, CanvasEngine.cvs.height/CanvasEngine.dpr); 
+                        CanvasEngine.saveHistory(); 
+                    };
+                    img.src = localData;
+                } else { 
+                    CanvasEngine.saveHistory(); 
                 }
             }
         };
 
         /**
-         * 4. CERTIFICATE GENERATION ENGINE
-         */
-        const CertificateEngine = {
-            open(weekNum) {
-                const modal = document.getElementById('cert-modal');
-                document.getElementById('cert-week').innerText = `WEEK ${weekNum} COMPLETED`;
-                document.getElementById('cert-student-name').innerText = STATE.studentName || "Bridge Explorer";
-                document.getElementById('cert-canvas-img').src = CanvasEngine.cvs.toDataURL();
-                
-                const hasArt = STATE.badges.includes("🎨 Colorful Artist");
-                const hasVoice = STATE.badges.includes("🗣️ Great Speaker");
-                
-                let msg = "For showing amazing curiosity and completing your inquiry journey.";
-                if (hasArt && hasVoice) { msg = "For your brilliant colorful art and speaking English so confidently!"; }
-                else if (hasArt) { msg = "For expressing your wonderful imagination through colorful art!"; }
-                else if (hasVoice) { msg = "For speaking English with a clear, brave voice like a true explorer!"; }
-                
-                document.getElementById('cert-ai-msg').innerText = `"${msg}"`;
-                modal.classList.add('active');
-                
-                if (window.confetti) {
-                    confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
-                }
-            },
-            close() {
-                document.getElementById('cert-modal').classList.remove('active');
-                AppEngine.smoothMove(1); 
-            },
-            print() {
-                const card = document.getElementById('cert-card-content');
-                const closeBtn = document.querySelector('.cert-close');
-                const printBtn = document.querySelector('.btn-print');
-                
-                closeBtn.style.display = 'none'; printBtn.style.display = 'none';
-                
-                html2canvas(card, { backgroundColor: '#FFFFFF', scale: 2 }).then(canvas => {
-                    closeBtn.style.display = 'block'; printBtn.style.display = 'inline-flex';
-                    const imgData = canvas.toDataURL('image/png');
-                    const link = document.createElement('a');
-                    link.download = `Bridge_Certificate_${STATE.studentName}.png`;
-                    link.href = imgData;
-                    link.click();
-                }).catch(e => {
-                    alert("Failed to generate certificate image.");
-                    closeBtn.style.display = 'block'; printBtn.style.display = 'inline-flex';
-                });
-            }
-        };
-
-        /**
-         * 5. MASTER CURRICULUM INTELLIGENCE DB
-         * Extended meta-data for precise North American Curriculum context.
-         */
-        const PAGE_INTELLIGENCE = {
-            "A-1": {
-                1: { navTitle: "[W1 Identity] Name", type: "name", goal: "Name Registration", question: "What a beautiful name! Can you say it out loud?", keywords: ["name", "is", "am"] },
-                2: { navTitle: "[W1 Identity] Mind", type: "writing", goal: "Self-Esteem", target: "I like myself", question: "Do you like yourself too? Tell me why!", keywords: ["like", "love", "myself"] },
-                3: { navTitle: "[W1 Identity] Face", type: "vocab", goal: "Feature Recognition", question: "Which part of your face is your favorite?", keywords: ["nose", "ear", "hair", "eye"] },
-                4: { navTitle: "[W1 Identity] Portrait", type: "vision", goal: "Draw Features", question: "Wow, you drew them perfectly. Can you point to your own nose?", keywords: ["draw", "face", "look"] },
-                5: { navTitle: "[W2 Senses] Verbs", type: "ocr", goal: "Verb Recognition", question: "What do you like to smell the most?", keywords: ["smell", "hear", "taste", "see"] },
-                6: { navTitle: "[W2 Senses] Sentences", type: "writing", goal: "Sentence Completion", question: "I like my eyes too! What else do you like?", keywords: ["like", "my", "face"] },
-                7: { navTitle: "[W2 Senses] Matching", type: "matching", goal: "Sensory Association", pairs: [{ label: "Nose to Fragrance" }, { label: "Ear to Music" }, { label: "Eye to Binoculars" }, { label: "Foot to Shoes" }], question: "Which part of your body do you use to hear the music?", keywords: ["music", "smell", "see", "hear", "walk"] },
-                8: { navTitle: "[W2 Senses] Emotion", type: "vision_detail", goal: "Draw a Face", question: "Is your face smiling or sleeping today?", keywords: ["smile", "happy", "face"] },
-                9: { navTitle: "[W3 Animals] Story", type: "ocr", goal: "Book Introduction", question: "Are you ready to read about the Gorilla?", keywords: ["head", "toe", "book"] },
-                10: { navTitle: "[W3 Animals] Gorilla", type: "matching", goal: "Gorilla Body Parts", pairs: [{ label:"Head" }], question: "The Gorilla has very strong arms! Show me your strong arms.", keywords: ["arm", "leg", "head", "strong"] },
-                11: { navTitle: "[W3 Animals] Labels", type: "matching_label", goal: "Labeling", question: "Can you find where the shoulder is?", keywords: ["shoulder", "hip", "toe"] },
-                12: { navTitle: "[W3 Animals] Giraffe", type: "coloring", goal: "Coloring", target_zone: [0.6, 0.5], question: "Why is the Giraffe's neck so long and colorful?", keywords: ["long", "color", "giraffe"] },
-                13: { navTitle: "[W4 Creative] Funny Body", type: "creative", goal: "Creative Imagination", question: "A monkey tail and spaghetti arms! What can you do with spaghetti arms?", keywords: ["monkey", "spaghetti", "piggy", "funny"] },
-                14: { navTitle: "[W4 Creative] Math", type: "counting", goal: "Body Counting", answers: {"Arm":2, "Foot":2}, question: "How many fingers do you have in total?", keywords: ["one", "two", "ten", "count"] },
-                15: { navTitle: "[W4 Creative] Review", type: "vision_summary", goal: "Review Story", question: "Did you enjoy the story today?", keywords: ["yes", "fun", "story"] },
-                16: { navTitle: "[W4 Creative] Tools", type: "checkbox", goal: "Tools", question: "Which tool did you use the most today?", keywords: ["pencil", "marker", "crayon"] },
-                17: { navTitle: "[W4 Creative] Eval", type: "self_eval", goal: "Self Evaluation", question: "You did amazing! Are you proud of yourself?", keywords: ["proud", "happy", "good"] }
-            },
-            "A-2": {
-                18: { navTitle: "[W1 Bugs] Intro", type: "intro", goal: "Meet Crawlers", question: "Are you ready to meet our little crawlers?", keywords: ["caterpillar", "bug", "ready"] },
-                19: { navTitle: "[W1 Bugs] Hungry Bug", type: "vision", goal: "Food Recognition", question: "What is the caterpillar eating?", keywords: ["eat", "leaf", "hungry"] },
-                20: { navTitle: "[W1 Bugs] Fruit Words", type: "ocr", goal: "Reading Fruits", question: "Do you like apples or plums?", keywords: ["apple", "plum", "pear"] },
-                21: { navTitle: "[W1 Bugs] Favorite", type: "drawing", goal: "Favorite Fruit", question: "Wow, that looks delicious! Why is that your favorite?", keywords: ["sweet", "delicious", "yummy"] },
-                22: { navTitle: "[W2 Words] I Eat...", type: "writing", goal: "Sentence Practice", question: "You eat apples and bananas! Do you like crunchy apples or soft bananas?", keywords: ["crunchy", "soft", "eat"] },
-                23: { navTitle: "[W2 Words] Magic 1", type: "logic", goal: "Compound Words", logic: "Butter + Fly = Butterfly", question: "What happens when Butter meets a Fly?", keywords: ["butterfly", "fly", "butter"] },
-                24: { navTitle: "[W2 Words] Magic 2", type: "logic", goal: "Compound Words 2", logic: "Straw + Berry = Strawberry", question: "What happens when Straw meets a Berry?", keywords: ["strawberry", "berry", "sweet"] },
-                25: { navTitle: "[W2 Words] Book 2", type: "ocr", goal: "Caterpillar Story", question: "He looks very hungry! What should he eat first?", keywords: ["hungry", "eat", "caterpillar"] },
-                26: { navTitle: "[W3 Nature] Life Cycle", type: "cycle", goal: "Life Cycle Stages", steps: ["Egg", "Caterpillar", "Cocoon", "Butterfly"], question: "What does the caterpillar do inside the cocoon?", keywords: ["sleep", "change", "cocoon"] },
-                27: { navTitle: "[W3 Nature] Symmetry", type: "symmetry", goal: "Butterfly Wings", question: "Your butterfly is so colorful! Can it fly high?", keywords: ["fly", "high", "colorful"] },
-                28: { navTitle: "[W3 Nature] Math 1", type: "counting", goal: "Count Fruits", target: 15, question: "How many strawberries did the caterpillar eat?", keywords: ["five", "ten", "fifteen"] },
-                29: { navTitle: "[W3 Nature] Math 2", type: "counting", goal: "Count Leaves", question: "Are there more leaves or more apples?", keywords: ["leaves", "apples", "more"] },
-                30: { navTitle: "[W4 Explore] Search", type: "search", goal: "Identify Insects", targets: ["Ladybug", "Butterfly", "Ant", "Beetle"], question: "Is the Lion an insect? No! Can you find the Ant?", keywords: ["ant", "lion", "insect", "no"] },
-                31: { navTitle: "[W4 Explore] Review", type: "vision_summary", goal: "Review Bug", question: "What was your favorite bug today?", keywords: ["butterfly", "ladybug", "favorite"] },
-                32: { navTitle: "[W4 Explore] Garden", type: "creative", goal: "Draw Garden", question: "What a beautiful garden! Who lives in your garden?", keywords: ["garden", "bug", "flower"] },
-                33: { navTitle: "[W4 Explore] Eval", type: "self_eval", goal: "Self Evaluation 2", question: "You are a great explorer! See you next time!", keywords: ["bye", "see", "you"] }
-            }
-        };
-
-        /**
-         * 6. NAVIGATION & APP ENGINE
-         */
-        const AppEngine = {
-            smoothMove(dir) {
-                StorageEngine.saveCanvas();
-                const board = document.getElementById('drawing-board');
-                board.classList.add('fade-out');
-                
-                setTimeout(() => {
-                    STATE.currentPage += dir;
-                    if (STATE.currentPage < 1) STATE.currentPage = 1;
-                    if (STATE.currentPage > 33) STATE.currentPage = 33; 
-                    PageEngine.load(STATE.currentPage);
-                    setTimeout(() => { board.classList.remove('fade-out'); }, 150);
-                }, 400);
-            },
-            handleNextAdventure() {
-                AITutor.close(); StorageEngine.saveCanvas();
-                if (STATE.currentPage % 4 === 0) { CertificateEngine.open(STATE.currentPage / 4); }
-                else { this.smoothMove(1); }
-            }
-        };
-
-        const UIEngine = {
-            toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); },
-            closeSidebarOnMobile() { if (window.innerWidth <= 800) { document.getElementById('sidebar').classList.remove('open'); } },
-            renderBadges() {
-                const container = document.getElementById('badge-container');
-                container.innerHTML = "";
-                const uniqueBadges = [...new Set(STATE.badges)];
-                uniqueBadges.forEach(badge => {
-                    const el = document.createElement('div'); 
-                    el.className = "badge"; el.innerText = badge;
-                    container.appendChild(el);
-                });
-            },
-            awardBadge(badgeName) {
-                if (!STATE.badges.includes(badgeName)) {
-                    STATE.badges.push(badgeName);
-                    StorageEngine.save(); this.renderBadges();
-                    if (window.confetti) { confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 }, colors: ['#CBAE75', '#89BFA0'] }); }
-                }
-            }
-        };
-
-        const PageEngine = {
-            init() {
-                const list = document.getElementById('nav-list');
-                const unitData = PAGE_INTELLIGENCE[STATE.id];
-                
-                if (unitData) {
-                    Object.keys(unitData).forEach(i => {
-                        const ctx = unitData[i];
-                        const weekBadge = Math.ceil(parseInt(i) / 4);
-                        const item = document.createElement('div');
-                        item.className = 'nav-item'; 
-                        item.id = `nav-${i}`;
-                        item.innerHTML = `<span class="nav-title">${ctx.navTitle}</span><span class="nav-badge">W${weekBadge}-P.${String(i).padStart(2,'0')}</span>`;
-                        item.onclick = () => { AppEngine.smoothMove(parseInt(i) - STATE.currentPage); UIEngine.closeSidebarOnMobile(); };
-                        list.appendChild(item);
-                    });
-                }
-                this.load(STATE.currentPage);
-            },
-            
-            load(n) {
-                STATE.currentPage = n; 
-                STATE.lastTranscript = ""; 
-                STATE.sttConfidence = 0; 
-                STATE.audioDurationSec = 0; 
-                STATE.audioBlobUrl = null; 
-                STATE.chatHistory = []; // Reset context on page load
-                
-                document.getElementById('unit-info').innerText = `MASTER LAB: ${STATE.id}`;
-                document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
-                
-                document.querySelectorAll('.nav-item').forEach(el => { el.classList.remove('active'); });
-                const activeNav = document.getElementById(`nav-${n}`);
-                if (activeNav) {
-                    activeNav.classList.add('active');
-                    const navList = document.getElementById('nav-list');
-                    navList.scrollTo({ top: activeNav.offsetTop - navList.offsetTop - 50, behavior: 'smooth' });
-                }
-                
-                CanvasEngine.hardReset(); AITutor.close();
-
-                const img = document.getElementById('worksheet-img'); 
-                img.style.opacity = '0';
-                
-                const seriesChar = STATE.id.charAt(0);
-                const imgPath = `${CONFIG.STORAGE_URL}${seriesChar}/${STATE.id}/${STATE.id}-${n}.png?t=${new Date().getTime()}`;
-                
-                img.src = imgPath;
-                img.onload = () => { 
-                    img.style.opacity = '1'; 
-                    CanvasEngine.resizeCanvas(); 
-                    StorageEngine.loadCanvas(); 
-                };
-                img.onerror = () => {
-                    console.error("Worksheet image not found:", imgPath);
-                    img.style.opacity = '1';
-                    CanvasEngine.resizeCanvas();
-                };
-                
-                StorageEngine.save(); 
-            }
-        };
-
-        /**
-         * 7. CANVAS & DRAWING ENGINE
-         * Unminified for complete control and enterprise-grade robustness.
+         * [CANVAS ENGINE]
          */
         const CanvasEngine = {
-            isDrawing: false, hasMoved: false, isErasing: false, lastColor: "#363431", dpr: window.devicePixelRatio || 1, historyStack: [], historyIndex: -1, colorsUsed: new Set(),
-
+            isDrawing: false, 
+            hasMoved: false, 
+            isErasing: false, 
+            lastColor: "#363431", 
+            dpr: window.devicePixelRatio || 1, 
+            historyStack: [], 
+            historyIndex: -1,
+            
             init() {
                 this.cvs = document.getElementById('draw-layer'); 
                 this.ctx = this.cvs.getContext('2d'); 
                 this.board = document.getElementById('drawing-board');
                 
                 this.setupUI(); 
-                this.updateCursor();
+                this.setupCanvas(); 
+                this.bind();
                 
-                requestAnimationFrame(() => { 
-                    this.setupCanvas(); 
-                    setTimeout(() => { this.setupCanvas(); this.saveHistory(); }, 50); 
-                });
-                
-                this.bind(); 
-                
-                if (window.ResizeObserver) {
-                    new ResizeObserver(() => { requestAnimationFrame(() => this.resizeCanvas()); }).observe(this.board);
-                } else {
-                    window.addEventListener('resize', () => { requestAnimationFrame(() => this.resizeCanvas()); });
+                if(window.ResizeObserver) {
+                    new ResizeObserver(() => this.resizeCanvas()).observe(this.board);
                 }
             },
             
-            hardReset() {
-                if (!this.ctx || !this.cvs) return;
-                this.ctx.save(); 
-                this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
-                this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
-                this.ctx.restore();
-                STATE.historyStack = []; 
-                STATE.historyIndex = -1; 
-                this.colorsUsed.clear();
-            },
-            
-            setBrush(type) {
-                STATE.brushType = type;
-                document.querySelectorAll('.btn-magic').forEach(el => { el.classList.remove('active'); });
-                const brushBtn = document.getElementById(`btn-brush-${type}`);
-                if (brushBtn) { brushBtn.classList.add('active'); }
-                if (this.isErasing) { this.toggleEraser(); }
-            },
-            
-            updateCursor() {
-                const color = this.lastColor.replace('#', '%23');
-                const svg = this.isErasing ? 
-                    `<svg width="20" height="20" viewBox="0 0 24 24" fill="%23FFB6C1"><path d="M20 20H7L3 16C2 15 2 13 3 12L13 2L22 11C23 12 23 14 22 15L20 20Z"/></svg>` : 
-                    `<svg width="20" height="20" viewBox="0 0 24 24" fill="${color}"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/><path d="M15 5l4 4"/><circle cx="2" cy="22" r="1.5" fill="${color}"/></svg>`;
-                this.cvs.style.cursor = `url('data:image/svg+xml;utf8,${svg}') 0 20, auto`;
-            },
-            
             setupCanvas() {
-                if (!this.board) return; 
                 const rect = this.board.getBoundingClientRect(); 
-                if (rect.width === 0 || rect.height === 0) return;
+                if (rect.width === 0) return;
                 
                 this.cvs.style.width = rect.width + "px"; 
-                this.cvs.style.height = rect.height + "px"; 
+                this.cvs.style.height = rect.height + "px";
                 this.cvs.width = rect.width * this.dpr; 
                 this.cvs.height = rect.height * this.dpr;
                 
                 this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); 
                 this.ctx.lineCap = 'round'; 
                 this.ctx.lineJoin = 'round';
-                
-                const baseSize = document.getElementById('brush-size').value; 
-                this.ctx.lineWidth = this.isErasing ? baseSize * 2 : baseSize; 
-                this.ctx.strokeStyle = this.lastColor; 
-                this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over";
             },
             
             resizeCanvas() {
-                if (!this.cvs || !this.ctx || !this.board) return; 
-                const rect = this.board.getBoundingClientRect(); 
-                if (rect.width === 0 || rect.height === 0) return;
-                
                 const temp = document.createElement('canvas'); 
                 temp.width = this.cvs.width; 
                 temp.height = this.cvs.height;
-                
-                if (this.cvs.width > 0 && this.cvs.height > 0) { 
-                    temp.getContext('2d').drawImage(this.cvs, 0, 0); 
-                }
+                temp.getContext('2d').drawImage(this.cvs, 0, 0); 
                 
                 this.setupCanvas();
-                
-                if (temp.width > 0 && temp.height > 0) { 
-                    this.ctx.save(); 
-                    this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
-                    this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, this.cvs.width, this.cvs.height); 
-                    this.ctx.restore(); 
-                }
+                this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, this.cvs.width, this.cvs.height);
             },
             
             bind() {
                 const getP = (e) => { 
                     const r = this.cvs.getBoundingClientRect(); 
-                    let cx = e.clientX; let cy = e.clientY; 
-                    if (e.touches && e.touches.length > 0) { cx = e.touches[0].clientX; cy = e.touches[0].clientY; } 
+                    let cx = e.clientX || e.touches[0].clientX; 
+                    let cy = e.clientY || e.touches[0].clientY; 
                     return { x: cx - r.left, y: cy - r.top }; 
                 };
                 
-                this.cvs.addEventListener('pointerdown', (e) => { 
+                const start = (e) => { 
                     e.preventDefault(); 
                     this.isDrawing = true; 
                     this.hasMoved = false; 
-                    try { this.cvs.setPointerCapture(e.pointerId); } catch(err) {} 
                     const p = getP(e); 
                     this.ctx.beginPath(); 
                     this.ctx.moveTo(p.x, p.y); 
-                    this.colorsUsed.add(this.lastColor); 
-                });
+                };
                 
-                this.cvs.addEventListener('pointermove', (e) => {
+                const move = (e) => {
                     if (!this.isDrawing) return; 
                     e.preventDefault(); 
                     this.hasMoved = true; 
                     const p = getP(e);
                     
-                    this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over"; 
-                    const size = document.getElementById('brush-size').value; 
-                    this.ctx.lineWidth = this.isErasing ? size * 2 : size; 
-                    this.ctx.shadowBlur = 0; 
-                    this.ctx.shadowColor = 'transparent';
+                    this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over";
+                    const s = document.getElementById('brush-size').value; 
+                    this.ctx.lineWidth = this.isErasing ? s * 3 : s;
                     
-                    if (this.isErasing) { 
-                        this.ctx.strokeStyle = "#FFF"; 
-                    } else if (STATE.brushType === 'neon') { 
-                        this.ctx.strokeStyle = this.lastColor; 
-                        this.ctx.shadowBlur = parseInt(size) + 10; 
-                        this.ctx.shadowColor = this.lastColor; 
-                    } else if (STATE.brushType === 'rainbow') { 
-                        STATE.rainbowHue = (STATE.rainbowHue + 2) % 360; 
-                        this.ctx.strokeStyle = `hsl(${STATE.rainbowHue}, 100%, 50%)`; 
-                    } else { 
-                        this.ctx.strokeStyle = this.lastColor; 
+                    this.ctx.strokeStyle = this.isErasing ? "#FFF" : this.lastColor;
+                    if(STATE.brushType === 'rainbow' && !this.isErasing) { 
+                        this.ctx.strokeStyle = `hsl(${(Date.now()/10)%360}, 100%, 50%)`; 
                     }
                     
                     this.ctx.lineTo(p.x, p.y); 
                     this.ctx.stroke(); 
                     this.ctx.beginPath(); 
                     this.ctx.moveTo(p.x, p.y);
-                });
+                };
                 
-                const stop = (e) => { 
+                const end = () => { 
                     this.isDrawing = false; 
-                    try { this.cvs.releasePointerCapture(e.pointerId); } catch(err) {} 
-                    this.ctx.shadowBlur = 0; 
                     if (this.hasMoved) { 
                         this.saveHistory(); 
                         StorageEngine.saveCanvas(); 
-                        if (this.colorsUsed.size >= 4) { UIEngine.awardBadge("🎨 Colorful Artist"); } 
                     } 
                 };
                 
-                this.cvs.addEventListener('pointerup', stop); 
-                this.cvs.addEventListener('pointercancel', stop); 
-                this.cvs.addEventListener('pointerleave', () => { this.isDrawing = false; });
+                this.cvs.addEventListener('pointerdown', start); 
+                this.cvs.addEventListener('pointermove', move); 
+                this.cvs.addEventListener('pointerup', end);
             },
             
-            saveHistory() { STATE.historyIndex++; STATE.historyStack.length = STATE.historyIndex; STATE.historyStack.push(this.cvs.toDataURL()); },
-            undo() { if (STATE.historyIndex > 0) { STATE.historyIndex--; this.restore(); } },
-            redo() { if (STATE.historyIndex < STATE.historyStack.length - 1) { STATE.historyIndex++; this.restore(); } },
+            saveHistory() { 
+                this.historyIndex++; 
+                this.historyStack.length = this.historyIndex; 
+                this.historyStack.push(this.cvs.toDataURL()); 
+            },
+            
+            undo() { 
+                if (this.historyIndex > 0) { 
+                    this.historyIndex--; 
+                    this.restore(); 
+                } 
+            },
+            
+            redo() { 
+                if (this.historyIndex < this.historyStack.length - 1) { 
+                    this.historyIndex++; 
+                    this.restore(); 
+                } 
+            },
+            
             restore() { 
                 const img = new Image(); 
                 img.onload = () => { 
                     this.ctx.save(); 
-                    this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
-                    this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
-                    this.ctx.drawImage(img, 0, 0, this.cvs.width / this.dpr, this.cvs.height / this.dpr); 
+                    this.ctx.setTransform(1,0,0,1,0,0); 
+                    this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height); 
+                    this.ctx.drawImage(img,0,0,this.cvs.width/this.dpr,this.cvs.height/this.dpr); 
                     this.ctx.restore(); 
-                    StorageEngine.saveCanvas(); 
                 }; 
-                img.src = STATE.historyStack[STATE.historyIndex]; 
+                img.src = this.historyStack[this.historyIndex]; 
             },
-            setColor(hex) { this.lastColor = hex; document.getElementById('btn-color').style.background = hex; if (!this.isErasing) { this.ctx.strokeStyle = this.lastColor; } this.updateCursor(); },
-            setupUI() { document.getElementById('btn-color').style.background = this.lastColor; document.getElementById('brush-size').oninput = (e) => { this.ctx.lineWidth = this.isErasing ? e.target.value * 2 : e.target.value; }; },
+            
+            setBrush(t) { 
+                STATE.brushType = t; 
+                document.querySelectorAll('.btn-magic').forEach(el => el.classList.remove('active')); 
+                document.getElementById(`btn-brush-${t}`).classList.add('active'); 
+            },
+            
             toggleEraser() { 
                 this.isErasing = !this.isErasing; 
-                const btn = document.getElementById('btn-eraser'); 
-                if (this.isErasing) { 
-                    btn.classList.add('active'); 
-                    btn.innerText = "PEN MODE"; 
-                    this.ctx.globalCompositeOperation = 'destination-out'; 
-                    this.ctx.lineWidth = document.getElementById('brush-size').value * 2; 
-                } else { 
-                    btn.classList.remove('active'); 
-                    btn.innerText = "ERASER"; 
-                    this.ctx.globalCompositeOperation = 'source-over'; 
-                    this.ctx.strokeStyle = this.lastColor; 
-                    this.ctx.lineWidth = document.getElementById('brush-size').value; 
-                } 
-                this.updateCursor(); 
+                document.getElementById('btn-eraser').classList.toggle('active'); 
             },
-            clearAll() { 
-                if (!this.ctx || !this.cvs) return; 
+            
+            setupUI() { 
+                document.getElementById('btn-color').style.background = this.lastColor; 
+            },
+            
+            clearAll() {
                 this.ctx.save(); 
-                this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
-                this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
+                this.ctx.setTransform(1,0,0,1,0,0); 
+                this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height); 
                 this.ctx.restore(); 
                 this.saveHistory(); 
-                StorageEngine.saveCanvas(); 
-                this.colorsUsed.clear(); 
+                StorageEngine.saveCanvas();
             }
         };
 
-        const RGBRingEngine = {
-            init() { 
-                this.m = document.getElementById('rgb-modal'); 
-                this.c = document.getElementById('color-wheel'); 
-                this.x = this.c.getContext('2d', { willReadFrequently: true }); 
-                const r = 75; this.c.width = 150; this.c.height = 150; 
-                for (let a = 0; a < 360; a++) { 
-                    this.x.beginPath(); this.x.moveTo(r, r); 
-                    this.x.arc(r, r, r, a * Math.PI / 180, (a + 2) * Math.PI / 180); 
-                    this.x.fillStyle = `hsl(${a}, 100%, 50%)`; this.x.fill(); 
-                } 
-                this.c.onclick = (e) => { 
-                    const rect = this.c.getBoundingClientRect(); 
-                    const p = this.x.getImageData(e.clientX - rect.left, e.clientY - rect.top, 1, 1).data; 
-                    if (p[3] < 50) return; 
-                    CanvasEngine.setColor("#" + ((1 << 24) + (p[0] << 16) + (p[1] << 8) + p[2]).toString(16).slice(1).toUpperCase()); 
-                    this.toggle(); 
-                }; 
-            },
-            toggle() { this.m.classList.toggle('active'); }
-        };
-
         /**
-         * 8. AUDIO ENGINE (Speech to Text & Voice FX)
-         */
-        const AudioEngine = {
-            recognition: null, mediaRecorder: null, audioChunks: [],
-            
-            init() {
-                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-                if (SR) {
-                    this.recognition = new SR(); 
-                    this.recognition.lang = 'en-US'; 
-                    this.recognition.interimResults = false; 
-                    this.recognition.continuous = false;
-                    
-                    this.recognition.onresult = (e) => { 
-                        STATE.lastTranscript = e.results[0][0].transcript; 
-                        STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); 
-                    };
-                    
-                    const finish = () => { 
-                        if (STATE.isRecording) { 
-                            if (STATE.isChatMode) { this.toggleChat(); } else { this.toggle(); } 
-                        } 
-                    };
-                    this.recognition.onend = finish; 
-                    this.recognition.onerror = finish;
-                }
-                
-                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-                        this.mediaRecorder = new MediaRecorder(stream);
-                        this.mediaRecorder.ondataavailable = e => this.audioChunks.push(e.data);
-                        this.mediaRecorder.onstop = () => { 
-                            STATE.audioBlobUrl = window.URL.createObjectURL(new Blob(this.audioChunks, { 'type' : 'audio/ogg; codecs=opus' })); 
-                        };
-                    }).catch(err => console.warn("Mic access denied."));
-                }
-            },
-            
-            startRecordingUI(btnId, textId, activeText) { 
-                STATE.isRecording = true; STATE.lastTranscript = ""; STATE.sttConfidence = 0; STATE.audioStartTime = Date.now(); 
-                const btn = document.getElementById(btnId); btn.classList.add('recording'); 
-                if (textId) { document.getElementById(textId).innerText = activeText; } else { btn.innerHTML = `🎤 <span>${activeText}</span>`; } 
-                this.audioChunks = []; 
-                try { if (this.recognition) this.recognition.start(); } catch(e) {} 
-                try { if (this.mediaRecorder) this.mediaRecorder.start(); } catch(e) {} 
-            },
-            
-            stopRecordingUI(btnId, textId, idleText, callback) { 
-                STATE.isRecording = false; STATE.audioDurationSec = (Date.now() - STATE.audioStartTime) / 1000; 
-                const btn = document.getElementById(btnId); btn.classList.remove('recording'); 
-                if (textId) { document.getElementById(textId).innerText = idleText; } else { btn.innerHTML = `🎤 <span>${idleText}</span>`; } 
-                try { if (this.recognition) this.recognition.stop(); } catch(e) {} 
-                try { if (this.mediaRecorder && this.mediaRecorder.state !== "inactive") { this.mediaRecorder.stop(); } } catch(e) {} 
-                setTimeout(callback, 600); 
-            },
-            
-            toggle() { if (!STATE.isRecording) { STATE.isChatMode = false; this.startRecordingUI('btn-record', 'record-text', 'Listening...'); } else { this.stopRecordingUI('btn-record', 'record-text', 'Voice Log', () => AITutor.submit()); } },
-            toggleChat() { if (!STATE.isRecording) { STATE.isChatMode = true; this.startRecordingUI('btn-chat-record', null, 'Listening...'); } else { this.stopRecordingUI('btn-chat-record', null, 'Speak to Reply', () => AITutor.processReply()); } },
-            playVoiceEffect(effect) { 
-                if (!STATE.audioBlobUrl) return; 
-                const audio = new Audio(STATE.audioBlobUrl); 
-                if (effect === 'chipmunk') { audio.playbackRate = 1.6; } else if (effect === 'alien') { audio.playbackRate = 0.7; } else { audio.playbackRate = 1.0; } 
-                audio.play(); 
-            }
-        };
-
-        const VisualAI_OCR = { worker: null, async init() { if (window.Tesseract) { try { this.worker = await Tesseract.createWorker('eng'); } catch(e) {} } }, async recognize(imgData) { if (!this.worker) return null; const { data: { text } } = await this.worker.recognize(imgData); return text; } };
-        const VisionAI_Doodle = { classifier: null, isReady: false, init() { try { this.classifier = ml5.imageClassifier('DoodleNet', () => { this.isReady = true; }); } catch(e) {} }, async classifyCanvas(canvas) { if (!this.isReady || !this.classifier) return []; return new Promise((resolve) => { const timeout = setTimeout(() => resolve([]), 2000); try { this.classifier.classify(canvas, (err, results) => { clearTimeout(timeout); if (err || !results) resolve([]); else resolve(results); }); } catch(e) { clearTimeout(timeout); resolve([]); } }); } };
-        
-        // Removed Cloud Vision logic intentionally to force Multimodal Gemini processing.
-        const CloudAI = { async analyzeDrawing(canvas) { return null; } };
-
-        /**
-         * ======================================================================
-         * [9. 🔥 NORTH AMERICAN NATIVE AI TUTOR ENGINE (Gemini 1.5 Pro)]
-         * ======================================================================
+         * [AI TUTOR ENGINE]
+         * North American Persona & Multimodal Vision Integration
          */
         const AITutor = {
-            async submit() {
-                if (STATE.isRecording) { 
-                    AudioEngine.toggle(); 
-                    return; 
+            async callGeminiAPI(prompt, base64Img = null) {
+                if (!CONFIG.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY.includes("YOUR")) {
+                    return "앗! 원장님, 진짜 대화를 위해 코드 하단의 CONFIG에 Gemini API 키를 넣어주세요.";
                 }
                 
-                if (STATE.currentPage === 1 && !STATE.isNameRegistered) {
-                    return this.scanName();
-                }
-                
-                const panel = document.getElementById('ai-panel'); 
-                panel.classList.add('open');
-                document.getElementById('chat-footer').style.display = "none";
-                
-                const content = document.getElementById('ai-content');
-                content.innerHTML = `
-                    <div style="text-align:center; padding:50px;">
-                        <div style="width:40px; height:40px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 15px;"></div>
-                        <p style="font-size:12px; font-weight:900; color:var(--br-muted); font-family:'Nunito', sans-serif;">TEACHER IS LOOKING AT YOUR ART...</p>
-                    </div>
-                `;
-
                 try {
-                    // Send pure Base64 Canvas directly to Gemini's Multimodal Vision
-                    const canvasImageBase64 = CanvasEngine.cvs.toDataURL('image/jpeg', 0.8);
+                    let parts = [{ text: prompt }];
                     
-                    setTimeout(() => { 
-                        this.generateFeedback(false, canvasImageBase64); 
-                    }, 300);
-                } catch(e) { 
-                    console.error(e);
-                    this.generateFeedback(false, null); 
-                }
-            },
-
-            async scanName() {
-                const panel = document.getElementById('ai-panel'); panel.classList.add('open'); document.getElementById('chat-footer').style.display = "none";
-                const content = document.getElementById('ai-content');
-                content.innerHTML = `<div style="text-align:center; padding:50px;"><div style="width:40px; height:40px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 15px;"></div><p style="font-size:12px; font-weight:900; color:var(--br-muted); font-family:'Nunito', sans-serif;">TEACHER IS READING YOUR NAME...</p></div>`;
-                
-                const tCvs = document.createElement('canvas'); tCvs.width = CanvasEngine.cvs.width * 2; tCvs.height = CanvasEngine.cvs.height * 2; const tx = tCvs.getContext('2d'); tx.fillStyle = '#FFF'; tx.fillRect(0, 0, tCvs.width, tCvs.height); tx.drawImage(CanvasEngine.cvs, 0, 0, tCvs.width, tCvs.height);
-                
-                if (VisualAI_OCR.worker) {
-                    try {
-                        const text = await VisualAI_OCR.recognize(tCvs.toDataURL('image/jpeg', 1.0));
-                        let name = text.replace(/[^a-zA-Z]/g, '').trim();
-                        if (name.length >= 2) {
-                            name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-                            content.innerHTML = `
-                                <div class="chat-bubble ai">
-                                    Wow! Did you write <b style="color:var(--br-green); font-size:18px;">${name}</b>? Is this you?<br><br>
-                                    <button class="btn-reply" style="height:45px; margin-bottom:10px;" onclick="AITutor.saveName('${name}')">YES!</button>
-                                    <button class="btn-reply" style="height:45px; background:#EEE; color:#333;" onclick="AITutor.manualName()">NO, LET ME TYPE</button>
-                                </div>
-                            `;
-                        } else { throw "fail"; }
-                    } catch(e) { this.manualName(); }
-                } else { this.manualName(); }
-            },
-            
-            manualName() {
-                document.getElementById('ai-content').innerHTML = `
-                    <div class="chat-bubble ai">
-                        Oops! I can't read it well. Can you type your name for me?<br><br>
-                        <input type="text" id="ai-name-verify" style="width:100%; padding:12px; border-radius:10px; border:2px dashed var(--br-green); margin-bottom:10px; font-weight:bold;">
-                        <button class="btn-reply" style="height:45px;" onclick="AITutor.saveName()">CONFIRM</button>
-                    </div>
-                `;
-            },
-            
-            saveName(n = null) {
-                const name = n || document.getElementById('ai-name-verify').value.trim();
-                if (name) {
-                    STATE.studentName = name; STATE.isNameRegistered = true; StorageEngine.save();
-                    const profileBox = document.getElementById('profile-box'); profileBox.classList.add('registered');
-                    document.getElementById('display-name').innerText = name; document.getElementById('avatar-char').innerText = name.charAt(0).toUpperCase();
-                    this.generateFeedback(true, null);
-                }
-            },
-
-            // ------------------------------------------------------------------
-            // [🔥 CORE LLM COMMUNICATION & PROMPT INJECTION]
-            // ------------------------------------------------------------------
-            async callGeminiAPI(promptText, base64Image = null) {
-                if (!CONFIG.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY === "YOUR_GEMINI_API_KEY_HERE") {
-                    return "앗! 원장님, 진짜 대화를 위해 코드 하단의 CONFIG에 Gemini API 키를 넣어주세요. 임시 답변: James, you did a great job today!";
-                }
-                try {
-                    let parts = [{ text: promptText }];
-                    
-                    if (base64Image) {
-                        const base64Data = base64Image.split(',')[1];
-                        parts.push({
-                            inlineData: {
-                                mimeType: "image/jpeg",
-                                data: base64Data
-                            }
+                    if (base64Img) {
+                        parts.push({ 
+                            inlineData: { 
+                                mimeType: "image/jpeg", 
+                                data: base64Img.split(',')[1] 
+                            } 
                         });
                     }
 
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${CONFIG.GEMINI_API_KEY}`, {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.MODEL_NAME}:generateContent?key=${CONFIG.GEMINI_API_KEY}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
                             contents: [{ parts: parts }],
-                            generationConfig: {
-                                temperature: 0.7, 
-                                maxOutputTokens: 250 
+                            // [안전장치] AI가 그림을 오해하여 분석을 거부하지 않도록 세이프티 필터 해제
+                            safetySettings: [
+                                { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+                                { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+                                { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+                                { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
+                            ],
+                            generationConfig: { 
+                                temperature: 0.8, 
+                                maxOutputTokens: 300 
                             }
                         })
                     });
                     
                     const data = await response.json();
-                    if (data.candidates && data.candidates.length > 0) {
-                        return data.candidates[0].content.parts[0].text;
-                    } else {
-                        throw new Error("Invalid format");
+                    
+                    if (data.error) {
+                        throw new Error(data.error.message);
                     }
-                } catch (error) {
-                    console.error("Gemini Error:", error);
-                    return "Oh no, 선생님이 잠깐 생각에 잠겼어요. 다시 한번 말해줄래요?";
+                    
+                    return data.candidates[0].content.parts[0].text;
+                    
+                } catch (e) {
+                    console.error("Gemini Error:", e);
+                    if (e.message && e.message.includes("429")) {
+                        return "선생님이 방금 너무 많은 질문을 받았어요! 1분만 쉬었다가 다시 물어봐 줄래요? (Rate Limit 초과)";
+                    }
+                    return "Oh no, 선생님이 잠깐 생각에 잠겼어요. 통신이 원활하지 않아요. 다시 한번 말해볼래요?";
                 }
             },
 
-            async generateFeedback(isFirstGreeting, canvasImageBase64) {
+            async submit() {
+                const panel = document.getElementById('ai-panel'); 
+                panel.classList.add('open');
+                
                 const content = document.getElementById('ai-content');
-                const unitData = PAGE_INTELLIGENCE[STATE.id];
-                const context = unitData ? unitData[STATE.currentPage] : { keywords:[], goal:"Explore", question:"Tell me more!" };
-                const callName = STATE.studentName || "my friend";
-                const transcript = STATE.lastTranscript;
-                const scorePronunciation = STATE.sttConfidence || 0;
-                
-                if (scorePronunciation >= 80 && transcript.length > 0) {
-                    setTimeout(() => { 
-                        if (window.confetti) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }); 
-                        UIEngine.awardBadge("🗣️ Great Speaker"); 
-                    }, 500);
-                }
-
-                let transcriptUI = transcript ? `<div style="background:#F4F8F5; padding:15px; border-radius:12px; border-left:4px solid var(--br-green); font-style:italic; font-size:15px; margin-bottom:20px; color:var(--br-charcoal);">"${transcript}"</div>` : "";
-                let voiceFxUI = transcript ? `<div class="voice-fx-group"><div class="btn-fx" onclick="AudioEngine.playVoiceEffect('normal')">▶️ Normal</div><div class="btn-fx" onclick="AudioEngine.playVoiceEffect('chipmunk')">🐿️ Chipmunk</div><div class="btn-fx" onclick="AudioEngine.playVoiceEffect('alien')">👽 Alien</div></div>` : "";
-                
-                let statsHTML = `
-                    <div class="analytics-card">
-                        <div class="analytics-title">📊 Mission: ${context.goal}</div>
-                        ${transcriptUI}
-                        <div class="stat-row">
-                            <div class="stat-label"><span>Clear Voice</span><span>${scorePronunciation}%</span></div>
-                            <div class="bar-bg"><div class="bar-fill" style="width:${scorePronunciation}%; background:var(--br-blue)"></div></div>
-                        </div>
-                        ${voiceFxUI}
+                content.innerHTML = `
+                    <div class="text-center py-20">
+                        <i class="fa-solid fa-spinner fa-spin text-4xl text-bridge-mint mb-4"></i>
+                        <p class="font-black text-gray-400">Teacher is looking at your art...</p>
                     </div>
-                    <div id="gemini-response-box" class="chat-bubble ai mt-2"><i class="fa-solid fa-circle-notch fa-spin"></i> 선생님이 분석 중이에요...</div>
+                `;
+
+                const canvasImg = CanvasEngine.cvs.toDataURL('image/jpeg', 0.8);
+                const unitData = PAGE_INTELLIGENCE[STATE.unitId] ? PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage] : { goal: "Free Exploration" };
+
+                // [북미 프리미엄 원어민 교사 프롬프트]
+                const prompt = `
+                    You are an enthusiastic and highly empathetic native English teacher at a prestigious private school in Canada. Your name is Teacher Bridge.
+                    - Student Name: ${STATE.studentName}
+                    - Lesson Goal: ${unitData.goal}
+                    - Student Said (Transcript): "${STATE.lastTranscript || "Look at my drawing!"}"
+
+                    Instructions:
+                    1. Look at the attached image (student's drawing) carefully. 
+                    2. DO NOT use generic phrases like "abstract shapes". Instead, explicitly describe the colors, lines, or shapes you see. Even if it's scribbles, guess what it is positively based on the Lesson Goal. (e.g., "I love the bright blue lines you drew for the sky!")
+                    3. Act as a North American ECE professional: Use high-energy, encouraging language ("Incredible!", "You're a superstar!").
+                    4. Mix natural Korean phrases to make the child comfortable. (e.g., "정말 멋진걸요?", "최고야!")
+                    5. Follow the 'Sandwich Feedback' rule: Praise -> Specific Observation on the drawing -> Engaging Question.
+                    6. Respond warmly to what they said in the Transcript.
+                    7. Keep the response to 3-4 short, simple sentences. Plain text only. No markdown.
+                `;
+
+                const response = await this.callGeminiAPI(prompt, canvasImg);
+                
+                content.innerHTML = `
+                    <div class="analytics-card">
+                        <div class="analytics-title">Mission: ${unitData.goal}</div>
+                        <div class="stat-row">
+                            <div class="stat-label"><span>Voice Confidence</span><span>${STATE.sttConfidence}%</span></div>
+                            <div class="bar-bg"><div class="bar-fill" style="width:${STATE.sttConfidence}%; background:var(--br-blue)"></div></div>
+                        </div>
+                    </div>
+                    <div class="chat-bubble ai">${response}</div>
                 `;
                 
-                content.innerHTML = statsHTML;
-                document.getElementById('chat-footer').style.display = "none";
-
-                // ------------------------------------------------------------------
-                // [🔥 북미 원어민 교사 프롬프트 (North American ECE Persona)]
-                // ------------------------------------------------------------------
-                let systemPrompt = "";
-                if (isFirstGreeting) {
-                    systemPrompt = `You are a highly empathetic, professional, and enthusiastic native English teacher at a premium private early childhood academy in North America (Canada/USA). Your name is Teacher AI.
-                    The student's name is ${callName}. They just joined the class. The topic today is "${context.goal}".
-                    
-                    Instructions:
-                    1. Welcome them warmly using common North American classroom phrases (e.g., "Welcome to our class!", "I am so incredibly proud of you!").
-                    2. Use the 'Sandwich Feedback' framework: Praise, Observation, Engaging Question.
-                    3. Mix Korean and English naturally so the child feels comfortable (e.g., "만나서 정말 반가워요!").
-                    4. Keep it exactly 2-3 short sentences. No markdown formatting.`;
-                } else {
-                    let speechContext = transcript ? `The student just said: "${transcript}".` : "The student hasn't spoken yet.";
-                    
-                    systemPrompt = `You are a highly empathetic and enthusiastic native English teacher at a premium private academy in North America (Canada/USA). Your name is Teacher AI.
-                    - Student Name: ${callName}
-                    - Current Lesson Goal: ${context.goal}
-                    - Audio Context: ${speechContext}
-                    
-                    Instructions:
-                    1. I have attached the student's drawing (image). You MUST look at the image carefully.
-                    2. Provide "Sandwich Feedback" (Praise -> Specific Observation -> Engaging Follow-up Question).
-                    3. Mix Korean and English naturally like a bilingual teacher (e.g., "Wow, James! 빨간색을 정말 멋지게 칠했네!").
-                    4. ACTIVELY describe WHAT you see in the drawing. Even if it's scribbles, praise the specific colors they used or guess what it is based on the lesson goal. Example: "I love the beautiful blue lines you drew!"
-                    5. Respond directly and warmly to what they said in the Audio Context.
-                    6. End with a fun follow-up question.
-                    7. Keep it under 4 short sentences. Plain text only. No markdown.`;
-                }
-
-                const aiResponse = await this.callGeminiAPI(systemPrompt, canvasImageBase64);
-                
-                STATE.chatHistory.push({ role: "model", parts: [{ text: aiResponse }] });
-
-                document.getElementById('gemini-response-box').innerHTML = aiResponse;
-                document.getElementById('chat-footer').style.display = "flex";
-                
-                this.speak(aiResponse.replace(/<[^>]*>?/gm, ''));
-            },
-
-            async processReply() {
-                if (!STATE.lastTranscript) return;
-                
-                const content = document.getElementById('ai-content');
-                
-                const uBubble = document.createElement('div'); 
-                uBubble.className = "chat-bubble user mt-4"; 
-                uBubble.innerText = STATE.lastTranscript;
-                content.appendChild(uBubble); 
-                content.scrollTop = content.scrollHeight;
-
-                const aBubble = document.createElement('div'); 
-                aBubble.className = "chat-bubble ai mt-4"; 
-                aBubble.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> 선생님이 대답을 생각하고 있어요...`;
-                content.appendChild(aBubble); 
-                content.scrollTop = content.scrollHeight;
-
-                STATE.chatHistory.push({ role: "user", parts: [{ text: STATE.lastTranscript }] });
-
-                let conversationPrompt = `You are a friendly North American bilingual English teacher. 
-                Respond to the student's latest statement: "${STATE.lastTranscript}". 
-                
-                Instructions:
-                1. Keep it extremely short (1-2 sentences).
-                2. Be very enthusiastic and encouraging.
-                3. Use a mix of easy Korean and simple English.
-                4. Ask another fun question to continue the flow. Plain text only.`;
-                
-                const reply = await this.callGeminiAPI(conversationPrompt);
-                
-                STATE.chatHistory.push({ role: "model", parts: [{ text: reply }] });
-                
-                aBubble.innerHTML = `<b style="color:var(--br-green); font-weight:700;">${reply}</b>`;
-                content.scrollTop = content.scrollHeight;
-                
-                this.speak(reply);
+                document.getElementById('chat-footer').style.display = "block";
+                this.speak(response);
             },
 
             speak(t) {
                 if (window.speechSynthesis) {
                     window.speechSynthesis.cancel();
-                    const u = new SpeechSynthesisUtterance(t); 
+                    const cleanText = t.replace(/<[^>]*>?/gm, '');
+                    const u = new SpeechSynthesisUtterance(cleanText);
                     u.lang = 'ko-KR'; 
                     u.rate = 0.95; 
                     window.speechSynthesis.speak(u);
@@ -2060,30 +1351,146 @@
             
             close() { 
                 document.getElementById('ai-panel').classList.remove('open'); 
-                if (window.speechSynthesis) {
-                    window.speechSynthesis.cancel(); 
+                if(window.speechSynthesis) window.speechSynthesis.cancel(); 
+            }
+        };
+
+        /**
+         * [CURRICULUM INTELLIGENCE DB]
+         * Fully expanded 33-page structure for rigorous North American Curriculum.
+         */
+        const PAGE_INTELLIGENCE = {
+            "A-1": {
+                1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?" },
+                2: { navTitle: "[W1] Mind", goal: "Self-Esteem & I like myself", question: "Do you like yourself?" },
+                3: { navTitle: "[W1] Face", goal: "Face Features Vocabulary", question: "Where is your nose?" },
+                4: { navTitle: "[W1] Portrait", goal: "Drawing Face Features", question: "Can you draw your face?" },
+                5: { navTitle: "[W2] Senses", goal: "Action Verbs for Senses", question: "What do you smell?" },
+                6: { navTitle: "[W2] Sentences", goal: "Sentence Completion", question: "What else do you like?" },
+                7: { navTitle: "[W2] Matching", goal: "Sensory Association", question: "How do you hear music?" },
+                8: { navTitle: "[W2] Emotion", goal: "Drawing Emotions", question: "Are you smiling?" },
+                9: { navTitle: "[W3] Animals", goal: "Book Introduction", question: "Ready for the gorilla?" },
+                10: { navTitle: "[W3] Gorilla", goal: "Gorilla Body Parts", question: "Show me strong arms!" },
+                11: { navTitle: "[W3] Labels", goal: "Labeling Body Parts", question: "Where is the shoulder?" },
+                12: { navTitle: "[W3] Giraffe", goal: "Coloring a Giraffe", question: "Why is the neck long?" },
+                13: { navTitle: "[W4] Creative", goal: "Creative Imagination", question: "Spaghetti arms?" },
+                14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?" },
+                15: { navTitle: "[W4] Review", goal: "Reviewing the Story", question: "Did you enjoy it?" },
+                16: { navTitle: "[W4] Tools", goal: "Selecting Tools", question: "Which tool did you use?" },
+                17: { navTitle: "[W4] Eval", goal: "Self Evaluation", question: "Are you proud?" }
+            },
+            "A-2": {
+                18: { navTitle: "[W1] Intro", goal: "Meeting Crawlers", question: "Ready for bugs?" },
+                19: { navTitle: "[W1] Hungry", goal: "Food Recognition", question: "What is it eating?" },
+                20: { navTitle: "[W1] Fruits", goal: "Reading Fruit Words", question: "Apples or plums?" },
+                21: { navTitle: "[W1] Favorite", goal: "Favorite Fruit Drawing", question: "Why is it your favorite?" },
+                22: { navTitle: "[W2] I Eat", goal: "Sentence Practice", question: "Crunchy or soft?" },
+                23: { navTitle: "[W2] Magic 1", goal: "Compound Words (Butterfly)", question: "Butter meets Fly?" },
+                24: { navTitle: "[W2] Magic 2", goal: "Compound Words (Strawberry)", question: "Straw meets Berry?" },
+                25: { navTitle: "[W2] Book 2", goal: "Caterpillar Story", question: "What should he eat?" },
+                26: { navTitle: "[W3] Cycle", goal: "Life Cycle Stages", question: "Inside the cocoon?" },
+                27: { navTitle: "[W3] Symmetry", goal: "Butterfly Wings Symmetry", question: "Can it fly high?" },
+                28: { navTitle: "[W3] Math 1", goal: "Counting Fruits", question: "How many strawberries?" },
+                29: { navTitle: "[W3] Math 2", goal: "Counting Leaves", question: "More leaves or apples?" },
+                30: { navTitle: "[W4] Search", goal: "Identifying Insects", question: "Can you find the Ant?" },
+                31: { navTitle: "[W4] Review", goal: "Reviewing Bugs", question: "Favorite bug today?" },
+                32: { navTitle: "[W4] Garden", goal: "Drawing a Garden", question: "Who lives here?" },
+                33: { navTitle: "[W4] Eval", goal: "Self Evaluation 2", question: "See you next time!" }
+            }
+        };
+
+        /**
+         * [UTILITY ENGINES]
+         */
+        const PageEngine = {
+            init() {
+                const list = document.getElementById('nav-list');
+                const unitData = PAGE_INTELLIGENCE[STATE.unitId];
+                if (unitData) {
+                    Object.keys(unitData).forEach(i => {
+                        const ctx = unitData[i];
+                        const item = document.createElement('div');
+                        item.className = 'nav-item'; item.id = `nav-${i}`;
+                        item.innerHTML = `<span class="nav-title">${ctx.navTitle}</span>`;
+                        item.onclick = () => { AppEngine.smoothMove(parseInt(i) - STATE.currentPage); };
+                        list.appendChild(item);
+                    });
+                }
+                this.load(STATE.currentPage);
+            },
+            load(n) {
+                STATE.currentPage = n; STATE.lastTranscript = ""; STATE.sttConfidence = 0;
+                document.getElementById('unit-info').innerText = `MASTER LAB: ${STATE.unitId}`;
+                document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
+                
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                const activeNav = document.getElementById(`nav-${n}`);
+                if(activeNav) activeNav.classList.add('active');
+                
+                CanvasEngine.hardReset(); AITutor.close();
+                
+                const img = document.getElementById('worksheet-img'); img.style.opacity = '0';
+                const seriesChar = STATE.unitId.charAt(0);
+                img.src = `${CONFIG.STORAGE_URL}${seriesChar}/${STATE.unitId}/${STATE.unitId}-${n}.png?t=${Date.now()}`;
+                
+                img.onload = () => { img.style.opacity = '1'; CanvasEngine.resizeCanvas(); StorageEngine.loadCanvas(); };
+                StorageEngine.save();
+            }
+        };
+
+        const AppEngine = {
+            smoothMove(dir) {
+                StorageEngine.saveCanvas();
+                const board = document.getElementById('drawing-board'); board.classList.add('fade-out');
+                setTimeout(() => {
+                    STATE.currentPage += dir;
+                    if(STATE.currentPage < 1) STATE.currentPage = 1;
+                    if(STATE.currentPage > 33) STATE.currentPage = 33;
+                    PageEngine.load(STATE.currentPage);
+                    setTimeout(() => board.classList.remove('fade-out'), 150);
+                }, 400);
+            }
+        };
+
+        const RGBRingEngine = {
+            init() { 
+                const c = document.getElementById('color-wheel'); const ctx = c.getContext('2d'); const r = 75;
+                for (let a=0; a<360; a++) { ctx.beginPath(); ctx.moveTo(r,r); ctx.arc(r,r,r, a*Math.PI/180, (a+2)*Math.PI/180); ctx.fillStyle = `hsl(${a},100%,50%)`; ctx.fill(); }
+                c.onclick = (e) => { const rect = c.getBoundingClientRect(); const data = ctx.getImageData(e.clientX-rect.left, e.clientY-rect.top, 1, 1).data; CanvasEngine.setColor(`rgb(${data[0]},${data[1]},${data[2]})`); this.toggle(); };
+            },
+            toggle() { document.getElementById('rgb-modal').classList.toggle('active'); }
+        };
+
+        const AudioEngine = {
+            init() {
+                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (SR) {
+                    this.rec = new SR(); this.rec.lang = 'en-US';
+                    this.rec.onresult = (e) => { 
+                        STATE.lastTranscript = e.results[0][0].transcript; 
+                        STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100);
+                    };
+                    this.rec.onend = () => { if(STATE.isRecording) this.toggle(); };
+                }
+            },
+            toggle() {
+                if(!STATE.isRecording) { 
+                    STATE.isRecording = true; document.getElementById('btn-record').classList.add('recording'); 
+                    try { this.rec.start(); } catch(e){} 
+                } else { 
+                    STATE.isRecording = false; document.getElementById('btn-record').classList.remove('recording'); 
+                    try { this.rec.stop(); } catch(e){} 
+                    setTimeout(() => AITutor.submit(), 500);
                 }
             }
         };
 
         /**
-         * 10. SYSTEM BOOT
+         * [SYSTEM BOOT]
          */
         function SystemBoot() {
-            StorageEngine.load();
-            UIEngine.renderBadges();
-            
-            CanvasEngine.init(); 
-            RGBRingEngine.init(); 
-            PageEngine.init(); 
-            AudioEngine.init();
-            VisualAI_OCR.init(); 
-            VisionAI_Doodle.init();
-            
-            setTimeout(() => { 
-                CanvasEngine.resizeCanvas(); 
-                StorageEngine.loadCanvas(); 
-            }, 300);
+            PageEngine.init(); CanvasEngine.init(); RGBRingEngine.init(); AudioEngine.init();
+            StorageEngine.loadCanvas();
         }
     </script>
 </body>

@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bridge Academy | Enterprise AI Lab V100.14</title>
+    <title>Bridge Academy | Enterprise AI Lab V100.16</title>
     
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Jua&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,12 +19,9 @@
 
     <style>
         /* ======================================================================
-           [3. GLOBAL CSS ARCHITECTURE - UNCOMPRESSED]
+           [3. GLOBAL CSS ARCHITECTURE - UNCOMPRESSED & ROBUST]
         ====================================================================== */
         
-        /* ----------------------------------------------------------------------
-           COLOR PALETTE & VARIABLES
-        ---------------------------------------------------------------------- */
         :root {
             --br-green: #91D3B4; 
             --br-gold: #CBAE75; 
@@ -34,18 +29,19 @@
             --br-charcoal: #363431;
             --br-bg: #FCFBF9; 
             --br-paper: #FFFFFF; 
+            --br-ai-soft: #F8FAFF;
             --br-text: #2A2825; 
             --br-muted: #8C8985;
             --br-border: #F0EFEB; 
             --br-error: #E74C3C; 
-            --br-ai-soft: #F8FAFF;
+            --br-success: #2ECC71;
             --sidebar-width: 320px;
+            --topbar-height: 85px;
+            --dock-height: 110px;
             --transition-smooth: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            --transition-fast: all 0.2s ease-in-out;
         }
 
-        /* ----------------------------------------------------------------------
-           BASE RESET
-        ---------------------------------------------------------------------- */
         * { 
             margin: 0; 
             padding: 0; 
@@ -73,9 +69,6 @@
             outline: none; 
         }
         
-        /* ----------------------------------------------------------------------
-           APP CONTAINER
-        ---------------------------------------------------------------------- */
         .app-container { 
             display: flex; 
             width: 100vw; 
@@ -84,9 +77,6 @@
             pointer-events: auto !important; 
         }
         
-        /* ----------------------------------------------------------------------
-           SIDEBAR (CURRICULUM NAVIGATION)
-        ---------------------------------------------------------------------- */
         .sidebar { 
             width: var(--sidebar-width); 
             height: 100%; 
@@ -97,6 +87,7 @@
             z-index: 1000; 
             flex-shrink: 0; 
             transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); 
+            box-shadow: 5px 0 15px rgba(0,0,0,0.02);
         }
 
         .sidebar-header { 
@@ -104,6 +95,11 @@
             text-align: center; 
             border-bottom: 1px solid var(--br-border); 
             cursor: pointer; 
+            transition: var(--transition-smooth);
+        }
+        
+        .sidebar-header:hover {
+            background-color: var(--br-bg);
         }
 
         .brand-logo { 
@@ -119,9 +115,6 @@
             font-style: italic; 
         }
         
-        /* ----------------------------------------------------------------------
-           STUDENT PROFILE WIDGET
-        ---------------------------------------------------------------------- */
         .student-profile { 
             padding: 25px 30px; 
             border-bottom: 1px solid var(--br-border); 
@@ -189,6 +182,7 @@
             display: flex; 
             flex-wrap: wrap; 
             gap: 6px; 
+            min-height: 24px;
         }
 
         .badge { 
@@ -206,9 +200,6 @@
             animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
-        /* ----------------------------------------------------------------------
-           NAVIGATION LIST (Weekly Themes)
-        ---------------------------------------------------------------------- */
         .nav-list { 
             flex: 1; 
             overflow-y: auto; 
@@ -219,10 +210,15 @@
         .nav-list::-webkit-scrollbar { 
             width: 5px; 
         }
-
+        .nav-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
         .nav-list::-webkit-scrollbar-thumb { 
             background: #E8E6E1; 
             border-radius: 10px; 
+        }
+        .nav-list::-webkit-scrollbar-thumb:hover {
+            background: #D5D3CE;
         }
 
         .nav-item { 
@@ -270,9 +266,6 @@
             color: var(--br-muted); 
         }
 
-        /* ----------------------------------------------------------------------
-           MAIN WORKSPACE
-        ---------------------------------------------------------------------- */
         .workspace { 
             flex: 1; 
             display: flex; 
@@ -285,7 +278,7 @@
         }
 
         .top-bar { 
-            height: 85px; 
+            height: var(--topbar-height); 
             padding: 0 45px; 
             display: flex; 
             justify-content: space-between; 
@@ -313,9 +306,6 @@
             margin-top: 2px;
         }
         
-        /* ----------------------------------------------------------------------
-           STAGE & CANVAS DRAWING BOARD
-        ---------------------------------------------------------------------- */
         .stage-wrapper { 
             flex: 1; 
             display: flex; 
@@ -343,6 +333,11 @@
             transform: scale(0.95) translateY(20px); 
         }
 
+        .drawing-board.error-state {
+            border: 2px dashed var(--br-error);
+            background: #FFF0F0;
+        }
+
         #worksheet-img { 
             display: block; 
             max-width: 100%; 
@@ -354,6 +349,9 @@
             opacity: 0; 
             transition: opacity 0.5s ease; 
             user-select: none; 
+            min-width: 600px;
+            min-height: 400px;
+            background-color: #FFF;
         }
 
         #draw-layer { 
@@ -368,11 +366,8 @@
             cursor: crosshair; 
         }
 
-        /* ----------------------------------------------------------------------
-           BOTTOM DOCK & TOOLS
-        ---------------------------------------------------------------------- */
         .bottom-dock { 
-            height: 110px; 
+            height: var(--dock-height); 
             background: rgba(255, 255, 255, 0.98); 
             border-top: 1px solid var(--br-border); 
             display: flex; 
@@ -431,10 +426,10 @@
         .btn-tool { 
             font-size: 18px; 
             font-weight: 900; 
-            padding: 10px 15px; 
+            padding: 10px 14px; 
             color: var(--br-charcoal); 
             cursor: pointer; 
-            transition: 0.2s; 
+            transition: var(--transition-fast); 
             background: #FFF; 
             border: 1px solid var(--br-border); 
             border-radius: 12px; 
@@ -452,7 +447,7 @@
             background: #FFF; 
             border: 1px solid var(--br-border); 
             cursor: pointer; 
-            transition: 0.3s; 
+            transition: var(--transition-fast); 
             color: var(--br-charcoal); 
         }
 
@@ -462,9 +457,6 @@
             border-color: var(--br-error); 
         }
 
-        /* ----------------------------------------------------------------------
-           ACTION BUTTONS (Record & Submit)
-        ---------------------------------------------------------------------- */
         .action-group { 
             display: flex; 
             gap: 15px; 
@@ -560,9 +552,6 @@
             transform: scale(0.95);
         }
 
-        /* ----------------------------------------------------------------------
-           AI TUTOR PANEL (Gemini Chat Interface)
-        ---------------------------------------------------------------------- */
         .ai-panel { 
             position: absolute; 
             top: 0; 
@@ -605,7 +594,7 @@
             color: var(--br-muted); 
             line-height: 1; 
             cursor: pointer; 
-            transition: 0.3s; 
+            transition: var(--transition-fast); 
         }
 
         .btn-close-ai:hover { 
@@ -672,7 +661,7 @@
         }
 
         .stat-row { 
-            margin-bottom: 15px; 
+            margin-bottom: 18px; 
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -700,9 +689,6 @@
             border-radius: 12px; 
         }
 
-        /* ----------------------------------------------------------------------
-           CHAT FOOTER & MODALS
-        ---------------------------------------------------------------------- */
         .chat-footer { 
             padding: 25px 35px; 
             border-top: 1px solid var(--br-border); 
@@ -710,31 +696,6 @@
             flex-direction: column; 
             gap: 15px; 
             background: #FFF; 
-        }
-
-        .btn-reply { 
-            width: 100%; 
-            height: 60px; 
-            background: var(--br-charcoal); 
-            color: #FFF; 
-            border-radius: 18px; 
-            font-weight: 900; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            font-size: 16px; 
-            letter-spacing: 1px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 10px; 
-            font-family: 'Nunito', sans-serif; 
-            box-shadow: 0 10px 20px rgba(54,52,49,0.2); 
-        }
-
-        .btn-reply:hover { 
-            background: var(--br-gold); 
-            transform: translateY(-2px); 
-            box-shadow: 0 15px 25px rgba(203,174,117,0.3); 
         }
 
         .rgb-modal { 
@@ -758,7 +719,146 @@
             transform: translateY(0); 
         }
 
-        /* Animations */
+        .cert-modal-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100dvh; 
+            background: rgba(0,0,0,0.85); 
+            z-index: 30000; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: 0.4s ease; 
+            backdrop-filter: blur(15px); 
+        }
+
+        .cert-modal-overlay.active { 
+            opacity: 1; 
+            pointer-events: auto; 
+        }
+
+        .cert-card { 
+            background: #FFF; 
+            width: 850px; 
+            max-width: 90%; 
+            border-radius: 35px; 
+            padding: 60px; 
+            text-align: center; 
+            position: relative; 
+            box-shadow: 0 40px 80px rgba(0,0,0,0.4); 
+            transform: scale(0.85); 
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+
+        .cert-modal-overlay.active .cert-card { 
+            transform: scale(1); 
+        }
+
+        .cert-border { 
+            border: 10px solid var(--br-gold); 
+            border-radius: 25px; 
+            padding: 50px; 
+            position: relative; 
+        }
+
+        .cert-title { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 50px; 
+            color: var(--br-charcoal); 
+            font-weight: 900; 
+            margin-bottom: 15px; 
+        }
+
+        .cert-subtitle { 
+            font-family: 'Nunito', sans-serif; 
+            font-size: 18px; 
+            color: var(--br-muted); 
+            font-weight: 900; 
+            letter-spacing: 4px; 
+            text-transform: uppercase; 
+            margin-bottom: 35px; 
+        }
+
+        .cert-name { 
+            font-family: 'Nunito', sans-serif; 
+            font-size: 40px; 
+            color: var(--br-green); 
+            font-weight: 900; 
+            margin-bottom: 25px; 
+            text-decoration: underline; 
+            text-decoration-color: var(--br-gold); 
+        }
+
+        .cert-img-container { 
+            width: 100%; 
+            max-width: 450px; 
+            height: 280px; 
+            margin: 0 auto 35px; 
+            border-radius: 18px; 
+            border: 3px dashed var(--br-border); 
+            overflow: hidden; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: var(--br-bg); 
+        }
+
+        .cert-img-container img { 
+            max-width: 100%; 
+            max-height: 100%; 
+            object-fit: contain; 
+        }
+
+        .cert-msg { 
+            font-size: 18px; 
+            color: var(--br-text); 
+            line-height: 1.6; 
+            font-weight: 600; 
+            margin-bottom: 35px; 
+            font-style: italic; 
+        }
+
+        .btn-print { 
+            background: var(--br-charcoal); 
+            color: #FFF; 
+            padding: 18px 45px; 
+            font-size: 18px; 
+            font-weight: 900; 
+            border-radius: 100px; 
+            cursor: pointer; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 12px; 
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15); 
+            transition: 0.3s; 
+        }
+
+        .btn-print:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 20px 35px rgba(203,174,117,0.3); 
+            background: var(--br-gold); 
+        }
+
+        .cert-close { 
+            position: absolute; 
+            top: 25px; 
+            right: 35px; 
+            font-size: 35px; 
+            color: var(--br-muted); 
+            cursor: pointer; 
+            font-weight: 900; 
+            transition: 0.3s; 
+        }
+        
+        .cert-close:hover { 
+            color: var(--br-error); 
+            transform: rotate(90deg); 
+        }
+
         @keyframes popIn { 
             from { opacity: 0; transform: scale(0.92) translateY(15px); } 
             to { opacity: 1; transform: scale(1) translateY(0); } 
@@ -768,6 +868,31 @@
             50% { opacity: 0.3; } 
         }
 
+        .mobile-menu-btn { display: none; font-size: 28px; padding: 10px; color: var(--br-charcoal); z-index: 1500; }
+
+        @media (max-width: 1024px) {
+            :root { --sidebar-width: 280px; }
+            .top-bar { height: 75px; padding: 0 25px; }
+            .bottom-dock { height: 100px; padding: 0 25px; }
+            .stage-wrapper { padding: 15px 25px; }
+        }
+
+        @media (max-width: 800px) {
+            .mobile-menu-btn { display: block; }
+            .sidebar { position: fixed; left: calc(var(--sidebar-width) * -1); top: 0; box-shadow: none; }
+            .sidebar.open { left: 0; box-shadow: 20px 0 50px rgba(0,0,0,0.1); }
+            #worksheet-img { max-height: calc(100dvh - 210px); }
+            .bottom-dock { height: 140px; flex-direction: column; justify-content: center; padding: 10px 20px; gap: 12px; border-radius: 25px 25px 0 0; }
+            .tool-group { width: 100%; justify-content: center; padding: 8px 20px; }
+            .action-group { width: 100%; justify-content: space-between; }
+            .btn-nav, .btn-main { height: 50px; font-size: 13px; }
+            .ai-panel { width: 100%; right: -100%; border-left: none; }
+            .rgb-modal { left: 50%; transform: translateX(-50%) translateY(20px); bottom: 160px; }
+            .rgb-modal.active { transform: translateX(-50%) translateY(0); }
+            .cert-card { padding: 30px 20px; }
+            .cert-border { padding: 20px; }
+            .cert-title { font-size: 30px; }
+        }
     </style>
 </head>
 <body>
@@ -790,8 +915,7 @@
                 <div class="badge-container" id="badge-container"></div>
             </div>
             
-            <div class="nav-list" id="nav-list">
-                </div>
+            <div class="nav-list" id="nav-list"></div>
         </nav>
 
         <div class="workspace">
@@ -802,6 +926,9 @@
                         <div id="unit-info" class="unit-info">UNIT LOADING...</div>
                         <div id="page-info" class="page-info">Inquiry P.01</div>
                     </div>
+                </div>
+                <div id="error-toast" class="hidden text-xs font-bold text-red-500 bg-red-50 px-4 py-2 rounded-full border border-red-100">
+                    <i class="fa-solid fa-triangle-exclamation"></i> <span id="error-toast-msg">Error</span>
                 </div>
             </div>
 
@@ -847,8 +974,7 @@
                 <button class="btn-close-ai" onclick="AITutor.close()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div class="ai-content" id="ai-content">
-                </div>
+            <div class="ai-content" id="ai-content"></div>
             
             <div class="chat-footer" id="chat-footer" style="display:none;">
                 <button class="btn-reply" id="btn-chat-record" onclick="AudioEngine.toggleChat()">🎤 Speak to Teacher</button>
@@ -865,14 +991,16 @@
 
     <script>
         /**
-         * [SYSTEM CONFIGURATION & SECRETS]
-         * API Key 및 기본 설정을 관리합니다.
+         * [4-1. CONFIGURATION & SECRETS]
+         * * [상용화 보안 경고] 
+         * 현재는 HTML 소스에 Gemini API Key가 하드코딩되어 있습니다.
+         * 앱 스토어 출시 또는 대규모 상용화 단계에서는 반드시 이 API 호출 로직을 
+         * Firebase Cloud Functions와 같은 백엔드 서버로 이동해야 키 유출을 방지할 수 있습니다.
          */
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
-            GOOGLE_API_KEY: "AIzaSyDofQFS8_KaD4kwzArYfBQw4oG4kvkZNrk", // 로컬 Fallback용
-            GEMINI_API_KEY: "YOUR_GEMINI_API_KEY_HERE", // 🔥 여기에 발급받은 Gemini 1.5 Pro 키를 넣으세요!
-            MODEL_NAME: "gemini-1.5-pro", // 멀티모달 시각 분석을 위한 최고 성능 모델
+            GEMINI_API_KEY: "YOUR_GEMINI_API_KEY_HERE", // 🔥 필수: 발급받은 Gemini 1.5 Pro 키 입력
+            MODEL_NAME: "gemini-1.5-pro",
             FIREBASE_CONFIG: {
                 apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk",
                 authDomain: "bridge-academy-6d6a9.firebaseapp.com",
@@ -884,59 +1012,30 @@
             }
         };
 
-        // Firebase Initialization
         firebase.initializeApp(CONFIG.FIREBASE_CONFIG);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
         /**
-         * [GLOBAL STATE MANAGEMENT]
-         * 애플리케이션의 모든 상태(페이지 번호, 학생 정보, 그림 색상 등)를 중앙에서 관리합니다.
+         * [4-2. ENTERPRISE LOGGER]
          */
-        const STATE = {
-            uid: null, 
-            studentEmail: "", 
-            studentName: "", 
-            isNameRegistered: false,
-            // [오류 해결 핵심] STATE.id를 URL에서 정확히 파싱하여 이미지 경로를 붕괴시키지 않습니다.
-            id: new URLSearchParams(window.location.search).get('id') || "A-1",
-            currentPage: 1, 
-            isRecording: false, 
-            lastTranscript: "", 
-            sttConfidence: 0,
-            historyStack: [], 
-            historyIndex: -1, 
-            chatHistory: [], // LLM 대화 문맥 유지를 위한 배열
-            brushType: 'normal'
+        const Logger = {
+            log(msg, data = "") { console.log(`[BRIDGE OK] ${msg}`, data); },
+            warn(msg, data = "") { console.warn(`[BRIDGE WARN] ${msg}`, data); },
+            error(msg, err) { 
+                console.error(`[BRIDGE FATAL] ${msg}`, err); 
+                const toast = document.getElementById('error-toast');
+                if(toast) {
+                    document.getElementById('error-toast-msg').innerText = msg;
+                    toast.classList.remove('hidden');
+                    setTimeout(() => toast.classList.add('hidden'), 5000);
+                }
+            }
         };
 
-        // ----------------------------------------------------------------------
-        // AUTHENTICATION GUARD
-        // ----------------------------------------------------------------------
-        auth.onAuthStateChanged((user) => {
-            if (!user) { 
-                alert("비정상적인 접근입니다. 로그인 페이지로 이동합니다.");
-                location.href = 'login.html'; 
-            } else {
-                console.log("Enterprise Auth Success:", user.email);
-                STATE.uid = user.uid; 
-                STATE.studentEmail = user.email;
-                STATE.studentName = user.email.split('@')[0].toUpperCase();
-                
-                // UI Update
-                const profileBox = document.getElementById('profile-box');
-                profileBox.classList.add('registered');
-                document.getElementById('display-name').innerText = STATE.studentName;
-                document.getElementById('avatar-char').innerText = STATE.studentName.charAt(0);
-                
-                // Start Application System
-                SystemBoot(); 
-            }
-        });
-
         /**
-         * [MASTER CURRICULUM INTELLIGENCE DB]
-         * [오류 해결 핵심] 누락되었던 33페이지의 모든 교육 목표와 내비게이션 타이틀을 복구했습니다.
+         * [4-3. MASTER CURRICULUM INTELLIGENCE DB & ENGINE]
+         * 모든 33페이지의 교육 목표와 내비게이션 타이틀 복구 완료.
          */
         const PAGE_INTELLIGENCE = {
             "A-1": {
@@ -978,54 +1077,165 @@
             }
         };
 
+        // [버그 해결] 동적 커리큘럼 페이지 라우팅 엔진
+        const CurriculumEngine = {
+            pages(unitId) {
+                return Object.keys(PAGE_INTELLIGENCE[unitId] || {}).map(Number).sort((a, b) => a - b);
+            },
+            first(unitId) {
+                return this.pages(unitId)[0] || 1;
+            },
+            last(unitId) {
+                const pages = this.pages(unitId);
+                return pages[pages.length - 1] || 1;
+            },
+            clamp(unitId, page) {
+                const pages = this.pages(unitId);
+                if (pages.includes(page)) return page;
+                return pages[0] || 1;
+            },
+            next(unitId, page, dir) {
+                const pages = this.pages(unitId);
+                const idx = pages.indexOf(page);
+                const safeIdx = idx === -1 ? 0 : idx;
+                return pages[Math.min(Math.max(safeIdx + dir, 0), pages.length - 1)] || page;
+            }
+        };
+
         /**
-         * [STORAGE & SYNC ENGINE]
-         * 로컬 스토리지와 Firestore 클라우드 양방향 동기화
+         * [4-4. GLOBAL STATE MANAGEMENT]
+         */
+        const STATE = {
+            uid: null, 
+            studentEmail: "", 
+            studentName: "", 
+            isNameRegistered: false,
+            unitId: new URLSearchParams(window.location.search).get('id') || "A-1",
+            currentPage: 1, // Will be clamped correctly below
+            isRecording: false, 
+            lastTranscript: "", 
+            sttConfidence: 0,
+            historyStack: [], 
+            historyIndex: -1, 
+            chatHistory: [], 
+            brushType: 'normal'
+        };
+
+        // Initialize state securely based on curriculum
+        if (!PAGE_INTELLIGENCE[STATE.unitId]) STATE.unitId = "A-1";
+        STATE.currentPage = CurriculumEngine.clamp(
+            STATE.unitId, 
+            Number(new URLSearchParams(window.location.search).get('page')) || CurriculumEngine.first(STATE.unitId)
+        );
+
+        // AUTHENTICATION GUARD
+        auth.onAuthStateChanged((user) => {
+            if (!user) { 
+                alert("비정상적인 접근입니다. 로그인 페이지로 이동합니다.");
+                location.href = 'login.html'; 
+            } else {
+                Logger.log("Enterprise Auth Success:", user.email);
+                STATE.uid = user.uid; 
+                STATE.studentEmail = user.email;
+                STATE.studentName = user.email.split('@')[0].toUpperCase();
+                
+                const profileBox = document.getElementById('profile-box');
+                profileBox.classList.add('registered');
+                document.getElementById('display-name').innerText = STATE.studentName;
+                document.getElementById('avatar-char').innerText = STATE.studentName.charAt(0);
+                
+                SystemBoot(); 
+            }
+        });
+
+        /**
+         * [4-5. SMART IMAGE LOADER ENGINE]
+         * [버그 해결] 레이스 컨디션을 방어하는 토큰(requestToken) 로직 탑재
+         */
+        const SmartImageLoader = {
+            requestToken: 0,
+
+            async findValidWorksheet(unitId, pageNum) {
+                const token = ++this.requestToken; // 이전 요청의 덮어쓰기 방지
+                const imgElement = document.getElementById('worksheet-img');
+                const boardElement = document.getElementById('drawing-board');
+                const seriesChar = unitId.charAt(0);
+                const t = Date.now();
+
+                const possiblePaths = [
+                    `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${pageNum}.png`,
+                    `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${pageNum}.png`,
+                    `${CONFIG.STORAGE_URL}${unitId}/${unitId}-${pageNum}.png`,
+                    `${CONFIG.STORAGE_URL}${unitId}/${pageNum}.png`,
+                    `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${pageNum}.jpg`,
+                    `${CONFIG.STORAGE_URL}${unitId}/${pageNum}.jpg`
+                ];
+
+                const tryLoad = (index) => {
+                    // 현재 토큰이 아니면 이전 요청이므로 즉시 폐기
+                    if (token !== this.requestToken) return;
+
+                    if (index >= possiblePaths.length) {
+                        Logger.error("All image paths failed. Worksheet missing.");
+                        imgElement.style.opacity = '1';
+                        boardElement.classList.add('error-state');
+                        CanvasEngine.resizeCanvas();
+                        return;
+                    }
+
+                    const testUrl = `${possiblePaths[index]}?t=${t}`;
+                    const tempImg = new Image();
+
+                    tempImg.onload = () => {
+                        if (token !== this.requestToken) return;
+                        Logger.log("Image found successfully:", testUrl);
+                        boardElement.classList.remove('error-state');
+                        imgElement.src = testUrl;
+                        imgElement.style.opacity = '1';
+                        CanvasEngine.resizeCanvas();
+                        StorageEngine.loadCanvas();
+                    };
+
+                    tempImg.onerror = () => tryLoad(index + 1);
+                    tempImg.src = testUrl;
+                };
+
+                tryLoad(0);
+            }
+        };
+
+        /**
+         * [4-6. STORAGE & SYNC ENGINE]
          */
         const StorageEngine = {
             async save() {
                 if(!STATE.uid) return;
                 try {
-                    const data = { 
-                        name: STATE.studentName, 
-                        page: STATE.currentPage, 
-                        badges: STATE.badges || [] 
-                    };
-                    
-                    localStorage.setItem(`br_data_${STATE.uid}_${STATE.id}`, JSON.stringify(data));
+                    const data = { name: STATE.studentName, page: STATE.currentPage, badges: STATE.badges || [] };
+                    localStorage.setItem(`br_data_${STATE.uid}_${STATE.unitId}`, JSON.stringify(data));
                     
                     await db.collection("students").doc(STATE.uid).set({ 
-                        ...data, 
-                        email: STATE.studentEmail, 
-                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
+                        ...data, email: STATE.studentEmail, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
                     }, { merge: true });
-                } catch (error) {
-                    console.error("Storage Sync Error:", error);
-                }
+                } catch (error) { Logger.error("Storage Sync Error", error); }
             },
             
             saveCanvas() {
                 if (!CanvasEngine.cvs || !STATE.uid) return;
                 try {
                     const canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6);
-                    localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.id}_P${STATE.currentPage}`, canvasData);
+                    localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, canvasData);
                     
-                    db.collection("student_drawings").doc(`${STATE.uid}_${STATE.id}_P${STATE.currentPage}`).set({
-                        studentID: STATE.studentEmail, 
-                        unitId: STATE.id, 
-                        page: STATE.currentPage,
-                        image: canvasData, 
-                        transcript: STATE.lastTranscript, 
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    db.collection("student_drawings").doc(`${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`).set({
+                        studentID: STATE.studentEmail, unitId: STATE.unitId, page: STATE.currentPage,
+                        image: canvasData, transcript: STATE.lastTranscript, timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
-                } catch (error) {
-                    console.error("Canvas Sync Error:", error);
-                }
+                } catch (error) { Logger.error("Canvas Sync Error", error); }
             },
             
             loadCanvas() {
                 try {
-                    const localData = localStorage.getItem(`br_cvs_${STATE.uid}_${STATE.id}_P${STATE.currentPage}`);
+                    const localData = localStorage.getItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`);
                     if (localData) {
                         const img = new Image();
                         img.onload = () => { 
@@ -1033,56 +1243,37 @@
                             CanvasEngine.saveHistory(); 
                         };
                         img.src = localData;
-                    } else { 
-                        CanvasEngine.saveHistory(); 
-                    }
-                } catch (error) {
-                    console.error("Canvas Load Error:", error);
-                    CanvasEngine.saveHistory();
-                }
+                    } else { CanvasEngine.saveHistory(); }
+                } catch (error) { Logger.error("Canvas Load Error", error); CanvasEngine.saveHistory(); }
             }
         };
 
         /**
-         * [PAGE NAVIGATION ENGINE]
-         * 사이드바 생성 및 이미지 동적 로딩
+         * [4-7. PAGE NAVIGATION ENGINE]
          */
         const PageEngine = {
             init() {
                 const list = document.getElementById('nav-list');
-                const unitData = PAGE_INTELLIGENCE[STATE.id];
+                const unitData = PAGE_INTELLIGENCE[STATE.unitId];
                 
                 if (unitData) {
                     Object.keys(unitData).forEach(i => {
                         const ctx = unitData[i];
                         const weekBadge = Math.ceil(parseInt(i) / 4);
-                        
                         const item = document.createElement('div');
-                        item.className = 'nav-item'; 
-                        item.id = `nav-${i}`;
-                        item.innerHTML = `
-                            <span class="nav-title">${ctx.navTitle}</span>
-                            <span class="nav-badge">W${weekBadge}-P.${String(i).padStart(2,'0')}</span>
-                        `;
-                        item.onclick = () => { 
-                            AppEngine.smoothMove(parseInt(i) - STATE.currentPage); 
-                            UIEngine.closeSidebarOnMobile();
-                        };
+                        item.className = 'nav-item'; item.id = `nav-${i}`;
+                        item.innerHTML = `<span class="nav-title">${ctx.navTitle}</span><span class="nav-badge">W${weekBadge}-P.${String(i).padStart(2,'0')}</span>`;
+                        item.onclick = () => { AppEngine.smoothMove(parseInt(i) - STATE.currentPage); UIEngine.closeSidebarOnMobile(); };
                         list.appendChild(item);
                     });
-                } else {
-                    console.warn(`No Intelligence Data found for UNIT: ${STATE.id}`);
                 }
-                
                 this.load(STATE.currentPage);
             },
             
             load(n) {
-                STATE.currentPage = n; 
-                STATE.lastTranscript = ""; 
-                STATE.sttConfidence = 0;
+                STATE.currentPage = n; STATE.lastTranscript = ""; STATE.sttConfidence = 0;
                 
-                document.getElementById('unit-info').innerText = `MASTER LAB: ${STATE.id}`;
+                document.getElementById('unit-info').innerText = `MASTER LAB: ${STATE.unitId}`;
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
                 
                 document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -1093,37 +1284,17 @@
                     navList.scrollTo({ top: activeNav.offsetTop - navList.offsetTop - 50, behavior: 'smooth' });
                 }
                 
-                CanvasEngine.hardReset(); 
-                AITutor.close();
+                CanvasEngine.hardReset(); AITutor.close();
+                document.getElementById('worksheet-img').style.opacity = '0';
                 
-                const img = document.getElementById('worksheet-img'); 
-                img.style.opacity = '0';
-                
-                // [오류 해결 핵심] STATE.id를 정확히 파싱하여 이미지 경로를 안전하게 조합합니다.
-                const seriesChar = STATE.id.charAt(0);
-                const imagePath = `${CONFIG.STORAGE_URL}${seriesChar}/${STATE.id}/${STATE.id}-${n}.png?t=${Date.now()}`;
-                
-                img.src = imagePath;
-                
-                img.onload = () => { 
-                    img.style.opacity = '1'; 
-                    CanvasEngine.resizeCanvas(); 
-                    StorageEngine.loadCanvas(); 
-                };
-                
-                img.onerror = () => {
-                    console.error("❌ 이미지 로드 실패. 경로를 확인하세요:", imagePath);
-                    // 실패해도 캔버스는 초기화하여 백화현상을 방지합니다.
-                    img.style.opacity = '1'; 
-                    CanvasEngine.resizeCanvas();
-                };
-                
+                SmartImageLoader.findValidWorksheet(STATE.unitId, STATE.currentPage);
                 StorageEngine.save();
             }
         };
 
         /**
-         * [APPLICATION FLOW ENGINE]
+         * [4-8. APPLICATION FLOW ENGINE]
+         * [버그 해결] 하드코딩된 페이지 번호 대신 CurriculumEngine.next()를 활용합니다.
          */
         const AppEngine = {
             smoothMove(dir) {
@@ -1132,372 +1303,154 @@
                 board.classList.add('fade-out');
                 
                 setTimeout(() => {
-                    STATE.currentPage += dir;
-                    if(STATE.currentPage < 1) STATE.currentPage = 1;
-                    if(STATE.currentPage > 33) STATE.currentPage = 33;
-                    
+                    STATE.currentPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir);
                     PageEngine.load(STATE.currentPage);
-                    
                     setTimeout(() => board.classList.remove('fade-out'), 150);
                 }, 400);
             },
             
             handleNextAdventure() {
-                AITutor.close();
-                StorageEngine.saveCanvas();
+                AITutor.close(); StorageEngine.saveCanvas();
                 this.smoothMove(1);
             }
         };
 
         const UIEngine = {
-            toggleSidebar() { 
-                document.getElementById('sidebar').classList.toggle('open'); 
-            },
-            closeSidebarOnMobile() { 
-                if (window.innerWidth <= 800) {
-                    document.getElementById('sidebar').classList.remove('open'); 
-                }
-            }
+            toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); },
+            closeSidebarOnMobile() { if (window.innerWidth <= 800) { document.getElementById('sidebar').classList.remove('open'); } }
         };
 
         /**
-         * [CANVAS DRAWING ENGINE]
-         * 멀티터치 및 다양한 브러시 효과 지원
+         * [4-9. CANVAS DRAWING ENGINE]
          */
         const CanvasEngine = {
-            isDrawing: false, 
-            hasMoved: false, 
-            isErasing: false, 
-            lastColor: "#363431", 
-            dpr: window.devicePixelRatio || 1, 
-            historyStack: [], 
-            historyIndex: -1,
-            
+            isDrawing: false, hasMoved: false, isErasing: false, lastColor: "#363431", dpr: window.devicePixelRatio || 1, historyStack: [], historyIndex: -1,
             init() {
-                this.cvs = document.getElementById('draw-layer'); 
-                this.ctx = this.cvs.getContext('2d'); 
-                this.board = document.getElementById('drawing-board');
-                
-                this.setupUI(); 
-                this.setupCanvas(); 
-                this.bind();
-                
-                if (window.ResizeObserver) {
-                    new ResizeObserver(() => this.resizeCanvas()).observe(this.board);
-                }
+                this.cvs = document.getElementById('draw-layer'); this.ctx = this.cvs.getContext('2d'); this.board = document.getElementById('drawing-board');
+                this.setupUI(); this.setupCanvas(); this.bind();
+                if (window.ResizeObserver) { new ResizeObserver(() => this.resizeCanvas()).observe(this.board); }
             },
-            
             setupCanvas() {
-                const rect = this.board.getBoundingClientRect(); 
-                if (rect.width === 0) return;
-                
-                this.cvs.style.width = rect.width + "px"; 
-                this.cvs.style.height = rect.height + "px";
-                this.cvs.width = rect.width * this.dpr; 
-                this.cvs.height = rect.height * this.dpr;
-                
-                this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); 
-                this.ctx.lineCap = 'round'; 
-                this.ctx.lineJoin = 'round';
+                const rect = this.board.getBoundingClientRect(); if (rect.width === 0) return;
+                this.cvs.style.width = rect.width + "px"; this.cvs.style.height = rect.height + "px";
+                this.cvs.width = rect.width * this.dpr; this.cvs.height = rect.height * this.dpr;
+                this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); this.ctx.lineCap = 'round'; this.ctx.lineJoin = 'round';
             },
-            
             resizeCanvas() {
-                const temp = document.createElement('canvas'); 
-                temp.width = this.cvs.width; 
-                temp.height = this.cvs.height;
-                
-                if (this.cvs.width > 0 && this.cvs.height > 0) {
-                    temp.getContext('2d').drawImage(this.cvs, 0, 0); 
-                }
-                
+                const temp = document.createElement('canvas'); temp.width = this.cvs.width; temp.height = this.cvs.height;
+                if (this.cvs.width > 0 && this.cvs.height > 0) { temp.getContext('2d').drawImage(this.cvs, 0, 0); }
                 this.setupCanvas();
-                
-                if (temp.width > 0 && temp.height > 0) {
-                    this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, this.cvs.width, this.cvs.height);
-                }
+                if (temp.width > 0 && temp.height > 0) { this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, this.cvs.width, this.cvs.height); }
             },
-            
             bind() {
-                const getP = (e) => { 
-                    const r = this.cvs.getBoundingClientRect(); 
-                    let cx = e.clientX || e.touches[0].clientX; 
-                    let cy = e.clientY || e.touches[0].clientY; 
-                    return { x: cx - r.left, y: cy - r.top }; 
-                };
-                
-                const start = (e) => { 
-                    e.preventDefault(); 
-                    this.isDrawing = true; 
-                    this.hasMoved = false; 
-                    const p = getP(e); 
-                    this.ctx.beginPath(); 
-                    this.ctx.moveTo(p.x, p.y); 
-                };
-                
+                const getP = (e) => { const r = this.cvs.getBoundingClientRect(); let cx = e.clientX || e.touches[0].clientX; let cy = e.clientY || e.touches[0].clientY; return { x: cx - r.left, y: cy - r.top }; };
+                const start = (e) => { e.preventDefault(); this.isDrawing = true; this.hasMoved = false; const p = getP(e); this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y); };
                 const move = (e) => {
-                    if (!this.isDrawing) return; 
-                    e.preventDefault(); 
-                    this.hasMoved = true; 
-                    const p = getP(e);
-                    
+                    if (!this.isDrawing) return; e.preventDefault(); this.hasMoved = true; const p = getP(e);
                     this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over";
-                    const s = document.getElementById('brush-size').value; 
-                    this.ctx.lineWidth = this.isErasing ? s * 3 : s;
-                    
+                    const s = document.getElementById('brush-size').value; this.ctx.lineWidth = this.isErasing ? s * 3 : s;
                     this.ctx.strokeStyle = this.isErasing ? "#FFF" : this.lastColor;
-                    
-                    if(STATE.brushType === 'rainbow' && !this.isErasing) { 
-                        this.ctx.strokeStyle = `hsl(${(Date.now()/10)%360}, 100%, 50%)`; 
-                    } else if (STATE.brushType === 'neon' && !this.isErasing) {
-                        this.ctx.shadowBlur = parseInt(s) + 10;
-                        this.ctx.shadowColor = this.lastColor;
-                    } else {
-                        this.ctx.shadowBlur = 0;
-                    }
-                    
-                    this.ctx.lineTo(p.x, p.y); 
-                    this.ctx.stroke(); 
-                    this.ctx.beginPath(); 
-                    this.ctx.moveTo(p.x, p.y);
+                    if(STATE.brushType === 'rainbow' && !this.isErasing) { this.ctx.strokeStyle = `hsl(${(Date.now()/10)%360}, 100%, 50%)`; } else if (STATE.brushType === 'neon' && !this.isErasing) { this.ctx.shadowBlur = parseInt(s) + 10; this.ctx.shadowColor = this.lastColor; } else { this.ctx.shadowBlur = 0; }
+                    this.ctx.lineTo(p.x, p.y); this.ctx.stroke(); this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y);
                 };
-                
-                const end = () => { 
-                    this.isDrawing = false; 
-                    this.ctx.shadowBlur = 0;
-                    if (this.hasMoved) { 
-                        this.saveHistory(); 
-                        StorageEngine.saveCanvas(); 
-                    } 
-                };
-                
-                this.cvs.addEventListener('pointerdown', start); 
-                this.cvs.addEventListener('pointermove', move); 
-                this.cvs.addEventListener('pointerup', end);
-                this.cvs.addEventListener('pointerleave', end);
+                const end = () => { this.isDrawing = false; this.ctx.shadowBlur = 0; if (this.hasMoved) { this.saveHistory(); StorageEngine.saveCanvas(); } };
+                this.cvs.addEventListener('pointerdown', start); this.cvs.addEventListener('pointermove', move); this.cvs.addEventListener('pointerup', end); this.cvs.addEventListener('pointerleave', end);
             },
-            
-            saveHistory() { 
-                this.historyIndex++; 
-                this.historyStack.length = this.historyIndex; 
-                this.historyStack.push(this.cvs.toDataURL()); 
-            },
-            
-            undo() { 
-                if (this.historyIndex > 0) { 
-                    this.historyIndex--; 
-                    this.restore(); 
-                } 
-            },
-            
-            restore() { 
-                const img = new Image(); 
-                img.onload = () => { 
-                    this.ctx.save(); 
-                    this.ctx.setTransform(1,0,0,1,0,0); 
-                    this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height); 
-                    this.ctx.drawImage(img,0,0,this.cvs.width/this.dpr,this.cvs.height/this.dpr); 
-                    this.ctx.restore(); 
-                }; 
-                img.src = this.historyStack[this.historyIndex]; 
-            },
-            
-            setBrush(t) { 
-                STATE.brushType = t; 
-                document.querySelectorAll('.btn-magic').forEach(el => el.classList.remove('active')); 
-                document.getElementById(`btn-brush-${t}`).classList.add('active');
-                if(this.isErasing) this.toggleEraser();
-            },
-            
-            toggleEraser() { 
-                this.isErasing = !this.isErasing; 
-                document.getElementById('btn-eraser').classList.toggle('active'); 
-            },
-            
-            setColor(color) {
-                this.lastColor = color;
-                document.getElementById('btn-color').style.background = color;
-                if(this.isErasing) this.toggleEraser();
-            },
-            
-            setupUI() { 
-                document.getElementById('btn-color').style.background = this.lastColor; 
-            },
-
-            hardReset() {
-                this.ctx.save();
-                this.ctx.setTransform(1,0,0,1,0,0);
-                this.ctx.clearRect(0,0,this.cvs.width, this.cvs.height);
-                this.ctx.restore();
-                this.historyStack = [];
-                this.historyIndex = -1;
-            }
+            saveHistory() { this.historyIndex++; this.historyStack.length = this.historyIndex; this.historyStack.push(this.cvs.toDataURL()); },
+            undo() { if (this.historyIndex > 0) { this.historyIndex--; this.restore(); } },
+            restore() { const img = new Image(); img.onload = () => { this.ctx.save(); this.ctx.setTransform(1,0,0,1,0,0); this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height); this.ctx.drawImage(img,0,0,this.cvs.width/this.dpr,this.cvs.height/this.dpr); this.ctx.restore(); }; img.src = this.historyStack[this.historyIndex]; },
+            setBrush(t) { STATE.brushType = t; document.querySelectorAll('.btn-magic').forEach(el => el.classList.remove('active')); document.getElementById(`btn-brush-${t}`).classList.add('active'); if(this.isErasing) this.toggleEraser(); },
+            toggleEraser() { this.isErasing = !this.isErasing; document.getElementById('btn-eraser').classList.toggle('active'); },
+            setColor(color) { this.lastColor = color; document.getElementById('btn-color').style.background = color; if(this.isErasing) this.toggleEraser(); },
+            setupUI() { document.getElementById('btn-color').style.background = this.lastColor; },
+            hardReset() { try { this.ctx.save(); this.ctx.setTransform(1,0,0,1,0,0); this.ctx.clearRect(0,0,this.cvs.width, this.cvs.height); this.ctx.restore(); this.historyStack = []; this.historyIndex = -1; } catch(e) { Logger.error("Canvas Reset Error", e); } }
         };
 
         const RGBRingEngine = {
             init() { 
-                const c = document.getElementById('color-wheel'); 
-                const ctx = c.getContext('2d', { willReadFrequently: true }); 
-                const r = 75; 
-                
-                for (let a=0; a<360; a++) { 
-                    ctx.beginPath(); 
-                    ctx.moveTo(r,r); 
-                    ctx.arc(r,r,r, a*Math.PI/180, (a+2)*Math.PI/180); 
-                    ctx.fillStyle = `hsl(${a},100%,50%)`; 
-                    ctx.fill(); 
-                }
-                
-                c.onclick = (e) => { 
-                    const rect = c.getBoundingClientRect(); 
-                    const data = ctx.getImageData(e.clientX-rect.left, e.clientY-rect.top, 1, 1).data; 
-                    CanvasEngine.setColor(`rgb(${data[0]},${data[1]},${data[2]})`); 
-                    this.toggle(); 
-                };
+                const c = document.getElementById('color-wheel'); const ctx = c.getContext('2d', { willReadFrequently: true }); const r = 75; 
+                for (let a=0; a<360; a++) { ctx.beginPath(); ctx.moveTo(r,r); ctx.arc(r,r,r, a*Math.PI/180, (a+2)*Math.PI/180); ctx.fillStyle = `hsl(${a},100%,50%)`; ctx.fill(); }
+                c.onclick = (e) => { const rect = c.getBoundingClientRect(); const data = ctx.getImageData(e.clientX-rect.left, e.clientY-rect.top, 1, 1).data; CanvasEngine.setColor(`rgb(${data[0]},${data[1]},${data[2]})`); this.toggle(); };
             },
-            toggle() { 
-                document.getElementById('rgb-modal').classList.toggle('active'); 
-            }
+            toggle() { document.getElementById('rgb-modal').classList.toggle('active'); }
         };
 
         /**
-         * [AUDIO ENGINE]
-         * Web Speech API를 활용한 실시간 음성 인식
+         * [4-10. AUDIO ENGINE]
          */
         const AudioEngine = {
             init() {
                 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
                 if (SR) {
-                    this.rec = new SR(); 
-                    this.rec.lang = 'en-US';
-                    this.rec.continuous = false;
-                    this.rec.interimResults = false;
-                    
-                    this.rec.onresult = (e) => { 
-                        STATE.lastTranscript = e.results[0][0].transcript; 
-                        STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100);
-                    };
-                    
-                    this.rec.onend = () => { 
-                        if(STATE.isRecording) this.toggle(); 
-                    };
-
-                    this.rec.onerror = (e) => {
-                        console.error("Speech Recognition Error:", e);
-                        if(STATE.isRecording) this.toggle();
-                    }
-                }
+                    this.rec = new SR(); this.rec.lang = 'en-US'; this.rec.continuous = false; this.rec.interimResults = false;
+                    this.rec.onresult = (e) => { STATE.lastTranscript = e.results[0][0].transcript; STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); };
+                    this.rec.onend = () => { if(STATE.isRecording) this.toggle(); };
+                    this.rec.onerror = (e) => { Logger.error("Speech Recognition Error:", e.error); if(STATE.isRecording) this.toggle(); }
+                } else { Logger.warn("Web Speech API not supported."); }
             },
-            
             toggle() {
-                if(!this.rec) {
-                    alert("마이크가 지원되지 않는 브라우저입니다. Chrome을 사용해주세요.");
-                    return;
-                }
-
+                if(!this.rec) { alert("마이크가 지원되지 않습니다. Chrome을 사용해주세요."); return; }
                 if(!STATE.isRecording) { 
-                    STATE.isRecording = true; 
-                    document.getElementById('btn-record').classList.add('recording'); 
-                    document.getElementById('record-text').innerText = "Listening...";
-                    try { this.rec.start(); } catch(e){ console.error(e); } 
+                    STATE.isRecording = true; document.getElementById('btn-record').classList.add('recording'); document.getElementById('record-text').innerText = "Listening...";
+                    try { this.rec.start(); } catch(e){ Logger.error("Mic error", e); } 
                 } else { 
-                    STATE.isRecording = false; 
-                    document.getElementById('btn-record').classList.remove('recording'); 
-                    document.getElementById('record-text').innerText = "Voice Log";
+                    STATE.isRecording = false; document.getElementById('btn-record').classList.remove('recording'); document.getElementById('record-text').innerText = "Voice Log";
                     try { this.rec.stop(); } catch(e){} 
+                    setTimeout(() => { AITutor.submit(); }, 800);
                 }
             },
-
             toggleChat() {
-                // LLM 채팅 창에서의 녹음 (Submit 로직으로 바로 넘어감)
+                if(!this.rec) return;
                 if(!STATE.isRecording) { 
-                    STATE.isRecording = true; 
-                    document.getElementById('btn-chat-record').classList.add('recording'); 
-                    document.getElementById('btn-chat-record').innerText = "Listening...";
+                    STATE.isRecording = true; document.getElementById('btn-chat-record').classList.add('recording'); document.getElementById('btn-chat-record').innerText = "Listening...";
                     try { this.rec.start(); } catch(e){} 
                 } else { 
-                    STATE.isRecording = false; 
-                    document.getElementById('btn-chat-record').classList.remove('recording'); 
-                    document.getElementById('btn-chat-record').innerText = "🎤 Speak to Teacher";
+                    STATE.isRecording = false; document.getElementById('btn-chat-record').classList.remove('recording'); document.getElementById('btn-chat-record').innerText = "🎤 Speak to Teacher";
                     try { this.rec.stop(); } catch(e){} 
-                    
-                    setTimeout(() => {
-                        AITutor.processReply();
-                    }, 500);
+                    setTimeout(() => { AITutor.processReply(); }, 800);
                 }
             }
         };
 
         /**
-         * [🔥 NORTH AMERICAN NATIVE AI TUTOR ENGINE (Gemini 1.5 Pro)]
-         * 멀티모달 (Multimodal Vision) 및 LLM Context 유지 기능을 갖춘 핵심 엔진
+         * [4-11. 🔥 NORTH AMERICAN NATIVE AI TUTOR ENGINE]
          */
         const AITutor = {
-            
             async callGeminiAPI(prompt, base64Img = null) {
-                if (!CONFIG.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY.includes("YOUR")) {
-                    return "원장님, 진짜 대화를 위해 코드 하단의 CONFIG에 Gemini API 키를 넣어주세요. 임시 답변: Wow! You did an amazing job today!";
-                }
-                
+                if (!CONFIG.GEMINI_API_KEY || CONFIG.GEMINI_API_KEY.includes("YOUR")) return "원장님, 진짜 대화를 위해 CONFIG에 Gemini API 키를 넣어주세요.";
                 try {
                     let parts = [{ text: prompt }];
-                    
-                    // 멀티모달 비전: 이미지가 들어오면 페이로드에 추가
-                    if (base64Img) {
-                        parts.push({ 
-                            inlineData: { 
-                                mimeType: "image/jpeg", 
-                                data: base64Img.split(',')[1] 
-                            } 
-                        });
-                    }
+                    if (base64Img) parts.push({ inlineData: { mimeType: "image/jpeg", data: base64Img.split(',')[1] } });
 
                     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.MODEL_NAME}:generateContent?key=${CONFIG.GEMINI_API_KEY}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
                             contents: [{ parts: parts }],
-                            // [안전장치 해제] 아이들 그림 분석 거부 방지
                             safetySettings: [
                                 { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
                                 { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
                                 { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
                                 { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
                             ],
-                            generationConfig: { 
-                                temperature: 0.8, 
-                                maxOutputTokens: 300 
-                            }
+                            generationConfig: { temperature: 0.8, maxOutputTokens: 300 }
                         })
                     });
                     
                     const data = await response.json();
-                    
-                    if (data.error) {
-                        throw new Error(data.error.message);
-                    }
-                    
+                    if (data.error) throw new Error(data.error.message);
                     return data.candidates[0].content.parts[0].text;
-                    
                 } catch (e) {
-                    console.error("Gemini Error:", e);
-                    if (e.message && e.message.includes("429")) {
-                        return "선생님이 방금 너무 많은 질문을 받았어요! 1분만 쉬었다가 다시 물어봐 줄래요? (API 초과)";
-                    }
+                    Logger.error("Gemini Fallback Triggered:", e);
+                    if (e.message && e.message.includes("429")) return "선생님이 방금 너무 많은 질문을 받았어요! 1분만 쉬었다가 다시 물어봐 줄래요?";
                     return "Oh no, 선생님이 잠깐 생각에 잠겼어요. 다시 한번 말해줄래요?";
                 }
             },
 
             async submit() {
-                if (STATE.isRecording) {
-                    AudioEngine.toggle();
-                    // 녹음이 끝날 시간을 1초 정도 벌어줍니다.
-                    setTimeout(() => { this.submit(); }, 1000);
-                    return;
-                }
+                if (STATE.isRecording) { AudioEngine.toggle(); return; }
 
-                const panel = document.getElementById('ai-panel'); 
-                panel.classList.add('open');
-                
+                const panel = document.getElementById('ai-panel'); panel.classList.add('open');
                 const content = document.getElementById('ai-content');
                 content.innerHTML = `
                     <div class="text-center py-20">
@@ -1506,30 +1459,27 @@
                     </div>
                 `;
 
-                // 캔버스 캡처
                 const canvasImg = CanvasEngine.cvs.toDataURL('image/jpeg', 0.8);
-                const unitData = PAGE_INTELLIGENCE[STATE.id] ? PAGE_INTELLIGENCE[STATE.id][STATE.currentPage] : { goal: "Free Exploration" };
+                const unitData = PAGE_INTELLIGENCE[STATE.unitId] ? PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage] : { goal: "Free Exploration" };
 
-                // [북미 원어민 교사 프롬프트 고도화]
                 const prompt = `
-                    You are a highly enthusiastic and empathetic native English teacher at a prestigious private school in North America. Your name is Teacher Bridge.
+                    You are an enthusiastic and highly empathetic native English teacher at a prestigious private school in North America. Your name is Teacher Bridge.
                     - Student Name: ${STATE.studentName}
                     - Lesson Goal: ${unitData.goal}
-                    - Student Said (Transcript): "${STATE.lastTranscript || "Look at my drawing!"}"
+                    - Student Said: "${STATE.lastTranscript || "Look at my drawing!"}"
 
                     Instructions:
-                    1. Look at the attached image (student's drawing) extremely carefully. 
-                    2. DO NOT use generic phrases like "abstract shapes". Instead, explicitly describe specific colors, lines, or shapes you see. (e.g., "I love the bright blue lines you drew for the sky!")
-                    3. Act as a North American ECE professional: Use high-energy, encouraging language ("Incredible!", "You're a superstar!").
-                    4. Mix natural Korean phrases to make the child comfortable. (e.g., "정말 멋진걸요?", "최고야!")
-                    5. Follow the 'Sandwich Feedback' rule: Praise -> Specific Observation on the drawing -> Engaging Question.
-                    6. Respond warmly to what they said in the Transcript.
-                    7. Keep the response to 3-4 short, simple sentences. Plain text only. No markdown.
+                    1. Look at the attached image carefully. 
+                    2. Describe specific colors, lines, or shapes you see positively based on the Lesson Goal. (e.g., "I love the bright blue lines you drew for the sky!")
+                    3. Act as a North American ECE professional: Use high-energy, encouraging language.
+                    4. Mix natural Korean phrases. (e.g., "정말 멋진걸요?", "최고야!")
+                    5. Follow the 'Sandwich Feedback' rule: Praise -> Specific Observation -> Engaging Question.
+                    6. Keep the response to 3-4 short, simple sentences. Plain text only.
                 `;
 
                 const response = await this.callGeminiAPI(prompt, canvasImg);
                 
-                // 화면 업데이트
+                // [버그 해결] XSS 공격 방어를 위해 innerHTML 대신 textContent를 사용합니다.
                 content.innerHTML = `
                     <div class="analytics-card">
                         <div class="analytics-title">Mission: ${unitData.goal}</div>
@@ -1538,12 +1488,14 @@
                             <div class="bar-bg"><div class="bar-fill" style="width:${STATE.sttConfidence}%; background:var(--br-blue)"></div></div>
                         </div>
                     </div>
-                    <div class="chat-bubble ai">${response}</div>
                 `;
                 
-                document.getElementById('chat-footer').style.display = "block";
+                const aiBubble = document.createElement('div');
+                aiBubble.className = 'chat-bubble ai mt-4';
+                aiBubble.textContent = response;
+                content.appendChild(aiBubble);
                 
-                // 음성 합성 읽어주기
+                document.getElementById('chat-footer').style.display = "block";
                 this.speak(response);
             },
 
@@ -1552,14 +1504,12 @@
                 
                 const content = document.getElementById('ai-content');
                 
-                // User Bubble
                 const uBubble = document.createElement('div'); 
                 uBubble.className = "chat-bubble user mt-4"; 
-                uBubble.innerText = STATE.lastTranscript;
+                uBubble.textContent = STATE.lastTranscript;
                 content.appendChild(uBubble); 
                 content.scrollTop = content.scrollHeight;
 
-                // AI Loading Bubble
                 const aBubble = document.createElement('div'); 
                 aBubble.className = "chat-bubble ai mt-4"; 
                 aBubble.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-bridge-mint"></i> 선생님이 대답을 생각하고 있어요...`;
@@ -1567,52 +1517,51 @@
                 content.scrollTop = content.scrollHeight;
 
                 let conversationPrompt = `
-                    You are a friendly North American bilingual English teacher at Bridge Academy. 
-                    Respond to the student's latest statement: "${STATE.lastTranscript}". 
-                    
-                    Instructions:
-                    1. Keep it extremely short (1-2 sentences).
-                    2. Be very enthusiastic and encouraging.
-                    3. Use a mix of easy Korean and simple English.
-                    4. Ask another fun question to continue the flow. Plain text only.
+                    You are a friendly North American bilingual English teacher. 
+                    Respond to the student's statement: "${STATE.lastTranscript}". 
+                    Instructions: Extremely short (1-2 sentences). Enthusiastic. Mix easy Korean/English. Ask a fun question. Plain text.
                 `;
                 
                 const reply = await this.callGeminiAPI(conversationPrompt);
                 
-                aBubble.innerHTML = `<b style="color:var(--br-green); font-weight:700;">${reply}</b>`;
-                content.scrollTop = content.scrollHeight;
+                // [버그 해결] XSS 공격 방어
+                aBubble.innerHTML = ''; // 스피너 제거
+                const boldText = document.createElement('b');
+                boldText.style.color = 'var(--br-green)';
+                boldText.style.fontWeight = '700';
+                boldText.textContent = reply;
+                aBubble.appendChild(boldText);
                 
+                content.scrollTop = content.scrollHeight;
                 this.speak(reply);
             },
 
             speak(text) {
                 if (window.speechSynthesis) {
                     window.speechSynthesis.cancel();
-                    // HTML 태그 제거
-                    const cleanText = text.replace(/<[^>]*>?/gm, '');
-                    const utterance = new SpeechSynthesisUtterance(cleanText);
-                    utterance.lang = 'ko-KR'; // 한영 혼용이므로 한국어 엔진이 가장 매끄럽습니다.
-                    utterance.rate = 0.95; 
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'ko-KR'; utterance.rate = 0.95; 
                     window.speechSynthesis.speak(utterance);
                 }
             },
             
-            close() { 
-                document.getElementById('ai-panel').classList.remove('open'); 
-                if(window.speechSynthesis) window.speechSynthesis.cancel(); 
-            }
+            close() { document.getElementById('ai-panel').classList.remove('open'); if(window.speechSynthesis) window.speechSynthesis.cancel(); }
         };
 
         /**
-         * [SYSTEM BOOT SEQUENCE]
-         * 페이지 초기화 및 모든 엔진 시작
+         * [4-12. SYSTEM BOOT SEQUENCE]
+         * [버그 해결] CanvasEngine이 PageEngine(이미지 그리기)보다 먼저 로드되어야 합니다.
          */
         function SystemBoot() {
-            PageEngine.init(); 
-            CanvasEngine.init(); 
-            RGBRingEngine.init(); 
-            AudioEngine.init();
-            StorageEngine.loadCanvas();
+            try {
+                CanvasEngine.init(); 
+                RGBRingEngine.init(); 
+                AudioEngine.init();
+                PageEngine.init(); 
+                Logger.log("Enterprise System Boot Complete");
+            } catch(e) {
+                Logger.error("System Boot Failed", e);
+            }
         }
     </script>
 </body>

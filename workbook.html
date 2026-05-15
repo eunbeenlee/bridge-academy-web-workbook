@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bridge Academy | Premium AI Lab V100.8 (Enterprise Cloud)</title>
+    <title>Bridge Academy | Premium AI Lab Workbook</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Jua&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
@@ -21,7 +24,7 @@
          * [CSS Variables & Design Tokens]
          * ====================================================================== */
         :root {
-            --br-green: #89BFA0; 
+            --br-green: #91D3B4; 
             --br-gold: #CBAE75; 
             --br-blue: #7CA6C1; 
             --br-charcoal: #363431;
@@ -31,12 +34,13 @@
             --br-muted: #8C8985;
             --br-border: #F0EFEB; 
             --br-error: #E74C3C; 
-            --br-ai: #F4F8F5;
+            --br-ai: #F8FAFF;
             --sidebar-width: 320px;
         }
 
         /* ======================================================================
-         * [Global Reset]
+         * [Global Reset & Typography]
+         * 폰트를 기본 Noto Sans에서 프리미엄 Pretendard로 전면 교체
          * ====================================================================== */
         * { 
             margin: 0; 
@@ -51,8 +55,9 @@
             overflow: hidden; 
             background-color: var(--br-bg); 
             color: var(--br-text); 
-            font-family: 'Noto Sans KR', sans-serif; 
+            font-family: 'Pretendard', sans-serif; 
             pointer-events: auto !important; 
+            -webkit-font-smoothing: antialiased;
         }
 
         button { 
@@ -98,18 +103,20 @@
             font-size: 26px; 
             font-weight: 900; 
             color: var(--br-charcoal); 
+            letter-spacing: -0.5px;
         }
 
         .brand-logo span { 
             color: var(--br-green); 
             font-style: italic; 
+            font-weight: 700;
         }
         
         /* ======================================================================
          * [Student Profile & Badges]
          * ====================================================================== */
         .student-profile { 
-            padding: 20px 30px; 
+            padding: 25px 30px; 
             border-bottom: 1px solid var(--br-border); 
             display: flex; 
             flex-direction: column; 
@@ -125,12 +132,12 @@
         .profile-top { 
             display: flex; 
             align-items: center; 
-            gap: 12px; 
+            gap: 15px; 
         }
 
         .profile-avatar { 
-            width: 45px; 
-            height: 45px; 
+            width: 48px; 
+            height: 48px; 
             border-radius: 50%; 
             background: var(--br-border); 
             color: #FFF; 
@@ -139,6 +146,7 @@
             align-items: center; 
             font-weight: 900; 
             font-size: 20px; 
+            font-family: 'Nunito', sans-serif;
             transition: 0.3s; 
         }
 
@@ -154,15 +162,21 @@
         }
 
         .profile-name { 
-            font-size: 16px; 
+            font-family: 'Nunito', sans-serif;
+            font-size: 17px; 
             font-weight: 900; 
             white-space: nowrap; 
             overflow: hidden; 
             text-overflow: ellipsis; 
+            text-transform: uppercase; 
+            color: var(--br-charcoal);
+            letter-spacing: 0.5px;
         }
 
         .profile-role { 
+            font-family: 'Pretendard', sans-serif;
             font-size: 11px; 
+            font-weight: 700;
             color: var(--br-muted); 
             letter-spacing: 1px; 
         }
@@ -170,13 +184,13 @@
         .badge-container { 
             display: flex; 
             flex-wrap: wrap; 
-            gap: 5px; 
+            gap: 6px; 
         }
 
         .badge { 
             font-size: 11px; 
-            padding: 4px 8px; 
-            border-radius: 10px; 
+            padding: 4px 10px; 
+            border-radius: 12px; 
             background: #FFF; 
             border: 1px solid var(--br-border); 
             color: var(--br-charcoal); 
@@ -189,7 +203,7 @@
         }
 
         /* ======================================================================
-         * [Navigation List]
+         * [Navigation List - 주차별 테마로 깔끔하게 폰트 적용]
          * ====================================================================== */
         .nav-list { 
             flex: 1; 
@@ -197,8 +211,12 @@
             padding: 15px; 
         }
 
+        /* 스크롤바 숨기기 */
+        .nav-list::-webkit-scrollbar { width: 4px; }
+        .nav-list::-webkit-scrollbar-thumb { background: #E8E6E1; border-radius: 10px; }
+
         .nav-item { 
-            padding: 15px; 
+            padding: 16px 18px; 
             margin-bottom: 8px; 
             border-radius: 12px; 
             background: #FAFAFA; 
@@ -206,29 +224,53 @@
             justify-content: space-between; 
             align-items: center; 
             cursor: pointer; 
-            transition: 0.2s; 
+            transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1); 
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: #FFF;
+            border-color: var(--br-border);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transform: translateY(-1px);
         }
 
         .nav-item.active { 
             background: var(--br-ai); 
             border-left: 5px solid var(--br-green); 
-            font-weight: 800; 
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(145, 211, 180, 0.1);
         }
 
         .nav-title { 
+            font-family: 'Pretendard', sans-serif;
             font-size: 13px; 
+            font-weight: 700;
+            color: var(--br-charcoal);
             white-space: nowrap; 
             overflow: hidden; 
             text-overflow: ellipsis; 
-            max-width: 160px; 
+            max-width: 170px; 
+        }
+
+        .nav-item.active .nav-title {
+            font-weight: 900;
+            color: var(--br-green);
         }
 
         .nav-badge { 
+            font-family: 'Nunito', sans-serif;
             font-size: 10px; 
             font-weight: 900; 
-            opacity: 0.4; 
+            color: var(--br-muted);
+            letter-spacing: 0.5px;
         }
         
+        .nav-item.active .nav-badge {
+            color: var(--br-green);
+            opacity: 1;
+        }
+
         /* ======================================================================
          * [Main Workspace & Top Bar]
          * ====================================================================== */
@@ -244,7 +286,7 @@
         }
 
         .top-bar { 
-            height: 75px; 
+            height: 80px; 
             padding: 0 40px; 
             display: flex; 
             justify-content: space-between; 
@@ -252,10 +294,12 @@
             border-bottom: 1px solid var(--br-border); 
             flex-shrink: 0; 
             z-index: 10; 
+            background: #FFF;
         }
 
         .unit-info { 
-            font-size: 12px; 
+            font-family: 'Nunito', sans-serif;
+            font-size: 11px; 
             font-weight: 900; 
             color: var(--br-gold); 
             letter-spacing: 3px; 
@@ -264,10 +308,11 @@
 
         .page-info { 
             font-family: 'Playfair Display', serif; 
-            font-size: 30px; 
-            font-weight: 700; 
+            font-size: 32px; 
+            font-weight: 900; 
             color: var(--br-charcoal); 
-            margin-top: 5px; 
+            margin-top: 2px; 
+            letter-spacing: -0.5px;
         }
         
         /* ======================================================================
@@ -278,7 +323,7 @@
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            padding: 20px 40px; 
+            padding: 30px 40px; 
             background: var(--br-bg); 
             perspective: 1000px; 
             pointer-events: auto !important; 
@@ -290,7 +335,7 @@
             display: inline-flex; 
             line-height: 0; 
             border-radius: 15px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
+            box-shadow: 0 15px 50px rgba(0,0,0,0.06); 
             background: #FFF; 
             transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             transform-origin: center; 
@@ -299,14 +344,14 @@
 
         .drawing-board.fade-out { 
             opacity: 0; 
-            transform: scale(0.95) translateY(10px); 
+            transform: scale(0.96) translateY(15px); 
             pointer-events: none !important; 
         }
 
         #worksheet-img { 
             display: block; 
             max-width: 100%; 
-            max-height: calc(100dvh - 220px); 
+            max-height: calc(100dvh - 240px); 
             width: auto; 
             height: auto; 
             border-radius: 15px; 
@@ -422,7 +467,7 @@
          * ====================================================================== */
         .action-group { 
             display: flex; 
-            gap: 10px; 
+            gap: 12px; 
             align-items: center; 
         }
 
@@ -439,6 +484,7 @@
             display: flex; 
             justify-content: center; 
             align-items: center; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
 
         .btn-nav:active { 
@@ -456,8 +502,14 @@
             display: flex; 
             align-items: center; 
             gap: 10px; 
-            transition: 0.2s; 
+            transition: 0.2s cubic-bezier(0.19, 1, 0.22, 1); 
             text-transform: uppercase; 
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
 
         .btn-main:active { 
@@ -474,6 +526,7 @@
             background: #FFF0F0; 
             color: var(--br-error); 
             border-color: var(--br-error); 
+            box-shadow: inset 0 0 0 2px var(--br-error);
         }
 
         .btn-record .dot { 
@@ -504,7 +557,7 @@
             width: 450px; 
             height: 100%; 
             background: #FFF; 
-            box-shadow: -10px 0 30px rgba(0,0,0,0.08); 
+            box-shadow: -20px 0 50px rgba(0,0,0,0.1); 
             z-index: 10001; 
             transition: right 0.5s cubic-bezier(0.19, 1, 0.22, 1); 
             display: flex; 
@@ -517,7 +570,7 @@
         }
 
         .ai-header { 
-            padding: 25px; 
+            padding: 25px 30px; 
             background: var(--br-ai); 
             display: flex; 
             justify-content: space-between; 
@@ -527,12 +580,12 @@
         }
 
         .ai-title { 
-            font-size: 18px; 
-            font-weight: 900; 
+            font-family: 'Jua', sans-serif;
+            font-size: 22px; 
             color: var(--br-green); 
             display: flex; 
             align-items: center; 
-            gap: 8px; 
+            gap: 10px; 
         }
 
         .btn-close-ai { 
@@ -540,10 +593,16 @@
             color: var(--br-muted); 
             line-height: 1; 
             cursor: pointer; 
+            transition: 0.3s;
+        }
+
+        .btn-close-ai:hover {
+            color: var(--br-error);
+            transform: rotate(90deg);
         }
         
         .ai-content { 
-            padding: 25px; 
+            padding: 25px 30px; 
             flex: 1; 
             overflow-y: auto; 
             display: flex; 
@@ -554,7 +613,7 @@
         
         .chat-bubble { 
             max-width: 85%; 
-            padding: 18px; 
+            padding: 18px 22px; 
             border-radius: 20px; 
             font-size: 15px; 
             line-height: 1.6; 
@@ -576,29 +635,32 @@
             background: var(--br-green); 
             color: #FFF; 
             border-bottom-right-radius: 5px; 
-            box-shadow: 0 5px 15px rgba(137,191,160,0.2); 
+            box-shadow: 0 5px 15px rgba(137,191,160,0.25); 
         }
 
         /* ======================================================================
-         * [AI Analytics Card - Enhanced Details]
+         * [AI Analytics Card]
          * ====================================================================== */
         .analytics-card { 
             background: #FAFAFA; 
             border: 1px solid var(--br-border); 
-            border-radius: 18px; 
-            padding: 20px; 
+            border-radius: 20px; 
+            padding: 25px; 
             align-self: stretch; 
             animation: popIn 0.4s ease; 
             margin-bottom: 5px; 
         }
 
         .analytics-title {
+            font-family: 'Nunito', sans-serif;
             color: var(--br-gold);
-            font-size: 12px;
-            margin-bottom: 15px;
+            font-size: 13px;
+            margin-bottom: 20px;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1px;
+            border-bottom: 1px dashed var(--br-border);
+            padding-bottom: 10px;
         }
 
         .stat-row { 
@@ -607,17 +669,17 @@
 
         .stat-label { 
             font-size: 12px; 
-            font-weight: 900; 
+            font-weight: 800; 
             display: flex; 
             justify-content: space-between; 
-            margin-bottom: 6px; 
+            margin-bottom: 8px; 
             color: var(--br-charcoal); 
         }
 
         .bar-bg { 
             width: 100%; 
             height: 8px; 
-            background: #E0E0E0; 
+            background: #E8E6E1; 
             border-radius: 10px; 
             overflow: hidden; 
         }
@@ -628,111 +690,108 @@
             border-radius: 10px; 
         }
 
-        .transcript-box {
-            background: #F4F8F5;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid var(--br-green);
-            font-style: italic;
-            font-size: 14px;
-            margin-bottom: 20px;
-            color: var(--br-charcoal);
-            line-height: 1.5;
-        }
-
         .voice-fx-group { 
             display: flex; 
             gap: 10px; 
-            margin-top: 20px; 
+            margin-top: 25px; 
             justify-content: center; 
+            border-top: 1px dashed var(--br-border);
+            padding-top: 20px;
         }
 
         .btn-fx { 
-            padding: 8px 12px; 
-            border-radius: 10px; 
+            padding: 10px 15px; 
+            border-radius: 12px; 
             font-size: 12px; 
-            font-weight: 900; 
+            font-weight: 800; 
             cursor: pointer; 
             border: 1px solid var(--br-border); 
             background: #FFF; 
             transition: 0.2s; 
             display: flex; 
             align-items: center; 
-            gap: 5px; 
+            gap: 6px; 
             color: var(--br-charcoal); 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
 
         .btn-fx:hover { 
             background: var(--br-ai); 
+            border-color: var(--br-green);
             transform: translateY(-2px); 
-            box-shadow: 0 5px 10px rgba(0,0,0,0.05); 
+            box-shadow: 0 5px 15px rgba(145,211,180,0.2); 
+            color: var(--br-green);
         }
 
         /* ======================================================================
          * [Chat Footer & Reply Inputs]
          * ====================================================================== */
         .chat-footer { 
-            padding: 20px 25px; 
+            padding: 25px 30px; 
             border-top: 1px solid var(--br-border); 
             display: flex; 
             flex-direction: column; 
-            gap: 12px; 
+            gap: 15px; 
             background: #FFF; 
         }
 
         .btn-reply { 
             width: 100%; 
-            height: 55px; 
+            height: 60px; 
             background: var(--br-charcoal); 
             color: #FFF; 
-            border-radius: 15px; 
+            border-radius: 18px; 
             font-weight: 900; 
             cursor: pointer; 
             transition: 0.2s; 
-            font-size: 15px; 
+            font-size: 16px; 
             letter-spacing: 1px; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            gap: 8px; 
+            gap: 10px; 
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 10px 20px rgba(54,52,49,0.2);
+        }
+
+        .btn-reply:hover {
+            background: var(--br-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(203,174,117,0.3);
         }
 
         .btn-reply.recording { 
             background: var(--br-error); 
             animation: pulse 1.5s infinite; 
+            box-shadow: 0 10px 20px rgba(231,76,60,0.3);
         }
 
         .btn-next-page { 
             width: 100%; 
-            height: 55px; 
+            height: 60px; 
             background: var(--br-blue); 
             color: #FFF; 
-            border-radius: 15px; 
+            border-radius: 18px; 
             font-weight: 900; 
             cursor: pointer; 
             transition: 0.2s; 
-            box-shadow: 0 5px 15px rgba(124,166,193,0.3); 
-            font-size: 15px; 
+            box-shadow: 0 10px 20px rgba(124,166,193,0.3); 
+            font-size: 16px; 
             letter-spacing: 1px; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .btn-next-page:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(124,166,193,0.4);
+            filter: brightness(1.1);
         }
 
         .btn-next-page:active { 
             transform: scale(0.95); 
-        }
-
-        .ai-name-input { 
-            width: 100%; 
-            padding: 15px; 
-            border: 2px dashed var(--br-green); 
-            border-radius: 12px; 
-            margin-top: 15px; 
-            font-size: 16px; 
-            text-align: center; 
-            font-weight: 800; 
-            outline: none; 
         }
 
         /* ======================================================================
@@ -814,15 +873,17 @@
         }
 
         .cert-subtitle { 
+            font-family: 'Nunito', sans-serif;
             font-size: 16px; 
             color: var(--br-muted); 
-            font-weight: 700; 
+            font-weight: 900; 
             letter-spacing: 3px; 
             text-transform: uppercase; 
             margin-bottom: 30px; 
         }
 
         .cert-name { 
+            font-family: 'Nunito', sans-serif;
             font-size: 35px; 
             color: var(--br-green); 
             font-weight: 900; 
@@ -855,7 +916,7 @@
             font-size: 16px; 
             color: var(--br-text); 
             line-height: 1.6; 
-            font-weight: 500; 
+            font-weight: 600; 
             margin-bottom: 30px; 
             font-style: italic; 
         }
@@ -878,6 +939,7 @@
         .btn-print:hover { 
             transform: translateY(-3px); 
             box-shadow: 0 15px 25px rgba(0,0,0,0.15); 
+            background: var(--br-gold);
         }
 
         .cert-close { 
@@ -888,6 +950,12 @@
             color: var(--br-muted); 
             cursor: pointer; 
             font-weight: 900; 
+            transition: 0.3s;
+        }
+        
+        .cert-close:hover {
+            color: var(--br-error);
+            transform: rotate(90deg);
         }
 
         /* ======================================================================
@@ -1067,7 +1135,9 @@
 
     <script>
         /**
+         * ======================================================================
          * [System Configuration & API Setup]
+         * ======================================================================
          */
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
@@ -1089,15 +1159,17 @@
         const db = firebase.firestore();
 
         /**
-         * Global Application State Management
-         * [수정됨] UID와 ID의 역할을 완벽하게 분리했습니다.
+         * ======================================================================
+         * [Global Application State Management]
+         * UID와 ID의 역할을 완벽하게 분리하여 데이터가 꼬이는 현상을 방지합니다.
+         * ======================================================================
          */
         const STATE = {
             uid: null,             // 파이어베이스 인증 고유키 (유저 식별용)
             studentEmail: "",      // 파이어베이스 이메일
             studentName: "",       // 화면 표시용 이름
             isNameRegistered: false,
-            id: new URLSearchParams(window.location.search).get('id') || "A-1", // [중요] 교재 유닛 번호
+            id: new URLSearchParams(window.location.search).get('id') || "A-1", // [중요] 교재 유닛 번호 (절대 덮어씌워지면 안됨)
             currentPage: 1, 
             isRecording: false, 
             lastTranscript: "",
@@ -1113,7 +1185,7 @@
             rainbowHue: 0
         };
 
-        // [수정됨] 로그인 가드 & 시스템 부팅 통합
+        // 로그인 가드 & 시스템 부팅 통합
         auth.onAuthStateChanged((user) => {
             if (!user) {
                 alert("로그인이 필요한 서비스입니다.");
@@ -1133,13 +1205,15 @@
                 document.getElementById('display-name').innerText = STATE.studentName;
                 document.getElementById('avatar-char').innerText = STATE.studentName.charAt(0);
                 
-                // 3. [핵심] 유저 정보가 세팅된 후에 전체 시스템을 부팅합니다 (Race Condition 해결)
+                // 3. 유저 정보가 세팅된 후에 전체 시스템을 부팅합니다.
                 SystemBoot();
             }
         });
 
         /**
-         * Storage Engine for Local & Cloud Data Persistence
+         * ======================================================================
+         * [Storage Engine for Local & Cloud Data Persistence]
+         * ======================================================================
          */
         const StorageEngine = {
             save() { 
@@ -1175,17 +1249,13 @@
             saveCanvas() {
                 if (!CanvasEngine.cvs || !STATE.uid) return;
                 
-                // 최적화된 WebP 포맷으로 용량 압축 후 저장
                 const canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.5);
-                
-                // 로컬 백업
                 localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.id}_${STATE.currentPage}`, canvasData);
 
-                // 클라우드 저장 (유저UID_유닛ID_페이지번호 형식으로 유일값 생성)
                 const docId = `${STATE.uid}_${STATE.id}_P${STATE.currentPage}`;
                 
                 db.collection("student_drawings").doc(docId).set({
-                    studentID: STATE.studentEmail, // 어드민에서 쉽게 읽도록 이메일 저장
+                    studentID: STATE.studentEmail,
                     unitId: STATE.id,
                     page: STATE.currentPage,
                     image: canvasData,
@@ -1197,7 +1267,6 @@
             
             loadCanvas() {
                 if(!STATE.uid) return;
-                // 빠른 렌더링을 위해 로컬에서 먼저 로드
                 const localData = localStorage.getItem(`br_cvs_${STATE.uid}_${STATE.id}_${STATE.currentPage}`);
                 
                 if (localData) {
@@ -1220,43 +1289,29 @@
         };
 
         /**
-         * Certificate Engine for generating and downloading awards
+         * ======================================================================
+         * [Certificate Engine]
+         * ======================================================================
          */
         const CertificateEngine = {
             open(weekNum) {
                 const modal = document.getElementById('cert-modal');
-                
                 document.getElementById('cert-week').innerText = `WEEK ${weekNum} COMPLETED`;
                 document.getElementById('cert-student-name').innerText = STATE.studentName || "Bridge Explorer";
-                
-                const img = document.getElementById('cert-canvas-img');
-                img.src = CanvasEngine.cvs.toDataURL();
+                document.getElementById('cert-canvas-img').src = CanvasEngine.cvs.toDataURL();
                 
                 const hasArt = STATE.badges.includes("🎨 Colorful Artist");
                 const hasVoice = STATE.badges.includes("🗣️ Great Speaker");
                 
                 let msg = "For showing amazing curiosity and completing your inquiry journey.";
-                
-                if (hasArt && hasVoice) {
-                    msg = "For your brilliant colorful art and speaking English so confidently!";
-                } else if (hasArt) {
-                    msg = "For expressing your wonderful imagination through colorful art!";
-                } else if (hasVoice) {
-                    msg = "For speaking English with a clear, brave voice like a true explorer!";
-                }
+                if (hasArt && hasVoice) msg = "For your brilliant colorful art and speaking English so confidently!";
+                else if (hasArt) msg = "For expressing your wonderful imagination through colorful art!";
+                else if (hasVoice) msg = "For speaking English with a clear, brave voice like a true explorer!";
                 
                 document.getElementById('cert-ai-msg').innerText = `"${msg}"`;
-                
                 modal.classList.add('active');
                 
-                if (window.confetti) {
-                    confetti({ 
-                        particleCount: 150, 
-                        spread: 100, 
-                        origin: { y: 0.5 }, 
-                        colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] 
-                    });
-                }
+                if (window.confetti) confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
             },
             
             close() {
@@ -1286,7 +1341,9 @@
         };
 
         /**
-         * Main Application Flow Engine
+         * ======================================================================
+         * [Main Application Flow Engine]
+         * ======================================================================
          */
         const AppEngine = {
             smoothMove(dir) {
@@ -1297,19 +1354,11 @@
                 
                 setTimeout(() => {
                     STATE.currentPage += dir;
-                    
-                    if (STATE.currentPage < 1) {
-                        STATE.currentPage = 1;
-                    }
-                    if (STATE.currentPage > 33) {
-                        STATE.currentPage = 33; 
-                    }
+                    if (STATE.currentPage < 1) STATE.currentPage = 1;
+                    if (STATE.currentPage > 33) STATE.currentPage = 33; 
                     
                     PageEngine.load(STATE.currentPage);
-                    
-                    setTimeout(() => {
-                        board.classList.remove('fade-out');
-                    }, 150);
+                    setTimeout(() => board.classList.remove('fade-out'), 150);
                 }, 400);
             },
             
@@ -1317,116 +1366,100 @@
                 AITutor.close();
                 StorageEngine.saveCanvas();
 
-                if (STATE.currentPage % 4 === 0) {
-                    CertificateEngine.open(STATE.currentPage / 4);
-                } else {
-                    this.smoothMove(1);
-                }
+                if (STATE.currentPage % 4 === 0) CertificateEngine.open(STATE.currentPage / 4);
+                else this.smoothMove(1);
             }
         };
 
         /**
-         * User Interface Rendering Engine
+         * ======================================================================
+         * [User Interface Rendering Engine]
+         * ======================================================================
          */
         const UIEngine = {
-            toggleSidebar() { 
-                document.getElementById('sidebar').classList.toggle('open'); 
-            },
-            
-            closeSidebarOnMobile() { 
-                if (window.innerWidth <= 800) {
-                    document.getElementById('sidebar').classList.remove('open'); 
-                }
-            },
-            
+            toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); },
+            closeSidebarOnMobile() { if (window.innerWidth <= 800) document.getElementById('sidebar').classList.remove('open'); },
             renderBadges() {
                 const container = document.getElementById('badge-container');
                 container.innerHTML = "";
-                
                 const uniqueBadges = [...new Set(STATE.badges)];
-                
                 uniqueBadges.forEach(badge => {
-                    const el = document.createElement('div'); 
-                    el.className = "badge"; 
-                    el.innerText = badge;
+                    const el = document.createElement('div'); el.className = "badge"; el.innerText = badge;
                     container.appendChild(el);
                 });
             },
-            
             awardBadge(badgeName) {
                 if (!STATE.badges.includes(badgeName)) {
                     STATE.badges.push(badgeName);
-                    StorageEngine.save(); 
-                    this.renderBadges();
-                    
-                    if (window.confetti) {
-                        confetti({ 
-                            particleCount: 50, 
-                            spread: 60, 
-                            origin: { y: 0.8 }, 
-                            colors: ['#CBAE75', '#89BFA0'] 
-                        });
-                    }
+                    StorageEngine.save(); this.renderBadges();
+                    if (window.confetti) confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 }, colors: ['#CBAE75', '#89BFA0'] });
                 }
             }
         };
 
         /**
          * ======================================================================
-         * [V100.5 Master Intelligence DB - Full 33 Page Map]
+         * [Master Intelligence DB - 주차별 테마로 깔끔하게 정리된 커리큘럼]
          * ======================================================================
          */
         const PAGE_INTELLIGENCE = {
             "A-1": {
-                1: { navTitle: "My Special Name", type: "name", goal: "Name Registration", question: "What a beautiful name! Can you say it out loud?", keywords: ["name", "is", "am"] },
-                2: { navTitle: "Self-Love", type: "writing", goal: "Self-Esteem", target: "I like myself", question: "Do you like yourself too? Tell me why!", keywords: ["like", "love", "myself"] },
-                3: { navTitle: "Face Parts", type: "vocab", goal: "Feature Recognition", question: "Which part of your face is your favorite?", keywords: ["nose", "ear", "hair", "eye"] },
-                4: { navTitle: "Drawing Practice", type: "vision", goal: "Draw Features", question: "Wow, you drew them perfectly. Can you point to your own nose?", keywords: ["draw", "face", "look"] },
-                5: { navTitle: "Senses Verbs", type: "ocr", goal: "Verb Recognition", question: "What do you like to smell the most?", keywords: ["smell", "hear", "taste", "see"] },
-                6: { navTitle: "Sentence Play", type: "writing", goal: "Sentence Completion", question: "I like my eyes too! What else do you like?", keywords: ["like", "my", "face"] },
-                7: { navTitle: "Sensory Matching", type: "matching", goal: "Sensory Association", 
-                    pairs: [
-                        { from: [0.2, 0.25], to: [0.8, 0.65], label: "Nose to Fragrance" },
-                        { from: [0.2, 0.45], to: [0.8, 0.45], label: "Ear to Music" },
-                        { from: [0.2, 0.65], to: [0.8, 0.85], label: "Eye to Binoculars" },
-                        { from: [0.2, 0.85], to: [0.8, 0.25], label: "Foot to Shoes" }
-                    ],
-                    question: "Which part of your body do you use to hear the music?",
-                    keywords: ["music", "smell", "see", "hear", "walk"]
-                },
-                8: { navTitle: "Face Drawing", type: "vision_detail", goal: "Draw a Face", question: "Is your face smiling or sleeping today?", keywords: ["smile", "happy", "face"] },
-                9: { navTitle: "Book Cover", type: "ocr", goal: "Book Introduction", question: "Are you ready to read about the Gorilla?", keywords: ["head", "toe", "book"] },
-                10: { navTitle: "Gorilla Body", type: "matching", goal: "Gorilla Body Parts", pairs: [{ from:[0.3, 0.2], to:[0.3, 0.3], label:"Head" }], question: "The Gorilla has very strong arms! Show me your strong arms.", keywords: ["arm", "leg", "head", "strong"] },
-                11: { navTitle: "Gorilla Labels", type: "matching_label", goal: "Labeling", question: "Can you find where the shoulder is?", keywords: ["shoulder", "hip", "toe"] },
-                12: { navTitle: "Giraffe Neck", type: "coloring", goal: "Coloring", target_zone: [0.6, 0.5], question: "Why is the Giraffe's neck so long and colorful?", keywords: ["long", "color", "giraffe"] },
-                13: { navTitle: "Funny Body", type: "creative", goal: "Creative Imagination", question: "A monkey tail and spaghetti arms! What can you do with spaghetti arms?", keywords: ["monkey", "spaghetti", "piggy", "funny"] },
-                14: { navTitle: "Body Math", type: "counting", goal: "Body Counting", answers: {"Arm":2, "Foot":2}, question: "How many fingers do you have in total?", keywords: ["one", "two", "ten", "count"] },
-                15: { navTitle: "Book Review", type: "vision_summary", goal: "Review Story", question: "Did you enjoy the story today?", keywords: ["yes", "fun", "story"] },
-                16: { navTitle: "Tool Select", type: "checkbox", goal: "Tools", question: "Which tool did you use the most today?", keywords: ["pencil", "marker", "crayon"] },
-                17: { navTitle: "Metacognition", type: "self_eval", goal: "Self Evaluation", question: "You did amazing! Are you proud of yourself?", keywords: ["proud", "happy", "good"] }
+                // WEEK 1: Who Am I? (정체성과 나)
+                1: { navTitle: "[W1 Identity] Name", type: "name", goal: "Name Registration", question: "What a beautiful name! Can you say it out loud?", keywords: ["name", "is", "am"] },
+                2: { navTitle: "[W1 Identity] Mind", type: "writing", goal: "Self-Esteem", target: "I like myself", question: "Do you like yourself too? Tell me why!", keywords: ["like", "love", "myself"] },
+                3: { navTitle: "[W1 Identity] Face", type: "vocab", goal: "Feature Recognition", question: "Which part of your face is your favorite?", keywords: ["nose", "ear", "hair", "eye"] },
+                4: { navTitle: "[W1 Identity] Portrait", type: "vision", goal: "Draw Features", question: "Wow, you drew them perfectly. Can you point to your own nose?", keywords: ["draw", "face", "look"] },
+                
+                // WEEK 2: My Senses (감각 탐구)
+                5: { navTitle: "[W2 Senses] Verbs", type: "ocr", goal: "Verb Recognition", question: "What do you like to smell the most?", keywords: ["smell", "hear", "taste", "see"] },
+                6: { navTitle: "[W2 Senses] Sentences", type: "writing", goal: "Sentence Completion", question: "I like my eyes too! What else do you like?", keywords: ["like", "my", "face"] },
+                7: { navTitle: "[W2 Senses] Matching", type: "matching", goal: "Sensory Association", pairs: [{ label: "Nose to Fragrance" }, { label: "Ear to Music" }, { label: "Eye to Binoculars" }, { label: "Foot to Shoes" }], question: "Which part of your body do you use to hear the music?", keywords: ["music", "smell", "see", "hear", "walk"] },
+                8: { navTitle: "[W2 Senses] Emotion", type: "vision_detail", goal: "Draw a Face", question: "Is your face smiling or sleeping today?", keywords: ["smile", "happy", "face"] },
+                
+                // WEEK 3: Animal Friends (동물 친구들)
+                9: { navTitle: "[W3 Animals] Story", type: "ocr", goal: "Book Introduction", question: "Are you ready to read about the Gorilla?", keywords: ["head", "toe", "book"] },
+                10: { navTitle: "[W3 Animals] Gorilla", type: "matching", goal: "Gorilla Body Parts", pairs: [{ label:"Head" }], question: "The Gorilla has very strong arms! Show me your strong arms.", keywords: ["arm", "leg", "head", "strong"] },
+                11: { navTitle: "[W3 Animals] Labels", type: "matching_label", goal: "Labeling", question: "Can you find where the shoulder is?", keywords: ["shoulder", "hip", "toe"] },
+                12: { navTitle: "[W3 Animals] Giraffe", type: "coloring", goal: "Coloring", target_zone: [0.6, 0.5], question: "Why is the Giraffe's neck so long and colorful?", keywords: ["long", "color", "giraffe"] },
+                
+                // WEEK 4: Creative Expression (창의적 표현)
+                13: { navTitle: "[W4 Creative] Funny Body", type: "creative", goal: "Creative Imagination", question: "A monkey tail and spaghetti arms! What can you do with spaghetti arms?", keywords: ["monkey", "spaghetti", "piggy", "funny"] },
+                14: { navTitle: "[W4 Creative] Math", type: "counting", goal: "Body Counting", answers: {"Arm":2, "Foot":2}, question: "How many fingers do you have in total?", keywords: ["one", "two", "ten", "count"] },
+                15: { navTitle: "[W4 Creative] Review", type: "vision_summary", goal: "Review Story", question: "Did you enjoy the story today?", keywords: ["yes", "fun", "story"] },
+                16: { navTitle: "[W4 Creative] Tools", type: "checkbox", goal: "Tools", question: "Which tool did you use the most today?", keywords: ["pencil", "marker", "crayon"] },
+                17: { navTitle: "[W4 Creative] Eval", type: "self_eval", goal: "Self Evaluation", question: "You did amazing! Are you proud of yourself?", keywords: ["proud", "happy", "good"] }
             },
             "A-2": {
-                18: { navTitle: "Caterpillar Intro", type: "intro", goal: "Meet Crawlers", question: "Are you ready to meet our little crawlers?", keywords: ["caterpillar", "bug", "ready"] },
-                19: { navTitle: "Hungry Bug", type: "vision", goal: "Food Recognition", question: "What is the caterpillar eating?", keywords: ["eat", "leaf", "hungry"] },
-                20: { navTitle: "Fruit Words", type: "ocr", goal: "Reading Fruits", question: "Do you like apples or plums?", keywords: ["apple", "plum", "pear"] },
-                21: { navTitle: "My Favorite", type: "drawing", goal: "Favorite Fruit", question: "Wow, that looks delicious! Why is that your favorite?", keywords: ["sweet", "delicious", "yummy"] },
-                22: { navTitle: "I Eat...", type: "writing", goal: "Sentence Practice", question: "You eat apples and bananas! Do you like crunchy apples or soft bananas?", keywords: ["crunchy", "soft", "eat"] },
-                23: { navTitle: "Word Magic 1", type: "logic", goal: "Compound Words", logic: "Butter + Fly = Butterfly", question: "What happens when Butter meets a Fly?", keywords: ["butterfly", "fly", "butter"] },
-                24: { navTitle: "Word Magic 2", type: "logic", goal: "Compound Words 2", logic: "Straw + Berry = Strawberry", question: "What happens when Straw meets a Berry?", keywords: ["strawberry", "berry", "sweet"] },
-                25: { navTitle: "Book 2 Cover", type: "ocr", goal: "Caterpillar Story", question: "He looks very hungry! What should he eat first?", keywords: ["hungry", "eat", "caterpillar"] },
-                26: { navTitle: "Life Cycle", type: "cycle", goal: "Life Cycle Stages", steps: ["Egg", "Caterpillar", "Cocoon", "Butterfly"], question: "What does the caterpillar do inside the cocoon?", keywords: ["sleep", "change", "cocoon"] },
-                27: { navTitle: "Symmetry", type: "symmetry", goal: "Butterfly Wings", question: "Your butterfly is so colorful! Can it fly high?", keywords: ["fly", "high", "colorful"] },
-                28: { navTitle: "Garden Math 1", type: "counting", goal: "Count Fruits", target: 15, question: "How many strawberries did the caterpillar eat?", keywords: ["five", "ten", "fifteen"] },
-                29: { navTitle: "Garden Math 2", type: "counting", goal: "Count Leaves", question: "Are there more leaves or more apples?", keywords: ["leaves", "apples", "more"] },
-                30: { navTitle: "Find Insects", type: "search", goal: "Identify Insects", targets: ["Ladybug", "Butterfly", "Ant", "Beetle"], question: "Is the Lion an insect? No! Can you find the Ant?", keywords: ["ant", "lion", "insect", "no"] },
-                31: { navTitle: "Review Crawler", type: "vision_summary", goal: "Review Bug", question: "What was your favorite bug today?", keywords: ["butterfly", "ladybug", "favorite"] },
-                32: { navTitle: "My Garden", type: "creative", goal: "Draw Garden", question: "What a beautiful garden! Who lives in your garden?", keywords: ["garden", "bug", "flower"] },
-                33: { navTitle: "Crawler Eval", type: "self_eval", goal: "Self Evaluation 2", question: "You are a great explorer! See you next time!", keywords: ["bye", "see", "you"] }
+                // WEEK 1: Bug World (곤충의 세계)
+                18: { navTitle: "[W1 Bugs] Intro", type: "intro", goal: "Meet Crawlers", question: "Are you ready to meet our little crawlers?", keywords: ["caterpillar", "bug", "ready"] },
+                19: { navTitle: "[W1 Bugs] Hungry Bug", type: "vision", goal: "Food Recognition", question: "What is the caterpillar eating?", keywords: ["eat", "leaf", "hungry"] },
+                20: { navTitle: "[W1 Bugs] Fruit Words", type: "ocr", goal: "Reading Fruits", question: "Do you like apples or plums?", keywords: ["apple", "plum", "pear"] },
+                21: { navTitle: "[W1 Bugs] Favorite", type: "drawing", goal: "Favorite Fruit", question: "Wow, that looks delicious! Why is that your favorite?", keywords: ["sweet", "delicious", "yummy"] },
+                
+                // WEEK 2: Words & Logic (단어와 논리)
+                22: { navTitle: "[W2 Words] I Eat...", type: "writing", goal: "Sentence Practice", question: "You eat apples and bananas! Do you like crunchy apples or soft bananas?", keywords: ["crunchy", "soft", "eat"] },
+                23: { navTitle: "[W2 Words] Magic 1", type: "logic", goal: "Compound Words", logic: "Butter + Fly = Butterfly", question: "What happens when Butter meets a Fly?", keywords: ["butterfly", "fly", "butter"] },
+                24: { navTitle: "[W2 Words] Magic 2", type: "logic", goal: "Compound Words 2", logic: "Straw + Berry = Strawberry", question: "What happens when Straw meets a Berry?", keywords: ["strawberry", "berry", "sweet"] },
+                25: { navTitle: "[W2 Words] Book 2", type: "ocr", goal: "Caterpillar Story", question: "He looks very hungry! What should he eat first?", keywords: ["hungry", "eat", "caterpillar"] },
+                
+                // WEEK 3: Nature Math (자연 속의 수학)
+                26: { navTitle: "[W3 Nature] Life Cycle", type: "cycle", goal: "Life Cycle Stages", steps: ["Egg", "Caterpillar", "Cocoon", "Butterfly"], question: "What does the caterpillar do inside the cocoon?", keywords: ["sleep", "change", "cocoon"] },
+                27: { navTitle: "[W3 Nature] Symmetry", type: "symmetry", goal: "Butterfly Wings", question: "Your butterfly is so colorful! Can it fly high?", keywords: ["fly", "high", "colorful"] },
+                28: { navTitle: "[W3 Nature] Math 1", type: "counting", goal: "Count Fruits", target: 15, question: "How many strawberries did the caterpillar eat?", keywords: ["five", "ten", "fifteen"] },
+                29: { navTitle: "[W3 Nature] Math 2", type: "counting", goal: "Count Leaves", question: "Are there more leaves or more apples?", keywords: ["leaves", "apples", "more"] },
+                
+                // WEEK 4: Outdoor Explore (야외 탐험)
+                30: { navTitle: "[W4 Explore] Search", type: "search", goal: "Identify Insects", targets: ["Ladybug", "Butterfly", "Ant", "Beetle"], question: "Is the Lion an insect? No! Can you find the Ant?", keywords: ["ant", "lion", "insect", "no"] },
+                31: { navTitle: "[W4 Explore] Review", type: "vision_summary", goal: "Review Bug", question: "What was your favorite bug today?", keywords: ["butterfly", "ladybug", "favorite"] },
+                32: { navTitle: "[W4 Explore] Garden", type: "creative", goal: "Draw Garden", question: "What a beautiful garden! Who lives in your garden?", keywords: ["garden", "bug", "flower"] },
+                33: { navTitle: "[W4 Explore] Eval", type: "self_eval", goal: "Self Evaluation 2", question: "You are a great explorer! See you next time!", keywords: ["bye", "see", "you"] }
             }
         };
 
         /**
-         * Page Initialization and Loading Engine
+         * ======================================================================
+         * [Page Initialization and Loading Engine]
+         * ======================================================================
          */
         const PageEngine = {
             init() {
@@ -1475,6 +1508,13 @@
                 const activeNav = document.getElementById(`nav-${n}`);
                 if (activeNav) {
                     activeNav.classList.add('active');
+                    
+                    // [UX 개선] 사이드바 메뉴 클릭 시 해당 항목으로 자동 스크롤
+                    const navList = document.getElementById('nav-list');
+                    navList.scrollTo({
+                        top: activeNav.offsetTop - navList.offsetTop - 50,
+                        behavior: 'smooth'
+                    });
                 }
                 
                 CanvasEngine.hardReset(); 
@@ -1485,7 +1525,7 @@
                 
                 const seriesChar = STATE.id.charAt(0);
                 
-                // [안정성 확보] 이제 STATE.id가 정상적인 'A-1' 형태를 유지하므로 이미지를 정확히 불러옵니다.
+                // [안정성 확보] 이제 STATE.id가 정상적인 유닛 번호를 유지하므로 이미지를 정확히 불러옵니다.
                 const imgPath = `${CONFIG.STORAGE_URL}${seriesChar}/${STATE.id}/${STATE.id}-${n}.png?t=${new Date().getTime()}`;
                 img.src = imgPath;
                 
@@ -1500,7 +1540,9 @@
         };
 
         /**
-         * Drawing & Tools Engine
+         * ======================================================================
+         * [Drawing & Tools Engine]
+         * ======================================================================
          */
         const CanvasEngine = {
             isDrawing: false, 
@@ -1802,7 +1844,9 @@
         };
 
         /**
-         * Custom UI Component: RGB Color Wheel Selector
+         * ======================================================================
+         * [Custom UI Component: RGB Color Wheel Selector]
+         * ======================================================================
          */
         const RGBRingEngine = {
             init() {
@@ -1839,7 +1883,9 @@
         };
 
         /**
-         * Audio Engine for Voice Recording, STT, and Playback
+         * ======================================================================
+         * [Audio Engine for Voice Recording, STT, and Playback]
+         * ======================================================================
          */
         const AudioEngine = {
             recognition: null, 
@@ -1974,7 +2020,9 @@
         };
 
         /**
-         * External AI Cloud Engines (OCR & Vision)
+         * ======================================================================
+         * [External AI Cloud Engines (OCR & Vision)]
+         * ======================================================================
          */
         const VisualAI_OCR = {
             worker: null,
@@ -2022,9 +2070,6 @@
             }
         };
 
-        // ======================================================================
-        // [V100.6 Enterprise Cloud AI Engine Integration]
-        // ======================================================================
         const CloudAI = {
             async analyzeDrawing(canvas) {
                 if (!CONFIG.GOOGLE_API_KEY || CONFIG.GOOGLE_API_KEY === "YOUR_GOOGLE_API_KEY_HERE") {
@@ -2060,9 +2105,11 @@
             }
         };
 
-        // ======================================================================
-        // [V100.6 AITutor Engine: Coordinate-Aware & Detailed Feedback]
-        // ======================================================================
+        /**
+         * ======================================================================
+         * [V100.6 AITutor Engine: Coordinate-Aware & Detailed Feedback]
+         * ======================================================================
+         */
         const AITutor = {
             async submit() {
                 if (STATE.isRecording) { 
@@ -2082,15 +2129,13 @@
                 content.innerHTML = `
                     <div style="text-align:center; padding:50px;">
                         <div style="width:40px; height:40px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 15px;"></div>
-                        <p style="font-size:12px; font-weight:900; color:var(--br-muted);">SYNCING WITH CLOUD AI...</p>
+                        <p style="font-size:12px; font-weight:900; color:var(--br-muted); font-family:'Nunito', sans-serif;">SYNCING WITH CLOUD AI...</p>
                     </div>
                 `;
 
                 try {
-                    // 1. Try Google Cloud Vision API first
                     let topDoodles = await CloudAI.analyzeDrawing(CanvasEngine.cvs);
                     
-                    // 2. Fallback to local ml5.js DoodleNet if Cloud fails or no key
                     if (!topDoodles) {
                         let doodleResults = await VisionAI_Doodle.classifyCanvas(CanvasEngine.cvs);
                         topDoodles = doodleResults ? doodleResults.map(r => r.label.replace(/_/g, ' ')) : [];
@@ -2113,7 +2158,7 @@
                 content.innerHTML = `
                     <div style="text-align:center; padding:50px;">
                         <div style="width:40px; height:40px; border:4px solid #EEE; border-top-color:var(--br-green); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 15px;"></div>
-                        <p style="font-size:12px; font-weight:900; color:var(--br-muted);">READING YOUR NAME...</p>
+                        <p style="font-size:12px; font-weight:900; color:var(--br-muted); font-family:'Nunito', sans-serif;">READING YOUR NAME...</p>
                     </div>
                 `;
                 
@@ -2350,10 +2395,11 @@
             }
         };
 
-        // ======================================================================
-        // [System Boot Sequence - V100.8 FIXED]
-        // 로그인이 완전히 검증된 후 호출되어야 데이터 꼬임 현상이 없습니다.
-        // ======================================================================
+        /**
+         * ======================================================================
+         * [System Boot Sequence]
+         * ======================================================================
+         */
         function SystemBoot() {
             StorageEngine.load();
             

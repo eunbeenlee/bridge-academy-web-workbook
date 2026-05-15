@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bridge Academy | Premium AI Lab V100.17 (Production)</title>
+    <title>Bridge Academy | Premium AI Lab V100.18 (Production)</title>
     
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Jua&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -19,212 +18,1176 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
     <style>
-        /* ======================================================================
-           [3. GLOBAL CSS ARCHITECTURE]
-           - Detailed variable definitions for consistent branding
-           - GPU-accelerated responsive layout for iPad and Mobile
-        ====================================================================== */
+        /* ----------------------------------------------------------------------
+           [3-1. DESIGN TOKENS & CSS VARIABLES]
+        ---------------------------------------------------------------------- */
         :root {
+            /* Brand Colors */
             --br-green: #91D3B4; 
             --br-gold: #CBAE75; 
             --br-blue: #7CA6C1; 
             --br-charcoal: #363431;
+            
+            /* Background Colors */
             --br-bg: #FCFBF9; 
             --br-paper: #FFFFFF; 
+            --br-ai-soft: #F8FAFF;
+            
+            /* Text & Border Colors */
             --br-text: #2A2825; 
             --br-muted: #8C8985;
             --br-border: #F0EFEB; 
+            
+            /* Utility Colors */
             --br-error: #E74C3C; 
-            --br-ai-soft: #F8FAFF;
+            --br-error-light: #FEF2F2;
+            --br-error-border: #FCA5A5;
+            --br-success: #2ECC71;
+            
+            /* Layout Variables */
             --sidebar-width: 320px;
+            --topbar-height: 85px;
+            --dock-height: 110px;
+            
+            /* [P1 버그 픽스] iOS 안전 영역 (Safe Area) 설정 */
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+            
+            /* Animation Variables */
             --transition-smooth: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            --transition-fast: all 0.2s ease-in-out;
         }
 
-        /* Base Resets */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html, body { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-text); font-family: 'Pretendard', sans-serif; pointer-events: auto !important; -webkit-font-smoothing: antialiased; }
-        button { border: none; background: none; font-family: inherit; cursor: pointer; outline: none; }
-        
-        /* Layout Engine */
-        .app-container { display: flex; width: 100vw; height: 100dvh; position: relative; pointer-events: auto !important; }
+        /* ----------------------------------------------------------------------
+           [3-2. BASE RESET]
+        ---------------------------------------------------------------------- */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        html, body { 
+            width: 100%; 
+            height: 100dvh; 
+            overflow: hidden; 
+            background-color: var(--br-bg); 
+            color: var(--br-text); 
+            font-family: 'Pretendard', sans-serif; 
+            pointer-events: auto !important; 
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        button { 
+            border: none; 
+            background: none; 
+            font-family: inherit; 
+            cursor: pointer; 
+            outline: none; 
+        }
         
         /* ----------------------------------------------------------------------
-           SIDEBAR (Curriculum Navigation)
+           [3-3. MASTER APP CONTAINER]
+        ---------------------------------------------------------------------- */
+        .app-container { 
+            display: flex; 
+            width: 100vw; 
+            height: 100dvh; 
+            position: relative; 
+            pointer-events: auto !important; 
+        }
+        
+        /* ----------------------------------------------------------------------
+           [3-4. SIDEBAR NAVIGATION]
         ---------------------------------------------------------------------- */
         .sidebar { 
-            width: var(--sidebar-width); height: 100%; background: var(--br-paper); border-right: 1px solid var(--br-border); 
-            display: flex; flex-direction: column; z-index: 2000; flex-shrink: 0; transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); 
+            width: var(--sidebar-width); 
+            height: 100%; 
+            background: var(--br-paper); 
+            border-right: 1px solid var(--br-border); 
+            display: flex; 
+            flex-direction: column; 
+            z-index: 2000; 
+            flex-shrink: 0; 
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); 
+            box-shadow: 5px 0 15px rgba(0,0,0,0.02);
         }
 
-        .sidebar-header { padding: 35px 30px; text-align: center; border-bottom: 1px solid var(--br-border); cursor: pointer; }
-        .brand-logo { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: var(--br-charcoal); letter-spacing: -0.5px; }
-        .brand-logo span { color: var(--br-green); font-style: italic; }
+        .sidebar-header { 
+            padding: 35px 30px; 
+            text-align: center; 
+            border-bottom: 1px solid var(--br-border); 
+            cursor: pointer; 
+            transition: var(--transition-smooth);
+        }
         
-        .student-profile { padding: 25px 30px; border-bottom: 1px solid var(--br-border); display: flex; flex-direction: column; gap: 15px; background: #FAFAFA; transition: 0.3s; }
-        .student-profile.registered { background: var(--br-ai-soft); }
-        .profile-top { display: flex; align-items: center; gap: 15px; }
-        .profile-avatar { 
-            width: 52px; height: 52px; border-radius: 50%; background: var(--br-border); color: #FFF; 
-            display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 22px; 
-            font-family: 'Nunito', sans-serif; transition: 0.4s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        .sidebar-header:hover {
+            background-color: var(--br-bg);
         }
-        .student-profile.registered .profile-avatar { background: var(--br-gold); box-shadow: 0 8px 20px rgba(203,174,117,0.3); }
 
-        .profile-info { display: flex; flex-direction: column; overflow: hidden; }
-        .profile-name { font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; color: var(--br-charcoal); text-transform: uppercase; }
-        .profile-role { font-size: 11px; font-weight: 700; color: var(--br-muted); letter-spacing: 1.5px; text-transform: uppercase; }
+        .brand-logo { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 28px; 
+            font-weight: 900; 
+            color: var(--br-charcoal); 
+            letter-spacing: -0.5px; 
+        }
 
-        .badge-container { display: flex; flex-wrap: wrap; gap: 6px; min-height: 24px; }
-        .badge { font-size: 11px; padding: 4px 10px; border-radius: 12px; background: #FFF; border: 1px solid var(--br-border); color: var(--br-charcoal); font-weight: 800; display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); animation: popIn 0.3s ease; }
+        .brand-logo span { 
+            color: var(--br-green); 
+            font-style: italic; 
+        }
+        
+        /* ----------------------------------------------------------------------
+           [3-5. STUDENT PROFILE WIDGET]
+        ---------------------------------------------------------------------- */
+        .student-profile { 
+            padding: 25px 30px; 
+            border-bottom: 1px solid var(--br-border); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            background: #FAFAFA; 
+            transition: background-color 0.3s ease; 
+        }
 
-        .nav-list { flex: 1; overflow-y: auto; padding: 15px; scroll-behavior: smooth; }
-        .nav-list::-webkit-scrollbar { width: 5px; }
-        .nav-list::-webkit-scrollbar-thumb { background: #E8E6E1; border-radius: 10px; }
+        .student-profile.registered { 
+            background: var(--br-ai-soft); 
+        }
+
+        .profile-top { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+
+        .profile-avatar { 
+            width: 52px; 
+            height: 52px; 
+            border-radius: 50%; 
+            background: var(--br-border); 
+            color: #FFF; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-weight: 900; 
+            font-size: 22px; 
+            font-family: 'Nunito', sans-serif; 
+            transition: 0.4s; 
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .student-profile.registered .profile-avatar { 
+            background: var(--br-gold); 
+            box-shadow: 0 8px 20px rgba(203,174,117,0.3); 
+        }
+
+        .profile-info { 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+        }
+
+        .profile-name { 
+            font-family: 'Nunito', sans-serif; 
+            font-size: 18px; 
+            font-weight: 900; 
+            color: var(--br-charcoal); 
+            text-transform: uppercase; 
+        }
+
+        .profile-role { 
+            font-size: 11px; 
+            font-weight: 700; 
+            color: var(--br-muted); 
+            letter-spacing: 1.5px; 
+            text-transform: uppercase; 
+        }
+
+        .badge-container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 6px; 
+            min-height: 24px;
+        }
+
+        .badge { 
+            font-size: 11px; 
+            padding: 4px 10px; 
+            border-radius: 12px; 
+            background: #FFF; 
+            border: 1px solid var(--br-border); 
+            color: var(--br-charcoal); 
+            font-weight: 800; 
+            display: flex; 
+            align-items: center; 
+            gap: 4px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02); 
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+
+        /* ----------------------------------------------------------------------
+           [3-6. CURRICULUM NAVIGATION LIST]
+        ---------------------------------------------------------------------- */
+        .nav-list { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 15px; 
+            scroll-behavior: smooth; 
+        }
+
+        .nav-list::-webkit-scrollbar { 
+            width: 5px; 
+        }
+        .nav-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .nav-list::-webkit-scrollbar-thumb { 
+            background: #E8E6E1; 
+            border-radius: 10px; 
+        }
+        .nav-list::-webkit-scrollbar-thumb:hover {
+            background: #D5D3CE;
+        }
 
         .nav-item { 
-            padding: 18px 20px; margin-bottom: 10px; border-radius: 15px; background: #FAFAFA; 
-            display: flex; justify-content: space-between; align-items: center; cursor: pointer; 
-            transition: var(--transition-smooth); border: 1px solid transparent; 
+            padding: 18px 20px; 
+            margin-bottom: 10px; 
+            border-radius: 15px; 
+            background: #FAFAFA; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            cursor: pointer; 
+            transition: var(--transition-smooth); 
+            border: 1px solid transparent; 
         }
-        .nav-item:hover { background: #FFF; border-color: var(--br-border); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
-        .nav-item.active { background: var(--br-ai-soft); border-left: 6px solid var(--br-green); border-color: transparent; box-shadow: 0 10px 25px rgba(145, 211, 180, 0.12); }
-        .nav-title { font-size: 14px; font-weight: 700; color: var(--br-charcoal); }
-        .nav-item.active .nav-title { font-weight: 900; color: var(--br-green); }
-        .nav-badge { font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 900; color: var(--br-muted); }
+
+        .nav-item:hover { 
+            background: #FFF; 
+            border-color: var(--br-border); 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02); 
+        }
+
+        .nav-item.active { 
+            background: var(--br-ai-soft); 
+            border-left: 6px solid var(--br-green); 
+            border-color: transparent; 
+            box-shadow: 0 10px 25px rgba(145, 211, 180, 0.12); 
+        }
+
+        .nav-title { 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: var(--br-charcoal); 
+        }
+
+        .nav-item.active .nav-title { 
+            font-weight: 900; 
+            color: var(--br-green); 
+        }
+
+        .nav-badge { 
+            font-family: 'Nunito', sans-serif; 
+            font-size: 10px; 
+            font-weight: 900; 
+            color: var(--br-muted); 
+        }
 
         /* ----------------------------------------------------------------------
-           MAIN WORKSPACE
+           [3-7. MAIN WORKSPACE & TOP BAR]
         ---------------------------------------------------------------------- */
-        .workspace { flex: 1; display: flex; flex-direction: column; height: 100%; min-width: 0; position: relative; overflow: hidden; pointer-events: auto !important; }
-        .top-bar { height: 85px; padding: 0 45px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); background: #FFF; z-index: 10; }
-        .unit-info { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 3px; text-transform: uppercase; }
-        .page-info { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 900; color: var(--br-charcoal); letter-spacing: -0.5px; margin-top: 2px; }
+        .workspace { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100%; 
+            min-width: 0; 
+            position: relative; 
+            overflow: hidden; 
+            pointer-events: auto !important; 
+        }
+
+        .top-bar { 
+            height: var(--topbar-height); 
+            padding: 0 45px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--br-border); 
+            background: #FFF; 
+            z-index: 10; 
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .mobile-menu-btn { 
+            display: none; 
+            font-size: 28px; 
+            padding: 10px; 
+            color: var(--br-charcoal); 
+            z-index: 1500; 
+        }
+
+        .unit-info { 
+            font-family: 'Nunito', sans-serif; 
+            font-size: 13px; 
+            font-weight: 900; 
+            color: var(--br-gold); 
+            letter-spacing: 3px; 
+            text-transform: uppercase; 
+        }
+
+        .page-info { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 34px; 
+            font-weight: 900; 
+            color: var(--br-charcoal); 
+            letter-spacing: -0.5px; 
+            margin-top: 2px;
+        }
+
+        /* Error Toast Styles (Tailwind Removed) */
+        .toast-error {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--br-error);
+            background-color: var(--br-error-light);
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1px solid var(--br-error-border);
+            animation: popIn 0.3s ease-out;
+        }
+        .toast-error.show {
+            display: flex;
+        }
         
-        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px; background: var(--br-bg); perspective: 1200px; overflow: hidden; }
+        /* ----------------------------------------------------------------------
+           [3-8. DRAWING STAGE & CANVAS BOARD]
+        ---------------------------------------------------------------------- */
+        .stage-wrapper { 
+            flex: 1; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 40px; 
+            background: var(--br-bg); 
+            perspective: 1200px; 
+            overflow: hidden; 
+        }
+
+        /* [P1 버그 픽스] drawing-board가 부모를 넘어서지 않도록 제한 */
         .drawing-board { 
-            position: relative; display: inline-flex; border-radius: 20px; box-shadow: 0 25px 70px rgba(0,0,0,0.07); 
-            background: #FFF; transition: var(--transition-smooth); transform-origin: center; pointer-events: auto !important; 
+            position: relative; 
+            display: inline-flex; 
+            border-radius: 20px; 
+            box-shadow: 0 25px 70px rgba(0,0,0,0.07); 
+            background: #FFF; 
+            transition: var(--transition-smooth); 
+            transform-origin: center; 
+            pointer-events: auto !important; 
+            max-width: 100%;
+            max-height: 100%;
+            overflow: hidden;
         }
-        .drawing-board.fade-out { opacity: 0; transform: scale(0.95) translateY(20px); }
-        .drawing-board.error-state { border: 2px dashed var(--br-error); background: #FFF0F0; }
 
+        .drawing-board.fade-out { 
+            opacity: 0; 
+            transform: scale(0.95) translateY(20px); 
+        }
+
+        .drawing-board.error-state {
+            border: 2px dashed var(--br-error);
+            background: #FFF0F0;
+        }
+
+        /* [P1 버그 픽스] worksheet-img object-fit contain 추가 및 크기 제한 방어 */
         #worksheet-img { 
-            display: block; max-width: 100%; max-height: calc(100dvh - 250px); width: auto; height: auto; 
-            border-radius: 20px; pointer-events: none !important; opacity: 0; transition: opacity 0.5s ease; user-select: none; 
-            min-width: 600px; min-height: 400px; background-color: #FFF;
+            display: block; 
+            max-width: 100%; 
+            max-height: calc(100dvh - 250px); 
+            width: auto; 
+            height: auto; 
+            border-radius: 20px; 
+            pointer-events: none !important; 
+            opacity: 0; 
+            transition: opacity 0.5s ease; 
+            user-select: none; 
+            object-fit: contain;
+            min-width: 600px; 
+            min-height: 400px; 
+            background-color: #FFF;
         }
 
-        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; border-radius: 20px; cursor: crosshair; }
+        #draw-layer { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 9999 !important; 
+            touch-action: none; 
+            border-radius: 20px; 
+            cursor: crosshair; 
+        }
 
         /* ----------------------------------------------------------------------
-           BOTTOM DOCK
+           [3-9. BOTTOM DOCK & DRAWING TOOLS]
         ---------------------------------------------------------------------- */
-        .bottom-dock { height: 110px; background: rgba(255, 255, 255, 0.98); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 50px; z-index: 500; }
-        .tool-group { display: flex; align-items: center; gap: 15px; background: #F8F9FA; padding: 12px 30px; border-radius: 100px; border: 1px solid var(--br-border); }
-        .color-preview { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #FFF; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: 0.3s; }
-        .color-preview:active { transform: scale(0.9); }
-        .btn-magic { font-size: 24px; padding: 5px; cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: grayscale(100%); opacity: 0.6; }
-        .btn-magic.active { filter: grayscale(0%); opacity: 1; transform: scale(1.3); }
+        .bottom-dock { 
+            height: var(--dock-height); 
+            background: rgba(255, 255, 255, 0.98); 
+            border-top: 1px solid var(--br-border); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 50px; 
+            /* [P1 버그 픽스] 하단 여백 보정 */
+            padding-bottom: var(--safe-bottom);
+            z-index: 500; 
+        }
 
-        .brush-slider { width: 90px; accent-color: var(--br-green); cursor: pointer; height: 6px; }
-        .btn-tool { font-size: 18px; font-weight: 900; padding: 10px 14px; color: var(--br-charcoal); cursor: pointer; transition: 0.2s; background: #FFF; border: 1px solid var(--br-border); border-radius: 12px; }
-        .btn-tool:active { transform: scale(0.9); }
-        .btn-erase { font-size: 14px; font-weight: 900; padding: 12px 18px; border-radius: 14px; background: #FFF; border: 1px solid var(--br-border); cursor: pointer; transition: 0.3s; color: var(--br-charcoal); }
-        .btn-erase.active { background: var(--br-error); color: #FFF; border-color: var(--br-error); }
+        .tool-group { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            background: #F8F9FA; 
+            padding: 12px 30px; 
+            border-radius: 100px; 
+            border: 1px solid var(--br-border); 
+        }
 
-        .action-group { display: flex; gap: 15px; align-items: center; }
-        .btn-nav { width: 60px; height: 60px; border-radius: 18px; border: 1px solid var(--br-border); background: #FFF; font-size: 24px; cursor: pointer; transition: var(--transition-smooth); color: var(--br-charcoal); display: flex; justify-content: center; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
-        .btn-nav:hover { background: #FAFAFA; border-color: var(--br-charcoal); }
-        .btn-nav:active { transform: scale(0.9); }
+        .color-preview { 
+            width: 44px; 
+            height: 44px; 
+            border-radius: 50%; 
+            border: 3px solid #FFF; 
+            cursor: pointer; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            transition: 0.3s; 
+        }
 
-        .btn-main { height: 60px; padding: 0 35px; border-radius: 18px; font-weight: 900; font-size: 15px; letter-spacing: 1px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: var(--transition-smooth); text-transform: uppercase; font-family: 'Nunito', sans-serif; }
-        .btn-record { background: #FFF; border: 1px solid var(--br-border); color: var(--br-charcoal); }
-        .btn-record:hover { border-color: var(--br-error); color: var(--br-error); }
-        .btn-record.recording { background: #FFF0F0; color: var(--br-error); border-color: var(--br-error); box-shadow: inset 0 0 0 2px var(--br-error); }
-        .btn-record .dot { width: 12px; height: 12px; background: var(--br-error); border-radius: 50%; opacity: 0; transition: 0.3s; }
-        .btn-record.recording .dot { opacity: 1; animation: blink 1s infinite; }
-        .btn-submit { background: var(--br-charcoal); color: #FFF; box-shadow: 0 10px 30px rgba(54,52,49,0.2); }
-        .btn-submit:hover { background: var(--br-gold); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(203,174,117,0.4); }
+        .color-preview:active {
+            transform: scale(0.9);
+        }
+
+        .btn-magic { 
+            font-size: 24px; 
+            padding: 5px; 
+            cursor: pointer; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            filter: grayscale(100%); 
+            opacity: 0.6; 
+        }
+
+        .btn-magic.active { 
+            filter: grayscale(0%); 
+            opacity: 1; 
+            transform: scale(1.3); 
+        }
+
+        .brush-slider { 
+            width: 90px; 
+            accent-color: var(--br-green); 
+            cursor: pointer; 
+            height: 6px; 
+        }
+
+        .btn-tool { 
+            font-size: 18px; 
+            font-weight: 900; 
+            padding: 10px 14px; 
+            color: var(--br-charcoal); 
+            cursor: pointer; 
+            transition: var(--transition-fast); 
+            background: #FFF; 
+            border: 1px solid var(--br-border); 
+            border-radius: 12px; 
+        }
+
+        .btn-tool:active { 
+            transform: scale(0.9); 
+        }
+
+        .btn-erase { 
+            font-size: 14px; 
+            font-weight: 900; 
+            padding: 12px 18px; 
+            border-radius: 14px; 
+            background: #FFF; 
+            border: 1px solid var(--br-border); 
+            cursor: pointer; 
+            transition: var(--transition-fast); 
+            color: var(--br-charcoal); 
+        }
+
+        .btn-erase.active { 
+            background: var(--br-error); 
+            color: #FFF; 
+            border-color: var(--br-error); 
+        }
 
         /* ----------------------------------------------------------------------
-           AI PANEL
+           [3-10. ACTION BUTTONS]
         ---------------------------------------------------------------------- */
-        .ai-panel { position: absolute; top: 0; right: -480px; width: 480px; height: 100%; background: #FFF; box-shadow: -25px 0 60px rgba(0,0,0,0.12); z-index: 10001; transition: right 0.6s cubic-bezier(0.19, 1, 0.22, 1); display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
-        .ai-panel.open { right: 0; }
-        .ai-header { padding: 30px 35px; background: var(--br-ai-soft); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); }
-        .ai-title { font-family: 'Jua', sans-serif; font-size: 24px; color: var(--br-green); display: flex; align-items: center; gap: 12px; }
-        .btn-close-ai { font-size: 34px; color: var(--br-muted); line-height: 1; cursor: pointer; transition: 0.3s; }
-        .btn-close-ai:hover { color: var(--br-error); transform: rotate(90deg); }
+        .action-group { 
+            display: flex; 
+            gap: 15px; 
+            align-items: center; 
+        }
+
+        .btn-nav { 
+            width: 60px; 
+            height: 60px; 
+            border-radius: 18px; 
+            border: 1px solid var(--br-border); 
+            background: #FFF; 
+            font-size: 24px; 
+            cursor: pointer; 
+            transition: var(--transition-smooth); 
+            color: var(--br-charcoal); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03); 
+        }
+
+        .btn-nav:hover {
+            background: #FAFAFA;
+            border-color: var(--br-charcoal);
+        }
+
+        .btn-nav:active { 
+            transform: scale(0.9); 
+        }
+
+        .btn-main { 
+            height: 60px; 
+            padding: 0 35px; 
+            border-radius: 18px; 
+            font-weight: 900; 
+            font-size: 15px; 
+            letter-spacing: 1px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            transition: var(--transition-smooth); 
+            text-transform: uppercase; 
+            font-family: 'Nunito', sans-serif; 
+        }
+
+        .btn-record { 
+            background: #FFF; 
+            border: 1px solid var(--br-border); 
+            color: var(--br-charcoal); 
+        }
+
+        .btn-record:hover {
+            border-color: var(--br-error);
+            color: var(--br-error);
+        }
+
+        .btn-record.recording { 
+            background: #FFF0F0; 
+            color: var(--br-error); 
+            border-color: var(--br-error); 
+            box-shadow: inset 0 0 0 2px var(--br-error); 
+        }
+
+        .btn-record .dot { 
+            width: 12px; 
+            height: 12px; 
+            background: var(--br-error); 
+            border-radius: 50%; 
+            opacity: 0; 
+            transition: 0.3s;
+        }
+
+        .btn-record.recording .dot { 
+            opacity: 1; 
+            animation: blink 1s infinite; 
+        }
+
+        .btn-submit { 
+            background: var(--br-charcoal); 
+            color: #FFF; 
+            box-shadow: 0 10px 30px rgba(54,52,49,0.2); 
+        }
+
+        .btn-submit:hover { 
+            background: var(--br-gold); 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 35px rgba(203,174,117,0.4); 
+        }
+
+        .btn-submit:active {
+            transform: scale(0.95);
+        }
+
+        /* ----------------------------------------------------------------------
+           [3-11. AI TUTOR PANEL (NO TAILWIND)]
+        ---------------------------------------------------------------------- */
+        .ai-panel { 
+            position: absolute; 
+            top: 0; 
+            right: -480px; 
+            width: 480px; 
+            height: 100%; 
+            background: #FFF; 
+            box-shadow: -25px 0 60px rgba(0,0,0,0.12); 
+            z-index: 10001; 
+            transition: right 0.6s cubic-bezier(0.19, 1, 0.22, 1); 
+            display: flex; 
+            flex-direction: column; 
+            border-left: 1px solid var(--br-border); 
+        }
+
+        .ai-panel.open { 
+            right: 0; 
+        }
+
+        .ai-header { 
+            padding: 30px 35px; 
+            background: var(--br-ai-soft); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--br-border); 
+        }
+
+        .ai-title { 
+            font-family: 'Jua', sans-serif; 
+            font-size: 24px; 
+            color: var(--br-green); 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+
+        .btn-close-ai { 
+            font-size: 34px; 
+            color: var(--br-muted); 
+            line-height: 1; 
+            cursor: pointer; 
+            transition: var(--transition-fast); 
+        }
+
+        .btn-close-ai:hover { 
+            color: var(--br-error); 
+            transform: rotate(90deg); 
+        }
         
-        .ai-content { padding: 30px 35px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; }
-        .chat-bubble { max-width: 90%; padding: 20px 25px; border-radius: 22px; font-size: 16px; line-height: 1.7; font-weight: 500; word-break: keep-all; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .chat-bubble.ai { align-self: flex-start; background: #F8F9FA; border-bottom-left-radius: 4px; border: 1px solid var(--br-border); color: var(--br-text); }
-        .chat-bubble.user { align-self: flex-end; background: var(--br-green); color: #FFF; border-bottom-right-radius: 4px; box-shadow: 0 8px 20px rgba(145, 211, 180, 0.3); }
-
-        .analytics-card { background: #FAFAFA; border: 1px solid var(--br-border); border-radius: 24px; padding: 25px; align-self: stretch; margin-bottom: 10px; }
-        .analytics-title { font-family: 'Nunito', sans-serif; color: var(--br-gold); font-size: 14px; margin-bottom: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px dashed var(--br-border); padding-bottom: 12px; }
-        .stat-row { margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; }
-        .stat-label { font-size: 13px; font-weight: 800; display: flex; justify-content: space-between; color: var(--br-charcoal); }
-        .bar-bg { width: 100%; height: 10px; background: #E8E6E1; border-radius: 12px; overflow: hidden; }
-        .bar-fill { height: 100%; transition: width 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-radius: 12px; }
-
-        .chat-footer { padding: 25px 35px; border-top: 1px solid var(--br-border); display: flex; flex-direction: column; gap: 15px; background: #FFF; }
-        .btn-reply { width: 100%; height: 60px; background: var(--br-charcoal); color: #FFF; border-radius: 18px; font-weight: 900; cursor: pointer; transition: 0.3s; font-size: 16px; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px; font-family: 'Nunito', sans-serif; box-shadow: 0 10px 20px rgba(54,52,49,0.2); }
-        .btn-reply:hover { background: var(--br-gold); transform: translateY(-2px); box-shadow: 0 15px 25px rgba(203,174,117,0.3); }
-
-        /* Modals & Overlays */
-        .rgb-modal { position: absolute; bottom: 130px; left: 50px; background: #FFF; border-radius: 25px; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); z-index: 5000; opacity: 0; pointer-events: none; transform: translateY(20px); transition: 0.3s ease; }
-        .rgb-modal.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
-
-        .cert-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: rgba(0,0,0,0.85); z-index: 30000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.4s ease; backdrop-filter: blur(15px); }
-        .cert-modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .cert-card { background: #FFF; width: 850px; max-width: 90%; border-radius: 35px; padding: 60px; text-align: center; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.4); transform: scale(0.85); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .cert-modal-overlay.active .cert-card { transform: scale(1); }
-        .cert-border { border: 10px solid var(--br-gold); border-radius: 25px; padding: 50px; position: relative; }
-        .cert-title { font-family: 'Playfair Display', serif; font-size: 50px; color: var(--br-charcoal); font-weight: 900; margin-bottom: 15px; }
-        .cert-subtitle { font-family: 'Nunito', sans-serif; font-size: 18px; color: var(--br-muted); font-weight: 900; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 35px; }
-        .cert-name { font-family: 'Nunito', sans-serif; font-size: 40px; color: var(--br-green); font-weight: 900; margin-bottom: 25px; text-decoration: underline; text-decoration-color: var(--br-gold); }
-        .cert-img-container { width: 100%; max-width: 450px; height: 280px; margin: 0 auto 35px; border-radius: 18px; border: 3px dashed var(--br-border); overflow: hidden; display: flex; justify-content: center; align-items: center; background: var(--br-bg); }
-        .cert-img-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .cert-msg { font-size: 18px; color: var(--br-text); line-height: 1.6; font-weight: 600; margin-bottom: 35px; font-style: italic; }
-        .btn-print { background: var(--br-charcoal); color: #FFF; padding: 18px 45px; font-size: 18px; font-weight: 900; border-radius: 100px; cursor: pointer; display: inline-flex; align-items: center; gap: 12px; box-shadow: 0 12px 25px rgba(0,0,0,0.15); transition: 0.3s; }
-        .btn-print:hover { transform: translateY(-4px); box-shadow: 0 20px 35px rgba(203,174,117,0.3); background: var(--br-gold); }
-        .cert-close { position: absolute; top: 25px; right: 35px; font-size: 35px; color: var(--br-muted); cursor: pointer; font-weight: 900; transition: 0.3s; }
-        .cert-close:hover { color: var(--br-error); transform: rotate(90deg); }
-
-        @keyframes popIn { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-        @keyframes blink { 50% { opacity: 0.3; } }
-
-        /* ----------------------------------------------------------------------
-           [3-14. PRODUCTION RESPONSIVE ENGINE]
-           - GPU accelerated sidebar animation
-        ---------------------------------------------------------------------- */
-        .mobile-menu-btn { display: none; font-size: 28px; padding: 10px; color: var(--br-charcoal); z-index: 1500; }
-
-        @media (max-width: 1024px) {
-            :root { --sidebar-width: 280px; }
-            .top-bar { height: 75px; padding: 0 25px; }
-            .bottom-dock { height: 100px; padding: 0 25px; }
-            .stage-wrapper { padding: 15px 25px; }
+        .ai-content { 
+            padding: 30px 35px; 
+            flex: 1; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+            scroll-behavior: smooth; 
+        }
+        
+        /* Chat UI */
+        .chat-bubble { 
+            max-width: 90%; 
+            padding: 20px 25px; 
+            border-radius: 22px; 
+            font-size: 16px; 
+            line-height: 1.7; 
+            font-weight: 500; 
+            word-break: keep-all; 
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
+        .chat-bubble.ai { 
+            align-self: flex-start; 
+            background: #F8F9FA; 
+            border-bottom-left-radius: 4px; 
+            border: 1px solid var(--br-border); 
+            color: var(--br-text); 
+        }
+
+        .chat-bubble.user { 
+            align-self: flex-end; 
+            background: var(--br-green); 
+            color: #FFF; 
+            border-bottom-right-radius: 4px; 
+            box-shadow: 0 8px 20px rgba(145, 211, 180, 0.3); 
+        }
+        
+        /* Loading Spinner Container for AI */
+        .ai-loading-container {
+            text-align: center;
+            padding: 50px 0;
+        }
+        .ai-loading-icon {
+            font-size: 36px;
+            color: var(--br-green);
+            margin-bottom: 15px;
+        }
+        .ai-loading-text {
+            font-weight: 900;
+            color: var(--br-muted);
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+        }
+
+        /* Analytics UI */
+        .analytics-card { 
+            background: #FAFAFA; 
+            border: 1px solid var(--br-border); 
+            border-radius: 24px; 
+            padding: 25px; 
+            align-self: stretch; 
+            margin-bottom: 10px; 
+        }
+
+        .analytics-title { 
+            font-family: 'Nunito', sans-serif; 
+            color: var(--br-gold); 
+            font-size: 14px; 
+            margin-bottom: 20px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            border-bottom: 1px dashed var(--br-border); 
+            padding-bottom: 12px; 
+        }
+
+        .stat-row { 
+            margin-bottom: 18px; 
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .stat-label { 
+            font-size: 13px; 
+            font-weight: 800; 
+            display: flex; 
+            justify-content: space-between; 
+            color: var(--br-charcoal); 
+        }
+
+        .bar-bg { 
+            width: 100%; 
+            height: 10px; 
+            background: #E8E6E1; 
+            border-radius: 12px; 
+            overflow: hidden; 
+        }
+
+        .bar-fill { 
+            height: 100%; 
+            transition: width 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            border-radius: 12px; 
+        }
+
+        .chat-footer { 
+            padding: 25px 35px; 
+            border-top: 1px solid var(--br-border); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            background: #FFF; 
+        }
+
+        .btn-chat-action {
+            width: 100%; 
+            height: 60px; 
+            background: var(--br-charcoal); 
+            color: #FFF; 
+            border-radius: 18px; 
+            font-weight: 900; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            font-size: 16px; 
+            letter-spacing: 1px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 10px; 
+            font-family: 'Nunito', sans-serif; 
+            box-shadow: 0 10px 20px rgba(54,52,49,0.2); 
+        }
+        
+        .btn-chat-action:hover {
+            background: var(--br-gold);
+            transform: translateY(-2px);
+        }
+
+        .btn-chat-next {
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--br-blue);
+            margin-top: 15px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .btn-chat-next:hover {
+            color: var(--br-gold);
+        }
+
+        /* ----------------------------------------------------------------------
+           [3-12. MODALS & OVERLAYS]
+        ---------------------------------------------------------------------- */
+        .rgb-modal { 
+            position: absolute; 
+            bottom: 130px; 
+            left: 50px; 
+            background: #FFF; 
+            border-radius: 25px; 
+            padding: 25px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15); 
+            z-index: 5000; 
+            opacity: 0; 
+            pointer-events: none; 
+            transform: translateY(20px); 
+            transition: 0.3s ease; 
+        }
+
+        .rgb-modal.active { 
+            opacity: 1; 
+            pointer-events: auto; 
+            transform: translateY(0); 
+        }
+        
+        .rgb-modal-close {
+            text-align: center;
+            font-size: 10px;
+            margin-top: 12px;
+            font-weight: 900;
+            color: var(--br-muted);
+            cursor: pointer;
+        }
+        .rgb-modal-close:hover {
+            color: var(--br-charcoal);
+        }
+
+        .cert-modal-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100dvh; 
+            background: rgba(0,0,0,0.85); 
+            z-index: 30000; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: 0.4s ease; 
+            backdrop-filter: blur(15px); 
+        }
+
+        .cert-modal-overlay.active { 
+            opacity: 1; 
+            pointer-events: auto; 
+        }
+
+        .cert-card { 
+            background: #FFF; 
+            width: 850px; 
+            max-width: 90%; 
+            border-radius: 35px; 
+            padding: 60px; 
+            text-align: center; 
+            position: relative; 
+            box-shadow: 0 40px 80px rgba(0,0,0,0.4); 
+            transform: scale(0.85); 
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+
+        .cert-modal-overlay.active .cert-card { 
+            transform: scale(1); 
+        }
+
+        .cert-border { 
+            border: 10px solid var(--br-gold); 
+            border-radius: 25px; 
+            padding: 50px; 
+            position: relative; 
+        }
+
+        .cert-title { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 50px; 
+            color: var(--br-charcoal); 
+            font-weight: 900; 
+            margin-bottom: 15px; 
+        }
+
+        .cert-subtitle { 
+            font-family: 'Nunito', sans-serif; 
+            font-size: 18px; 
+            color: var(--br-muted); 
+            font-weight: 900; 
+            letter-spacing: 4px; 
+            text-transform: uppercase; 
+            margin-bottom: 35px; 
+        }
+
+        .cert-name { 
+            font-family: 'Nunito', sans-serif; 
+            font-size: 40px; 
+            color: var(--br-green); 
+            font-weight: 900; 
+            margin-bottom: 25px; 
+            text-decoration: underline; 
+            text-decoration-color: var(--br-gold); 
+        }
+
+        .cert-img-container { 
+            width: 100%; 
+            max-width: 450px; 
+            height: 280px; 
+            margin: 0 auto 35px; 
+            border-radius: 18px; 
+            border: 3px dashed var(--br-border); 
+            overflow: hidden; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: var(--br-bg); 
+        }
+
+        .cert-img-container img { 
+            max-width: 100%; 
+            max-height: 100%; 
+            object-fit: contain; 
+        }
+
+        .cert-msg { 
+            font-size: 18px; 
+            color: var(--br-text); 
+            line-height: 1.6; 
+            font-weight: 600; 
+            margin-bottom: 35px; 
+            font-style: italic; 
+        }
+
+        .btn-print { 
+            background: var(--br-charcoal); 
+            color: #FFF; 
+            padding: 18px 45px; 
+            font-size: 18px; 
+            font-weight: 900; 
+            border-radius: 100px; 
+            cursor: pointer; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 12px; 
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15); 
+            transition: 0.3s; 
+        }
+
+        .btn-print:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 20px 35px rgba(203,174,117,0.3); 
+            background: var(--br-gold); 
+        }
+
+        .cert-close { 
+            position: absolute; 
+            top: 25px; 
+            right: 35px; 
+            font-size: 35px; 
+            color: var(--br-muted); 
+            cursor: pointer; 
+            font-weight: 900; 
+            transition: 0.3s; 
+        }
+        
+        .cert-close:hover { 
+            color: var(--br-error); 
+            transform: rotate(90deg); 
+        }
+
+        /* ----------------------------------------------------------------------
+           [3-13. KEYFRAME ANIMATIONS]
+        ---------------------------------------------------------------------- */
+        @keyframes popIn { 
+            from { opacity: 0; transform: scale(0.92) translateY(15px); } 
+            to { opacity: 1; transform: scale(1) translateY(0); } 
+        }
+        
+        @keyframes blink { 
+            50% { opacity: 0.3; } 
+        }
+
+        /* ----------------------------------------------------------------------
+           [3-14. DEVICE COMPATIBILITY & RESPONSIVE QUERIES]
+           * [P2 버그 픽스] 태블릿/모바일 분기 및 애니메이션 호환성 적용 *
+        ---------------------------------------------------------------------- */
+        
+        /* [P2 버그 픽스] 태블릿에서도 사이드바 닫기 버튼 표출 */
+        @media (max-width: 1180px) {
+            .mobile-menu-btn { display: block; }
+        }
+
+        /* Tablet landscape (801px - 1180px) */
+        @media (min-width: 801px) and (max-width: 1180px) {
+            :root {
+                --sidebar-width: 280px;
+            }
+
+            .top-bar {
+                height: 76px;
+                padding: 0 24px;
+            }
+
+            .stage-wrapper {
+                padding: 20px;
+            }
+
+            .bottom-dock {
+                height: 128px;
+                padding: 14px 24px;
+                gap: 14px;
+            }
+
+            .tool-group,
+            .action-group {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .btn-main {
+                padding: 0 22px;
+            }
+        }
+
+        /* Phone / Small Tablet (max-width: 800px) */
         @media (max-width: 800px) {
             .mobile-menu-btn { display: block; }
-            /* [P2 버그 픽스] left 대신 transform으로 부드러운 하드웨어 가속 적용 */
-            .sidebar { position: fixed; top: 0; left: 0; transform: translateX(-100%); box-shadow: none; }
-            .sidebar.open { transform: translateX(0); box-shadow: 20px 0 50px rgba(0,0,0,0.2); }
             
-            #worksheet-img { max-height: calc(100dvh - 210px); min-width: 100%; min-height: auto; }
-            .bottom-dock { height: 140px; flex-direction: column; justify-content: center; padding: 10px 20px; gap: 12px; border-radius: 25px 25px 0 0; }
+            /* [P2 버그 픽스] left 속성 변경 대신 transform 사용으로 애니메이션 최적화 */
+            .sidebar { 
+                position: fixed; 
+                top: 0; 
+                left: 0; 
+                transform: translateX(-100%); 
+                box-shadow: none; 
+            }
+            .sidebar.open { 
+                transform: translateX(0); 
+                box-shadow: 20px 0 50px rgba(0,0,0,0.2); 
+            }
+            
+            /* [P1 버그 픽스] 모바일 worksheet-img 및 drawing-board 사이즈 안전 확보 */
+            .stage-wrapper {
+                padding: 12px;
+            }
+
+            #worksheet-img { 
+                min-width: 0;
+                width: 100%;
+                max-width: 100%;
+                max-height: calc(100dvh - 240px);
+            }
+            
+            /* [P1 버그 픽스] iOS Safari 홈 인디케이터 고려한 높이 보정 */
+            .bottom-dock { 
+                height: calc(140px + var(--safe-bottom)); 
+                flex-direction: column; 
+                justify-content: center; 
+                padding: 10px 20px calc(10px + var(--safe-bottom)); 
+                gap: 12px; 
+                border-radius: 25px 25px 0 0; 
+            }
+
             .tool-group { width: 100%; justify-content: center; padding: 8px 20px; }
             .action-group { width: 100%; justify-content: space-between; }
             .btn-nav, .btn-main { height: 50px; font-size: 13px; }
+            
             .ai-panel { width: 100%; right: -100%; border-left: none; }
-            .rgb-modal { left: 50%; transform: translateX(-50%) translateY(20px); bottom: 160px; }
+            
+            /* [P1 버그 픽스] 모달 위치도 안전 영역 고려 */
+            .rgb-modal { 
+                left: 50%; 
+                transform: translateX(-50%) translateY(20px); 
+                bottom: calc(160px + var(--safe-bottom)); 
+            }
             .rgb-modal.active { transform: translateX(-50%) translateY(0); }
+            
             .cert-card { padding: 30px 20px; }
             .cert-border { padding: 20px; }
             .cert-title { font-size: 30px; }
+        }
+
+        /* Small Phone (max-width: 560px) */
+        @media (max-width: 560px) {
+            .top-bar {
+                height: 68px;
+                padding: 0 14px;
+            }
+
+            .unit-info {
+                font-size: 10px;
+                letter-spacing: 1.8px;
+            }
+
+            .page-info {
+                font-size: 24px;
+            }
+
+            .bottom-dock {
+                height: calc(188px + var(--safe-bottom));
+                padding: 10px 12px calc(10px + var(--safe-bottom));
+            }
+
+            .tool-group {
+                gap: 8px;
+                padding: 8px;
+                border-radius: 18px;
+                flex-wrap: wrap;
+            }
+
+            .brush-slider {
+                width: 82px;
+            }
+
+            .btn-main {
+                height: 48px;
+                padding: 0 14px;
+                font-size: 12px;
+                flex: 1;
+                justify-content: center;
+            }
+
+            .btn-nav {
+                width: 48px;
+                height: 48px;
+            }
+
+            .ai-header,
+            .ai-content,
+            .chat-footer {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .chat-bubble {
+                max-width: 96%;
+                font-size: 15px;
+            }
         }
     </style>
 </head>
@@ -248,19 +1211,20 @@
                 <div class="badge-container" id="badge-container"></div>
             </div>
             
-            <div class="nav-list" id="nav-list"></div>
+            <div class="nav-list" id="nav-list">
+                </div>
         </nav>
 
         <div class="workspace">
             <div class="top-bar">
-                <div style="display:flex; align-items:center; gap:20px;">
-                    <button class="text-3xl mobile-menu-btn" onclick="UIEngine.toggleSidebar()"><i class="fa-solid fa-bars text-bridge-charcoal"></i></button>
+                <div class="top-bar-left">
+                    <button class="mobile-menu-btn" onclick="UIEngine.toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
                     <div>
                         <div id="unit-info" class="unit-info">UNIT LOADING...</div>
                         <div id="page-info" class="page-info">Inquiry P.01</div>
                     </div>
                 </div>
-                <div id="error-toast" class="hidden text-xs font-bold text-red-500 bg-red-50 px-4 py-2 rounded-full border border-red-100">
+                <div id="error-toast" class="toast-error">
                     <i class="fa-solid fa-triangle-exclamation"></i> <span id="error-toast-msg">Error</span>
                 </div>
             </div>
@@ -289,10 +1253,13 @@
                 
                 <div class="action-group">
                     <button class="btn-nav" onclick="AppEngine.smoothMove(-1)" title="Previous Page"><i class="fa-solid fa-chevron-left"></i></button>
+                    
                     <button class="btn-main btn-record" id="btn-record" onclick="AudioEngine.toggle()">
                         <div class="dot"></div> <span id="record-text">Voice Log</span>
                     </button>
+                    
                     <button class="btn-main btn-submit" onclick="AITutor.submit()">Submit ✨</button>
+                    
                     <button class="btn-nav" onclick="AppEngine.smoothMove(1)" title="Next Page"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
             </div>
@@ -304,17 +1271,18 @@
                 <button class="btn-close-ai" onclick="AITutor.close()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div class="ai-content" id="ai-content"></div>
+            <div class="ai-content" id="ai-content">
+                </div>
             
             <div class="chat-footer" id="chat-footer" style="display:none;">
-                <button class="btn-reply" id="btn-chat-record" onclick="AudioEngine.toggleChat()">🎤 Speak to Teacher</button>
-                <button class="w-full mt-4 text-sm font-bold text-bridge-blue text-center cursor-pointer hover:text-bridge-gold transition-colors" onclick="AppEngine.handleNextAdventure()">Next Page 🚀</button>
+                <button class="btn-chat-action" id="btn-chat-record" onclick="AudioEngine.toggleChat()">🎤 Speak to Teacher</button>
+                <div class="btn-chat-next" onclick="AppEngine.handleNextAdventure()">Next Page 🚀</div>
             </div>
         </div>
 
         <div class="rgb-modal" id="rgb-modal">
             <canvas id="color-wheel" width="150" height="150"></canvas>
-            <p class="text-center text-[10px] mt-3 font-black text-gray-400 cursor-pointer hover:text-gray-600" onclick="RGBRingEngine.toggle()">CLOSE</p>
+            <p class="rgb-modal-close" onclick="RGBRingEngine.toggle()">CLOSE</p>
         </div>
 
     </div>
@@ -322,19 +1290,21 @@
     <script>
         /**
          * [4-1. CONFIGURATION & SECRETS]
-         * [P0 버그 픽스] 클라이언트에서 API_KEY 제거 및 백엔드 프록시 엔드포인트 세팅
+         * * [P0 버그 픽스] 클라이언트에서 API_KEY 노출 방지
+         * 상업 배포 시에는 반드시 API_TUTOR_ENDPOINT를 사용하여 서버리스 프록시를 경유해야 합니다.
          */
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
-            // PROD: 배포 시 아래 엔드포인트를 원장님의 실제 Firebase Cloud Functions 주소로 변경하세요.
-            API_TUTOR_ENDPOINT: "https://us-central1-bridge-academy-6d6a9.cloudfunctions.net/api/tutor",
+            // PROD: 실제 구동 시 Firebase Cloud Functions 등 원장님의 보안 백엔드 엔드포인트를 입력하세요.
+            API_TUTOR_ENDPOINT: "https://us-central1-bridge-academy-6d6a9.cloudfunctions.net/api/tutor", 
             FIREBASE_CONFIG: {
                 apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk",
                 authDomain: "bridge-academy-6d6a9.firebaseapp.com",
                 projectId: "bridge-academy-6d6a9",
-                storageBucket: "bridge-academy-6d6a9.appspot.com", // Storage 설정 복구
+                storageBucket: "bridge-academy-6d6a9.firebasestorage.app", // Storage 설정 완료
                 messagingSenderId: "581314243350",
-                appId: "1:581314243350:web:57897ed73d787eb02efe37"
+                appId: "1:581314243350:web:57897ed73d787eb02efe37",
+                measurementId: "G-JV5H1V8X34"
             }
         };
 
@@ -342,9 +1312,18 @@
         firebase.initializeApp(CONFIG.FIREBASE_CONFIG);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        
+        // [P0 버그 픽스] Firebase Storage 명시적 초기화 및 할당
+        let storage;
+        try {
+            storage = firebase.storage();
+        } catch(e) {
+            console.warn("Firebase Storage initialization skipped or failed.", e);
+        }
 
         /**
          * [4-2. ENTERPRISE LOGGER]
+         * 에러 추적 및 UI 토스트 알림 연동
          */
         const Logger = {
             log(msg, data = "") { console.log(`[BRIDGE OK] ${msg}`, data); },
@@ -354,56 +1333,57 @@
                 const toast = document.getElementById('error-toast');
                 if(toast) {
                     document.getElementById('error-toast-msg').innerText = msg;
-                    toast.classList.remove('hidden');
-                    setTimeout(() => toast.classList.add('hidden'), 5000);
+                    toast.classList.add('show');
+                    setTimeout(() => toast.classList.remove('show'), 5000);
                 }
             }
         };
 
         /**
-         * [4-3. MASTER CURRICULUM INTELLIGENCE DB]
+         * [4-3. MASTER CURRICULUM INTELLIGENCE DB & ENGINE]
+         * 모든 33페이지의 교육 목표와 내비게이션 타이틀.
          */
         const PAGE_INTELLIGENCE = {
             "A-1": {
-                1: { navTitle: "[W1] Name", goal: "Name Registration" },
-                2: { navTitle: "[W1] Mind", goal: "Self-Esteem & I like myself" },
-                3: { navTitle: "[W1] Face", goal: "Face Features Vocabulary" },
-                4: { navTitle: "[W1] Portrait", goal: "Drawing Face Features" },
-                5: { navTitle: "[W2] Senses", goal: "Action Verbs for Senses" },
-                6: { navTitle: "[W2] Sentences", goal: "Sentence Completion" },
-                7: { navTitle: "[W2] Matching", goal: "Sensory Association" },
-                8: { navTitle: "[W2] Emotion", goal: "Drawing Emotions" },
-                9: { navTitle: "[W3] Animals", goal: "Book Introduction" },
-                10: { navTitle: "[W3] Gorilla", goal: "Gorilla Body Parts" },
-                11: { navTitle: "[W3] Labels", goal: "Labeling Body Parts" },
-                12: { navTitle: "[W3] Giraffe", goal: "Coloring a Giraffe" },
-                13: { navTitle: "[W4] Creative", goal: "Creative Imagination" },
-                14: { navTitle: "[W4] Math", goal: "Body Math & Counting" },
-                15: { navTitle: "[W4] Review", goal: "Reviewing the Story" },
-                16: { navTitle: "[W4] Tools", goal: "Selecting Tools" },
-                17: { navTitle: "[W4] Eval", goal: "Self Evaluation" }
+                1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?" },
+                2: { navTitle: "[W1] Mind", goal: "Self-Esteem & I like myself", question: "Do you like yourself?" },
+                3: { navTitle: "[W1] Face", goal: "Face Features Vocabulary", question: "Where is your nose?" },
+                4: { navTitle: "[W1] Portrait", goal: "Drawing Face Features", question: "Can you draw your face?" },
+                5: { navTitle: "[W2] Senses", goal: "Action Verbs for Senses", question: "What do you smell?" },
+                6: { navTitle: "[W2] Sentences", goal: "Sentence Completion", question: "What else do you like?" },
+                7: { navTitle: "[W2] Matching", goal: "Sensory Association", question: "How do you hear music?" },
+                8: { navTitle: "[W2] Emotion", goal: "Drawing Emotions", question: "Are you smiling?" },
+                9: { navTitle: "[W3] Animals", goal: "Book Introduction", question: "Ready for the gorilla?" },
+                10: { navTitle: "[W3] Gorilla", goal: "Gorilla Body Parts", question: "Show me strong arms!" },
+                11: { navTitle: "[W3] Labels", goal: "Labeling Body Parts", question: "Where is the shoulder?" },
+                12: { navTitle: "[W3] Giraffe", goal: "Coloring a Giraffe", question: "Why is the neck long?" },
+                13: { navTitle: "[W4] Creative", goal: "Creative Imagination", question: "Spaghetti arms?" },
+                14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?" },
+                15: { navTitle: "[W4] Review", goal: "Reviewing the Story", question: "Did you enjoy it?" },
+                16: { navTitle: "[W4] Tools", goal: "Selecting Tools", question: "Which tool did you use?" },
+                17: { navTitle: "[W4] Eval", goal: "Self Evaluation", question: "Are you proud?" }
             },
             "A-2": {
-                18: { navTitle: "[W1] Intro", goal: "Meeting Crawlers" },
-                19: { navTitle: "[W1] Hungry", goal: "Food Recognition" },
-                20: { navTitle: "[W1] Fruits", goal: "Reading Fruit Words" },
-                21: { navTitle: "[W1] Favorite", goal: "Favorite Fruit Drawing" },
-                22: { navTitle: "[W2] I Eat", goal: "Sentence Practice" },
-                23: { navTitle: "[W2] Magic 1", goal: "Compound Words" },
-                24: { navTitle: "[W2] Magic 2", goal: "Compound Words" },
-                25: { navTitle: "[W2] Book 2", goal: "Caterpillar Story" },
-                26: { navTitle: "[W3] Cycle", goal: "Life Cycle Stages" },
-                27: { navTitle: "[W3] Symmetry", goal: "Butterfly Wings" },
-                28: { navTitle: "[W3] Math 1", goal: "Counting Fruits" },
-                29: { navTitle: "[W3] Math 2", goal: "Counting Leaves" },
-                30: { navTitle: "[W4] Search", goal: "Identifying Insects" },
-                31: { navTitle: "[W4] Review", goal: "Reviewing Bugs" },
-                32: { navTitle: "[W4] Garden", goal: "Drawing a Garden" },
-                33: { navTitle: "[W4] Eval", goal: "Self Evaluation" }
+                18: { navTitle: "[W1] Intro", goal: "Meeting Crawlers", question: "Ready for bugs?" },
+                19: { navTitle: "[W1] Hungry", goal: "Food Recognition", question: "What is it eating?" },
+                20: { navTitle: "[W1] Fruits", goal: "Reading Fruit Words", question: "Apples or plums?" },
+                21: { navTitle: "[W1] Favorite", goal: "Favorite Fruit Drawing", question: "Why is it your favorite?" },
+                22: { navTitle: "[W2] I Eat", goal: "Sentence Practice", question: "Crunchy or soft?" },
+                23: { navTitle: "[W2] Magic 1", goal: "Compound Words", question: "Butter meets Fly?" },
+                24: { navTitle: "[W2] Magic 2", goal: "Compound Words", question: "Straw meets Berry?" },
+                25: { navTitle: "[W2] Book 2", goal: "Caterpillar Story", question: "What should he eat?" },
+                26: { navTitle: "[W3] Cycle", goal: "Life Cycle Stages", question: "Inside the cocoon?" },
+                27: { navTitle: "[W3] Symmetry", goal: "Butterfly Wings", question: "Can it fly high?" },
+                28: { navTitle: "[W3] Math 1", goal: "Counting Fruits", question: "How many strawberries?" },
+                29: { navTitle: "[W3] Math 2", goal: "Counting Leaves", question: "More leaves or apples?" },
+                30: { navTitle: "[W4] Search", goal: "Identifying Insects", question: "Can you find the Ant?" },
+                31: { navTitle: "[W4] Review", goal: "Reviewing Bugs", question: "Favorite bug today?" },
+                32: { navTitle: "[W4] Garden", goal: "Drawing a Garden", question: "Who lives here?" },
+                33: { navTitle: "[W4] Eval", goal: "Self Evaluation", question: "See you next time!" }
             }
         };
 
-        // [P2 버그 픽스] 유닛별 안전 범위 동적 할당 라우터
+        // [P0 버그 픽스] 유닛별 안전 범위 동적 할당 라우터 탑재
         const CurriculumEngine = {
             pages(unitId) {
                 return Object.keys(PAGE_INTELLIGENCE[unitId] || {}).map(Number).sort((a, b) => a - b);
@@ -447,6 +1427,7 @@
             brushType: 'normal'
         };
 
+        // Initialize state securely based on dynamic curriculum bounds
         if (!PAGE_INTELLIGENCE[STATE.unitId]) STATE.unitId = "A-1";
         STATE.currentPage = CurriculumEngine.clamp(
             STATE.unitId, 
@@ -475,7 +1456,7 @@
 
         /**
          * [4-5. SMART IMAGE LOADER ENGINE]
-         * [P0 버그 픽스] Request Token 도입으로 레이스 컨디션 완벽 차단
+         * Request Token 도입으로 레이스 컨디션 차단
          */
         const SmartImageLoader = {
             requestToken: 0,
@@ -497,6 +1478,7 @@
                 ];
 
                 const tryLoad = (index) => {
+                    // Prevent overwriting if a new page request was made
                     if (token !== this.requestToken) return;
 
                     if (index >= possiblePaths.length) {
@@ -512,11 +1494,13 @@
 
                     tempImg.onload = () => {
                         if (token !== this.requestToken) return;
+                        Logger.log("Image found successfully:", testUrl);
                         boardElement.classList.remove('error-state');
                         imgElement.src = testUrl;
                         imgElement.style.opacity = '1';
                         CanvasEngine.resizeCanvas();
-                        StorageEngine.loadCanvas();
+                        // Load previous canvas data for this page
+                        StorageEngine.loadCanvasLocal();
                     };
 
                     tempImg.onerror = () => tryLoad(index + 1);
@@ -528,10 +1512,12 @@
         };
 
         /**
-         * [4-6. STORAGE & SYNC ENGINE]
-         * [P1 버그 픽스] Firestore Base64 한도 초과 방지: Firebase Storage 연동
+         * [4-6. STORAGE & DEBOUNCED SYNC ENGINE]
+         * [P1 버그 픽스] Firestore Base64 한도 초과 방지 및 업로드 디바운스 적용
          */
         const StorageEngine = {
+            cloudSaveTimer: null,
+
             async save() {
                 if(!STATE.uid) return;
                 try {
@@ -544,34 +1530,56 @@
                 } catch (error) { Logger.error("Storage Sync Error", error); }
             },
             
-            async saveCanvas() {
-                if (!CanvasEngine.cvs || !STATE.uid) return;
+            // 1. 순수 로컬 캐싱 (속도 확보)
+            saveCanvasLocal() {
+                if (!CanvasEngine.cvs || !STATE.uid) return null;
                 try {
                     const canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6);
                     localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, canvasData);
-                    
-                    // 1. Firebase Storage에 안전하게 업로드
-                    const imageRef = firebase.storage().ref(`student_drawings/${STATE.uid}/${STATE.unitId}_P${STATE.currentPage}.webp`);
+                    return canvasData;
+                } catch (error) { 
+                    Logger.error("Local Canvas Save Error", error); 
+                    return null;
+                }
+            },
+
+            // 2. 디바운스 처리된 클라우드 업로드 (비용/배터리 최적화)
+            scheduleCloudSave() {
+                clearTimeout(this.cloudSaveTimer);
+                this.cloudSaveTimer = setTimeout(() => {
+                    this.executeCloudSave();
+                }, 1500); // 1.5초간 추가 입력이 없으면 서버 업로드
+            },
+
+            // 3. 실제 Firebase Storage 업로드 로직
+            async executeCloudSave() {
+                const canvasData = this.saveCanvasLocal();
+                if (!canvasData || !storage) return;
+
+                try {
+                    // Firebase Storage에 업로드 (Base64 직접 저장 방지)
+                    const imageRef = storage.ref(`student_drawings/${STATE.uid}/${STATE.unitId}_P${STATE.currentPage}.webp`);
                     await imageRef.putString(canvasData, 'data_url');
                     
-                    // 2. 업로드 된 이미지의 안전한 URL 획득
+                    // 다운로드 가능한 URL 획득
                     const downloadURL = await imageRef.getDownloadURL();
                     
-                    // 3. Firestore에는 Base64 대신 가벼운 메타데이터와 URL만 저장
+                    // Firestore에는 가벼운 URL만 저장 (문서 한도 1MB 문제 원천 차단)
                     await db.collection("student_drawings").doc(`${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`).set({
                         studentID: STATE.studentEmail, 
                         unitId: STATE.unitId, 
                         page: STATE.currentPage,
-                        imageUrl: downloadURL, // URL 저장으로 1MB 한도 크래시 원천 차단
+                        imageUrl: downloadURL, 
                         transcript: STATE.lastTranscript, 
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
+                    Logger.log("Cloud Canvas Saved Safely.");
                 } catch (error) { 
-                    Logger.error("Storage Upload Error", error); 
+                    Logger.warn("Cloud Upload Failed, fallback to local only", error); 
                 }
             },
             
-            loadCanvas() {
+            loadCanvasLocal() {
                 try {
                     const localData = localStorage.getItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`);
                     if (localData) {
@@ -581,8 +1589,13 @@
                             CanvasEngine.saveHistory(); 
                         };
                         img.src = localData;
-                    } else { CanvasEngine.saveHistory(); }
-                } catch (error) { Logger.error("Canvas Load Error", error); CanvasEngine.saveHistory(); }
+                    } else { 
+                        CanvasEngine.saveHistory(); 
+                    }
+                } catch (error) { 
+                    Logger.error("Canvas Load Error", error); 
+                    CanvasEngine.saveHistory(); 
+                }
             }
         };
 
@@ -592,20 +1605,27 @@
         const PageEngine = {
             init() {
                 const list = document.getElementById('nav-list');
-                list.innerHTML = ''; // [P2 버그 픽스] 중복 증식 방지
+                list.innerHTML = ''; // [P2 버그 픽스] Init 반복 시 항목 중복 증식 방지
                 
                 const unitData = PAGE_INTELLIGENCE[STATE.unitId];
                 
                 if (unitData) {
+                    // [P2 버그 픽스] Object.keys를 사용하여 유닛 내 상대적 인덱스로 주차를 정확히 계산합니다.
                     Object.keys(unitData).forEach((i, index) => {
                         const ctx = unitData[i];
-                        // [P2 버그 픽스] 인덱스 기준으로 주차(Week) 계산
-                        const weekBadge = Math.floor(index / 4) + 1;
+                        const weekBadge = Math.floor(index / 4) + 1; 
                         
                         const item = document.createElement('div');
-                        item.className = 'nav-item'; item.id = `nav-${i}`;
-                        item.innerHTML = `<span class="nav-title">${ctx.navTitle}</span><span class="nav-badge">W${weekBadge}-P.${String(i).padStart(2,'0')}</span>`;
-                        item.onclick = () => { AppEngine.smoothMove(parseInt(i) - STATE.currentPage); UIEngine.closeSidebarOnMobile(); };
+                        item.className = 'nav-item'; 
+                        item.id = `nav-${i}`;
+                        item.innerHTML = `
+                            <span class="nav-title">${ctx.navTitle}</span>
+                            <span class="nav-badge">W${weekBadge}-P.${String(i).padStart(2,'0')}</span>
+                        `;
+                        item.onclick = () => { 
+                            AppEngine.smoothMove(parseInt(i) - STATE.currentPage); 
+                            UIEngine.closeSidebarOnMobile(); 
+                        };
                         list.appendChild(item);
                     });
                 }
@@ -613,7 +1633,9 @@
             },
             
             load(n) {
-                STATE.currentPage = n; STATE.lastTranscript = ""; STATE.sttConfidence = 0;
+                STATE.currentPage = n; 
+                STATE.lastTranscript = ""; 
+                STATE.sttConfidence = 0;
                 
                 document.getElementById('unit-info').innerText = `MASTER LAB: ${STATE.unitId}`;
                 document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
@@ -623,10 +1645,12 @@
                 if(activeNav) {
                     activeNav.classList.add('active');
                     const navList = document.getElementById('nav-list');
+                    // 선택된 요소 위치로 스무스 스크롤
                     navList.scrollTo({ top: activeNav.offsetTop - navList.offsetTop - 50, behavior: 'smooth' });
                 }
                 
-                CanvasEngine.hardReset(); AITutor.close();
+                CanvasEngine.hardReset(); 
+                AITutor.close();
                 document.getElementById('worksheet-img').style.opacity = '0';
                 
                 SmartImageLoader.findValidWorksheet(STATE.unitId, STATE.currentPage);
@@ -639,19 +1663,26 @@
          */
         const AppEngine = {
             smoothMove(dir) {
-                StorageEngine.saveCanvas();
+                // [P1 버그 픽스] 페이지 이동이 범위를 벗어날 경우 리로드 방어
+                const nextPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir);
+                if (nextPage === STATE.currentPage) return;
+
+                // 이동 전 현재 상태 강제 클라우드 업로드
+                StorageEngine.executeCloudSave();
+                
                 const board = document.getElementById('drawing-board'); 
                 board.classList.add('fade-out');
                 
                 setTimeout(() => {
-                    STATE.currentPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir);
+                    STATE.currentPage = nextPage;
                     PageEngine.load(STATE.currentPage);
                     setTimeout(() => board.classList.remove('fade-out'), 150);
                 }, 400);
             },
             
             handleNextAdventure() {
-                AITutor.close(); StorageEngine.saveCanvas();
+                AITutor.close(); 
+                StorageEngine.executeCloudSave();
                 this.smoothMove(1);
             }
         };
@@ -663,21 +1694,38 @@
 
         /**
          * [4-9. CANVAS DRAWING ENGINE]
-         * [P1 버그 픽스] DPR 비율 고려한 좌표 왜곡 해결
          */
         const CanvasEngine = {
             isDrawing: false, hasMoved: false, isErasing: false, lastColor: "#363431", dpr: window.devicePixelRatio || 1, historyStack: [], historyIndex: -1,
+            
             init() {
-                this.cvs = document.getElementById('draw-layer'); this.ctx = this.cvs.getContext('2d'); this.board = document.getElementById('drawing-board');
-                this.setupUI(); this.setupCanvas(); this.bind();
-                if (window.ResizeObserver) { new ResizeObserver(() => this.resizeCanvas()).observe(this.board); }
+                this.cvs = document.getElementById('draw-layer'); 
+                this.ctx = this.cvs.getContext('2d'); 
+                this.board = document.getElementById('drawing-board');
+                
+                this.setupUI(); 
+                this.setupCanvas(); 
+                this.bind();
+                
+                if (window.ResizeObserver) { 
+                    new ResizeObserver(() => this.resizeCanvas()).observe(this.board); 
+                }
             },
+            
             setupCanvas() {
-                const rect = this.board.getBoundingClientRect(); if (rect.width === 0) return;
-                this.cvs.style.width = rect.width + "px"; this.cvs.style.height = rect.height + "px";
-                this.cvs.width = rect.width * this.dpr; this.cvs.height = rect.height * this.dpr;
-                this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); this.ctx.lineCap = 'round'; this.ctx.lineJoin = 'round';
+                const rect = this.board.getBoundingClientRect(); 
+                if (rect.width === 0) return;
+                
+                this.cvs.style.width = rect.width + "px"; 
+                this.cvs.style.height = rect.height + "px";
+                this.cvs.width = rect.width * this.dpr; 
+                this.cvs.height = rect.height * this.dpr;
+                
+                this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); 
+                this.ctx.lineCap = 'round'; 
+                this.ctx.lineJoin = 'round';
             },
+            
             resizeCanvas() {
                 if (!this.cvs || !this.ctx || !this.board) return;
                 const rect = this.board.getBoundingClientRect(); 
@@ -686,44 +1734,158 @@
                 const temp = document.createElement('canvas'); 
                 temp.width = this.cvs.width; temp.height = this.cvs.height;
                 
-                if (this.cvs.width > 0 && this.cvs.height > 0) { temp.getContext('2d').drawImage(this.cvs, 0, 0); }
+                if (this.cvs.width > 0 && this.cvs.height > 0) { 
+                    temp.getContext('2d').drawImage(this.cvs, 0, 0); 
+                }
                 
                 this.setupCanvas();
                 
                 if (temp.width > 0 && temp.height > 0) { 
-                    // [P1 버그 픽스] destination은 반드시 CSS 픽셀 크기(rect.width)를 사용해야 잘리지 않습니다.
+                    // [P1 버그 픽스] DPR 비율을 고려하여 destination 좌표는 CSS Pixel(rect.width) 기준으로 맞춥니다.
                     this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, rect.width, rect.height); 
                 }
             },
+            
             bind() {
-                const getP = (e) => { const r = this.cvs.getBoundingClientRect(); let cx = e.clientX || e.touches[0].clientX; let cy = e.clientY || e.touches[0].clientY; return { x: cx - r.left, y: cy - r.top }; };
-                const start = (e) => { e.preventDefault(); this.isDrawing = true; this.hasMoved = false; const p = getP(e); this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y); };
-                const move = (e) => {
-                    if (!this.isDrawing) return; e.preventDefault(); this.hasMoved = true; const p = getP(e);
-                    this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over";
-                    const s = document.getElementById('brush-size').value; this.ctx.lineWidth = this.isErasing ? s * 3 : s;
-                    this.ctx.strokeStyle = this.isErasing ? "#FFF" : this.lastColor;
-                    if(STATE.brushType === 'rainbow' && !this.isErasing) { this.ctx.strokeStyle = `hsl(${(Date.now()/10)%360}, 100%, 50%)`; } else if (STATE.brushType === 'neon' && !this.isErasing) { this.ctx.shadowBlur = parseInt(s) + 10; this.ctx.shadowColor = this.lastColor; } else { this.ctx.shadowBlur = 0; }
-                    this.ctx.lineTo(p.x, p.y); this.ctx.stroke(); this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y);
+                const getP = (e) => { 
+                    const r = this.cvs.getBoundingClientRect(); 
+                    let cx = e.clientX || e.touches[0].clientX; 
+                    let cy = e.clientY || e.touches[0].clientY; 
+                    return { x: cx - r.left, y: cy - r.top }; 
                 };
-                const end = () => { this.isDrawing = false; this.ctx.shadowBlur = 0; if (this.hasMoved) { this.saveHistory(); StorageEngine.saveCanvas(); } };
-                this.cvs.addEventListener('pointerdown', start); this.cvs.addEventListener('pointermove', move); this.cvs.addEventListener('pointerup', end); this.cvs.addEventListener('pointerleave', end);
+                
+                const start = (e) => { 
+                    e.preventDefault(); 
+                    this.isDrawing = true; 
+                    this.hasMoved = false; 
+                    const p = getP(e); 
+                    this.ctx.beginPath(); 
+                    this.ctx.moveTo(p.x, p.y); 
+                };
+                
+                const move = (e) => {
+                    if (!this.isDrawing) return; 
+                    e.preventDefault(); 
+                    this.hasMoved = true; 
+                    const p = getP(e);
+                    
+                    this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over";
+                    const s = document.getElementById('brush-size').value; 
+                    this.ctx.lineWidth = this.isErasing ? s * 3 : s;
+                    
+                    this.ctx.strokeStyle = this.isErasing ? "#FFF" : this.lastColor;
+                    
+                    if(STATE.brushType === 'rainbow' && !this.isErasing) { 
+                        this.ctx.strokeStyle = `hsl(${(Date.now()/10)%360}, 100%, 50%)`; 
+                    } else if (STATE.brushType === 'neon' && !this.isErasing) { 
+                        this.ctx.shadowBlur = parseInt(s) + 10; 
+                        this.ctx.shadowColor = this.lastColor; 
+                    } else { 
+                        this.ctx.shadowBlur = 0; 
+                    }
+                    
+                    this.ctx.lineTo(p.x, p.y); 
+                    this.ctx.stroke(); 
+                    this.ctx.beginPath(); 
+                    this.ctx.moveTo(p.x, p.y);
+                };
+                
+                const end = () => { 
+                    this.isDrawing = false; 
+                    this.ctx.shadowBlur = 0; 
+                    if (this.hasMoved) { 
+                        this.saveHistory(); 
+                        // [P1 버그 픽스] 드로잉 종료 시 로컬 캐싱 즉시 수행 후 클라우드는 디바운스 업로드
+                        StorageEngine.saveCanvasLocal();
+                        StorageEngine.scheduleCloudSave();
+                    } 
+                };
+                
+                this.cvs.addEventListener('pointerdown', start); 
+                this.cvs.addEventListener('pointermove', move); 
+                this.cvs.addEventListener('pointerup', end); 
+                this.cvs.addEventListener('pointerleave', end);
             },
-            saveHistory() { this.historyIndex++; this.historyStack.length = this.historyIndex; this.historyStack.push(this.cvs.toDataURL()); },
-            undo() { if (this.historyIndex > 0) { this.historyIndex--; this.restore(); } },
-            restore() { const img = new Image(); img.onload = () => { this.ctx.save(); this.ctx.setTransform(1,0,0,1,0,0); this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height); this.ctx.drawImage(img,0,0,this.cvs.width/this.dpr,this.cvs.height/this.dpr); this.ctx.restore(); }; img.src = this.historyStack[this.historyIndex]; },
-            setBrush(t) { STATE.brushType = t; document.querySelectorAll('.btn-magic').forEach(el => el.classList.remove('active')); document.getElementById(`btn-brush-${t}`).classList.add('active'); if(this.isErasing) this.toggleEraser(); },
-            toggleEraser() { this.isErasing = !this.isErasing; document.getElementById('btn-eraser').classList.toggle('active'); },
-            setColor(color) { this.lastColor = color; document.getElementById('btn-color').style.background = color; if(this.isErasing) this.toggleEraser(); },
-            setupUI() { document.getElementById('btn-color').style.background = this.lastColor; },
-            hardReset() { try { this.ctx.save(); this.ctx.setTransform(1,0,0,1,0,0); this.ctx.clearRect(0,0,this.cvs.width, this.cvs.height); this.ctx.restore(); this.historyStack = []; this.historyIndex = -1; } catch(e) { Logger.error("Canvas Reset Error", e); } }
+            
+            saveHistory() { 
+                this.historyIndex++; 
+                this.historyStack.length = this.historyIndex; 
+                this.historyStack.push(this.cvs.toDataURL()); 
+            },
+            
+            undo() { 
+                if (this.historyIndex > 0) { 
+                    this.historyIndex--; 
+                    this.restore(); 
+                    StorageEngine.saveCanvasLocal();
+                    StorageEngine.scheduleCloudSave();
+                } 
+            },
+            
+            restore() { 
+                const img = new Image(); 
+                img.onload = () => { 
+                    this.ctx.save(); 
+                    this.ctx.setTransform(1,0,0,1,0,0); 
+                    this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height); 
+                    this.ctx.drawImage(img,0,0,this.cvs.width/this.dpr,this.cvs.height/this.dpr); 
+                    this.ctx.restore(); 
+                }; 
+                img.src = this.historyStack[this.historyIndex]; 
+            },
+            
+            setBrush(t) { 
+                STATE.brushType = t; 
+                document.querySelectorAll('.btn-magic').forEach(el => el.classList.remove('active')); 
+                document.getElementById(`btn-brush-${t}`).classList.add('active'); 
+                if(this.isErasing) this.toggleEraser(); 
+            },
+            
+            toggleEraser() { 
+                this.isErasing = !this.isErasing; 
+                document.getElementById('btn-eraser').classList.toggle('active'); 
+            },
+            
+            setColor(color) { 
+                this.lastColor = color; 
+                document.getElementById('btn-color').style.background = color; 
+                if(this.isErasing) this.toggleEraser(); 
+            },
+            
+            setupUI() { 
+                document.getElementById('btn-color').style.background = this.lastColor; 
+            },
+            
+            hardReset() { 
+                try { 
+                    this.ctx.save(); 
+                    this.ctx.setTransform(1,0,0,1,0,0); 
+                    this.ctx.clearRect(0,0,this.cvs.width, this.cvs.height); 
+                    this.ctx.restore(); 
+                    this.historyStack = []; 
+                    this.historyIndex = -1; 
+                } catch(e) { Logger.error("Canvas Reset Error", e); } 
+            }
         };
 
         const RGBRingEngine = {
             init() { 
-                const c = document.getElementById('color-wheel'); const ctx = c.getContext('2d', { willReadFrequently: true }); const r = 75; 
-                for (let a=0; a<360; a++) { ctx.beginPath(); ctx.moveTo(r,r); ctx.arc(r,r,r, a*Math.PI/180, (a+2)*Math.PI/180); ctx.fillStyle = `hsl(${a},100%,50%)`; ctx.fill(); }
-                c.onclick = (e) => { const rect = c.getBoundingClientRect(); const data = ctx.getImageData(e.clientX-rect.left, e.clientY-rect.top, 1, 1).data; CanvasEngine.setColor(`rgb(${data[0]},${data[1]},${data[2]})`); this.toggle(); };
+                const c = document.getElementById('color-wheel'); 
+                const ctx = c.getContext('2d', { willReadFrequently: true }); 
+                const r = 75; 
+                for (let a=0; a<360; a++) { 
+                    ctx.beginPath(); 
+                    ctx.moveTo(r,r); 
+                    ctx.arc(r,r,r, a*Math.PI/180, (a+2)*Math.PI/180); 
+                    ctx.fillStyle = `hsl(${a},100%,50%)`; 
+                    ctx.fill(); 
+                }
+                c.onclick = (e) => { 
+                    const rect = c.getBoundingClientRect(); 
+                    const data = ctx.getImageData(e.clientX-rect.left, e.clientY-rect.top, 1, 1).data; 
+                    CanvasEngine.setColor(`rgb(${data[0]},${data[1]},${data[2]})`); 
+                    this.toggle(); 
+                };
             },
             toggle() { document.getElementById('rgb-modal').classList.toggle('active'); }
         };
@@ -735,30 +1897,47 @@
             init() {
                 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
                 if (SR) {
-                    this.rec = new SR(); this.rec.lang = 'en-US'; this.rec.continuous = false; this.rec.interimResults = false;
-                    this.rec.onresult = (e) => { STATE.lastTranscript = e.results[0][0].transcript; STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); };
+                    this.rec = new SR(); 
+                    this.rec.lang = 'en-US'; 
+                    this.rec.continuous = false; 
+                    this.rec.interimResults = false;
+                    
+                    this.rec.onresult = (e) => { 
+                        STATE.lastTranscript = e.results[0][0].transcript; 
+                        STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); 
+                    };
                     this.rec.onend = () => { if(STATE.isRecording) this.toggle(); };
                     this.rec.onerror = (e) => { Logger.error("Speech Error:", e.error); if(STATE.isRecording) this.toggle(); }
                 } else { Logger.warn("Web Speech API not supported."); }
             },
+            
             toggle() {
                 if(!this.rec) { alert("마이크가 지원되지 않습니다. Chrome을 사용해주세요."); return; }
                 if(!STATE.isRecording) { 
-                    STATE.isRecording = true; document.getElementById('btn-record').classList.add('recording'); document.getElementById('record-text').innerText = "Listening...";
+                    STATE.isRecording = true; 
+                    document.getElementById('btn-record').classList.add('recording'); 
+                    document.getElementById('record-text').innerText = "Listening...";
                     try { this.rec.start(); } catch(e){} 
                 } else { 
-                    STATE.isRecording = false; document.getElementById('btn-record').classList.remove('recording'); document.getElementById('record-text').innerText = "Voice Log";
+                    STATE.isRecording = false; 
+                    document.getElementById('btn-record').classList.remove('recording'); 
+                    document.getElementById('record-text').innerText = "Voice Log";
                     try { this.rec.stop(); } catch(e){} 
                     setTimeout(() => { AITutor.submit(); }, 800);
                 }
             },
+            
             toggleChat() {
                 if(!this.rec) return;
                 if(!STATE.isRecording) { 
-                    STATE.isRecording = true; document.getElementById('btn-chat-record').classList.add('recording'); document.getElementById('btn-chat-record').innerText = "Listening...";
+                    STATE.isRecording = true; 
+                    document.getElementById('btn-chat-record').classList.add('recording'); 
+                    document.getElementById('btn-chat-record').innerText = "Listening...";
                     try { this.rec.start(); } catch(e){} 
                 } else { 
-                    STATE.isRecording = false; document.getElementById('btn-chat-record').classList.remove('recording'); document.getElementById('btn-chat-record').innerText = "🎤 Speak to Teacher";
+                    STATE.isRecording = false; 
+                    document.getElementById('btn-chat-record').classList.remove('recording'); 
+                    document.getElementById('btn-chat-record').innerText = "🎤 Speak to Teacher";
                     try { this.rec.stop(); } catch(e){} 
                     setTimeout(() => { AITutor.processReply(); }, 800);
                 }
@@ -767,14 +1946,11 @@
 
         /**
          * [4-11. 🔥 BACKEND PROXY AI TUTOR ENGINE]
-         * [P0 버그 픽스] 클라이언트가 직접 키를 가지지 않고 백엔드(Cloud Functions)와 통신합니다.
-         * [P1 버그 픽스] 아동 보호용 Safety Settings는 백엔드 서버에서 관리하게 됩니다.
+         * [P0 & P1 버그 픽스] Safety Filters, API Keys는 모두 백엔드에서 제어되어야 합니다.
          */
         const AITutor = {
             async callBackendTutor(prompt, base64Img = null) {
                 try {
-                    // [배포 설정] 실제 Cloud Functions 주소로 fetch 합니다.
-                    // 현재는 데모를 위해 서버리스 환경 구축 전까지 Fallback 모드를 가동합니다.
                     const response = await fetch(CONFIG.API_TUTOR_ENDPOINT, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -800,16 +1976,21 @@
             async submit() {
                 if (STATE.isRecording) { AudioEngine.toggle(); return; }
 
-                const panel = document.getElementById('ai-panel'); panel.classList.add('open');
+                const panel = document.getElementById('ai-panel'); 
+                panel.classList.add('open');
+                
                 const content = document.getElementById('ai-content');
                 content.innerHTML = `
-                    <div class="text-center py-20">
-                        <i class="fa-solid fa-spinner fa-spin text-4xl text-bridge-mint mb-4"></i>
-                        <p class="font-black text-gray-400">Teacher is looking at your art...</p>
+                    <div class="ai-loading-container">
+                        <i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i>
+                        <p class="ai-loading-text">Teacher is looking at your art...</p>
                     </div>
                 `;
 
-                const canvasImg = CanvasEngine.cvs.toDataURL('image/jpeg', 0.6); // 최적화된 화질
+                // [P1 버그 픽스] API 전송 전에 클라우드에 그리기 상태를 확실히 저장 (디바운스 트리거)
+                StorageEngine.executeCloudSave();
+
+                const canvasImg = CanvasEngine.cvs.toDataURL('image/jpeg', 0.6); 
                 const unitData = PAGE_INTELLIGENCE[STATE.unitId] ? PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage] : { goal: "Free Exploration" };
 
                 const prompt = `
@@ -840,7 +2021,7 @@
                 
                 const aiBubble = document.createElement('div');
                 aiBubble.className = 'chat-bubble ai mt-4';
-                aiBubble.textContent = response; // XSS Safe
+                aiBubble.textContent = response; // XSS Safe Insertion
                 content.appendChild(aiBubble);
                 
                 document.getElementById('chat-footer').style.display = "block";
@@ -852,6 +2033,7 @@
                 
                 const content = document.getElementById('ai-content');
                 
+                // User input safe insertion
                 const uBubble = document.createElement('div'); 
                 uBubble.className = "chat-bubble user mt-4"; 
                 uBubble.textContent = STATE.lastTranscript; // XSS Safe
@@ -860,7 +2042,7 @@
 
                 const aBubble = document.createElement('div'); 
                 aBubble.className = "chat-bubble ai mt-4"; 
-                aBubble.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-bridge-mint"></i> 선생님이 대답을 생각하고 있어요...`;
+                aBubble.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 선생님이 대답을 생각하고 있어요...`;
                 content.appendChild(aBubble); 
                 content.scrollTop = content.scrollHeight;
 
@@ -886,12 +2068,16 @@
                 if (window.speechSynthesis) {
                     window.speechSynthesis.cancel();
                     const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.lang = 'ko-KR'; utterance.rate = 0.95; 
+                    utterance.lang = 'ko-KR'; 
+                    utterance.rate = 0.95; 
                     window.speechSynthesis.speak(utterance);
                 }
             },
             
-            close() { document.getElementById('ai-panel').classList.remove('open'); if(window.speechSynthesis) window.speechSynthesis.cancel(); }
+            close() { 
+                document.getElementById('ai-panel').classList.remove('open'); 
+                if(window.speechSynthesis) window.speechSynthesis.cancel(); 
+            }
         };
 
         /**

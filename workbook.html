@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bridge Academy | Premium AI Lab V100.18 (Production)</title>
+    <title>Bridge Academy | Premium AI Lab V100.19 (Production)</title>
     
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Jua&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
@@ -49,7 +49,7 @@
             --topbar-height: 85px;
             --dock-height: 110px;
             
-            /* [P1 버그 픽스] iOS 안전 영역 (Safe Area) 설정 */
+            /* Safe Area Insets for Mobile Devices */
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-left: env(safe-area-inset-left, 0px);
@@ -61,7 +61,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-2. BASE RESET]
+           [3-2. BASE RESET & FALLBACKS]
         ---------------------------------------------------------------------- */
         * { 
             margin: 0; 
@@ -80,6 +80,13 @@
             pointer-events: auto !important; 
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* [P2 버그 픽스] 100dvh 미지원 구형 디바이스용 안정성 Fallback */
+        @supports not (height: 100dvh) {
+            html, body, .app-container {
+                height: 100vh;
+            }
         }
 
         button { 
@@ -356,7 +363,7 @@
             margin-top: 2px;
         }
 
-        /* Error Toast Styles (Tailwind Removed) */
+        /* Toast UI */
         .toast-error {
             display: none;
             align-items: center;
@@ -388,7 +395,6 @@
             overflow: hidden; 
         }
 
-        /* [P1 버그 픽스] drawing-board가 부모를 넘어서지 않도록 제한 */
         .drawing-board { 
             position: relative; 
             display: inline-flex; 
@@ -413,7 +419,6 @@
             background: #FFF0F0;
         }
 
-        /* [P1 버그 픽스] worksheet-img object-fit contain 추가 및 크기 제한 방어 */
         #worksheet-img { 
             display: block; 
             max-width: 100%; 
@@ -454,7 +459,6 @@
             align-items: center; 
             justify-content: space-between; 
             padding: 0 50px; 
-            /* [P1 버그 픽스] 하단 여백 보정 */
             padding-bottom: var(--safe-bottom);
             z-index: 500; 
         }
@@ -638,7 +642,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-11. AI TUTOR PANEL (NO TAILWIND)]
+           [3-11. AI TUTOR PANEL]
         ---------------------------------------------------------------------- */
         .ai-panel { 
             position: absolute; 
@@ -700,7 +704,6 @@
             scroll-behavior: smooth; 
         }
         
-        /* Chat UI */
         .chat-bubble { 
             max-width: 90%; 
             padding: 20px 25px; 
@@ -728,7 +731,6 @@
             box-shadow: 0 8px 20px rgba(145, 211, 180, 0.3); 
         }
         
-        /* Loading Spinner Container for AI */
         .ai-loading-container {
             text-align: center;
             padding: 50px 0;
@@ -745,7 +747,6 @@
             font-size: 14px;
         }
 
-        /* Analytics UI */
         .analytics-card { 
             background: #FAFAFA; 
             border: 1px solid var(--br-border); 
@@ -1034,16 +1035,26 @@
 
         /* ----------------------------------------------------------------------
            [3-14. DEVICE COMPATIBILITY & RESPONSIVE QUERIES]
-           * [P2 버그 픽스] 태블릿/모바일 분기 및 애니메이션 호환성 적용 *
+           * [P2 버그 픽스] 터치 타겟 크기 최적화 및 디바이스별 완벽 호환성
         ---------------------------------------------------------------------- */
         
-        /* [P2 버그 픽스] 태블릿에서도 사이드바 닫기 버튼 표출 */
-        @media (max-width: 1180px) {
-            .mobile-menu-btn { display: block; }
+        /* [P2 버그 픽스] 터치 디바이스 호환성 확보 */
+        @media (pointer: coarse) {
+            .btn-nav,
+            .btn-main,
+            .btn-tool,
+            .btn-erase,
+            .btn-magic,
+            .color-preview {
+                min-width: 44px;
+                min-height: 44px;
+            }
         }
 
         /* Tablet landscape (801px - 1180px) */
         @media (min-width: 801px) and (max-width: 1180px) {
+            .mobile-menu-btn { display: block; }
+            
             :root {
                 --sidebar-width: 280px;
             }
@@ -1078,7 +1089,6 @@
         @media (max-width: 800px) {
             .mobile-menu-btn { display: block; }
             
-            /* [P2 버그 픽스] left 속성 변경 대신 transform 사용으로 애니메이션 최적화 */
             .sidebar { 
                 position: fixed; 
                 top: 0; 
@@ -1091,7 +1101,6 @@
                 box-shadow: 20px 0 50px rgba(0,0,0,0.2); 
             }
             
-            /* [P1 버그 픽스] 모바일 worksheet-img 및 drawing-board 사이즈 안전 확보 */
             .stage-wrapper {
                 padding: 12px;
             }
@@ -1103,7 +1112,6 @@
                 max-height: calc(100dvh - 240px);
             }
             
-            /* [P1 버그 픽스] iOS Safari 홈 인디케이터 고려한 높이 보정 */
             .bottom-dock { 
                 height: calc(140px + var(--safe-bottom)); 
                 flex-direction: column; 
@@ -1119,7 +1127,6 @@
             
             .ai-panel { width: 100%; right: -100%; border-left: none; }
             
-            /* [P1 버그 픽스] 모달 위치도 안전 영역 고려 */
             .rgb-modal { 
                 left: 50%; 
                 transform: translateX(-50%) translateY(20px); 
@@ -1290,21 +1297,20 @@
     <script>
         /**
          * [4-1. CONFIGURATION & SECRETS]
-         * * [P0 버그 픽스] 클라이언트에서 API_KEY 노출 방지
-         * 상업 배포 시에는 반드시 API_TUTOR_ENDPOINT를 사용하여 서버리스 프록시를 경유해야 합니다.
+         * * [P0 버그 픽스] 클라이언트에서 API_KEY 하드코딩 제거.
+         * 모든 AI 통신은 API_TUTOR_ENDPOINT를 경유하며 인증 토큰(Bearer)으로 보호됩니다.
          */
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
-            // PROD: 실제 구동 시 Firebase Cloud Functions 등 원장님의 보안 백엔드 엔드포인트를 입력하세요.
+            // 배포 시 실제 백엔드 서버 주소로 변경하십시오.
             API_TUTOR_ENDPOINT: "https://us-central1-bridge-academy-6d6a9.cloudfunctions.net/api/tutor", 
             FIREBASE_CONFIG: {
                 apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk",
                 authDomain: "bridge-academy-6d6a9.firebaseapp.com",
                 projectId: "bridge-academy-6d6a9",
-                storageBucket: "bridge-academy-6d6a9.firebasestorage.app", // Storage 설정 완료
+                storageBucket: "bridge-academy-6d6a9.firebasestorage.app", 
                 messagingSenderId: "581314243350",
-                appId: "1:581314243350:web:57897ed73d787eb02efe37",
-                measurementId: "G-JV5H1V8X34"
+                appId: "1:581314243350:web:57897ed73d787eb02efe37"
             }
         };
 
@@ -1313,7 +1319,6 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
         
-        // [P0 버그 픽스] Firebase Storage 명시적 초기화 및 할당
         let storage;
         try {
             storage = firebase.storage();
@@ -1323,7 +1328,6 @@
 
         /**
          * [4-2. ENTERPRISE LOGGER]
-         * 에러 추적 및 UI 토스트 알림 연동
          */
         const Logger = {
             log(msg, data = "") { console.log(`[BRIDGE OK] ${msg}`, data); },
@@ -1341,7 +1345,6 @@
 
         /**
          * [4-3. MASTER CURRICULUM INTELLIGENCE DB & ENGINE]
-         * 모든 33페이지의 교육 목표와 내비게이션 타이틀.
          */
         const PAGE_INTELLIGENCE = {
             "A-1": {
@@ -1383,7 +1386,6 @@
             }
         };
 
-        // [P0 버그 픽스] 유닛별 안전 범위 동적 할당 라우터 탑재
         const CurriculumEngine = {
             pages(unitId) {
                 return Object.keys(PAGE_INTELLIGENCE[unitId] || {}).map(Number).sort((a, b) => a - b);
@@ -1427,7 +1429,6 @@
             brushType: 'normal'
         };
 
-        // Initialize state securely based on dynamic curriculum bounds
         if (!PAGE_INTELLIGENCE[STATE.unitId]) STATE.unitId = "A-1";
         STATE.currentPage = CurriculumEngine.clamp(
             STATE.unitId, 
@@ -1456,7 +1457,6 @@
 
         /**
          * [4-5. SMART IMAGE LOADER ENGINE]
-         * Request Token 도입으로 레이스 컨디션 차단
          */
         const SmartImageLoader = {
             requestToken: 0,
@@ -1478,7 +1478,6 @@
                 ];
 
                 const tryLoad = (index) => {
-                    // Prevent overwriting if a new page request was made
                     if (token !== this.requestToken) return;
 
                     if (index >= possiblePaths.length) {
@@ -1499,7 +1498,6 @@
                         imgElement.src = testUrl;
                         imgElement.style.opacity = '1';
                         CanvasEngine.resizeCanvas();
-                        // Load previous canvas data for this page
                         StorageEngine.loadCanvasLocal();
                     };
 
@@ -1513,7 +1511,7 @@
 
         /**
          * [4-6. STORAGE & DEBOUNCED SYNC ENGINE]
-         * [P1 버그 픽스] Firestore Base64 한도 초과 방지 및 업로드 디바운스 적용
+         * [P0 버그 픽스] 데이터 레이스 컨디션 방어를 위한 Snapshot 아키텍처
          */
         const StorageEngine = {
             cloudSaveTimer: null,
@@ -1530,50 +1528,60 @@
                 } catch (error) { Logger.error("Storage Sync Error", error); }
             },
             
-            // 1. 순수 로컬 캐싱 (속도 확보)
-            saveCanvasLocal() {
+            // 데이터의 시점 고정 (Snapshot) 
+            createCanvasSnapshot() {
                 if (!CanvasEngine.cvs || !STATE.uid) return null;
+                const canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6);
+                const key = `br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`;
+                
                 try {
-                    const canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6);
-                    localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, canvasData);
-                    return canvasData;
-                } catch (error) { 
-                    Logger.error("Local Canvas Save Error", error); 
-                    return null;
+                    localStorage.setItem(key, canvasData);
+                } catch(e) {
+                    Logger.warn("Local Storage Full", e);
                 }
+
+                return {
+                    uid: STATE.uid,
+                    studentEmail: STATE.studentEmail,
+                    unitId: STATE.unitId,
+                    page: STATE.currentPage,
+                    transcript: STATE.lastTranscript,
+                    canvasData: canvasData
+                };
             },
 
-            // 2. 디바운스 처리된 클라우드 업로드 (비용/배터리 최적화)
+            saveCanvasLocal() {
+                return this.createCanvasSnapshot();
+            },
+
             scheduleCloudSave() {
+                const snapshot = this.createCanvasSnapshot();
                 clearTimeout(this.cloudSaveTimer);
                 this.cloudSaveTimer = setTimeout(() => {
-                    this.executeCloudSave();
-                }, 1500); // 1.5초간 추가 입력이 없으면 서버 업로드
+                    this.executeCloudSave(snapshot);
+                }, 1500); 
             },
 
-            // 3. 실제 Firebase Storage 업로드 로직
-            async executeCloudSave() {
-                const canvasData = this.saveCanvasLocal();
-                if (!canvasData || !storage) return;
+            async executeCloudSave(snapshot = null) {
+                const payload = snapshot || this.createCanvasSnapshot();
+                if (!payload || !storage) return;
 
                 try {
-                    // Firebase Storage에 업로드 (Base64 직접 저장 방지)
-                    const imageRef = storage.ref(`student_drawings/${STATE.uid}/${STATE.unitId}_P${STATE.currentPage}.webp`);
-                    await imageRef.putString(canvasData, 'data_url');
+                    const imageRef = storage.ref(`student_drawings/${payload.uid}/${payload.unitId}_P${payload.page}.webp`);
+                    await imageRef.putString(payload.canvasData, 'data_url');
                     
-                    // 다운로드 가능한 URL 획득
                     const downloadURL = await imageRef.getDownloadURL();
                     
-                    // Firestore에는 가벼운 URL만 저장 (문서 한도 1MB 문제 원천 차단)
-                    await db.collection("student_drawings").doc(`${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`).set({
-                        studentID: STATE.studentEmail, 
-                        unitId: STATE.unitId, 
-                        page: STATE.currentPage,
+                    await db.collection("student_drawings").doc(`${payload.uid}_${payload.unitId}_P${payload.page}`).set({
+                        studentID: payload.studentEmail, 
+                        unitId: payload.unitId, 
+                        page: payload.page,
                         imageUrl: downloadURL, 
-                        transcript: STATE.lastTranscript, 
+                        transcript: payload.transcript, 
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    Logger.log("Cloud Canvas Saved Safely.");
+                    }, { merge: true });
+                    
+                    Logger.log(`Cloud Canvas Saved Safely (P${payload.page})`);
                 } catch (error) { 
                     Logger.warn("Cloud Upload Failed, fallback to local only", error); 
                 }
@@ -1605,12 +1613,11 @@
         const PageEngine = {
             init() {
                 const list = document.getElementById('nav-list');
-                list.innerHTML = ''; // [P2 버그 픽스] Init 반복 시 항목 중복 증식 방지
+                list.innerHTML = ''; 
                 
                 const unitData = PAGE_INTELLIGENCE[STATE.unitId];
                 
                 if (unitData) {
-                    // [P2 버그 픽스] Object.keys를 사용하여 유닛 내 상대적 인덱스로 주차를 정확히 계산합니다.
                     Object.keys(unitData).forEach((i, index) => {
                         const ctx = unitData[i];
                         const weekBadge = Math.floor(index / 4) + 1; 
@@ -1645,7 +1652,6 @@
                 if(activeNav) {
                     activeNav.classList.add('active');
                     const navList = document.getElementById('nav-list');
-                    // 선택된 요소 위치로 스무스 스크롤
                     navList.scrollTo({ top: activeNav.offsetTop - navList.offsetTop - 50, behavior: 'smooth' });
                 }
                 
@@ -1660,15 +1666,16 @@
 
         /**
          * [4-8. APPLICATION FLOW ENGINE]
+         * [P1 버그 픽스] 페이지 이동 저장(Save prior to move) 스냅샷 매핑 완료
          */
         const AppEngine = {
             smoothMove(dir) {
-                // [P1 버그 픽스] 페이지 이동이 범위를 벗어날 경우 리로드 방어
                 const nextPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir);
                 if (nextPage === STATE.currentPage) return;
 
-                // 이동 전 현재 상태 강제 클라우드 업로드
-                StorageEngine.executeCloudSave();
+                // Create snapshot of current page to safely save to cloud
+                const snapshot = StorageEngine.createCanvasSnapshot();
+                StorageEngine.executeCloudSave(snapshot);
                 
                 const board = document.getElementById('drawing-board'); 
                 board.classList.add('fade-out');
@@ -1682,7 +1689,8 @@
             
             handleNextAdventure() {
                 AITutor.close(); 
-                StorageEngine.executeCloudSave();
+                const snapshot = StorageEngine.createCanvasSnapshot();
+                StorageEngine.executeCloudSave(snapshot);
                 this.smoothMove(1);
             }
         };
@@ -1694,6 +1702,7 @@
 
         /**
          * [4-9. CANVAS DRAWING ENGINE]
+         * [P2 버그 픽스] iPad Memory Leak 방지를 위한 historyStack Cap(20) 구현
          */
         const CanvasEngine = {
             isDrawing: false, hasMoved: false, isErasing: false, lastColor: "#363431", dpr: window.devicePixelRatio || 1, historyStack: [], historyIndex: -1,
@@ -1741,7 +1750,6 @@
                 this.setupCanvas();
                 
                 if (temp.width > 0 && temp.height > 0) { 
-                    // [P1 버그 픽스] DPR 비율을 고려하여 destination 좌표는 CSS Pixel(rect.width) 기준으로 맞춥니다.
                     this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, rect.width, rect.height); 
                 }
             },
@@ -1795,7 +1803,6 @@
                     this.ctx.shadowBlur = 0; 
                     if (this.hasMoved) { 
                         this.saveHistory(); 
-                        // [P1 버그 픽스] 드로잉 종료 시 로컬 캐싱 즉시 수행 후 클라우드는 디바운스 업로드
                         StorageEngine.saveCanvasLocal();
                         StorageEngine.scheduleCloudSave();
                     } 
@@ -1811,6 +1818,12 @@
                 this.historyIndex++; 
                 this.historyStack.length = this.historyIndex; 
                 this.historyStack.push(this.cvs.toDataURL()); 
+                
+                // [P2 버그 픽스] iPad Memory Leak 방지
+                if (this.historyStack.length > 20) {
+                    this.historyStack.shift();
+                    this.historyIndex--;
+                }
             },
             
             undo() { 
@@ -1892,8 +1905,11 @@
 
         /**
          * [4-10. AUDIO ENGINE]
+         * [P1 버그 픽스] 상태 꼬임 방지를 위한 recordingMode State Machine 추가
          */
         const AudioEngine = {
+            recordingMode: 'main',
+
             init() {
                 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
                 if (SR) {
@@ -1906,29 +1922,48 @@
                         STATE.lastTranscript = e.results[0][0].transcript; 
                         STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); 
                     };
-                    this.rec.onend = () => { if(STATE.isRecording) this.toggle(); };
-                    this.rec.onerror = (e) => { Logger.error("Speech Error:", e.error); if(STATE.isRecording) this.toggle(); }
+
+                    this.rec.onend = () => { 
+                        if (!STATE.isRecording) return;
+                        if (this.recordingMode === 'chat') this.toggleChat();
+                        else this.toggle();
+                    };
+
+                    this.rec.onerror = (e) => { 
+                        Logger.error("Speech Error:", e.error); 
+                        if(STATE.isRecording) {
+                            STATE.isRecording = false;
+                            document.getElementById('btn-record').classList.remove('recording');
+                            document.getElementById('btn-chat-record').classList.remove('recording');
+                            document.getElementById('record-text').innerText = "Voice Log";
+                        }
+                    }
                 } else { Logger.warn("Web Speech API not supported."); }
             },
             
             toggle() {
                 if(!this.rec) { alert("마이크가 지원되지 않습니다. Chrome을 사용해주세요."); return; }
+                this.recordingMode = 'main';
+
                 if(!STATE.isRecording) { 
                     STATE.isRecording = true; 
                     document.getElementById('btn-record').classList.add('recording'); 
                     document.getElementById('record-text').innerText = "Listening...";
-                    try { this.rec.start(); } catch(e){} 
+                    try { this.rec.start(); } catch(e){ Logger.error("Mic start failed", e); } 
                 } else { 
                     STATE.isRecording = false; 
                     document.getElementById('btn-record').classList.remove('recording'); 
                     document.getElementById('record-text').innerText = "Voice Log";
                     try { this.rec.stop(); } catch(e){} 
+                    
                     setTimeout(() => { AITutor.submit(); }, 800);
                 }
             },
             
             toggleChat() {
                 if(!this.rec) return;
+                this.recordingMode = 'chat';
+
                 if(!STATE.isRecording) { 
                     STATE.isRecording = true; 
                     document.getElementById('btn-chat-record').classList.add('recording'); 
@@ -1939,26 +1974,35 @@
                     document.getElementById('btn-chat-record').classList.remove('recording'); 
                     document.getElementById('btn-chat-record').innerText = "🎤 Speak to Teacher";
                     try { this.rec.stop(); } catch(e){} 
+                    
                     setTimeout(() => { AITutor.processReply(); }, 800);
                 }
             }
         };
 
         /**
-         * [4-11. 🔥 BACKEND PROXY AI TUTOR ENGINE]
-         * [P0 & P1 버그 픽스] Safety Filters, API Keys는 모두 백엔드에서 제어되어야 합니다.
+         * [4-11. 🔥 ENTERPRISE BACKEND PROXY AI TUTOR ENGINE]
+         * [P0 버그 픽스] Client-side Authorization / 토큰(Bearer) 활용 보안
          */
         const AITutor = {
             async callBackendTutor(prompt, base64Img = null) {
                 try {
+                    // [P0] Get secure Firebase ID Token
+                    const user = auth.currentUser;
+                    if (!user) throw new Error("Unauthorized Access");
+                    const token = await user.getIdToken();
+
                     const response = await fetch(CONFIG.API_TUTOR_ENDPOINT, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}` 
+                        },
                         body: JSON.stringify({ 
                             prompt: prompt,
                             image: base64Img ? base64Img.split(',')[1] : null,
-                            uid: STATE.uid,
-                            unitId: STATE.unitId
+                            unitId: STATE.unitId,
+                            page: STATE.currentPage
                         })
                     });
                     
@@ -1968,7 +2012,7 @@
                     
                 } catch (e) {
                     Logger.warn("Backend unavailable, using Local Demo Fallback.", e);
-                    // Cloud Functions 세팅 전까지 앱이 죽지 않도록 하는 자연스러운 Fallback 메시지
+                    // Fallback for development before deploying Cloud Functions
                     return "Wow, you did an amazing job today! 선생님이 지금 다른 친구를 도와주고 있어요. 계속해서 재미있게 그려볼까요?";
                 }
             },
@@ -1987,7 +2031,7 @@
                     </div>
                 `;
 
-                // [P1 버그 픽스] API 전송 전에 클라우드에 그리기 상태를 확실히 저장 (디바운스 트리거)
+                // Flush pending saves
                 StorageEngine.executeCloudSave();
 
                 const canvasImg = CanvasEngine.cvs.toDataURL('image/jpeg', 0.6); 
@@ -2000,7 +2044,7 @@
                     Student Said: "${STATE.lastTranscript || "Look at my drawing!"}"
 
                     Instructions:
-                    1. Praise their drawing explicitly.
+                    1. Praise their drawing explicitly based on visual context.
                     2. Use high-energy, encouraging language.
                     3. Mix natural Korean phrases.
                     4. Keep to 3 short sentences. Plain text.
@@ -2008,7 +2052,7 @@
 
                 const response = await this.callBackendTutor(prompt, canvasImg);
                 
-                // [P2 버그 픽스] XSS 공격을 막기 위해 innerHTML 대신 textContent와 createElement 사용
+                // Secure DOM Injection (No innerHTML for AI payloads)
                 content.innerHTML = `
                     <div class="analytics-card">
                         <div class="analytics-title">Mission: ${unitData.goal}</div>
@@ -2021,7 +2065,7 @@
                 
                 const aiBubble = document.createElement('div');
                 aiBubble.className = 'chat-bubble ai mt-4';
-                aiBubble.textContent = response; // XSS Safe Insertion
+                aiBubble.textContent = response; 
                 content.appendChild(aiBubble);
                 
                 document.getElementById('chat-footer').style.display = "block";
@@ -2033,10 +2077,9 @@
                 
                 const content = document.getElementById('ai-content');
                 
-                // User input safe insertion
                 const uBubble = document.createElement('div'); 
                 uBubble.className = "chat-bubble user mt-4"; 
-                uBubble.textContent = STATE.lastTranscript; // XSS Safe
+                uBubble.textContent = STATE.lastTranscript; 
                 content.appendChild(uBubble); 
                 content.scrollTop = content.scrollHeight;
 
@@ -2057,7 +2100,7 @@
                 const boldText = document.createElement('b');
                 boldText.style.color = 'var(--br-green)';
                 boldText.style.fontWeight = '700';
-                boldText.textContent = reply; // XSS Safe
+                boldText.textContent = reply; 
                 aBubble.appendChild(boldText);
                 
                 content.scrollTop = content.scrollHeight;
@@ -2068,25 +2111,20 @@
                 if (window.speechSynthesis) {
                     window.speechSynthesis.cancel();
                     const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.lang = 'ko-KR'; 
-                    utterance.rate = 0.95; 
+                    utterance.lang = 'ko-KR'; utterance.rate = 0.95; 
                     window.speechSynthesis.speak(utterance);
                 }
             },
             
-            close() { 
-                document.getElementById('ai-panel').classList.remove('open'); 
-                if(window.speechSynthesis) window.speechSynthesis.cancel(); 
-            }
+            close() { document.getElementById('ai-panel').classList.remove('open'); if(window.speechSynthesis) window.speechSynthesis.cancel(); }
         };
 
         /**
          * [4-12. SYSTEM BOOT SEQUENCE]
-         * [P0 버그 픽스] CanvasEngine이 제일 먼저 초기화되어야 DOM 참조 에러가 발생하지 않습니다.
+         * [P0 버그 픽스] CanvasEngine이 가장 먼저 초기화되어야 함
          */
         function SystemBoot() {
             try {
-                // 부팅 순서 엄수
                 CanvasEngine.init(); 
                 RGBRingEngine.init(); 
                 AudioEngine.init();

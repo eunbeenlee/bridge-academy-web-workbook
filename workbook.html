@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bridge Academy | Premium AI Lab V100.24 (Field QA)</title>
+    <title>Bridge Academy | Premium AI Lab V100.25 (Production Final)</title>
     
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Jua&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> 
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
@@ -81,7 +84,6 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* 구형 디바이스 100dvh 지원 불가 시 100vh로 대체 (레이아웃 붕괴 방지) */
         @supports not (height: 100dvh) {
             html, body {
                 height: 100vh;
@@ -131,7 +133,6 @@
             box-shadow: 5px 0 15px rgba(0,0,0,0.02);
         }
 
-        /* [모바일 UX] Sidebar Backdrop for Tablet/Mobile */
         .sidebar-backdrop {
             position: fixed;
             inset: 0;
@@ -402,7 +403,6 @@
             margin-top: 2px; 
         }
 
-        /* Error Toast UI Notification */
         .toast-error { 
             display: none; 
             align-items: center; 
@@ -1186,7 +1186,7 @@
             .cert-title { font-size: 30px; }
         }
 
-        /* [P2 버그 픽스] 중형 안드로이드 폰 구간 560px 복원 */
+        /* [P2 버그 픽스] 중형 안드로이드 폰 구간(481px ~ 560px) 스타일 복원 */
         @media (max-width: 560px) {
             .top-bar { height: 68px; padding: 0 14px; }
             .unit-info { font-size: 10px; letter-spacing: 1.8px; }
@@ -1356,7 +1356,6 @@
         /**
          * ----------------------------------------------------------------------
          * [4-1. CONFIGURATION & SECRETS]
-         * 상업 배포 시에는 반드시 API_TUTOR_ENDPOINT를 서버리스 프록시로 적용하십시오.
          * ----------------------------------------------------------------------
          */
         const CONFIG = { 
@@ -1368,12 +1367,10 @@
                 projectId: "bridge-academy-6d6a9",
                 storageBucket: "bridge-academy-6d6a9.appspot.com", 
                 messagingSenderId: "581314243350",
-                appId: "1:581314243350:web:57897ed73d787eb02efe37",
-                measurementId: "G-JV5H1V8X34"
+                appId: "1:581314243350:web:57897ed73d787eb02efe37"
             }
         };
 
-        // Firebase Core Services Initialization
         firebase.initializeApp(CONFIG.FIREBASE_CONFIG);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -1413,6 +1410,7 @@
         /**
          * ----------------------------------------------------------------------
          * [4-3. MASTER CURRICULUM INTELLIGENCE DATABASE]
+         * [P0 버그 픽스] AI 꼬리 질문 고도화를 위해 'question' 속성이 존재합니다.
          * ----------------------------------------------------------------------
          */
         const PAGE_INTELLIGENCE = {
@@ -1455,15 +1453,9 @@
             }
         };
 
-        /**
-         * ----------------------------------------------------------------------
-         * [4-4. DYNAMIC CURRICULUM ROUTER ENGINE]
-         * ----------------------------------------------------------------------
-         */
         const CurriculumEngine = {
             pages(unitId) {
-                const data = PAGE_INTELLIGENCE[unitId] || {};
-                return Object.keys(data).map(Number).sort((a, b) => a - b);
+                return Object.keys(PAGE_INTELLIGENCE[unitId] || {}).map(Number).sort((a, b) => a - b);
             },
             
             first(unitId) {
@@ -1524,7 +1516,7 @@
             historyStack: [], 
             historyIndex: -1, 
             chatHistory: [], 
-            badges: [], // [P0] 수료증 로딩 크래시를 막기 위한 배열 초기화
+            badges: [], 
             brushType: 'normal'
         };
 
@@ -1568,7 +1560,7 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [4-7. BADGE ENGINE (P2 Bug Fix)]
+         * [4-7. BADGE ENGINE]
          * ----------------------------------------------------------------------
          */
         const BadgeEngine = {
@@ -1683,7 +1675,7 @@
             cloudSaveTimer: null,
 
             /**
-             * [P1 버그 픽스] URL 진입점 우선 처리 로직 (Deep Linking 대응)
+             * [P1 버그 픽스] URL 진입점 Deep Linking 우선 처리 로직 유지
              */
             load() {
                 if(!STATE.uid) return;
@@ -1693,14 +1685,12 @@
                     if (s.name) STATE.studentName = s.name; 
                     if (s.badges) STATE.badges = s.badges;
 
-                    // URL의 page 파라미터가 최우선 권한을 가집니다.
                     const urlPage = Number(new URLSearchParams(window.location.search).get('page'));
                     
                     if (urlPage && CurriculumEngine.pages(STATE.unitId).includes(urlPage)) {
                         STATE.currentPage = urlPage;
                         Logger.log(`Deep Link overriding local storage. Page set to ${urlPage}.`);
                     } else if (s.page) {
-                        // URL에 없으면 스토리지의 기록을 불러옵니다.
                         STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, s.page);
                     }
                 } catch (e) {
@@ -1780,7 +1770,6 @@
                     
                     const firestoreDocId = `${payload.uid}_${payload.unitId}_P${payload.page}`;
                     
-                    // Rules 통과를 위해 uid 필드를 명시
                     await db.collection("student_drawings").doc(firestoreDocId).set({
                         uid: payload.uid,
                         studentID: payload.studentEmail, 
@@ -1865,14 +1854,10 @@
                 }
             },
             
-            /**
-             * [P1 버그 픽스] 마지막 페이지에서 수료증 닫을 시 대시보드로 이동
-             */
             close() {
                 const modal = document.getElementById('cert-modal');
                 if (modal) modal.classList.remove('active');
 
-                // 마지막 페이지인 경우 대시보드로 귀환하여 사용자 경험 종료 처리
                 if (STATE.currentPage === CurriculumEngine.last(STATE.unitId)) {
                     Logger.log("Final page certificate closed. Redirecting to dashboard.");
                     location.href = 'dashboard.html';
@@ -1890,6 +1875,7 @@
                 if(closeBtn) closeBtn.style.display = 'none'; 
                 if(printBtn) printBtn.style.display = 'none';
                 
+                // [P2 버그 픽스] html2canvas를 활용한 고품질 수료증 다운로드 처리
                 if (window.html2canvas && card) {
                     html2canvas(card, { backgroundColor: '#FFFFFF', scale: 2 }).then(canvas => {
                         if(closeBtn) closeBtn.style.display = 'block'; 
@@ -2030,7 +2016,7 @@
 
         const UIEngine = {
             toggleSidebar() { 
-                // [P2 버그 픽스] 데스크톱 환경에서는 백드롭과 사이드바 강제 토글 방지
+                // [P2 버그 픽스] 데스크톱 모드(1180px 초과)에서는 사이드바 토글 및 백드롭 오작동 차단
                 if (window.innerWidth > 1180) return;
 
                 const sb = document.getElementById('sidebar');
@@ -2080,29 +2066,37 @@
             },
 
             /**
-             * [P1 버그 픽스] 픽셀 스캔 알고리즘 
-             * 사용자가 한 번이라도 색칠을 했는지 정확히 감지하여 배지를 부여하기 위한 로직.
-             * Alpha Channel을 체크하여 빈 캔버스인지 판별합니다.
+             * [P1 버그 픽스] 극한의 CPU 최적화를 거친 캔버스 빈 여부 검사기.
+             * 원본 캔버스 크기가 방대하더라도 64x64 사이즈의 Probe 캔버스로 리샘플링하여
+             * 메인 스레드 락다운(화면 멈춤) 현상을 완벽히 방어합니다.
              */
             isCanvasBlank() {
                 if (!this.cvs || !this.ctx) return true;
                 
-                // 최적화를 위해 width x height 내부의 픽셀 데이터를 뽑아옵니다.
-                const pixels = this.ctx.getImageData(0, 0, this.cvs.width, this.cvs.height).data;
-                
-                // RGBA 구조이므로 Alpha 값(4번째 인덱스마다)만 스캔. 
-                // 성능을 위해 stride=16 (4 픽셀 간격)으로 빠르게 스킵 스캔
-                for (let i = 3; i < pixels.length; i += 16) {
-                    if (pixels[i] !== 0) {
-                        return false; // 투명하지 않은 픽셀이 하나라도 발견됨
+                try {
+                    const probe = document.createElement('canvas');
+                    probe.width = 64;
+                    probe.height = 64;
+                    const pctx = probe.getContext('2d');
+                    
+                    // 거대한 원본을 64x64 로 압축하여 복사
+                    pctx.drawImage(this.cvs, 0, 0, 64, 64);
+                    
+                    const pixels = pctx.getImageData(0, 0, 64, 64).data;
+                    
+                    // Alpha Channel 검사
+                    for (let i = 3; i < pixels.length; i += 4) {
+                        if (pixels[i] !== 0) return false;
                     }
+                    return true;
+                } catch(e) {
+                    Logger.warn("Canvas probe failed. Assuming blank to prevent crash.", e);
+                    return true;
                 }
-                return true; // 완전 투명
             },
             
             /**
-             * [P0 버그 픽스] AI 시각 개방 
-             * 배경 워크시트와 학생의 드로잉 레이어를 완벽히 병합하여 1장의 완전한 이미지 추출
+             * [P0 버그 픽스] AI 캡처 모듈
              */
             captureWorksheetWithDrawing() {
                 const worksheet = document.getElementById('worksheet-img');
@@ -2110,7 +2104,8 @@
                 
                 if (!worksheet || !draw) return null;
 
-                // 이미지가 완전히 로딩되지 않았거나 오류로 깨져있을 경우 방어 처리
+                // [P1 버그 픽스] 워크시트 이미지가 네트워크 지연으로 완전히 로드되지 않은 상태에서 
+                // AI Submit이 들어오면 투명 캔버스 레이어만 안전하게 전송합니다.
                 if (!worksheet.complete || worksheet.naturalWidth === 0) {
                     Logger.warn("Worksheet image is not ready for AI capture. Falling back to drawing-only.");
                     return draw.toDataURL('image/jpeg', 0.72);
@@ -2122,14 +2117,11 @@
 
                 const ctx = merged.getContext('2d');
                 
-                // 투명도 방지를 위해 흰색 배경 깔기
                 ctx.fillStyle = '#FFFFFF';
                 ctx.fillRect(0, 0, merged.width, merged.height);
 
                 try {
-                    // 배경 워크시트 그리기
                     ctx.drawImage(worksheet, 0, 0, merged.width, merged.height);
-                    // 그 위에 드로잉 캔버스 덧씌우기
                     ctx.drawImage(draw, 0, 0, merged.width, merged.height);
                     
                     return merged.toDataURL('image/jpeg', 0.72);
@@ -2409,7 +2401,6 @@
                 } else { 
                     Logger.warn("Web Speech API Environment is not natively supported in this browser."); 
                     
-                    // 마이크 미지원 환경일 때 버튼 비활성화 (UX 개선)
                     ['btn-record', 'btn-chat-record'].forEach(id => {
                         const btn = document.getElementById(id);
                         if (btn) {
@@ -2542,7 +2533,7 @@
                     
                 } catch (e) {
                     Logger.warn("Primary Backend Target Unavailable.", e);
-                    // [P1 버그 픽스] 네트워크 장애 시 명확한 에러 멘트로 Fallback하여 디버깅 직관성 확보
+                    // [P1 버그 픽스] 네트워크 장애 시 명확한 에러 폴백 문구 노출 (디버깅 및 CS 대응)
                     return "AI 선생님 연결에 실패했어요. 잠시 후 다시 눌러주세요.";
                 }
             },
@@ -2553,11 +2544,9 @@
                     return; 
                 }
 
-                // [P1 버그 픽스] 중복 클릭 방어를 위한 Mutex Lock
                 if (this.isBusy) return;
                 this.isBusy = true;
 
-                // [P0 버그 픽스] AI 호출을 보낸 시점의 '현재 페이지'를 스냅샷 박제하여 Race Condition 방지
                 const requestPage = STATE.currentPage;
                 const requestUnit = STATE.unitId;
 
@@ -2577,15 +2566,16 @@
 
                     StorageEngine.executeCloudSave();
 
-                    // 워크시트와 그림을 합성하여 모델 문맥 제공력 극대화
                     const canvasImg = CanvasEngine.captureWorksheetWithDrawing() || CanvasEngine.cvs.toDataURL('image/jpeg', 0.6); 
                     
                     const unitData = PAGE_INTELLIGENCE[STATE.unitId] ? PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage] : { goal: "Free Exploration" };
 
+                    // [P0 버그 픽스] Lesson Question 속성을 AI 프롬프트에 주입하여 상황에 맞는 꼬리 질문(Follow-up)을 유도합니다.
                     const prompt = `
                         You are an enthusiastic native English teacher at a prestigious private school. Your name is Teacher Bridge.
                         Student Name: ${STATE.studentName}
                         Lesson Goal: ${unitData.goal}
+                        Lesson Question: ${unitData.question || "Ask a fun, related question."}
                         Student Said: "${STATE.lastTranscript || "Look at my drawing!"}"
 
                         Instructions:
@@ -2593,25 +2583,24 @@
                         2. Use high-energy, encouraging language.
                         3. Mix natural Korean phrases contextually.
                         4. Keep strictly to 3 short sentences. Output plain text only without markdown.
+                        5. Follow the 'Sandwich Feedback' rule: Praise -> Specific Observation -> Ask a follow-up related to the Lesson Question.
                     `;
 
                     const aiResponseText = await this.callBackendTutor(prompt, canvasImg);
                     
-                    // [P0 버그 픽스] 응답이 돌아온 시점에서, 사용자가 이미 다른 페이지로 이동했다면 조용히 렌더링 무시
+                    // 응답 대기 중 사용자가 페이지를 이동했다면 데이터 렌더링 무시
                     if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) {
                         Logger.log("AI Response ignored because page changed during processing.");
                         return;
                     }
 
-                    // [P1 버그 픽스] 백엔드 응답이 실패 메시지일 경우 배지 수여 로직 차단
+                    // [P1 버그 픽스] 백엔드 응답이 실패 메시지일 경우 배지 수여 어뷰징 차단
                     const aiFailed = aiResponseText.includes("AI 선생님 연결에 실패");
                     
                     if (!aiFailed) {
-                        // 픽셀 검사를 통해 빈 도화지가 아니면 아티스트 배지 수여
                         if (!CanvasEngine.isCanvasBlank()) {
                             BadgeEngine.add("🎨 Colorful Artist");
                         }
-                        // 발음 자신감이 높으면 스피커 배지 수여
                         if (STATE.sttConfidence >= 80 && STATE.lastTranscript.length > 0) {
                             BadgeEngine.add("🗣️ Great Speaker");
                         }
@@ -2729,14 +2718,12 @@
             systemBooted = true;
 
             try {
-                // 부팅 순서 엄수 - Storage 메타데이터 로드 후 CanvasEngine 등 최우선 초기화
                 StorageEngine.load();
                 
                 CanvasEngine.init(); 
                 RGBRingEngine.init(); 
                 AudioEngine.init();
                 
-                // 기저장된 배지 렌더링
                 BadgeEngine.renderAll();
                 
                 PageEngine.init(); 

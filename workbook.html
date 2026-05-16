@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#FCFBF9">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Bridge Academy | Premium AI Lab V100.29</title>
+    <title>Bridge Academy | Premium AI Lab V100.30</title>
     
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Jua&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
@@ -1535,6 +1535,31 @@
             color: var(--br-charcoal); 
         }
 
+        /* [P0 Fix] 누락되었던 수료증 모달 오버레이 스타일 완벽 복구 및 전개 */
+        .cert-modal-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100dvh; 
+            background-color: rgba(0, 0, 0, 0.85); 
+            z-index: 30000; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition-property: opacity;
+            transition-duration: 0.4s;
+            transition-timing-function: ease; 
+            backdrop-filter: blur(15px); 
+        }
+
+        .cert-modal-overlay.active { 
+            opacity: 1; 
+            pointer-events: auto; 
+        }
+
         .cert-card { 
             background-color: #FFFFFF; 
             width: 850px; 
@@ -2244,7 +2269,7 @@
          * [5-4. PREMIUM CUSTOM CURSOR ENGINE]
          * ----------------------------------------------------------------------
          * 럭셔리 웹사이트에서 사용하는 마우스 포인터 팔로잉(Following) 효과입니다.
-         * 모바일 환경에서는 CSS 미디어 쿼리를 통해 자동으로 비활성화됩니다.
+         * [P2 Fix] 이벤트 위임(Event Delegation)을 통해 동적으로 렌더링된 요소에도 완벽 대응합니다.
          */
         const CursorEngine = {
             dot: null,
@@ -2276,17 +2301,20 @@
                     this.dot.style.top = `${this.mouseY}px`;
                 });
 
-                // 인터랙티브 요소 호버 시 커서 팽창 효과 이벤트 바인딩
-                const interactiveElements = document.querySelectorAll('.interactive-hover, a, button, input[type="range"]');
-                interactiveElements.forEach(el => {
-                    el.addEventListener('mouseenter', () => {
+                // [P2 Fix] 이벤트 위임(Event Delegation) 적용
+                // DOM 트리에 동적으로 추가되는 내비게이션 요소 등에서도 커서 효과가 누락되지 않도록 방어합니다.
+                document.addEventListener('mouseover', (e) => {
+                    if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
                         this.dot.classList.add('hovered');
                         this.ring.classList.add('hovered');
-                    });
-                    el.addEventListener('mouseleave', () => {
+                    }
+                });
+
+                document.addEventListener('mouseout', (e) => {
+                    if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
                         this.dot.classList.remove('hovered');
                         this.ring.classList.remove('hovered');
-                    });
+                    }
                 });
 
                 // RequestAnimationFrame을 활용한 부드러운 보간 애니메이션 시작
@@ -2312,6 +2340,7 @@
          * [5-5. CLOUD SYNC INDICATOR ENGINE]
          * ----------------------------------------------------------------------
          * 사용자가 그림을 그릴 때 클라우드 DB 연동 상태를 실시간 시각화하여 안도감을 제공.
+         * [P1 Fix] 인라인 스타일로 인한 상태 고착화 현상을 방지합니다.
          */
         const SyncIndicatorEngine = {
             container: null,
@@ -2324,9 +2353,22 @@
                 this.text = document.getElementById('sync-text');
             },
 
+            /**
+             * [P1 Fix] Offline 상태에서 주입된 인라인 스타일을 초기화하여
+             * CSS 클래스 기반의 테마 전환이 정상적으로 작동하도록 돕습니다.
+             */
+            resetInlineStyle() {
+                if (!this.container) return;
+                this.container.style.color = "";
+                this.container.style.backgroundColor = "";
+                this.container.style.borderColor = "";
+            },
+
             setSaving() {
                 if (!this.container) this.init();
                 if (!this.container) return;
+                
+                this.resetInlineStyle();
 
                 this.container.className = "sync-indicator-container saving";
                 this.icon.className = "fa-solid fa-spinner sync-icon spin";
@@ -2336,6 +2378,8 @@
             setSaved() {
                 if (!this.container) this.init();
                 if (!this.container) return;
+
+                this.resetInlineStyle();
 
                 this.container.className = "sync-indicator-container saved";
                 this.icon.className = "fa-solid fa-cloud-check sync-icon";
@@ -2728,7 +2772,7 @@
             
             /**
              * 비동기 레이스 컨디션을 막기 위해 현재 화면의 상태를 영구 동결하는 불변 스냅샷을 생성합니다.
-             * [P1 픽스] Firestore 문서 용량 한계(1MB) 초과를 막기 위해 다이나믹 다운샘플러 폴백 루프를 적용했습니다.
+             * Firestore 문서 용량 한계(1MB) 초과를 막기 위해 다이나믹 다운샘플러 폴백 루프를 적용했습니다.
              * @param {boolean} compressForDatabase - Firestore 저장을 위한 압축 여부 강제 적용 플래그
              */
             createCanvasSnapshot(compressForDatabase = false) {
@@ -2740,7 +2784,6 @@
                     // 1차 시도: 1024px 스케일다운 (JPEG 0.55 품질)
                     canvasData = CanvasEngine.captureWorksheetWithDrawing(true, 1024); 
                     
-                    // [P1 Firestore 1MB Limits Defender] 
                     // Base64 인코딩 페이로드가 약 900KB (900,000 bytes)를 초과할 경우 Firestore에서 크래시가 발생할 수 있습니다.
                     if (canvasData && canvasData.length > 900000) {
                         Logger.warn("Canvas payload exceeds 900KB safety threshold. Initiating Level 1 Downsampling fallback (768px).");
@@ -3053,7 +3096,7 @@
                 
                 if (nextPage === STATE.currentPage) return;
 
-                // [P1 버그 픽스] 사용자가 그림을 그린 직후 빠르게 페이지를 넘길 경우
+                // 사용자가 그림을 그린 직후 빠르게 페이지를 넘길 경우
                 // 로컬 스토리지 보존 함수가 건너뛰어지는 데이터 증발(Race Condition)을 막기 위해,
                 // 클라우드 업로드 전 명시적으로 로컬 스토리지에 무압축 원본 투명 레이어를 락인(Lock-in)합니다.
                 StorageEngine.saveCanvasLocal();
@@ -3198,8 +3241,8 @@
             
             /**
              * 워크시트(교재 배경)와 학생의 드로잉 레이어를 고품질로 병합(Merge)합니다.
-             * [P1 픽스] Firestore 문서 최대 크기 제한(1MiB) 대응을 위한 maxWidth 파라미터를 추가했습니다.
-             * * @param {boolean} compressForDatabase - Firestore 업로드용일 경우 압축 로직을 적용합니다.
+             * Firestore 문서 최대 크기 제한(1MiB) 대응을 위한 maxWidth 파라미터를 사용합니다.
+             * @param {boolean} compressForDatabase - Firestore 업로드용일 경우 압축 로직을 적용합니다.
              * @param {number} maxWidth - DB 저장용 강제 리사이징 픽셀 상한선 (기본 1024, 폴백 시 768, 640 순환)
              */
             captureWorksheetWithDrawing(compressForDatabase = false, maxWidth = 1024) {
@@ -3720,7 +3763,7 @@
                     StorageEngine.executeCloudSave();
 
                     // 워크시트 배경과 그림 벡터 레이어를 고해상도로 합성하여 제미나이 엔진 시각 문맥 제공력 극대화
-                    // [P1 Fix] Firestore 저장을 위해 1024px, 768px, 640px 순환 폴백이 포함된 스냅샷 획득 로직을 간접 호출하여 메모리를 아낍니다.
+                    // Firestore 저장을 위해 순환 폴백이 포함된 스냅샷 획득 로직을 간접 호출하여 메모리를 아낍니다.
                     const payloadSnapshot = StorageEngine.createCanvasSnapshot(true);
                     const canvasImg = payloadSnapshot ? payloadSnapshot.canvasData : null;
                     
@@ -3880,7 +3923,8 @@
                 // 부팅 순서 엄수 - Storage 메타데이터 우선 로드하여 진도율부터 맞춤
                 StorageEngine.load();
                 
-                // 캔버스, 색상 팔레트, 녹음 엔진, 커서 엔진 등 UI 인터랙티브 모듈 순차 로드
+                // 캔버스, 모달, 색상 팔레트, 녹음 엔진, 커서 엔진 등 UI 인터랙티브 모듈 순차 로드
+                CustomModalEngine.init();
                 CanvasEngine.init(); 
                 RGBRingEngine.init(); 
                 AudioEngine.init();

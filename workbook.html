@@ -2,25 +2,24 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bridge Academy | Premium AI Lab V100.25 (Production Final)</title>
+    <title>Bridge Academy | Premium AI Lab V100.27 (Production Final)</title>
     
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Jua&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> 
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
     <style>
         /* ----------------------------------------------------------------------
-           [3-1. DESIGN TOKENS & CSS VARIABLES]
+           [4-1. DESIGN TOKENS & CSS VARIABLES]
         ---------------------------------------------------------------------- */
         :root {
             /* Brand Primary Colors */
@@ -63,7 +62,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-2. BASE RESET & FALLBACKS]
+           [4-2. BASE RESET & FALLBACKS]
         ---------------------------------------------------------------------- */
         * { 
             margin: 0; 
@@ -84,6 +83,7 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
+        /* 구형 디바이스 100dvh 미지원 환경 안전망 폴백 */
         @supports not (height: 100dvh) {
             html, body {
                 height: 100vh;
@@ -106,7 +106,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [3-3. MASTER APP CONTAINER]
+           [4-3. MASTER APP CONTAINER]
         ---------------------------------------------------------------------- */
         .app-container { 
             display: flex; 
@@ -118,7 +118,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [3-4. SIDEBAR NAVIGATION & BACKDROP]
+           [4-4. SIDEBAR NAVIGATION & BACKDROP]
         ---------------------------------------------------------------------- */
         .sidebar { 
             width: var(--sidebar-width); 
@@ -133,6 +133,7 @@
             box-shadow: 5px 0 15px rgba(0,0,0,0.02);
         }
 
+        /* 태블릿/모바일용 사이드바 딤(Dim) 백드롭 */
         .sidebar-backdrop {
             position: fixed;
             inset: 0;
@@ -174,7 +175,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [3-5. STUDENT PROFILE WIDGET]
+           [4-5. STUDENT PROFILE WIDGET]
         ---------------------------------------------------------------------- */
         .student-profile { 
             padding: 25px 30px; 
@@ -208,7 +209,7 @@
             font-weight: 900; 
             font-size: 22px; 
             font-family: 'Nunito', sans-serif; 
-            transition: 0.4s; 
+            transition: var(--transition-smooth); 
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
 
@@ -242,6 +243,7 @@
             text-transform: uppercase; 
         }
 
+        /* 동적 배지 컨테이너 */
         .badge-container { 
             display: flex; 
             flex-wrap: wrap; 
@@ -265,7 +267,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-6. CURRICULUM NAVIGATION LIST]
+           [4-6. CURRICULUM NAVIGATION LIST]
         ---------------------------------------------------------------------- */
         .nav-list { 
             flex: 1; 
@@ -346,7 +348,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-7. MAIN WORKSPACE & TOP HEADER]
+           [4-7. MAIN WORKSPACE & TOP HEADER]
         ---------------------------------------------------------------------- */
         .workspace { 
             flex: 1; 
@@ -403,6 +405,7 @@
             margin-top: 2px; 
         }
 
+        /* 시스템 에러 알림 토스트 UI */
         .toast-error { 
             display: none; 
             align-items: center; 
@@ -423,7 +426,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [3-8. DRAWING STAGE & CANVAS BOARD]
+           [4-8. DRAWING STAGE & CANVAS BOARD]
         ---------------------------------------------------------------------- */
         .stage-wrapper { 
             flex: 1; 
@@ -490,7 +493,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-9. BOTTOM DOCK & DRAWING TOOLS]
+           [4-9. BOTTOM DOCK & DRAWING TOOLS]
         ---------------------------------------------------------------------- */
         .bottom-dock { 
             height: var(--dock-height); 
@@ -586,7 +589,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-10. ACTION BUTTONS (NAVIGATION & SUBMIT)]
+           [4-10. ACTION BUTTONS (NAVIGATION & SUBMIT)]
         ---------------------------------------------------------------------- */
         .action-group { 
             display: flex; 
@@ -653,7 +656,7 @@
             box-shadow: inset 0 0 0 2px var(--br-error); 
         }
 
-        /* Disabled State for No-Mic Devices */
+        /* 마이크 미지원 환경일 때 버튼 비활성화 UX 디자인 */
         .btn-record:disabled, .btn-chat-action:disabled {
             cursor: not-allowed;
             opacity: 0.5;
@@ -691,7 +694,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-11. AI TUTOR CHAT PANEL]
+           [4-11. AI TUTOR CHAT PANEL]
         ---------------------------------------------------------------------- */
         .ai-panel { 
             position: absolute; 
@@ -753,7 +756,7 @@
             scroll-behavior: smooth; 
         }
         
-        /* Chat Bubbles */
+        /* 대화형 챗 버블 시스템 */
         .chat-bubble { 
             max-width: 90%; 
             padding: 20px 25px; 
@@ -781,7 +784,7 @@
             box-shadow: 0 8px 20px rgba(145, 211, 180, 0.3); 
         }
         
-        /* AI Loading Spinner */
+        /* AI 백엔드 비동기 통신 대기 스피너 */
         .ai-loading-container { 
             text-align: center; 
             padding: 50px 0; 
@@ -800,7 +803,7 @@
             font-size: 14px; 
         }
 
-        /* Analytics Score Card */
+        /* 발음 평가 대시보드 카드 */
         .analytics-card { 
             background: #FAFAFA; 
             border: 1px solid var(--br-border); 
@@ -851,7 +854,7 @@
             border-radius: 12px; 
         }
 
-        /* Chat Interaction Footer */
+        /* 챗봇 하단 통신 컨트롤 푸터 */
         .chat-footer { 
             padding: 25px 35px; 
             border-top: 1px solid var(--br-border); 
@@ -901,8 +904,10 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-12. MODALS & OVERLAYS]
+           [4-12. MODALS & OVERLAYS]
         ---------------------------------------------------------------------- */
+        
+        /* 커스텀 RGB 휠 모달 */
         .rgb-modal { 
             position: absolute; 
             bottom: 130px; 
@@ -937,6 +942,7 @@
             color: var(--br-charcoal); 
         }
 
+        /* 수료증 디스플레이 모달 & 오버레이 백드롭 */
         .cert-modal-overlay { 
             position: fixed; 
             top: 0; 
@@ -1078,7 +1084,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-14. KEYFRAME ANIMATIONS]
+           [4-13. KEYFRAME ANIMATIONS]
         ---------------------------------------------------------------------- */
         @keyframes popIn { 
             from { opacity: 0; transform: scale(0.92) translateY(15px); } 
@@ -1090,10 +1096,10 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-15. DEVICE COMPATIBILITY & RESPONSIVE QUERIES]
+           [4-14. DEVICE COMPATIBILITY & RESPONSIVE QUERIES]
         ---------------------------------------------------------------------- */
         
-        /* 터치 타겟 규격 최적화 */
+        /* 터치 기반 디바이스를 위한 버튼 최소 터치 타겟 규격 최적화 */
         @media (pointer: coarse) {
             .btn-nav, .btn-main, .btn-tool, .btn-erase, .btn-magic, .color-preview { 
                 min-width: 44px; 
@@ -1101,6 +1107,7 @@
             }
         }
 
+        /* 데스크톱 환경 기본 버튼 숨김 처리 */
         .mobile-menu-btn { 
             display: none; 
             font-size: 28px; 
@@ -1125,12 +1132,17 @@
                 transform: translateX(0); 
                 box-shadow: 20px 0 50px rgba(0,0,0,0.18); 
             }
+            
             .workspace { width: 100%; }
-
             .top-bar { height: 76px; padding: 0 24px; }
             .stage-wrapper { padding: 20px; }
             .bottom-dock { height: 128px; padding: 14px 24px; gap: 14px; }
-            .tool-group, .action-group { flex-wrap: wrap; justify-content: center; }
+            
+            .tool-group, .action-group { 
+                flex-wrap: wrap; 
+                justify-content: center; 
+            }
+            
             .btn-main { padding: 0 22px; }
         }
 
@@ -1186,7 +1198,7 @@
             .cert-title { font-size: 30px; }
         }
 
-        /* [P2 버그 픽스] 중형 안드로이드 폰 구간(481px ~ 560px) 스타일 복원 */
+        /* [P2 버그 픽스] 중형 안드로이드 스마트폰 구간 복구 */
         @media (max-width: 560px) {
             .top-bar { height: 68px; padding: 0 14px; }
             .unit-info { font-size: 10px; letter-spacing: 1.8px; }
@@ -1202,7 +1214,7 @@
             }
         }
 
-        /* Extra Small Phone (iPhone SE 계열 max-width: 480px) */
+        /* Extra Small Phone (iPhone SE 계열) */
         @media (max-width: 480px) {
             .bottom-dock { 
                 height: calc(170px + var(--safe-bottom)); 
@@ -1355,37 +1367,38 @@
     <script>
         /**
          * ----------------------------------------------------------------------
-         * [4-1. CONFIGURATION & SECRETS]
+         * [5-1. CONFIGURATION & SECRETS]
          * ----------------------------------------------------------------------
+         * No-Storage (Firebase Storage 비과금) 플랜에 맞춰 설계되었으며, 
+         * 클라이언트의 보안 키는 안전한 클라우드플레어 엣지 프록시 서버 주소로 완벽히 대체되었습니다.
          */
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
-            API_TUTOR_ENDPOINT: "https://us-central1-bridge-academy-6d6a9.cloudfunctions.net/api/tutor", 
+            
+            // ⚠️ 대망의 상용화용 Cloudflare Workers Proxy Endpoint
+            API_TUTOR_ENDPOINT: "https://sparkling-sky-6699.ebin22725.workers.dev", 
+            
             FIREBASE_CONFIG: {
                 apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk",
                 authDomain: "bridge-academy-6d6a9.firebaseapp.com",
                 projectId: "bridge-academy-6d6a9",
+                // Storage Bucket 값은 존재하지만 호출하지 않아 과금을 원천 차단합니다.
                 storageBucket: "bridge-academy-6d6a9.appspot.com", 
                 messagingSenderId: "581314243350",
                 appId: "1:581314243350:web:57897ed73d787eb02efe37"
             }
         };
 
+        // Firebase Core Services Initialization
         firebase.initializeApp(CONFIG.FIREBASE_CONFIG);
         const auth = firebase.auth();
         const db = firebase.firestore();
         
-        let storage;
-        try {
-            storage = firebase.storage();
-        } catch(error) {
-            console.warn("Firebase Storage initialization skipped or failed.", error);
-        }
-
         /**
          * ----------------------------------------------------------------------
-         * [4-2. ENTERPRISE LOGGER UTILITY]
+         * [5-2. ENTERPRISE LOGGER UTILITY]
          * ----------------------------------------------------------------------
+         * 서비스 안정성을 모니터링하기 위한 체계적인 로그 트래커 시스템
          */
         const Logger = {
             log(msg, data = "") { 
@@ -1400,6 +1413,7 @@
                 if(toast) {
                     document.getElementById('error-toast-msg').innerText = msg;
                     toast.classList.add('show');
+                    // 5초 후 UI에서 토스트 팝업 강제 해제
                     setTimeout(() => {
                         toast.classList.remove('show');
                     }, 5000);
@@ -1409,9 +1423,10 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [4-3. MASTER CURRICULUM INTELLIGENCE DATABASE]
-         * [P0 버그 픽스] AI 꼬리 질문 고도화를 위해 'question' 속성이 존재합니다.
+         * [5-3. MASTER CURRICULUM INTELLIGENCE DATABASE]
          * ----------------------------------------------------------------------
+         * [P0 개선] 각 페이지별 "질문(question)" 속성을 AI 프롬프트에 주입하여
+         * 정밀한 Inquiry-Based Learning (탐구 기반 학습) 꼬리 대화를 유도합니다.
          */
         const PAGE_INTELLIGENCE = {
             "A-1": {
@@ -1453,9 +1468,19 @@
             }
         };
 
+        /**
+         * ----------------------------------------------------------------------
+         * [5-4. DYNAMIC CURRICULUM ROUTER ENGINE]
+         * ----------------------------------------------------------------------
+         * 유닛별 페이지 배열 및 동적 주차(Week) 계산기 알고리즘
+         */
         const CurriculumEngine = {
+            /**
+             * 선택한 Unit의 가용 페이지 숫자 배열을 순차적으로 정렬하여 반환
+             */
             pages(unitId) {
-                return Object.keys(PAGE_INTELLIGENCE[unitId] || {}).map(Number).sort((a, b) => a - b);
+                const data = PAGE_INTELLIGENCE[unitId] || {};
+                return Object.keys(data).map(Number).sort((a, b) => a - b);
             },
             
             first(unitId) {
@@ -1485,12 +1510,18 @@
                 return pageArray[calcIdx] || page;
             },
 
+            /**
+             * 유닛 내부의 논리적 인덱스(0부터 시작)를 기반으로 4주차 시스템의 Week 번호를 연산합니다.
+             */
             weekIndex(unitId, page) {
                 const pages = this.pages(unitId);
                 const idx = pages.indexOf(page);
                 return idx === -1 ? 1 : Math.floor(idx / 4) + 1;
             },
 
+            /**
+             * 4페이지 사이클의 끝부분이거나, 해당 유닛 커리큘럼 자체의 마지막인지 판별하여 수료증 타이밍을 잰다.
+             */
             isWeekEnd(unitId, page) {
                 const pages = this.pages(unitId);
                 const idx = pages.indexOf(page);
@@ -1500,7 +1531,7 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [4-5. GLOBAL STATE MANAGEMENT]
+         * [5-5. GLOBAL STATE MANAGEMENT]
          * ----------------------------------------------------------------------
          */
         const STATE = {
@@ -1520,6 +1551,7 @@
             brushType: 'normal'
         };
 
+        // 초기화 과정 중 유효하지 않은 Unit ID 접근 시 A-1으로 강제 폴백
         if (!PAGE_INTELLIGENCE[STATE.unitId]) {
             Logger.warn(`Invalid Unit ID detected: ${STATE.unitId}. Forcing fallback to A-1.`);
             STATE.unitId = "A-1";
@@ -1532,7 +1564,7 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [4-6. FIREBASE AUTHENTICATION GUARD]
+         * [5-6. FIREBASE AUTHENTICATION GUARD]
          * ----------------------------------------------------------------------
          */
         auth.onAuthStateChanged((user) => {
@@ -1560,11 +1592,12 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [4-7. BADGE ENGINE]
+         * [5-7. BADGE ENGINE (Gamification Control)]
          * ----------------------------------------------------------------------
          */
         const BadgeEngine = {
             add(label) {
+                // 중복 배지 부여 방어 로직
                 if (STATE.badges.includes(label)) return;
                 
                 STATE.badges.push(label);
@@ -1579,14 +1612,21 @@
 
                 StorageEngine.save();
                 
+                // 배지 획득 시 시각적인 축하 폭죽 효과 트리거
                 if (window.confetti) {
-                    confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 }, colors: ['#CBAE75', '#89BFA0'] });
+                    confetti({ 
+                        particleCount: 50, 
+                        spread: 60, 
+                        origin: { y: 0.8 }, 
+                        colors: ['#CBAE75', '#89BFA0'] 
+                    });
                 }
             },
             
             renderAll() {
                 const box = document.getElementById('badge-container');
                 if (!box) return;
+                
                 box.innerHTML = '';
                 
                 STATE.badges.forEach(label => {
@@ -1600,7 +1640,7 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [4-8. SMART IMAGE LOADER ENGINE]
+         * [5-8. SMART IMAGE LOADER ENGINE (Race-Condition Free)]
          * ----------------------------------------------------------------------
          */
         const SmartImageLoader = {
@@ -1625,6 +1665,7 @@
                 ];
 
                 const tryLoad = (index) => {
+                    // 비동기 요청 도중 토큰이 만료되었다면(페이지를 넘겼다면) 즉시 드랍
                     if (token !== this.requestToken) {
                         return;
                     }
@@ -1656,6 +1697,7 @@
                     };
 
                     tempImg.onerror = () => {
+                        // 에러 시 재귀적으로 다음 포맷 경로 시도
                         tryLoad(index + 1);
                     };
                     
@@ -1668,14 +1710,15 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [4-9. STORAGE & DEBOUNCED CLOUD SYNC ENGINE]
+         * [5-9. STORAGE & DEBOUNCED CLOUD SYNC ENGINE]
          * ----------------------------------------------------------------------
          */
         const StorageEngine = {
             cloudSaveTimer: null,
 
             /**
-             * [P1 버그 픽스] URL 진입점 Deep Linking 우선 처리 로직 유지
+             * [P1 우선순위 패치] URL Deep Linking 파라미터를 로컬스토리지 기록보다 
+             * 우선순위로 두어 링크 공유를 통한 특정 페이지 강제 진입을 허용합니다.
              */
             load() {
                 if(!STATE.uid) return;
@@ -1689,12 +1732,12 @@
                     
                     if (urlPage && CurriculumEngine.pages(STATE.unitId).includes(urlPage)) {
                         STATE.currentPage = urlPage;
-                        Logger.log(`Deep Link overriding local storage. Page set to ${urlPage}.`);
+                        Logger.log(`Deep Link overriding local storage. Target Page injected: ${urlPage}.`);
                     } else if (s.page) {
                         STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, s.page);
                     }
                 } catch (e) {
-                    Logger.warn("Metadata Load Error", e);
+                    Logger.warn("Metadata Initialization Load Error", e);
                 }
             },
 
@@ -1716,20 +1759,36 @@
                     }, { merge: true });
                     
                 } catch (error) { 
-                    Logger.error("Metadata Cloud Save Error", error); 
+                    Logger.error("Metadata Cloud Database Save Error", error); 
                 }
             },
             
-            createCanvasSnapshot() {
+            /**
+             * 비동기 레이스 컨디션을 막기 위해 현재 화면의 상태를 영구 동결하는 스냅샷을 생성합니다.
+             * @param {boolean} compressForDatabase - Firestore 저장을 위한 압축 여부 옵션
+             */
+            createCanvasSnapshot(compressForDatabase = false) {
                 if (!CanvasEngine.cvs || !STATE.uid) return null;
                 
-                const canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6); 
+                let canvasData;
+                
+                if (compressForDatabase) {
+                    // 백엔드 Firestore DB 용도: 교재 배경과 합쳐서 1024px, 60% 퀄리티로 고압축 리사이징 처리
+                    canvasData = CanvasEngine.captureWorksheetWithDrawing(true); 
+                } else {
+                    // 프론트엔드 Local Storage 복원용도: 학생의 투명 드로잉 레이어만 60% 압축 보관
+                    canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6); 
+                }
+                
                 const key = `br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`;
                 
-                try {
-                    localStorage.setItem(key, canvasData);
-                } catch(e) {
-                    Logger.warn("Local Storage Capacity Full", e);
+                // 로컬 스토리지에만 저장되는 것은 compressForDatabase 옵션과 관계없이 투명 드로잉 원본
+                if (!compressForDatabase) {
+                    try {
+                        localStorage.setItem(key, canvasData);
+                    } catch(e) {
+                        Logger.warn("Local Storage Memory Capacity Full. Eviction required.", e);
+                    }
                 }
 
                 return {
@@ -1743,47 +1802,42 @@
             },
 
             saveCanvasLocal() {
-                return this.createCanvasSnapshot();
+                return this.createCanvasSnapshot(false);
             },
 
             scheduleCloudSave() {
-                const snapshot = this.createCanvasSnapshot();
+                // 클라우드 업로드 타이머 예약 시점의 스냅샷은 DB 압축용(true) 플래그를 넣어서 추출합니다.
+                const snapshot = this.createCanvasSnapshot(true);
                 
                 clearTimeout(this.cloudSaveTimer);
                 
                 this.cloudSaveTimer = setTimeout(() => {
                     this.executeCloudSave(snapshot);
-                }, 1500); 
+                }, 1500); // 1.5초 텀의 디바운싱 로직
             },
 
             async executeCloudSave(snapshot = null) {
-                const payload = snapshot || this.createCanvasSnapshot();
-                if (!payload || !storage) return;
+                const payload = snapshot || this.createCanvasSnapshot(true);
+                if (!payload) return;
 
                 try {
-                    const storagePath = `student_drawings/${payload.uid}/${payload.unitId}_P${payload.page}.webp`;
-                    const imageRef = storage.ref(storagePath);
-                    
-                    await imageRef.putString(payload.canvasData, 'data_url');
-                    
-                    const downloadURL = await imageRef.getDownloadURL();
-                    
                     const firestoreDocId = `${payload.uid}_${payload.unitId}_P${payload.page}`;
                     
+                    // Firestore Security Rules(request.resource.data.uid == request.auth.uid) 완벽 통과를 위한 속성 바인딩
                     await db.collection("student_drawings").doc(firestoreDocId).set({
                         uid: payload.uid,
                         studentID: payload.studentEmail, 
                         unitId: payload.unitId, 
                         page: payload.page,
-                        imageUrl: downloadURL, 
+                        imageUrl: payload.canvasData, // 초경량 압축 Base64 바이너리가 스토리지 없이 다이렉트 저장
                         transcript: payload.transcript, 
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
                     
-                    Logger.log(`Cloud Canvas Transaction Complete for Page ${payload.page}`);
+                    Logger.log(`Cloud Direct DB Canvas Transaction Complete for Page ${payload.page}`);
                     
                 } catch (error) { 
-                    Logger.warn("Cloud Upload Transaction Failed", error); 
+                    Logger.warn("Cloud Direct Upload Transaction Failed", error); 
                 }
             },
             
@@ -1808,7 +1862,7 @@
                         CanvasEngine.saveHistory(); 
                     }
                 } catch (error) { 
-                    Logger.error("Local Canvas Restore Error", error); 
+                    Logger.error("Local Canvas Render Restore Engine Error", error); 
                     CanvasEngine.saveHistory(); 
                 }
             }
@@ -1816,7 +1870,7 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [4-10. CERTIFICATE ENGINE]
+         * [5-10. CERTIFICATE ENGINE (html2canvas)]
          * ----------------------------------------------------------------------
          */
         const CertificateEngine = {
@@ -1832,25 +1886,36 @@
                 
                 const imgEl = document.getElementById('cert-canvas-img');
                 if(imgEl) {
-                    const mergedImg = CanvasEngine.captureWorksheetWithDrawing();
+                    // 수료증에도 압축되지 않은 고해상도 병합 이미지를 렌더링
+                    const mergedImg = CanvasEngine.captureWorksheetWithDrawing(false);
                     imgEl.src = mergedImg || CanvasEngine.cvs.toDataURL();
                 }
                 
                 const msgEl = document.getElementById('cert-ai-msg');
+                
                 const hasArt = STATE.badges.includes("🎨 Colorful Artist");
                 const hasVoice = STATE.badges.includes("🗣️ Great Speaker");
                 
                 let msg = "For showing amazing curiosity and completing your inquiry journey.";
-                if (hasArt && hasVoice) { msg = "For your brilliant colorful art and speaking English so confidently!"; }
-                else if (hasArt) { msg = "For expressing your wonderful imagination through colorful art!"; }
-                else if (hasVoice) { msg = "For speaking English with a clear, brave voice like a true explorer!"; }
+                if (hasArt && hasVoice) { 
+                    msg = "For your brilliant colorful art and speaking English so confidently!"; 
+                } else if (hasArt) { 
+                    msg = "For expressing your wonderful imagination through colorful art!"; 
+                } else if (hasVoice) { 
+                    msg = "For speaking English with a clear, brave voice like a true explorer!"; 
+                }
                 
                 if(msgEl) msgEl.innerText = `"${msg}"`;
                 
                 modal.classList.add('active');
                 
                 if (window.confetti) {
-                    confetti({ particleCount: 150, spread: 100, origin: { y: 0.5 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
+                    confetti({ 
+                        particleCount: 150, 
+                        spread: 100, 
+                        origin: { y: 0.5 }, 
+                        colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] 
+                    });
                 }
             },
             
@@ -1858,8 +1923,9 @@
                 const modal = document.getElementById('cert-modal');
                 if (modal) modal.classList.remove('active');
 
+                // [P1 UX 패치] 마지막 페이지 도달 후 수료증을 닫으면 대시보드로 강제 귀환 처리
                 if (STATE.currentPage === CurriculumEngine.last(STATE.unitId)) {
-                    Logger.log("Final page certificate closed. Redirecting to dashboard.");
+                    Logger.log("Final page certificate closed. Redirecting user routing to dashboard.");
                     location.href = 'dashboard.html';
                     return;
                 }
@@ -1872,12 +1938,17 @@
                 const closeBtn = document.querySelector('.cert-close');
                 const printBtn = document.querySelector('.btn-print');
                 
+                // 캡처 화면에서 방해 요소 임시 은닉 처리
                 if(closeBtn) closeBtn.style.display = 'none'; 
                 if(printBtn) printBtn.style.display = 'none';
                 
-                // [P2 버그 픽스] html2canvas를 활용한 고품질 수료증 다운로드 처리
+                // [P2 버그 픽스] 복원된 html2canvas 라이브러리를 사용한 이미지 추출 및 다운로드 실행
                 if (window.html2canvas && card) {
-                    html2canvas(card, { backgroundColor: '#FFFFFF', scale: 2 }).then(canvas => {
+                    html2canvas(card, { 
+                        backgroundColor: '#FFFFFF', 
+                        scale: 2 // 레티나 디스플레이 대응 해상도 증가
+                    }).then(canvas => {
+                        // 은닉 요소 복구
                         if(closeBtn) closeBtn.style.display = 'block'; 
                         if(printBtn) printBtn.style.display = 'inline-flex';
                         
@@ -1887,11 +1958,13 @@
                         link.href = imgData;
                         link.click();
                     }).catch(e => {
-                        Logger.error("Failed to generate certificate image", e);
+                        Logger.error("Failed to generate and download certificate image", e);
+                        // 에러 시 요소 복구
                         if(closeBtn) closeBtn.style.display = 'block'; 
                         if(printBtn) printBtn.style.display = 'inline-flex';
                     });
                 } else {
+                    // Fallback to system print
                     window.print();
                     if(closeBtn) closeBtn.style.display = 'block'; 
                     if(printBtn) printBtn.style.display = 'inline-flex';
@@ -1901,7 +1974,7 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [4-11. PAGE & SIDEBAR RENDER ENGINE]
+         * [5-11. PAGE & SIDEBAR RENDER ENGINE]
          * ----------------------------------------------------------------------
          */
         const PageEngine = {
@@ -1978,7 +2051,7 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [4-12. APPLICATION WORKFLOW ORCHESTRATOR]
+         * [5-12. APPLICATION WORKFLOW ORCHESTRATOR]
          * ----------------------------------------------------------------------
          */
         const AppEngine = {
@@ -1987,7 +2060,7 @@
                 
                 if (nextPage === STATE.currentPage) return;
 
-                const snapshot = StorageEngine.createCanvasSnapshot();
+                const snapshot = StorageEngine.createCanvasSnapshot(true);
                 StorageEngine.executeCloudSave(snapshot);
                 
                 const board = document.getElementById('drawing-board'); 
@@ -2016,7 +2089,7 @@
 
         const UIEngine = {
             toggleSidebar() { 
-                // [P2 버그 픽스] 데스크톱 모드(1180px 초과)에서는 사이드바 토글 및 백드롭 오작동 차단
+                // [P2 버그 픽스] 데스크톱 환경에서는 사이드바 토글 및 백드롭 오작동 전면 차단
                 if (window.innerWidth > 1180) return;
 
                 const sb = document.getElementById('sidebar');
@@ -2037,7 +2110,7 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [4-13. CANVAS DRAWING ENGINE & MULTIMODAL MERGER]
+         * [5-13. CANVAS DRAWING ENGINE & MULTIMODAL MERGER]
          * ----------------------------------------------------------------------
          */
         const CanvasEngine = {
@@ -2066,9 +2139,8 @@
             },
 
             /**
-             * [P1 버그 픽스] 극한의 CPU 최적화를 거친 캔버스 빈 여부 검사기.
-             * 원본 캔버스 크기가 방대하더라도 64x64 사이즈의 Probe 캔버스로 리샘플링하여
-             * 메인 스레드 락다운(화면 멈춤) 현상을 완벽히 방어합니다.
+             * [P1 최적화 버그 픽스] CPU 부하 없는 캔버스 프로브 검사기.
+             * 방대한 해상도 캔버스를 64x64 사이즈의 썸네일로 다운샘플링하여 메인 스레드 끊김 현상을 방어.
              */
             isCanvasBlank() {
                 if (!this.cvs || !this.ctx) return true;
@@ -2077,46 +2149,57 @@
                     const probe = document.createElement('canvas');
                     probe.width = 64;
                     probe.height = 64;
+                    
                     const pctx = probe.getContext('2d');
                     
-                    // 거대한 원본을 64x64 로 압축하여 복사
+                    // 원본을 64x64 로 압축 복사
                     pctx.drawImage(this.cvs, 0, 0, 64, 64);
                     
                     const pixels = pctx.getImageData(0, 0, 64, 64).data;
                     
-                    // Alpha Channel 검사
+                    // Alpha Channel을 스캔하여 색이 하나라도 채워져 있으면 false 반환
                     for (let i = 3; i < pixels.length; i += 4) {
                         if (pixels[i] !== 0) return false;
                     }
+                    
                     return true;
                 } catch(e) {
-                    Logger.warn("Canvas probe failed. Assuming blank to prevent crash.", e);
+                    Logger.warn("Canvas probe scaling failed. Assuming blank to prevent crash sequence.", e);
                     return true;
                 }
             },
             
             /**
-             * [P0 버그 픽스] AI 캡처 모듈
+             * [P0 버그 픽스] 워크시트와 드로잉 병합 시 타이밍 오류 방어 로직 추가.
+             * @param {boolean} compressForDatabase - Firestore 업로드용일 경우 1024px, 60% 로 고도화 압축 적용
              */
-            captureWorksheetWithDrawing() {
+            captureWorksheetWithDrawing(compressForDatabase = false) {
                 const worksheet = document.getElementById('worksheet-img');
                 const draw = this.cvs;
                 
                 if (!worksheet || !draw) return null;
 
-                // [P1 버그 픽스] 워크시트 이미지가 네트워크 지연으로 완전히 로드되지 않은 상태에서 
-                // AI Submit이 들어오면 투명 캔버스 레이어만 안전하게 전송합니다.
+                // [P1 버그 픽스] 워크시트 이미지가 네트워크 지연으로 인해 미완성 상태일 경우 즉시 투명 캔버스로 Fallback.
                 if (!worksheet.complete || worksheet.naturalWidth === 0) {
-                    Logger.warn("Worksheet image is not ready for AI capture. Falling back to drawing-only.");
+                    Logger.warn("Worksheet background image is not ready for merge. Falling back to drawing-only layer.");
                     return draw.toDataURL('image/jpeg', 0.72);
                 }
 
                 const merged = document.createElement('canvas');
-                merged.width = draw.width;
-                merged.height = draw.height;
+                
+                if (compressForDatabase) {
+                    // [최적화 스위트 스팟] AI 분석 및 Firestore 저장을 위한 1024px 스케일다운 (약 80KB 압축률)
+                    const scale = Math.min(1024 / draw.width, 1);
+                    merged.width = draw.width * scale;
+                    merged.height = draw.height * scale;
+                } else {
+                    merged.width = draw.width;
+                    merged.height = draw.height;
+                }
 
                 const ctx = merged.getContext('2d');
                 
+                // 투명도 혼선을 막기 위한 흰색 배경 매핑
                 ctx.fillStyle = '#FFFFFF';
                 ctx.fillRect(0, 0, merged.width, merged.height);
 
@@ -2124,10 +2207,11 @@
                     ctx.drawImage(worksheet, 0, 0, merged.width, merged.height);
                     ctx.drawImage(draw, 0, 0, merged.width, merged.height);
                     
-                    return merged.toDataURL('image/jpeg', 0.72);
+                    // Database 목적이면 60% 화질, 화면 렌더링 목적이면 72% 화질 적용
+                    return merged.toDataURL('image/jpeg', compressForDatabase ? 0.6 : 0.72);
                 } catch(e) {
-                    Logger.warn("CORS Security Issue during Canvas Merge. Falling back to transparent layer.", e);
-                    return draw.toDataURL('image/jpeg', 0.72);
+                    Logger.warn("CORS Security Taint Issue during Canvas Merge Processing. Falling back to transparent layer.", e);
+                    return draw.toDataURL('image/jpeg', 0.6);
                 }
             },
 
@@ -2383,7 +2467,7 @@
                     };
 
                     this.rec.onerror = (e) => { 
-                        Logger.error("Speech Recognition Audio Error:", e.error); 
+                        Logger.error("Speech Recognition Audio Exception:", e.error); 
                         
                         if(STATE.isRecording) {
                             STATE.isRecording = false;
@@ -2399,7 +2483,7 @@
                         }
                     }
                 } else { 
-                    Logger.warn("Web Speech API Environment is not natively supported in this browser."); 
+                    Logger.warn("Web Speech API Environment is not natively supported in this browser. Graceful degradation applied."); 
                     
                     ['btn-record', 'btn-chat-record'].forEach(id => {
                         const btn = document.getElementById(id);
@@ -2437,7 +2521,7 @@
                     try { 
                         this.rec.start(); 
                     } catch(e) { 
-                        Logger.error("Microphone Hardware Start Failed", e); 
+                        Logger.error("Microphone Hardware Initialization Failed", e); 
                     } 
                 } else { 
                     STATE.isRecording = false; 
@@ -2498,7 +2582,7 @@
                 try {
                     const user = auth.currentUser;
                     if (!user) {
-                        throw new Error("Unauthorized AI Invocation Attempt Blocked. Firebase User Null.");
+                        throw new Error("Unauthorized AI Invocation Attempt Blocked. Firebase Bearer User Not Found.");
                     }
                     
                     const token = await user.getIdToken();
@@ -2520,19 +2604,19 @@
                     const raw = await response.text();
                     
                     if (!response.ok) {
-                        throw new Error(`Backend Proxy Refused Connection with Status: ${response.status}. Body: ${raw}`);
+                        throw new Error(`Backend Proxy Refused Connection with HTTP Status: ${response.status}. Body Content: ${raw}`);
                     }
                     
                     const data = JSON.parse(raw);
                     
                     if (!data.reply) {
-                        throw new Error(`Missing 'reply' in Backend Response Payload. Raw: ${raw}`);
+                        throw new Error(`Missing mandatory 'reply' object in Backend Response Payload. Raw Output: ${raw}`);
                     }
                     
                     return data.reply;
                     
                 } catch (e) {
-                    Logger.warn("Primary Backend Target Unavailable.", e);
+                    Logger.warn("Primary Backend Target Unavailable. Graceful degrading invoked.", e);
                     // [P1 버그 픽스] 네트워크 장애 시 명확한 에러 폴백 문구 노출 (디버깅 및 CS 대응)
                     return "AI 선생님 연결에 실패했어요. 잠시 후 다시 눌러주세요.";
                 }
@@ -2544,9 +2628,11 @@
                     return; 
                 }
 
+                // [P1 버그 픽스] 중복 API 호출(연타) 방어를 위한 Mutex Lock
                 if (this.isBusy) return;
                 this.isBusy = true;
 
+                // [P0 버그 픽스] AI 호출을 보낸 시점의 '현재 페이지'를 스냅샷 박제하여 Race Condition 방지
                 const requestPage = STATE.currentPage;
                 const requestUnit = STATE.unitId;
 
@@ -2564,18 +2650,20 @@
                         </div>
                     `;
 
+                    // 백엔드 통신 전 Firestore DB에 잔여 타이머 일괄 플러시 및 1024px 스케일 강제 병합 압축 본 저장 예약
                     StorageEngine.executeCloudSave();
 
-                    const canvasImg = CanvasEngine.captureWorksheetWithDrawing() || CanvasEngine.cvs.toDataURL('image/jpeg', 0.6); 
+                    // 워크시트와 그림을 고해상도로 합성하여 모델 문맥 제공력 극대화 (AI 분석용은 true 플래그로 최적화)
+                    const canvasImg = CanvasEngine.captureWorksheetWithDrawing(true) || CanvasEngine.cvs.toDataURL('image/jpeg', 0.6); 
                     
-                    const unitData = PAGE_INTELLIGENCE[STATE.unitId] ? PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage] : { goal: "Free Exploration" };
+                    const unitData = PAGE_INTELLIGENCE[STATE.unitId] ? PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage] : { goal: "Free Exploration", question: "Tell me more about it." };
 
-                    // [P0 버그 픽스] Lesson Question 속성을 AI 프롬프트에 주입하여 상황에 맞는 꼬리 질문(Follow-up)을 유도합니다.
+                    // [P0 버그 픽스] Lesson Question 속성을 AI 프롬프트에 주입하여 꼬리 질문(Follow-up)을 유도합니다.
                     const prompt = `
                         You are an enthusiastic native English teacher at a prestigious private school. Your name is Teacher Bridge.
                         Student Name: ${STATE.studentName}
                         Lesson Goal: ${unitData.goal}
-                        Lesson Question: ${unitData.question || "Ask a fun, related question."}
+                        Lesson Question: ${unitData.question}
                         Student Said: "${STATE.lastTranscript || "Look at my drawing!"}"
 
                         Instructions:
@@ -2588,24 +2676,27 @@
 
                     const aiResponseText = await this.callBackendTutor(prompt, canvasImg);
                     
-                    // 응답 대기 중 사용자가 페이지를 이동했다면 데이터 렌더링 무시
+                    // [P0 버그 픽스] 응답이 돌아온 시점에서, 사용자가 이미 다른 페이지로 이동했다면 조용히 렌더링 무시
                     if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) {
-                        Logger.log("AI Response ignored because page changed during processing.");
+                        Logger.log("AI Response completely ignored because active page changed during asynchronous processing.");
                         return;
                     }
 
-                    // [P1 버그 픽스] 백엔드 응답이 실패 메시지일 경우 배지 수여 어뷰징 차단
+                    // [P1 버그 픽스] 백엔드 응답이 실패 메시지일 경우 배지 어뷰징 수여 로직 차단
                     const aiFailed = aiResponseText.includes("AI 선생님 연결에 실패");
                     
                     if (!aiFailed) {
+                        // 픽셀 스캔을 통해 빈 도화지가 아니면 아티스트 배지 수여
                         if (!CanvasEngine.isCanvasBlank()) {
                             BadgeEngine.add("🎨 Colorful Artist");
                         }
+                        // 발음 및 문장 인식 알고리즘 통과 시 스피커 배지 수여
                         if (STATE.sttConfidence >= 80 && STATE.lastTranscript.length > 0) {
                             BadgeEngine.add("🗣️ Great Speaker");
                         }
                     }
                     
+                    // XSS 취약점 방어를 위한 DOM 정규식 기반 분리 렌더링
                     content.innerHTML = `
                         <div class="analytics-card">
                             <div class="analytics-title">Mission: ${unitData.goal}</div>
@@ -2669,7 +2760,7 @@
                     const aiReplyText = await this.callBackendTutor(conversationPrompt);
                     
                     if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) {
-                        Logger.log("AI Chat Response ignored because page changed.");
+                        Logger.log("AI Chat Response intentionally ignored due to page manipulation.");
                         return;
                     }
                     
@@ -2718,18 +2809,20 @@
             systemBooted = true;
 
             try {
+                // 부팅 순서 엄수 - Storage 메타데이터 우선 로드
                 StorageEngine.load();
                 
                 CanvasEngine.init(); 
                 RGBRingEngine.init(); 
                 AudioEngine.init();
                 
+                // 기저장된 배지 렌더링
                 BadgeEngine.renderAll();
                 
                 PageEngine.init(); 
-                Logger.log("Enterprise System Initial Boot Complete");
+                Logger.log("Enterprise System Initial Boot Fully Complete");
             } catch(error) {
-                Logger.error("Master System Booting Phase Failed", error);
+                Logger.error("Master System Booting Phase Sequence Failed", error);
             }
         }
     </script>

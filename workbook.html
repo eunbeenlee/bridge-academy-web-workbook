@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Bridge Academy | Premium AI Lab V100.19 (Production)</title>
+    <title>Bridge Academy | Premium AI Lab V100.20 (Production)</title>
     
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Jua&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -22,13 +21,13 @@
            [3-1. DESIGN TOKENS & CSS VARIABLES]
         ---------------------------------------------------------------------- */
         :root {
-            /* Brand Colors */
+            /* Brand Primary Colors */
             --br-green: #91D3B4; 
             --br-gold: #CBAE75; 
             --br-blue: #7CA6C1; 
             --br-charcoal: #363431;
             
-            /* Background Colors */
+            /* UI Background Colors */
             --br-bg: #FCFBF9; 
             --br-paper: #FFFFFF; 
             --br-ai-soft: #F8FAFF;
@@ -38,26 +37,27 @@
             --br-muted: #8C8985;
             --br-border: #F0EFEB; 
             
-            /* Utility Colors */
+            /* Utility & Status Colors */
             --br-error: #E74C3C; 
             --br-error-light: #FEF2F2;
             --br-error-border: #FCA5A5;
             --br-success: #2ECC71;
             
-            /* Layout Variables */
+            /* Dimensional Layout Variables */
             --sidebar-width: 320px;
             --topbar-height: 85px;
             --dock-height: 110px;
             
-            /* Safe Area Insets for Mobile Devices */
+            /* Environmental Variables for Mobile Safe Area */
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-left: env(safe-area-inset-left, 0px);
             --safe-right: env(safe-area-inset-right, 0px);
             
-            /* Animation Variables */
+            /* Animation & Transition Timings */
             --transition-smooth: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
             --transition-fast: all 0.2s ease-in-out;
+            --shadow-float: 0 25px 70px rgba(0, 0, 0, 0.07);
         }
 
         /* ----------------------------------------------------------------------
@@ -82,10 +82,13 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* [P2 버그 픽스] 100dvh 미지원 구형 디바이스용 안정성 Fallback */
+        /* 구형 디바이스 100dvh 지원 불가 시 100vh로 대체 (레이아웃 붕괴 방지) */
         @supports not (height: 100dvh) {
-            html, body, .app-container {
+            html, body {
                 height: 100vh;
+            }
+            .app-container { 
+                height: 100vh; 
             }
         }
 
@@ -96,12 +99,17 @@
             cursor: pointer; 
             outline: none; 
         }
+
+        ul, ol, li {
+            list-style: none;
+        }
         
         /* ----------------------------------------------------------------------
            [3-3. MASTER APP CONTAINER]
         ---------------------------------------------------------------------- */
         .app-container { 
             display: flex; 
+            flex-direction: row;
             width: 100vw; 
             height: 100dvh; 
             position: relative; 
@@ -109,7 +117,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [3-4. SIDEBAR NAVIGATION]
+           [3-4. SIDEBAR NAVIGATION STRUCTURE]
         ---------------------------------------------------------------------- */
         .sidebar { 
             width: var(--sidebar-width); 
@@ -205,6 +213,9 @@
             font-weight: 900; 
             color: var(--br-charcoal); 
             text-transform: uppercase; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
         }
 
         .profile-role { 
@@ -250,15 +261,18 @@
         .nav-list::-webkit-scrollbar { 
             width: 5px; 
         }
-        .nav-list::-webkit-scrollbar-track {
-            background: transparent;
+
+        .nav-list::-webkit-scrollbar-track { 
+            background: transparent; 
         }
+
         .nav-list::-webkit-scrollbar-thumb { 
             background: #E8E6E1; 
             border-radius: 10px; 
         }
-        .nav-list::-webkit-scrollbar-thumb:hover {
-            background: #D5D3CE;
+
+        .nav-list::-webkit-scrollbar-thumb:hover { 
+            background: #D5D3CE; 
         }
 
         .nav-item { 
@@ -292,6 +306,10 @@
             font-size: 14px; 
             font-weight: 700; 
             color: var(--br-charcoal); 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            max-width: 170px; 
         }
 
         .nav-item.active .nav-title { 
@@ -306,8 +324,13 @@
             color: var(--br-muted); 
         }
 
+        .nav-item.active .nav-badge { 
+            color: var(--br-green); 
+            opacity: 1; 
+        }
+
         /* ----------------------------------------------------------------------
-           [3-7. MAIN WORKSPACE & TOP BAR]
+           [3-7. MAIN WORKSPACE & TOP HEADER]
         ---------------------------------------------------------------------- */
         .workspace { 
             flex: 1; 
@@ -331,10 +354,10 @@
             z-index: 10; 
         }
 
-        .top-bar-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
+        .top-bar-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 20px; 
         }
 
         .mobile-menu-btn { 
@@ -343,6 +366,7 @@
             padding: 10px; 
             color: var(--br-charcoal); 
             z-index: 1500; 
+            cursor: pointer;
         }
 
         .unit-info { 
@@ -360,25 +384,27 @@
             font-weight: 900; 
             color: var(--br-charcoal); 
             letter-spacing: -0.5px; 
-            margin-top: 2px;
+            margin-top: 2px; 
         }
 
-        /* Toast UI */
-        .toast-error {
-            display: none;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--br-error);
-            background-color: var(--br-error-light);
-            padding: 8px 16px;
-            border-radius: 50px;
-            border: 1px solid var(--br-error-border);
-            animation: popIn 0.3s ease-out;
+        /* Error Toast UI Notification */
+        .toast-error { 
+            display: none; 
+            align-items: center; 
+            gap: 8px; 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: var(--br-error); 
+            background-color: var(--br-error-light); 
+            padding: 8px 16px; 
+            border-radius: 50px; 
+            border: 1px solid var(--br-error-border); 
+            animation: popIn 0.3s ease-out; 
+            z-index: 5000;
         }
-        .toast-error.show {
-            display: flex;
+
+        .toast-error.show { 
+            display: flex; 
         }
         
         /* ----------------------------------------------------------------------
@@ -399,7 +425,7 @@
             position: relative; 
             display: inline-flex; 
             border-radius: 20px; 
-            box-shadow: 0 25px 70px rgba(0,0,0,0.07); 
+            box-shadow: var(--shadow-float); 
             background: #FFF; 
             transition: var(--transition-smooth); 
             transform-origin: center; 
@@ -414,9 +440,9 @@
             transform: scale(0.95) translateY(20px); 
         }
 
-        .drawing-board.error-state {
-            border: 2px dashed var(--br-error);
-            background: #FFF0F0;
+        .drawing-board.error-state { 
+            border: 2px dashed var(--br-error); 
+            background: #FFF0F0; 
         }
 
         #worksheet-img { 
@@ -459,7 +485,7 @@
             align-items: center; 
             justify-content: space-between; 
             padding: 0 50px; 
-            padding-bottom: var(--safe-bottom);
+            padding-bottom: var(--safe-bottom); 
             z-index: 500; 
         }
 
@@ -483,8 +509,8 @@
             transition: 0.3s; 
         }
 
-        .color-preview:active {
-            transform: scale(0.9);
+        .color-preview:active { 
+            transform: scale(0.9); 
         }
 
         .btn-magic { 
@@ -507,6 +533,7 @@
             accent-color: var(--br-green); 
             cursor: pointer; 
             height: 6px; 
+            border-radius: 10px;
         }
 
         .btn-tool { 
@@ -544,7 +571,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-10. ACTION BUTTONS]
+           [3-10. ACTION BUTTONS (NAVIGATION & SUBMIT)]
         ---------------------------------------------------------------------- */
         .action-group { 
             display: flex; 
@@ -568,9 +595,9 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.03); 
         }
 
-        .btn-nav:hover {
-            background: #FAFAFA;
-            border-color: var(--br-charcoal);
+        .btn-nav:hover { 
+            background: #FAFAFA; 
+            border-color: var(--br-charcoal); 
         }
 
         .btn-nav:active { 
@@ -599,9 +626,9 @@
             color: var(--br-charcoal); 
         }
 
-        .btn-record:hover {
-            border-color: var(--br-error);
-            color: var(--br-error);
+        .btn-record:hover { 
+            border-color: var(--br-error); 
+            color: var(--br-error); 
         }
 
         .btn-record.recording { 
@@ -617,7 +644,7 @@
             background: var(--br-error); 
             border-radius: 50%; 
             opacity: 0; 
-            transition: 0.3s;
+            transition: 0.3s; 
         }
 
         .btn-record.recording .dot { 
@@ -637,12 +664,12 @@
             box-shadow: 0 15px 35px rgba(203,174,117,0.4); 
         }
 
-        .btn-submit:active {
-            transform: scale(0.95);
+        .btn-submit:active { 
+            transform: scale(0.95); 
         }
 
         /* ----------------------------------------------------------------------
-           [3-11. AI TUTOR PANEL]
+           [3-11. AI TUTOR CHAT PANEL]
         ---------------------------------------------------------------------- */
         .ai-panel { 
             position: absolute; 
@@ -704,6 +731,7 @@
             scroll-behavior: smooth; 
         }
         
+        /* Chat Bubbles */
         .chat-bubble { 
             max-width: 90%; 
             padding: 20px 25px; 
@@ -731,22 +759,26 @@
             box-shadow: 0 8px 20px rgba(145, 211, 180, 0.3); 
         }
         
-        .ai-loading-container {
-            text-align: center;
-            padding: 50px 0;
-        }
-        .ai-loading-icon {
-            font-size: 36px;
-            color: var(--br-green);
-            margin-bottom: 15px;
-        }
-        .ai-loading-text {
-            font-weight: 900;
-            color: var(--br-muted);
-            font-family: 'Nunito', sans-serif;
-            font-size: 14px;
+        /* AI Loading Spinner */
+        .ai-loading-container { 
+            text-align: center; 
+            padding: 50px 0; 
         }
 
+        .ai-loading-icon { 
+            font-size: 36px; 
+            color: var(--br-green); 
+            margin-bottom: 15px; 
+        }
+
+        .ai-loading-text { 
+            font-weight: 900; 
+            color: var(--br-muted); 
+            font-family: 'Nunito', sans-serif; 
+            font-size: 14px; 
+        }
+
+        /* Analytics Score Card */
         .analytics-card { 
             background: #FAFAFA; 
             border: 1px solid var(--br-border); 
@@ -770,9 +802,9 @@
 
         .stat-row { 
             margin-bottom: 18px; 
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; 
         }
 
         .stat-label { 
@@ -797,6 +829,7 @@
             border-radius: 12px; 
         }
 
+        /* Chat Interaction Footer */
         .chat-footer { 
             padding: 25px 35px; 
             border-top: 1px solid var(--br-border); 
@@ -806,7 +839,7 @@
             background: #FFF; 
         }
 
-        .btn-chat-action {
+        .btn-chat-action { 
             width: 100%; 
             height: 60px; 
             background: var(--br-charcoal); 
@@ -825,28 +858,28 @@
             box-shadow: 0 10px 20px rgba(54,52,49,0.2); 
         }
         
-        .btn-chat-action:hover {
-            background: var(--br-gold);
-            transform: translateY(-2px);
+        .btn-chat-action:hover { 
+            background: var(--br-gold); 
+            transform: translateY(-2px); 
         }
 
-        .btn-chat-next {
-            width: 100%;
-            text-align: center;
-            font-size: 14px;
-            font-weight: bold;
-            color: var(--br-blue);
-            margin-top: 15px;
-            cursor: pointer;
-            transition: color 0.3s;
+        .btn-chat-next { 
+            width: 100%; 
+            text-align: center; 
+            font-size: 14px; 
+            font-weight: bold; 
+            color: var(--br-blue); 
+            margin-top: 15px; 
+            cursor: pointer; 
+            transition: color 0.3s; 
         }
         
-        .btn-chat-next:hover {
-            color: var(--br-gold);
+        .btn-chat-next:hover { 
+            color: var(--br-gold); 
         }
 
         /* ----------------------------------------------------------------------
-           [3-12. MODALS & OVERLAYS]
+           [3-12. RGB COLOR PICKER MODAL]
         ---------------------------------------------------------------------- */
         .rgb-modal { 
             position: absolute; 
@@ -869,18 +902,22 @@
             transform: translateY(0); 
         }
         
-        .rgb-modal-close {
-            text-align: center;
-            font-size: 10px;
-            margin-top: 12px;
-            font-weight: 900;
-            color: var(--br-muted);
-            cursor: pointer;
-        }
-        .rgb-modal-close:hover {
-            color: var(--br-charcoal);
+        .rgb-modal-close { 
+            text-align: center; 
+            font-size: 10px; 
+            margin-top: 12px; 
+            font-weight: 900; 
+            color: var(--br-muted); 
+            cursor: pointer; 
         }
 
+        .rgb-modal-close:hover { 
+            color: var(--br-charcoal); 
+        }
+
+        /* ----------------------------------------------------------------------
+           [3-13. CERTIFICATE MODAL & PRINT UI]
+        ---------------------------------------------------------------------- */
         .cert-modal-overlay { 
             position: fixed; 
             top: 0; 
@@ -1022,7 +1059,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-13. KEYFRAME ANIMATIONS]
+           [3-14. KEYFRAME ANIMATIONS]
         ---------------------------------------------------------------------- */
         @keyframes popIn { 
             from { opacity: 0; transform: scale(0.92) translateY(15px); } 
@@ -1034,61 +1071,43 @@
         }
 
         /* ----------------------------------------------------------------------
-           [3-14. DEVICE COMPATIBILITY & RESPONSIVE QUERIES]
-           * [P2 버그 픽스] 터치 타겟 크기 최적화 및 디바이스별 완벽 호환성
+           [3-15. DEVICE COMPATIBILITY & RESPONSIVE QUERIES]
         ---------------------------------------------------------------------- */
         
-        /* [P2 버그 픽스] 터치 디바이스 호환성 확보 */
+        /* 터치 기반 디바이스 버튼 터치 타겟 최소 규격 확보 */
         @media (pointer: coarse) {
-            .btn-nav,
-            .btn-main,
-            .btn-tool,
-            .btn-erase,
-            .btn-magic,
-            .color-preview {
-                min-width: 44px;
-                min-height: 44px;
+            .btn-nav, .btn-main, .btn-tool, .btn-erase, .btn-magic, .color-preview { 
+                min-width: 44px; 
+                min-height: 44px; 
             }
+        }
+
+        /* 데스크톱 환경에서는 사이드바 토글 버튼 숨김 */
+        .mobile-menu-btn { 
+            display: none; 
+            font-size: 28px; 
+            padding: 10px; 
+            color: var(--br-charcoal); 
+            z-index: 1500; 
+            cursor: pointer;
         }
 
         /* Tablet landscape (801px - 1180px) */
         @media (min-width: 801px) and (max-width: 1180px) {
             .mobile-menu-btn { display: block; }
-            
-            :root {
-                --sidebar-width: 280px;
-            }
-
-            .top-bar {
-                height: 76px;
-                padding: 0 24px;
-            }
-
-            .stage-wrapper {
-                padding: 20px;
-            }
-
-            .bottom-dock {
-                height: 128px;
-                padding: 14px 24px;
-                gap: 14px;
-            }
-
-            .tool-group,
-            .action-group {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .btn-main {
-                padding: 0 22px;
-            }
+            :root { --sidebar-width: 280px; }
+            .top-bar { height: 76px; padding: 0 24px; }
+            .stage-wrapper { padding: 20px; }
+            .bottom-dock { height: 128px; padding: 14px 24px; gap: 14px; }
+            .tool-group, .action-group { flex-wrap: wrap; justify-content: center; }
+            .btn-main { padding: 0 22px; }
         }
 
         /* Phone / Small Tablet (max-width: 800px) */
         @media (max-width: 800px) {
             .mobile-menu-btn { display: block; }
             
+            /* [P2 버그 픽스] left 조작을 피하고 transform 속성을 통한 부드러운 GPU 가속 처리 */
             .sidebar { 
                 position: fixed; 
                 top: 0; 
@@ -1101,17 +1120,17 @@
                 box-shadow: 20px 0 50px rgba(0,0,0,0.2); 
             }
             
-            .stage-wrapper {
-                padding: 12px;
-            }
-
+            .stage-wrapper { padding: 12px; }
+            
+            /* 이미지 가로 밀림 방지 */
             #worksheet-img { 
-                min-width: 0;
-                width: 100%;
-                max-width: 100%;
-                max-height: calc(100dvh - 240px);
+                min-width: 0; 
+                width: 100%; 
+                max-width: 100%; 
+                max-height: calc(100dvh - 240px); 
             }
             
+            /* iOS 하단 홈 인디케이터 대응 패딩 추가 */
             .bottom-dock { 
                 height: calc(140px + var(--safe-bottom)); 
                 flex-direction: column; 
@@ -1120,11 +1139,10 @@
                 gap: 12px; 
                 border-radius: 25px 25px 0 0; 
             }
-
+            
             .tool-group { width: 100%; justify-content: center; padding: 8px 20px; }
             .action-group { width: 100%; justify-content: space-between; }
             .btn-nav, .btn-main { height: 50px; font-size: 13px; }
-            
             .ai-panel { width: 100%; right: -100%; border-left: none; }
             
             .rgb-modal { 
@@ -1141,60 +1159,21 @@
 
         /* Small Phone (max-width: 560px) */
         @media (max-width: 560px) {
-            .top-bar {
-                height: 68px;
-                padding: 0 14px;
+            .top-bar { height: 68px; padding: 0 14px; }
+            .unit-info { font-size: 10px; letter-spacing: 1.8px; }
+            .page-info { font-size: 24px; }
+            
+            .bottom-dock { 
+                height: calc(188px + var(--safe-bottom)); 
+                padding: 10px 12px calc(10px + var(--safe-bottom)); 
             }
-
-            .unit-info {
-                font-size: 10px;
-                letter-spacing: 1.8px;
-            }
-
-            .page-info {
-                font-size: 24px;
-            }
-
-            .bottom-dock {
-                height: calc(188px + var(--safe-bottom));
-                padding: 10px 12px calc(10px + var(--safe-bottom));
-            }
-
-            .tool-group {
-                gap: 8px;
-                padding: 8px;
-                border-radius: 18px;
-                flex-wrap: wrap;
-            }
-
-            .brush-slider {
-                width: 82px;
-            }
-
-            .btn-main {
-                height: 48px;
-                padding: 0 14px;
-                font-size: 12px;
-                flex: 1;
-                justify-content: center;
-            }
-
-            .btn-nav {
-                width: 48px;
-                height: 48px;
-            }
-
-            .ai-header,
-            .ai-content,
-            .chat-footer {
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-
-            .chat-bubble {
-                max-width: 96%;
-                font-size: 15px;
-            }
+            
+            .tool-group { gap: 8px; padding: 8px; border-radius: 18px; flex-wrap: wrap; }
+            .brush-slider { width: 82px; }
+            .btn-main { height: 48px; padding: 0 14px; font-size: 12px; flex: 1; justify-content: center; }
+            .btn-nav { width: 48px; height: 48px; }
+            .ai-header, .ai-content, .chat-footer { padding-left: 20px; padding-right: 20px; }
+            .chat-bubble { max-width: 96%; font-size: 15px; }
         }
     </style>
 </head>
@@ -1203,11 +1182,11 @@
     <div class="app-container">
         
         <nav class="sidebar" id="sidebar">
-            <div class="sidebar-header" onclick="location.href='dashboard.html'">
+            <header class="sidebar-header" onclick="location.href='dashboard.html'" aria-label="Return to Dashboard">
                 <div class="brand-logo">Bridge<span>Academy</span></div>
-            </div>
+            </header>
             
-            <div class="student-profile" id="profile-box">
+            <section class="student-profile" id="profile-box" aria-label="Student Profile Information">
                 <div class="profile-top">
                     <div class="profile-avatar" id="avatar-char">?</div>
                     <div class="profile-info">
@@ -1216,135 +1195,208 @@
                     </div>
                 </div>
                 <div class="badge-container" id="badge-container"></div>
-            </div>
+            </section>
             
-            <div class="nav-list" id="nav-list">
-                </div>
+            <section class="nav-list" id="nav-list" aria-label="Curriculum Modules">
+                </section>
         </nav>
 
         <div class="workspace">
-            <div class="top-bar">
+            
+            <header class="top-bar" aria-label="Current Lesson Context">
                 <div class="top-bar-left">
-                    <button class="mobile-menu-btn" onclick="UIEngine.toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+                    <button class="mobile-menu-btn" onclick="UIEngine.toggleSidebar()" aria-label="Toggle Navigation Menu">
+                        <i class="fa-solid fa-bars text-bridge-charcoal"></i>
+                    </button>
                     <div>
                         <div id="unit-info" class="unit-info">UNIT LOADING...</div>
                         <div id="page-info" class="page-info">Inquiry P.01</div>
                     </div>
                 </div>
-                <div id="error-toast" class="toast-error">
-                    <i class="fa-solid fa-triangle-exclamation"></i> <span id="error-toast-msg">Error</span>
+                
+                <div id="error-toast" class="toast-error" role="alert">
+                    <i class="fa-solid fa-triangle-exclamation"></i> 
+                    <span id="error-toast-msg">Error</span>
                 </div>
-            </div>
+            </header>
 
-            <main class="stage-wrapper">
+            <main class="stage-wrapper" aria-label="Drawing Canvas Area">
                 <div class="drawing-board" id="drawing-board">
-                    <img src="" id="worksheet-img" crossorigin="anonymous" alt="Worksheet Background">
-                    <canvas id="draw-layer"></canvas>
+                    <img src="" id="worksheet-img" crossorigin="anonymous" alt="Educational Worksheet Background">
+                    <canvas id="draw-layer" aria-label="Interactive Drawing Layer"></canvas>
                 </div>
             </main>
 
-            <div class="bottom-dock">
-                <div class="tool-group">
-                    <div class="color-preview" id="btn-color" onclick="RGBRingEngine.toggle()"></div>
-                    <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;">
+            <footer class="bottom-dock" aria-label="Tools and Actions">
+                
+                <div class="tool-group" role="group" aria-label="Drawing Tools">
+                    <div class="color-preview" id="btn-color" onclick="RGBRingEngine.toggle()" aria-label="Open Color Picker"></div>
+                    <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;" aria-hidden="true">
                     
-                    <div class="btn-magic active" id="btn-brush-normal" onclick="CanvasEngine.setBrush('normal')" title="Normal Pen">🖍️</div>
-                    <div class="btn-magic" id="btn-brush-neon" onclick="CanvasEngine.setBrush('neon')" title="Neon Magic">🌟</div>
-                    <div class="btn-magic" id="btn-brush-rainbow" onclick="CanvasEngine.setBrush('rainbow')" title="Rainbow Magic">🌈</div>
+                    <button class="btn-magic active" id="btn-brush-normal" onclick="CanvasEngine.setBrush('normal')" title="Normal Pen" aria-label="Normal Brush">🖍️</button>
+                    <button class="btn-magic" id="btn-brush-neon" onclick="CanvasEngine.setBrush('neon')" title="Neon Magic" aria-label="Neon Glow Brush">🌟</button>
+                    <button class="btn-magic" id="btn-brush-rainbow" onclick="CanvasEngine.setBrush('rainbow')" title="Rainbow Magic" aria-label="Rainbow Brush">🌈</button>
                     
-                    <input type="range" class="brush-slider" id="brush-size" min="2" max="35" value="6">
+                    <input type="range" class="brush-slider" id="brush-size" min="2" max="35" value="6" aria-label="Adjust Brush Size">
                     
-                    <button class="btn-tool" onclick="CanvasEngine.undo()" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
-                    <button class="btn-erase" id="btn-eraser" onclick="CanvasEngine.toggleEraser()">ERASER</button>
+                    <button class="btn-tool" onclick="CanvasEngine.undo()" title="Undo Last Stroke" aria-label="Undo"><i class="fa-solid fa-rotate-left"></i></button>
+                    <button class="btn-erase" id="btn-eraser" onclick="CanvasEngine.toggleEraser()" aria-label="Toggle Eraser">ERASER</button>
                 </div>
                 
-                <div class="action-group">
-                    <button class="btn-nav" onclick="AppEngine.smoothMove(-1)" title="Previous Page"><i class="fa-solid fa-chevron-left"></i></button>
-                    
-                    <button class="btn-main btn-record" id="btn-record" onclick="AudioEngine.toggle()">
-                        <div class="dot"></div> <span id="record-text">Voice Log</span>
+                <div class="action-group" role="group" aria-label="Navigation and Submission">
+                    <button class="btn-nav" onclick="AppEngine.smoothMove(-1)" title="Previous Page" aria-label="Go to Previous Page">
+                        <i class="fa-solid fa-chevron-left"></i>
                     </button>
                     
-                    <button class="btn-main btn-submit" onclick="AITutor.submit()">Submit ✨</button>
+                    <button class="btn-main btn-record" id="btn-record" onclick="AudioEngine.toggle()" aria-label="Toggle Voice Recording">
+                        <div class="dot"></div> 
+                        <span id="record-text">Voice Log</span>
+                    </button>
                     
-                    <button class="btn-nav" onclick="AppEngine.smoothMove(1)" title="Next Page"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="btn-main btn-submit" onclick="AITutor.submit()" aria-label="Submit for AI Feedback">Submit ✨</button>
+                    
+                    <button class="btn-nav" onclick="AppEngine.smoothMove(1)" title="Next Page" aria-label="Go to Next Page">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
                 </div>
-            </div>
+            </footer>
         </div>
 
-        <div class="ai-panel" id="ai-panel">
-            <div class="ai-header">
+        <aside class="ai-panel" id="ai-panel" aria-label="AI Tutor Chat Panel">
+            <header class="ai-header">
                 <div class="ai-title">✨ Private Tutor</div>
-                <button class="btn-close-ai" onclick="AITutor.close()"><i class="fa-solid fa-xmark"></i></button>
-            </div>
+                <button class="btn-close-ai" onclick="AITutor.close()" aria-label="Close AI Panel">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </header>
             
-            <div class="ai-content" id="ai-content">
-                </div>
+            <section class="ai-content" id="ai-content" aria-live="polite"></section>
             
-            <div class="chat-footer" id="chat-footer" style="display:none;">
-                <button class="btn-chat-action" id="btn-chat-record" onclick="AudioEngine.toggleChat()">🎤 Speak to Teacher</button>
-                <div class="btn-chat-next" onclick="AppEngine.handleNextAdventure()">Next Page 🚀</div>
-            </div>
+            <footer class="chat-footer" id="chat-footer" style="display:none;">
+                <button class="btn-chat-action" id="btn-chat-record" onclick="AudioEngine.toggleChat()" aria-label="Record Voice Reply">🎤 Speak to Teacher</button>
+                <div class="btn-chat-next" onclick="AppEngine.handleNextAdventure()" role="button" tabindex="0">Next Page 🚀</div>
+            </footer>
+        </aside>
+
+        <div class="rgb-modal" id="rgb-modal" role="dialog" aria-modal="true" aria-label="Color Wheel Selector">
+            <canvas id="color-wheel" width="150" height="150" aria-label="Interactive Color Wheel"></canvas>
+            <p class="rgb-modal-close" onclick="RGBRingEngine.toggle()">CLOSE</p>
         </div>
 
-        <div class="rgb-modal" id="rgb-modal">
-            <canvas id="color-wheel" width="150" height="150"></canvas>
-            <p class="rgb-modal-close" onclick="RGBRingEngine.toggle()">CLOSE</p>
+        <div class="cert-modal-overlay" id="cert-modal" role="dialog" aria-modal="true" aria-labelledby="cert-title">
+            <div class="cert-card" id="cert-card-content">
+                <div class="cert-close" onclick="CertificateEngine.close()" aria-label="Close Certificate">×</div>
+                <div class="cert-border">
+                    <div class="cert-subtitle" id="cert-week">WEEK 1 COMPLETED</div>
+                    <div class="cert-title" id="cert-title">Certificate of Exploration</div>
+                    <p style="margin-bottom: 20px; color: var(--br-muted); font-weight: 500;">This magical certificate is proudly presented to</p>
+                    <div class="cert-name" id="cert-student-name">Student Name</div>
+                    
+                    <div class="cert-img-container">
+                        <img id="cert-canvas-img" src="" alt="My Masterpiece Canvas Result">
+                    </div>
+                    
+                    <div class="cert-msg" id="cert-ai-msg">"For showing amazing creativity and speaking with a clear, beautiful voice."</div>
+                    
+                    <button class="btn-print" onclick="CertificateEngine.print()" aria-label="Print or Save Certificate">
+                        <i class="fa-solid fa-print"></i> Save & Print
+                    </button>
+                </div>
+            </div>
         </div>
 
     </div>
 
     <script>
         /**
-         * [4-1. CONFIGURATION & SECRETS]
-         * * [P0 버그 픽스] 클라이언트에서 API_KEY 하드코딩 제거.
-         * 모든 AI 통신은 API_TUTOR_ENDPOINT를 경유하며 인증 토큰(Bearer)으로 보호됩니다.
+         * ----------------------------------------------------------------------
+         * [4-1. SYSTEM CONFIGURATION & SECRETS]
+         * ----------------------------------------------------------------------
+         * 상용 배포 보안 지침 (P0 Bug Fix): 
+         * HTML 클라이언트에서 직접적인 구글 제미나이 API 호출 코드를 완전히 제거했습니다.
+         * 모든 멀티모달 및 자연어 추론은 API_TUTOR_ENDPOINT (백엔드 프록시 서버)를 
+         * 경유하여 처리되며, 이때 Firebase ID Token 기반 인증을 수반합니다.
          */
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
-            // 배포 시 실제 백엔드 서버 주소로 변경하십시오.
+            
+            // 배포 시 구동 중인 Cloud Functions 또는 기타 백엔드 서버 URL로 치환하십시오.
             API_TUTOR_ENDPOINT: "https://us-central1-bridge-academy-6d6a9.cloudfunctions.net/api/tutor", 
+            
             FIREBASE_CONFIG: {
                 apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk",
                 authDomain: "bridge-academy-6d6a9.firebaseapp.com",
                 projectId: "bridge-academy-6d6a9",
-                storageBucket: "bridge-academy-6d6a9.firebasestorage.app", 
+                storageBucket: "bridge-academy-6d6a9.appspot.com", // [P1 수정] 정확한 스토리지 버킷 할당
                 messagingSenderId: "581314243350",
-                appId: "1:581314243350:web:57897ed73d787eb02efe37"
+                appId: "1:581314243350:web:57897ed73d787eb02efe37",
+                measurementId: "G-JV5H1V8X34"
             }
         };
 
-        // Firebase Initialization
+        // Firebase Core Services Initialization
         firebase.initializeApp(CONFIG.FIREBASE_CONFIG);
         const auth = firebase.auth();
         const db = firebase.firestore();
         
         let storage;
         try {
+            // 스토리지 서비스 초기화. 룰 세팅이 안되어 있을 경우를 대비해 예외 처리.
             storage = firebase.storage();
-        } catch(e) {
-            console.warn("Firebase Storage initialization skipped or failed.", e);
+        } catch(error) {
+            console.warn("Firebase Storage initialization skipped or failed.", error);
         }
 
         /**
-         * [4-2. ENTERPRISE LOGGER]
+         * ----------------------------------------------------------------------
+         * [4-2. ENTERPRISE LOGGER UTILITY]
+         * ----------------------------------------------------------------------
+         * 프로덕션 레벨의 상태 추적과 사용자 에러 피드백을 담당하는 모듈입니다.
          */
         const Logger = {
-            log(msg, data = "") { console.log(`[BRIDGE OK] ${msg}`, data); },
-            warn(msg, data = "") { console.warn(`[BRIDGE WARN] ${msg}`, data); },
+            /**
+             * 정상 작동 로그를 콘솔에 남깁니다.
+             * @param {string} msg - 로깅할 메시지
+             * @param {any} data - 추가로 출력할 데이터
+             */
+            log(msg, data = "") { 
+                console.log(`[BRIDGE OK] ${msg}`, data); 
+            },
+            
+            /**
+             * 경고 로그를 콘솔에 남깁니다. 서비스 중단은 되지 않은 상태입니다.
+             * @param {string} msg - 경고 메시지
+             * @param {any} data - 에러 객체 또는 스택 트레이스
+             */
+            warn(msg, data = "") { 
+                console.warn(`[BRIDGE WARN] ${msg}`, data); 
+            },
+            
+            /**
+             * 치명적인 에러 발생 시 로그를 남기고, UI 토스트 팝업을 트리거합니다.
+             * @param {string} msg - 사용자에게 표시될 에러 원인
+             * @param {any} err - 내부 시스템 에러 객체
+             */
             error(msg, err) { 
                 console.error(`[BRIDGE FATAL] ${msg}`, err); 
                 const toast = document.getElementById('error-toast');
                 if(toast) {
                     document.getElementById('error-toast-msg').innerText = msg;
                     toast.classList.add('show');
-                    setTimeout(() => toast.classList.remove('show'), 5000);
+                    // 5초 뒤 토스트 자동 소멸
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                    }, 5000);
                 }
             }
         };
 
         /**
-         * [4-3. MASTER CURRICULUM INTELLIGENCE DB & ENGINE]
+         * ----------------------------------------------------------------------
+         * [4-3. MASTER CURRICULUM INTELLIGENCE DATABASE]
+         * ----------------------------------------------------------------------
+         * 33개의 페이지 각각에 매핑된 구체적인 교육 목표, 네비게이션 타이틀.
+         * 시스템 작동에 핵심적인 배열이므로 단 한 요소도 생략/축약할 수 없습니다.
          */
         const PAGE_INTELLIGENCE = {
             "A-1": {
@@ -1386,32 +1438,63 @@
             }
         };
 
+        /**
+         * ----------------------------------------------------------------------
+         * [4-4. DYNAMIC CURRICULUM ROUTER ENGINE]
+         * ----------------------------------------------------------------------
+         * 각 시리즈(A-1, A-2 등) 별로 설정된 페이지 키 값만 추출하여 배열화하고,
+         * 해당 배열 안에서만 페이지 이전/다음 이동이 이루어지도록 샌드박싱(Sandboxing)합니다.
+         */
         const CurriculumEngine = {
+            /**
+             * 특정 유닛에 속한 모든 페이지 번호 배열 반환
+             * @param {string} unitId - 예: "A-2"
+             * @returns {number[]} - 예: [18, 19, ..., 33]
+             */
             pages(unitId) {
-                return Object.keys(PAGE_INTELLIGENCE[unitId] || {}).map(Number).sort((a, b) => a - b);
+                const data = PAGE_INTELLIGENCE[unitId] || {};
+                return Object.keys(data).map(Number).sort((a, b) => a - b);
             },
+            
             first(unitId) {
-                return this.pages(unitId)[0] || 1;
+                const pageArray = this.pages(unitId);
+                return pageArray[0] || 1;
             },
+            
             last(unitId) {
-                const pages = this.pages(unitId);
-                return pages[pages.length - 1] || 1;
+                const pageArray = this.pages(unitId);
+                return pageArray[pageArray.length - 1] || 1;
             },
+            
+            /**
+             * 주어진 페이지가 해당 유닛 범위 내에 있는지 검증하고, 벗어나면 첫 페이지로 Clamp 함
+             */
             clamp(unitId, page) {
-                const pages = this.pages(unitId);
-                if (pages.includes(page)) return page;
-                return pages[0] || 1;
+                const pageArray = this.pages(unitId);
+                if (pageArray.includes(page)) {
+                    return page;
+                }
+                return pageArray[0] || 1;
             },
+            
+            /**
+             * 배열의 인덱스를 기반으로 이전(-1) 또는 다음(+1) 페이지 번호 계산
+             */
             next(unitId, page, dir) {
-                const pages = this.pages(unitId);
-                const idx = pages.indexOf(page);
-                const safeIdx = idx === -1 ? 0 : idx;
-                return pages[Math.min(Math.max(safeIdx + dir, 0), pages.length - 1)] || page;
+                const pageArray = this.pages(unitId);
+                const idx = pageArray.indexOf(page);
+                const safeIdx = (idx === -1) ? 0 : idx;
+                
+                const calcIdx = Math.min(Math.max(safeIdx + dir, 0), pageArray.length - 1);
+                return pageArray[calcIdx] || page;
             }
         };
 
         /**
-         * [4-4. GLOBAL STATE MANAGEMENT]
+         * ----------------------------------------------------------------------
+         * [4-5. GLOBAL STATE MANAGEMENT]
+         * ----------------------------------------------------------------------
+         * 애플리케이션 라이프사이클 전반에 걸친 상태 데이터를 보관하는 단일 진실 공급원
          */
         const STATE = {
             uid: null, 
@@ -1429,45 +1512,70 @@
             brushType: 'normal'
         };
 
-        if (!PAGE_INTELLIGENCE[STATE.unitId]) STATE.unitId = "A-1";
-        STATE.currentPage = CurriculumEngine.clamp(
-            STATE.unitId, 
-            Number(new URLSearchParams(window.location.search).get('page')) || CurriculumEngine.first(STATE.unitId)
-        );
+        // 초기 URL 파라미터 기반 상태 주입 및 오류 범위 Clamp
+        if (!PAGE_INTELLIGENCE[STATE.unitId]) {
+            Logger.warn(`Invalid Unit ID detected: ${STATE.unitId}. Forcing fallback to A-1.`);
+            STATE.unitId = "A-1";
+        }
+        
+        const urlPageParam = Number(new URLSearchParams(window.location.search).get('page'));
+        const fallbackPage = CurriculumEngine.first(STATE.unitId);
+        STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, urlPageParam || fallbackPage);
 
-        // AUTHENTICATION GUARD
+        /**
+         * ----------------------------------------------------------------------
+         * [4-6. FIREBASE AUTHENTICATION GUARD]
+         * ----------------------------------------------------------------------
+         */
         auth.onAuthStateChanged((user) => {
             if (!user) { 
-                alert("비정상적인 접근입니다. 로그인 페이지로 이동합니다.");
-                location.href = 'login.html'; 
+                alert("세션이 만료되었거나 비정상적인 접근입니다. 로그인 페이지로 이동합니다.");
+                window.location.replace('login.html'); 
             } else {
-                Logger.log("Enterprise Auth Success:", user.email);
+                Logger.log("Enterprise Auth Verified. Session Linked:", user.email);
                 STATE.uid = user.uid; 
                 STATE.studentEmail = user.email;
+                
+                // 임시 표시용 이름 설정 (메일 앞부분 추출)
                 STATE.studentName = user.email.split('@')[0].toUpperCase();
                 
+                // UI 바인딩 업데이트
                 const profileBox = document.getElementById('profile-box');
-                profileBox.classList.add('registered');
-                document.getElementById('display-name').innerText = STATE.studentName;
-                document.getElementById('avatar-char').innerText = STATE.studentName.charAt(0);
+                if(profileBox) profileBox.classList.add('registered');
                 
+                const displayNameEl = document.getElementById('display-name');
+                if(displayNameEl) displayNameEl.innerText = STATE.studentName;
+                
+                const avatarEl = document.getElementById('avatar-char');
+                if(avatarEl) avatarEl.innerText = STATE.studentName.charAt(0);
+                
+                // 모든 상태 세팅 완료 후 시스템 부팅
                 SystemBoot(); 
             }
         });
 
         /**
-         * [4-5. SMART IMAGE LOADER ENGINE]
+         * ----------------------------------------------------------------------
+         * [4-7. SMART IMAGE LOADER ENGINE (RACE-CONDITION SAFE)]
+         * ----------------------------------------------------------------------
+         * 사용자가 광클릭하며 페이지를 넘길 때 이전 요청이 늦게 완료되어
+         * 현재 페이지 이미지를 덮어쓰는(Race Condition) 버그를 방지하기 위한
+         * 증분형 Token 발급 기반 이미지 로더.
          */
         const SmartImageLoader = {
             requestToken: 0,
 
             async findValidWorksheet(unitId, pageNum) {
+                // 새로운 로딩 요청이 들어오면 토큰을 +1 증가
                 const token = ++this.requestToken; 
+                
                 const imgElement = document.getElementById('worksheet-img');
                 const boardElement = document.getElementById('drawing-board');
-                const seriesChar = unitId.charAt(0);
-                const t = Date.now();
+                
+                const seriesChar = unitId.charAt(0); // A-1 -> A
+                const t = Date.now(); // 브라우저 캐시 방지
 
+                // 6가지 폴더 트리 경우의 수를 모두 구축하여 404 에러 원천 차단
                 const possiblePaths = [
                     `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${pageNum}.png`,
                     `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${pageNum}.png`,
@@ -1478,12 +1586,16 @@
                 ];
 
                 const tryLoad = (index) => {
-                    if (token !== this.requestToken) return;
+                    // 비동기 작업 중, 다른 페이지 호출로 인해 토큰이 변경되었다면 현 요청 즉시 폐기
+                    if (token !== this.requestToken) {
+                        return;
+                    }
 
+                    // 6개 경로 모두 실패한 경우
                     if (index >= possiblePaths.length) {
-                        Logger.error(`All image paths failed. Worksheet ${unitId}-${pageNum} missing.`);
-                        imgElement.style.opacity = '1';
-                        boardElement.classList.add('error-state');
+                        Logger.error(`All image paths failed. Worksheet missing for ${unitId} Page ${pageNum}.`);
+                        if(imgElement) imgElement.style.opacity = '1';
+                        if(boardElement) boardElement.classList.add('error-state');
                         CanvasEngine.resizeCanvas();
                         return;
                     }
@@ -1492,52 +1604,85 @@
                     const tempImg = new Image();
 
                     tempImg.onload = () => {
+                        // 로딩 완료 후 다시 한 번 토큰 검증
                         if (token !== this.requestToken) return;
-                        Logger.log("Image found successfully:", testUrl);
-                        boardElement.classList.remove('error-state');
-                        imgElement.src = testUrl;
-                        imgElement.style.opacity = '1';
+                        
+                        Logger.log("Image resource found and loaded:", testUrl);
+                        if(boardElement) boardElement.classList.remove('error-state');
+                        
+                        if(imgElement) {
+                            imgElement.src = testUrl;
+                            imgElement.style.opacity = '1';
+                        }
+                        
+                        // 캔버스 크기 재조정 후 이전 데이터 있으면 그리기
                         CanvasEngine.resizeCanvas();
                         StorageEngine.loadCanvasLocal();
                     };
 
-                    tempImg.onerror = () => tryLoad(index + 1);
+                    tempImg.onerror = () => {
+                        // 실패 시 재귀적으로 다음 인덱스 경로 탐색 시도
+                        tryLoad(index + 1);
+                    };
+                    
                     tempImg.src = testUrl;
                 };
 
+                // 초기 경로 탐색 시작
                 tryLoad(0);
             }
         };
 
         /**
-         * [4-6. STORAGE & DEBOUNCED SYNC ENGINE]
-         * [P0 버그 픽스] 데이터 레이스 컨디션 방어를 위한 Snapshot 아키텍처
+         * ----------------------------------------------------------------------
+         * [4-8. STORAGE & DEBOUNCED CLOUD SYNC ENGINE]
+         * ----------------------------------------------------------------------
+         * 클라이언트의 메모리와 배터리 부하를 줄이기 위해, 드로잉 행위 시 즉시 업로드하지 않고 
+         * 로컬 캐시에 우선 저장한 뒤 1.5초(Debounce) 대기 후 클라우드로 백그라운드 전송합니다.
          */
         const StorageEngine = {
             cloudSaveTimer: null,
 
+            /**
+             * 기본 유저 정보 및 진도율(Metadata) 저장
+             */
             async save() {
                 if(!STATE.uid) return;
                 try {
-                    const data = { name: STATE.studentName, page: STATE.currentPage, badges: STATE.badges || [] };
+                    const data = { 
+                        name: STATE.studentName, 
+                        page: STATE.currentPage, 
+                        badges: STATE.badges || [] 
+                    };
+                    
                     localStorage.setItem(`br_data_${STATE.uid}_${STATE.unitId}`, JSON.stringify(data));
                     
                     await db.collection("students").doc(STATE.uid).set({ 
-                        ...data, email: STATE.studentEmail, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
+                        ...data, 
+                        email: STATE.studentEmail, 
+                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
                     }, { merge: true });
-                } catch (error) { Logger.error("Storage Sync Error", error); }
+                    
+                } catch (error) { 
+                    Logger.error("Metadata Cloud Save Error", error); 
+                }
             },
             
-            // 데이터의 시점 고정 (Snapshot) 
+            /**
+             * [P0 데이터 정합성 핵심 로직]
+             * 비동기 대기 중 사용자가 페이지를 이동해버리면 다른 페이지 번호로 
+             * 이전 그림이 저장되는 사고를 방지하기 위해 호출 시점의 스냅샷을 캡처.
+             */
             createCanvasSnapshot() {
                 if (!CanvasEngine.cvs || !STATE.uid) return null;
-                const canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6);
+                
+                const canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6); // 퀄리티 60% 압축 (속도 유리)
                 const key = `br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`;
                 
                 try {
                     localStorage.setItem(key, canvasData);
                 } catch(e) {
-                    Logger.warn("Local Storage Full", e);
+                    Logger.warn("Local Storage Capacity Full", e);
                 }
 
                 return {
@@ -1554,25 +1699,45 @@
                 return this.createCanvasSnapshot();
             },
 
+            /**
+             * 디바운스(Debounce) 타이머 예약기
+             */
             scheduleCloudSave() {
+                // 호출 순간의 상태를 고정 박제
                 const snapshot = this.createCanvasSnapshot();
+                
                 clearTimeout(this.cloudSaveTimer);
+                
                 this.cloudSaveTimer = setTimeout(() => {
                     this.executeCloudSave(snapshot);
-                }, 1500); 
+                }, 1500); // 1.5초 대기
             },
 
+            /**
+             * [P1 버그 픽스] Firestore 문서 용량 한도(1MB) 초과 에러 해결 로직
+             * Base64 문자열을 Firestore에 직접 넣지 않고, Firebase Storage에 WebP 이미지로 업로드 후
+             * 생성된 URL 경로만 Firestore에 저장하는 안전한 이중 연결 구조입니다.
+             */
             async executeCloudSave(snapshot = null) {
                 const payload = snapshot || this.createCanvasSnapshot();
                 if (!payload || !storage) return;
 
                 try {
-                    const imageRef = storage.ref(`student_drawings/${payload.uid}/${payload.unitId}_P${payload.page}.webp`);
+                    const storagePath = `student_drawings/${payload.uid}/${payload.unitId}_P${payload.page}.webp`;
+                    const imageRef = storage.ref(storagePath);
+                    
+                    // 1. Firebase Storage에 Base64 -> Blob 데이터로 업로드
                     await imageRef.putString(payload.canvasData, 'data_url');
                     
+                    // 2. 다운로드 가능한 퍼블릭 URL 획득 (원장님 관제탑 로딩용)
                     const downloadURL = await imageRef.getDownloadURL();
                     
-                    await db.collection("student_drawings").doc(`${payload.uid}_${payload.unitId}_P${payload.page}`).set({
+                    const firestoreDocId = `${payload.uid}_${payload.unitId}_P${payload.page}`;
+                    
+                    // 3. Firestore에는 무거운 Base64 대신 메타데이터와 URL만 저장
+                    // [권한 픽스] rule 통과를 위해 uid 필드를 반드시 명시합니다.
+                    await db.collection("student_drawings").doc(firestoreDocId).set({
+                        uid: payload.uid,
                         studentID: payload.studentEmail, 
                         unitId: payload.unitId, 
                         page: payload.page,
@@ -1581,19 +1746,30 @@
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
                     
-                    Logger.log(`Cloud Canvas Saved Safely (P${payload.page})`);
+                    Logger.log(`Cloud Canvas Transaction Complete for Page ${payload.page}`);
+                    
                 } catch (error) { 
-                    Logger.warn("Cloud Upload Failed, fallback to local only", error); 
+                    Logger.warn("Cloud Upload Transaction Failed", error); 
                 }
             },
             
+            /**
+             * 이전 페이지 진입 시 로컬 스토리지에서 빠르게 백업 드로잉 복원
+             */
             loadCanvasLocal() {
                 try {
-                    const localData = localStorage.getItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`);
+                    const cacheKey = `br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`;
+                    const localData = localStorage.getItem(cacheKey);
+                    
                     if (localData) {
                         const img = new Image();
                         img.onload = () => { 
-                            CanvasEngine.ctx.drawImage(img, 0, 0, CanvasEngine.cvs.width/CanvasEngine.dpr, CanvasEngine.cvs.height/CanvasEngine.dpr); 
+                            CanvasEngine.ctx.drawImage(
+                                img, 
+                                0, 0, 
+                                CanvasEngine.cvs.width / CanvasEngine.dpr, 
+                                CanvasEngine.cvs.height / CanvasEngine.dpr
+                            ); 
                             CanvasEngine.saveHistory(); 
                         };
                         img.src = localData;
@@ -1601,114 +1777,190 @@
                         CanvasEngine.saveHistory(); 
                     }
                 } catch (error) { 
-                    Logger.error("Canvas Load Error", error); 
+                    Logger.error("Local Canvas Restore Error", error); 
                     CanvasEngine.saveHistory(); 
                 }
             }
         };
 
         /**
-         * [4-7. PAGE NAVIGATION ENGINE]
+         * ----------------------------------------------------------------------
+         * [4-9. PAGE & SIDEBAR RENDER ENGINE]
+         * ----------------------------------------------------------------------
          */
         const PageEngine = {
+            /**
+             * 사이드바 내비게이션 리스트의 DOM 노드를 동적으로 생성 및 주입
+             */
             init() {
                 const list = document.getElementById('nav-list');
+                if(!list) return;
+                
+                // [P2 버그 픽스] Init 중복 호출 시 요소가 무한히 쌓이는 증식 버그 방어
                 list.innerHTML = ''; 
                 
                 const unitData = PAGE_INTELLIGENCE[STATE.unitId];
                 
                 if (unitData) {
-                    Object.keys(unitData).forEach((i, index) => {
-                        const ctx = unitData[i];
-                        const weekBadge = Math.floor(index / 4) + 1; 
+                    Object.keys(unitData).forEach((pageKey, index) => {
+                        const ctx = unitData[pageKey];
+                        
+                        // [P2 버그 픽스] A-2 (18페이지) 시작 시 Week가 틀어지는 문제 방어
+                        // 절대적 페이지 번호가 아닌 유닛 내부의 상대적 배열 인덱스(0부터) 기준으로 산출
+                        const weekBadgeNum = Math.floor(index / 4) + 1; 
                         
                         const item = document.createElement('div');
                         item.className = 'nav-item'; 
-                        item.id = `nav-${i}`;
+                        item.id = `nav-${pageKey}`;
+                        
                         item.innerHTML = `
                             <span class="nav-title">${ctx.navTitle}</span>
-                            <span class="nav-badge">W${weekBadge}-P.${String(i).padStart(2,'0')}</span>
+                            <span class="nav-badge">W${weekBadgeNum}-P.${String(pageKey).padStart(2,'0')}</span>
                         `;
+                        
                         item.onclick = () => { 
-                            AppEngine.smoothMove(parseInt(i) - STATE.currentPage); 
+                            // 현재 위치 대비 클릭한 페이지의 상대 방향(-N or +N) 계산
+                            const moveOffset = parseInt(pageKey) - STATE.currentPage;
+                            AppEngine.smoothMove(moveOffset); 
                             UIEngine.closeSidebarOnMobile(); 
                         };
+                        
                         list.appendChild(item);
                     });
                 }
+                
+                // DOM 렌더링 완료 후 첫 화면 로드 수행
                 this.load(STATE.currentPage);
             },
             
+            /**
+             * 실제 페이지 데이터 바인딩 및 화면 전환 로직
+             * @param {number} n - 로드할 타겟 페이지 숫자
+             */
             load(n) {
+                // 1. 상태 변수 최신화
                 STATE.currentPage = n; 
                 STATE.lastTranscript = ""; 
                 STATE.sttConfidence = 0;
                 
-                document.getElementById('unit-info').innerText = `MASTER LAB: ${STATE.unitId}`;
-                document.getElementById('page-info').innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
+                // 2. 상단 정보 바인딩
+                const unitInfoEl = document.getElementById('unit-info');
+                if(unitInfoEl) unitInfoEl.innerText = `MASTER LAB: ${STATE.unitId}`;
                 
+                const pageInfoEl = document.getElementById('page-info');
+                if(pageInfoEl) pageInfoEl.innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
+                
+                // 3. 네비게이션 활성화 처리 (선택된 요소 스타일 강조)
                 document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                
                 const activeNav = document.getElementById(`nav-${n}`);
                 if(activeNav) {
                     activeNav.classList.add('active');
+                    
                     const navList = document.getElementById('nav-list');
-                    navList.scrollTo({ top: activeNav.offsetTop - navList.offsetTop - 50, behavior: 'smooth' });
+                    if(navList) {
+                        // 선택된 메뉴 요소의 상대 위치를 파악하여 자동으로 스크롤 내림
+                        const relativeScroll = activeNav.offsetTop - navList.offsetTop - 50;
+                        navList.scrollTo({ top: relativeScroll, behavior: 'smooth' });
+                    }
                 }
                 
+                // 4. 화면 컨트롤러 리셋
                 CanvasEngine.hardReset(); 
                 AITutor.close();
-                document.getElementById('worksheet-img').style.opacity = '0';
                 
+                const worksheetImg = document.getElementById('worksheet-img');
+                if(worksheetImg) worksheetImg.style.opacity = '0';
+                
+                // 5. 비동기 이미지 로딩 시퀀스 트리거
                 SmartImageLoader.findValidWorksheet(STATE.unitId, STATE.currentPage);
+                
+                // 6. 현재 도달한 페이지 진행률 메타데이터 서버에 기록
                 StorageEngine.save();
             }
         };
 
         /**
-         * [4-8. APPLICATION FLOW ENGINE]
-         * [P1 버그 픽스] 페이지 이동 저장(Save prior to move) 스냅샷 매핑 완료
+         * ----------------------------------------------------------------------
+         * [4-10. APPLICATION WORKFLOW ORCHESTRATOR]
+         * ----------------------------------------------------------------------
          */
         const AppEngine = {
+            /**
+             * 애니메이션을 동반하여 이전/다음 페이지로 이동
+             * @param {number} dir - 이동할 델타 오프셋 (-1, +1 등)
+             */
             smoothMove(dir) {
                 const nextPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir);
+                
+                // 동일 페이지 재이동 방어 (첫 페이지에서 이전 버튼 누르기 등)
                 if (nextPage === STATE.currentPage) return;
 
-                // Create snapshot of current page to safely save to cloud
+                // [P1 버그 픽스] 페이지를 넘기기 전에 현재 캔버스의 스냅샷을 찍어 확정 저장
                 const snapshot = StorageEngine.createCanvasSnapshot();
                 StorageEngine.executeCloudSave(snapshot);
                 
                 const board = document.getElementById('drawing-board'); 
-                board.classList.add('fade-out');
+                if(board) board.classList.add('fade-out');
                 
+                // 0.4초 애니메이션 대기 후 로드 실행
                 setTimeout(() => {
                     STATE.currentPage = nextPage;
                     PageEngine.load(STATE.currentPage);
-                    setTimeout(() => board.classList.remove('fade-out'), 150);
+                    
+                    // DOM 재렌더링 시간을 확보한 뒤 다시 페이드 인
+                    setTimeout(() => {
+                        if(board) board.classList.remove('fade-out');
+                    }, 150);
                 }, 400);
             },
             
+            /**
+             * AI 피드백 팝업 하단의 [Next Page] 버튼을 눌렀을 때의 동작
+             */
             handleNextAdventure() {
                 AITutor.close(); 
+                
                 const snapshot = StorageEngine.createCanvasSnapshot();
                 StorageEngine.executeCloudSave(snapshot);
+                
                 this.smoothMove(1);
             }
         };
 
         const UIEngine = {
-            toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); },
-            closeSidebarOnMobile() { if (window.innerWidth <= 800) { document.getElementById('sidebar').classList.remove('open'); } }
+            toggleSidebar() { 
+                const sb = document.getElementById('sidebar');
+                if(sb) sb.classList.toggle('open'); 
+            },
+            closeSidebarOnMobile() { 
+                if (window.innerWidth <= 800) {
+                    const sb = document.getElementById('sidebar');
+                    if(sb) sb.classList.remove('open'); 
+                }
+            }
         };
 
         /**
-         * [4-9. CANVAS DRAWING ENGINE]
-         * [P2 버그 픽스] iPad Memory Leak 방지를 위한 historyStack Cap(20) 구현
+         * ----------------------------------------------------------------------
+         * [4-11. CANVAS DRAWING ENGINE (GPU & DPR OPTIMIZED)]
+         * ----------------------------------------------------------------------
+         * 디바이스 픽셀 비율(DPR)을 완벽히 계산하여 레티나(Retina) 디스플레이에서
+         * 브러시 좌표 왜곡이나 흐려짐 현상이 없도록 구성된 정밀 엔진.
          */
         const CanvasEngine = {
-            isDrawing: false, hasMoved: false, isErasing: false, lastColor: "#363431", dpr: window.devicePixelRatio || 1, historyStack: [], historyIndex: -1,
+            isDrawing: false, 
+            hasMoved: false, 
+            isErasing: false, 
+            lastColor: "#363431", 
+            dpr: window.devicePixelRatio || 1, 
+            historyStack: [], 
+            historyIndex: -1,
             
             init() {
                 this.cvs = document.getElementById('draw-layer'); 
+                if(!this.cvs) return;
+                
                 this.ctx = this.cvs.getContext('2d'); 
                 this.board = document.getElementById('drawing-board');
                 
@@ -1716,57 +1968,97 @@
                 this.setupCanvas(); 
                 this.bind();
                 
-                if (window.ResizeObserver) { 
+                // 브라우저 윈도우 크기 변화 감지하여 능동적 리사이즈 수행
+                if (window.ResizeObserver && this.board) { 
                     new ResizeObserver(() => this.resizeCanvas()).observe(this.board); 
                 }
             },
             
+            /**
+             * 캔버스의 내부 메모리 크기(width/height)를 화면 표시 크기(CSS) 대비 
+             * 디바이스 픽셀 비율 배수로 키워서 렌더링 선명도 확보
+             */
             setupCanvas() {
+                if(!this.board || !this.cvs) return;
+                
                 const rect = this.board.getBoundingClientRect(); 
                 if (rect.width === 0) return;
                 
+                // CSS 표시 크기
                 this.cvs.style.width = rect.width + "px"; 
                 this.cvs.style.height = rect.height + "px";
+                
+                // 실제 메모리 렌더링 해상도 크기 확대
                 this.cvs.width = rect.width * this.dpr; 
                 this.cvs.height = rect.height * this.dpr;
                 
+                // 좌표계 스케일 정규화
                 this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); 
+                
+                // 부드러운 드로잉 라인 생성 옵션
                 this.ctx.lineCap = 'round'; 
                 this.ctx.lineJoin = 'round';
             },
             
+            /**
+             * 브라우저 창 크기 변화 발생 시, 
+             * 기존 그림이 소실되지 않도록 가상 캔버스(temp)에 백업해 두었다가 크기 조정 후 복원
+             */
             resizeCanvas() {
                 if (!this.cvs || !this.ctx || !this.board) return;
+                
                 const rect = this.board.getBoundingClientRect(); 
                 if (rect.width === 0 || rect.height === 0) return;
 
                 const temp = document.createElement('canvas'); 
-                temp.width = this.cvs.width; temp.height = this.cvs.height;
+                temp.width = this.cvs.width; 
+                temp.height = this.cvs.height;
                 
+                const tempCtx = temp.getContext('2d');
                 if (this.cvs.width > 0 && this.cvs.height > 0) { 
-                    temp.getContext('2d').drawImage(this.cvs, 0, 0); 
+                    tempCtx.drawImage(this.cvs, 0, 0); 
                 }
                 
+                // 메모리 사이즈 및 스케일 재할당
                 this.setupCanvas();
                 
                 if (temp.width > 0 && temp.height > 0) { 
-                    this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, rect.width, rect.height); 
+                    // [P1 버그 픽스] 대상 좌표(Destination)는 CSS Pixel 규격(rect.width)으로 한정해야 잘림 현상 방어 가능
+                    this.ctx.drawImage(
+                        temp, 
+                        0, 0, temp.width, temp.height, // Source 범위
+                        0, 0, rect.width, rect.height  // Destination 범위
+                    ); 
                 }
             },
             
+            /**
+             * 마우스 & 터치 이벤트 바인딩
+             */
             bind() {
+                if(!this.cvs) return;
+                
+                // 브라우저 뷰포트 좌표를 캔버스 내부 상대 좌표로 정밀 변환
                 const getP = (e) => { 
                     const r = this.cvs.getBoundingClientRect(); 
-                    let cx = e.clientX || e.touches[0].clientX; 
-                    let cy = e.clientY || e.touches[0].clientY; 
+                    let cx = e.clientX;
+                    let cy = e.clientY;
+                    
+                    if(e.touches && e.touches.length > 0){
+                        cx = e.touches[0].clientX;
+                        cy = e.touches[0].clientY;
+                    }
                     return { x: cx - r.left, y: cy - r.top }; 
                 };
                 
                 const start = (e) => { 
+                    // 모바일 화면 스크롤링 혼선 방어
                     e.preventDefault(); 
+                    
                     this.isDrawing = true; 
                     this.hasMoved = false; 
                     const p = getP(e); 
+                    
                     this.ctx.beginPath(); 
                     this.ctx.moveTo(p.x, p.y); 
                 };
@@ -1777,16 +2069,20 @@
                     this.hasMoved = true; 
                     const p = getP(e);
                     
+                    // 지우개 모드 지원을 위한 Composite Operation 분기
                     this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over";
-                    const s = document.getElementById('brush-size').value; 
-                    this.ctx.lineWidth = this.isErasing ? s * 3 : s;
+                    
+                    const sliderVal = document.getElementById('brush-size').value; 
+                    this.ctx.lineWidth = this.isErasing ? sliderVal * 3 : sliderVal;
                     
                     this.ctx.strokeStyle = this.isErasing ? "#FFF" : this.lastColor;
                     
+                    // 특수 브러시(Neon, Rainbow) 로직 적용
                     if(STATE.brushType === 'rainbow' && !this.isErasing) { 
-                        this.ctx.strokeStyle = `hsl(${(Date.now()/10)%360}, 100%, 50%)`; 
+                        const rainbowColor = `hsl(${(Date.now()/10)%360}, 100%, 50%)`;
+                        this.ctx.strokeStyle = rainbowColor; 
                     } else if (STATE.brushType === 'neon' && !this.isErasing) { 
-                        this.ctx.shadowBlur = parseInt(s) + 10; 
+                        this.ctx.shadowBlur = parseInt(sliderVal) + 10; 
                         this.ctx.shadowColor = this.lastColor; 
                     } else { 
                         this.ctx.shadowBlur = 0; 
@@ -1794,15 +2090,18 @@
                     
                     this.ctx.lineTo(p.x, p.y); 
                     this.ctx.stroke(); 
+                    
                     this.ctx.beginPath(); 
                     this.ctx.moveTo(p.x, p.y);
                 };
                 
-                const end = () => { 
+                const end = (e) => { 
                     this.isDrawing = false; 
                     this.ctx.shadowBlur = 0; 
                     if (this.hasMoved) { 
                         this.saveHistory(); 
+                        
+                        // 그리기 액션이 끝날 때마다 로컬 캐시 즉시 업데이트 및 클라우드 업로드 디바운싱
                         StorageEngine.saveCanvasLocal();
                         StorageEngine.scheduleCloudSave();
                     } 
@@ -1814,14 +2113,18 @@
                 this.cvs.addEventListener('pointerleave', end);
             },
             
+            /**
+             * [P2 버그 픽스] 브라우저(특히 iPad) 메모리 OOM(Out of Memory) 방지를 위한
+             * Undo/Redo 히스토리 스택 제한 (가비지 컬렉션 역할)
+             */
             saveHistory() { 
                 this.historyIndex++; 
                 this.historyStack.length = this.historyIndex; 
                 this.historyStack.push(this.cvs.toDataURL()); 
                 
-                // [P2 버그 픽스] iPad Memory Leak 방지
+                // 최대 20개의 이전 행동 내역만 보존
                 if (this.historyStack.length > 20) {
-                    this.historyStack.shift();
+                    this.historyStack.shift(); // 맨 첫 번째(가장 오래된) 스냅샷 제거
                     this.historyIndex--;
                 }
             },
@@ -1836,6 +2139,7 @@
             },
             
             restore() { 
+                if(!this.ctx || !this.cvs) return;
                 const img = new Image(); 
                 img.onload = () => { 
                     this.ctx.save(); 
@@ -1850,26 +2154,33 @@
             setBrush(t) { 
                 STATE.brushType = t; 
                 document.querySelectorAll('.btn-magic').forEach(el => el.classList.remove('active')); 
-                document.getElementById(`btn-brush-${t}`).classList.add('active'); 
+                const activeBtn = document.getElementById(`btn-brush-${t}`);
+                if(activeBtn) activeBtn.classList.add('active'); 
+                
                 if(this.isErasing) this.toggleEraser(); 
             },
             
             toggleEraser() { 
                 this.isErasing = !this.isErasing; 
-                document.getElementById('btn-eraser').classList.toggle('active'); 
+                const btn = document.getElementById('btn-eraser');
+                if(btn) btn.classList.toggle('active'); 
             },
             
             setColor(color) { 
                 this.lastColor = color; 
-                document.getElementById('btn-color').style.background = color; 
+                const preview = document.getElementById('btn-color');
+                if(preview) preview.style.background = color; 
+                
                 if(this.isErasing) this.toggleEraser(); 
             },
             
             setupUI() { 
-                document.getElementById('btn-color').style.background = this.lastColor; 
+                const preview = document.getElementById('btn-color');
+                if(preview) preview.style.background = this.lastColor; 
             },
             
             hardReset() { 
+                if(!this.ctx || !this.cvs) return;
                 try { 
                     this.ctx.save(); 
                     this.ctx.setTransform(1,0,0,1,0,0); 
@@ -1877,15 +2188,20 @@
                     this.ctx.restore(); 
                     this.historyStack = []; 
                     this.historyIndex = -1; 
-                } catch(e) { Logger.error("Canvas Reset Error", e); } 
+                } catch(e) { 
+                    Logger.error("Canvas Hard Reset Engine Error", e); 
+                } 
             }
         };
 
         const RGBRingEngine = {
             init() { 
                 const c = document.getElementById('color-wheel'); 
+                if(!c) return;
+                
                 const ctx = c.getContext('2d', { willReadFrequently: true }); 
                 const r = 75; 
+                
                 for (let a=0; a<360; a++) { 
                     ctx.beginPath(); 
                     ctx.moveTo(r,r); 
@@ -1893,6 +2209,7 @@
                     ctx.fillStyle = `hsl(${a},100%,50%)`; 
                     ctx.fill(); 
                 }
+                
                 c.onclick = (e) => { 
                     const rect = c.getBoundingClientRect(); 
                     const data = ctx.getImageData(e.clientX-rect.left, e.clientY-rect.top, 1, 1).data; 
@@ -1900,18 +2217,26 @@
                     this.toggle(); 
                 };
             },
-            toggle() { document.getElementById('rgb-modal').classList.toggle('active'); }
+            toggle() { 
+                const modal = document.getElementById('rgb-modal');
+                if(modal) modal.classList.toggle('active'); 
+            }
         };
 
         /**
-         * [4-10. AUDIO ENGINE]
-         * [P1 버그 픽스] 상태 꼬임 방지를 위한 recordingMode State Machine 추가
+         * ----------------------------------------------------------------------
+         * [4-11. AUDIO ENGINE & STATE MACHINE]
+         * ----------------------------------------------------------------------
+         * Web Speech API 통신 모듈. 
+         * [P1 버그 픽스] `recordingMode` (main vs chat) 상태 기계 변수를 활용하여
+         * 타임아웃 자동 종료 시 UI 상태가 서로 꼬이는 결함을 방어합니다.
          */
         const AudioEngine = {
-            recordingMode: 'main',
+            recordingMode: 'main', 
 
             init() {
                 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+                
                 if (SR) {
                     this.rec = new SR(); 
                     this.rec.lang = 'en-US'; 
@@ -1924,72 +2249,129 @@
                     };
 
                     this.rec.onend = () => { 
+                        // 만약 유저가 직접 끄지 않고 음성이 비어있어 자동 종료(onend)되었을 때의 UI 원복 처리 분기
                         if (!STATE.isRecording) return;
-                        if (this.recordingMode === 'chat') this.toggleChat();
-                        else this.toggle();
+                        
+                        if (this.recordingMode === 'chat') {
+                            this.toggleChat();
+                        } else {
+                            this.toggle();
+                        }
                     };
 
                     this.rec.onerror = (e) => { 
-                        Logger.error("Speech Error:", e.error); 
+                        Logger.error("Speech Recognition Audio Error:", e.error); 
+                        
+                        // 에러 시 모든 녹음 상태 및 UI 강제 초기화
                         if(STATE.isRecording) {
                             STATE.isRecording = false;
-                            document.getElementById('btn-record').classList.remove('recording');
-                            document.getElementById('btn-chat-record').classList.remove('recording');
-                            document.getElementById('record-text').innerText = "Voice Log";
+                            
+                            const btnRecord = document.getElementById('btn-record');
+                            if(btnRecord) btnRecord.classList.remove('recording');
+                            
+                            const btnChat = document.getElementById('btn-chat-record');
+                            if(btnChat) btnChat.classList.remove('recording');
+                            
+                            const recText = document.getElementById('record-text');
+                            if(recText) recText.innerText = "Voice Log";
                         }
                     }
-                } else { Logger.warn("Web Speech API not supported."); }
+                } else { 
+                    Logger.warn("Web Speech API Environment is not natively supported in this browser."); 
+                }
             },
             
             toggle() {
-                if(!this.rec) { alert("마이크가 지원되지 않습니다. Chrome을 사용해주세요."); return; }
+                if(!this.rec) { 
+                    alert("마이크 사용 권한이 없거나 지원되지 않는 브라우저(예: 구버전 iOS Safari)입니다. 최신 브라우저를 사용해주세요."); 
+                    return; 
+                }
+                
+                // 상태 주입
                 this.recordingMode = 'main';
+                
+                const btnRecord = document.getElementById('btn-record');
+                const recText = document.getElementById('record-text');
 
                 if(!STATE.isRecording) { 
                     STATE.isRecording = true; 
-                    document.getElementById('btn-record').classList.add('recording'); 
-                    document.getElementById('record-text').innerText = "Listening...";
-                    try { this.rec.start(); } catch(e){ Logger.error("Mic start failed", e); } 
+                    if(btnRecord) btnRecord.classList.add('recording'); 
+                    if(recText) recText.innerText = "Listening...";
+                    
+                    try { 
+                        this.rec.start(); 
+                    } catch(e) { 
+                        Logger.error("Microphone Hardware Start Failed", e); 
+                    } 
                 } else { 
                     STATE.isRecording = false; 
-                    document.getElementById('btn-record').classList.remove('recording'); 
-                    document.getElementById('record-text').innerText = "Voice Log";
-                    try { this.rec.stop(); } catch(e){} 
+                    if(btnRecord) btnRecord.classList.remove('recording'); 
+                    if(recText) recText.innerText = "Voice Log";
                     
-                    setTimeout(() => { AITutor.submit(); }, 800);
+                    try { 
+                        this.rec.stop(); 
+                    } catch(e) {} 
+                    
+                    // STT 비동기 텍스트가 안착할 시간을 부여 후 AI 엔진에 쿼리 날림
+                    setTimeout(() => { 
+                        AITutor.submit(); 
+                    }, 800);
                 }
             },
             
             toggleChat() {
                 if(!this.rec) return;
+                
                 this.recordingMode = 'chat';
+                const btnChat = document.getElementById('btn-chat-record');
 
                 if(!STATE.isRecording) { 
                     STATE.isRecording = true; 
-                    document.getElementById('btn-chat-record').classList.add('recording'); 
-                    document.getElementById('btn-chat-record').innerText = "Listening...";
-                    try { this.rec.start(); } catch(e){} 
+                    if(btnChat) {
+                        btnChat.classList.add('recording'); 
+                        btnChat.innerText = "Listening...";
+                    }
+                    try { 
+                        this.rec.start(); 
+                    } catch(e) {} 
                 } else { 
                     STATE.isRecording = false; 
-                    document.getElementById('btn-chat-record').classList.remove('recording'); 
-                    document.getElementById('btn-chat-record').innerText = "🎤 Speak to Teacher";
-                    try { this.rec.stop(); } catch(e){} 
+                    if(btnChat) {
+                        btnChat.classList.remove('recording'); 
+                        btnChat.innerText = "🎤 Speak to Teacher";
+                    }
+                    try { 
+                        this.rec.stop(); 
+                    } catch(e) {} 
                     
-                    setTimeout(() => { AITutor.processReply(); }, 800);
+                    setTimeout(() => { 
+                        AITutor.processReply(); 
+                    }, 800);
                 }
             }
         };
 
         /**
-         * [4-11. 🔥 ENTERPRISE BACKEND PROXY AI TUTOR ENGINE]
-         * [P0 버그 픽스] Client-side Authorization / 토큰(Bearer) 활용 보안
+         * ----------------------------------------------------------------------
+         * [4-12. 🔥 ENTERPRISE BACKEND PROXY AI TUTOR ENGINE]
+         * ----------------------------------------------------------------------
+         * 클라이언트 사이드 보안 한계를 극복하고 상용 배포 기준을 충족하기 위한
+         * 백엔드 API (Cloud Functions) 기반 통신 릴레이 엔진
          */
         const AITutor = {
-            async callBackendTutor(prompt, base64Img = null) {
+            /**
+             * [P0 버그 픽스] Client-side Authorization 구현 
+             * uid만 평문으로 던져 데이터 조작 위험이 있던 로직을 폐기하고,
+             * Firebase JWT Token(Bearer)을 Request Header에 탑재하여 완벽한 인증 검증 체계를 확보.
+             */
+            async callBackendTutor(promptText, base64Img = null) {
                 try {
-                    // [P0] Get secure Firebase ID Token
                     const user = auth.currentUser;
-                    if (!user) throw new Error("Unauthorized Access");
+                    if (!user) {
+                        throw new Error("Unauthorized AI Invocation Attempt Blocked. Firebase User Null.");
+                    }
+                    
+                    // 단기 생존 세션 토큰 강제 확보
                     const token = await user.getIdToken();
 
                     const response = await fetch(CONFIG.API_TUTOR_ENDPOINT, {
@@ -1999,31 +2381,46 @@
                             'Authorization': `Bearer ${token}` 
                         },
                         body: JSON.stringify({ 
-                            prompt: prompt,
+                            prompt: promptText,
+                            // base64 헤더를 제거한 raw data 분리 전송
                             image: base64Img ? base64Img.split(',')[1] : null,
                             unitId: STATE.unitId,
                             page: STATE.currentPage
                         })
                     });
                     
-                    if (!response.ok) throw new Error("Backend API Call Failed");
+                    if (!response.ok) {
+                        throw new Error(`Backend Proxy Refused Connection with Status: ${response.status}`);
+                    }
+                    
                     const data = await response.json();
                     return data.reply;
                     
                 } catch (e) {
-                    Logger.warn("Backend unavailable, using Local Demo Fallback.", e);
-                    // Fallback for development before deploying Cloud Functions
-                    return "Wow, you did an amazing job today! 선생님이 지금 다른 친구를 도와주고 있어요. 계속해서 재미있게 그려볼까요?";
+                    Logger.warn("Primary Backend Target Unavailable. Initiating Offline Local Demo Fallback Engine.", e);
+                    
+                    // Cloud Functions 세팅 전 개발 단계에서 앱 작동 테스트를 위한 Fallback
+                    return "Wow, you did an amazing job today! 선생님이 지금 다른 친구를 먼저 도와주고 있어서 연락이 조금 어려워요. 혼자서 계속해서 멋지게 색칠해 볼까요?";
                 }
             },
 
+            /**
+             * 캔버스 분석 및 1차 평가 전송 메인 Submit
+             */
             async submit() {
-                if (STATE.isRecording) { AudioEngine.toggle(); return; }
+                // 사용자가 녹음 도중에 다급히 Submit을 눌렀을 때, 녹음기 안전 종료 로직 처리
+                if (STATE.isRecording) { 
+                    AudioEngine.toggle(); 
+                    return; 
+                }
 
                 const panel = document.getElementById('ai-panel'); 
-                panel.classList.add('open');
+                if(panel) panel.classList.add('open');
                 
                 const content = document.getElementById('ai-content');
+                if(!content) return;
+                
+                // Loading State Injection (XSS 안전함, 하드코딩)
                 content.innerHTML = `
                     <div class="ai-loading-container">
                         <i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i>
@@ -2031,12 +2428,13 @@
                     </div>
                 `;
 
-                // Flush pending saves
+                // [P1] 요청 생성 이전에 혹시 모를 로컬 클라우드 세이브 잔여 타이머 일괄 플러시
                 StorageEngine.executeCloudSave();
 
                 const canvasImg = CanvasEngine.cvs.toDataURL('image/jpeg', 0.6); 
                 const unitData = PAGE_INTELLIGENCE[STATE.unitId] ? PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage] : { goal: "Free Exploration" };
 
+                // [프롬프트] 북미 명문 교육기관 교사 페르소나 적용 (Backend에서 파싱될 Base Prompt)
                 const prompt = `
                     You are an enthusiastic native English teacher at a prestigious private school. Your name is Teacher Bridge.
                     Student Name: ${STATE.studentName}
@@ -2044,94 +2442,128 @@
                     Student Said: "${STATE.lastTranscript || "Look at my drawing!"}"
 
                     Instructions:
-                    1. Praise their drawing explicitly based on visual context.
+                    1. Praise their drawing explicitly based on the visual context you see.
                     2. Use high-energy, encouraging language.
-                    3. Mix natural Korean phrases.
-                    4. Keep to 3 short sentences. Plain text.
+                    3. Mix natural Korean phrases contextually.
+                    4. Keep strictly to 3 short sentences. Output plain text only without markdown.
                 `;
 
-                const response = await this.callBackendTutor(prompt, canvasImg);
+                const aiResponseText = await this.callBackendTutor(prompt, canvasImg);
                 
-                // Secure DOM Injection (No innerHTML for AI payloads)
+                // [P2 버그 픽스] XSS 공격 취약점 방어를 위한 DOM 정규식 기반 분리 렌더링
+                // 1. 고정 데이터 레이아웃 주입
                 content.innerHTML = `
                     <div class="analytics-card">
                         <div class="analytics-title">Mission: ${unitData.goal}</div>
                         <div class="stat-row">
-                            <div class="stat-label"><span>Voice Confidence</span><span>${STATE.sttConfidence}%</span></div>
-                            <div class="bar-bg"><div class="bar-fill" style="width:${STATE.sttConfidence}%; background:var(--br-blue)"></div></div>
+                            <div class="stat-label">
+                                <span>Voice Confidence</span>
+                                <span>${STATE.sttConfidence}%</span>
+                            </div>
+                            <div class="bar-bg">
+                                <div class="bar-fill" style="width:${STATE.sttConfidence}%; background:var(--br-blue)"></div>
+                            </div>
                         </div>
                     </div>
                 `;
                 
+                // 2. 외부 AI로부터 들어온 가변 데이터(Unsafe Payload)는 무조건 textContent 로 처리
                 const aiBubble = document.createElement('div');
                 aiBubble.className = 'chat-bubble ai mt-4';
-                aiBubble.textContent = response; 
+                aiBubble.textContent = aiResponseText; 
                 content.appendChild(aiBubble);
                 
-                document.getElementById('chat-footer').style.display = "block";
-                this.speak(response);
+                const footer = document.getElementById('chat-footer');
+                if(footer) footer.style.display = "block";
+                
+                this.speak(aiResponseText);
             },
 
+            /**
+             * 2차 질문 및 대화 (채팅 연속 처리)
+             */
             async processReply() {
                 if (!STATE.lastTranscript) return;
                 
                 const content = document.getElementById('ai-content');
+                if(!content) return;
                 
+                // 유저 인풋 버블 삽입 (XSS Safe)
                 const uBubble = document.createElement('div'); 
                 uBubble.className = "chat-bubble user mt-4"; 
                 uBubble.textContent = STATE.lastTranscript; 
                 content.appendChild(uBubble); 
                 content.scrollTop = content.scrollHeight;
 
+                // AI 응답 대기 UI 삽입
                 const aBubble = document.createElement('div'); 
                 aBubble.className = "chat-bubble ai mt-4"; 
                 aBubble.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 선생님이 대답을 생각하고 있어요...`;
                 content.appendChild(aBubble); 
                 content.scrollTop = content.scrollHeight;
 
-                let conversationPrompt = `
-                    Respond to: "${STATE.lastTranscript}". 
-                    Keep it short (1-2 sentences), enthusiastic, mix Korean/English. Ask a fun question. Plain text.
+                const conversationPrompt = `
+                    Respond contextually to the student's latest phrase: "${STATE.lastTranscript}". 
+                    Keep it short (1-2 sentences), highly enthusiastic, mix Korean/English smoothly. Ask a fun question. Plain text format only.
                 `;
                 
-                const reply = await this.callBackendTutor(conversationPrompt);
+                const aiReplyText = await this.callBackendTutor(conversationPrompt);
                 
+                // 대기 UI 삭제 후 응답 텍스트 삽입 (XSS Safe)
                 aBubble.innerHTML = '';
-                const boldText = document.createElement('b');
-                boldText.style.color = 'var(--br-green)';
-                boldText.style.fontWeight = '700';
-                boldText.textContent = reply; 
-                aBubble.appendChild(boldText);
+                const boldTextElement = document.createElement('b');
+                boldTextElement.style.color = 'var(--br-green)';
+                boldTextElement.style.fontWeight = '700';
+                boldTextElement.textContent = aiReplyText; 
                 
+                aBubble.appendChild(boldTextElement);
                 content.scrollTop = content.scrollHeight;
-                this.speak(reply);
+                
+                this.speak(aiReplyText);
             },
 
+            /**
+             * Web Speech Synthesis API를 활용한 피드백 낭독
+             */
             speak(text) {
                 if (window.speechSynthesis) {
                     window.speechSynthesis.cancel();
                     const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.lang = 'ko-KR'; utterance.rate = 0.95; 
+                    
+                    // 한영 혼용 프롬프트이기 때문에 'ko-KR' 보이스 엔진이 가장 자연스럽게 둘 다 파싱합니다.
+                    utterance.lang = 'ko-KR'; 
+                    utterance.rate = 0.95; 
                     window.speechSynthesis.speak(utterance);
                 }
             },
             
-            close() { document.getElementById('ai-panel').classList.remove('open'); if(window.speechSynthesis) window.speechSynthesis.cancel(); }
+            close() { 
+                const panel = document.getElementById('ai-panel');
+                if(panel) panel.classList.remove('open'); 
+                if(window.speechSynthesis) window.speechSynthesis.cancel(); 
+            }
         };
 
         /**
-         * [4-12. SYSTEM BOOT SEQUENCE]
-         * [P0 버그 픽스] CanvasEngine이 가장 먼저 초기화되어야 함
+         * ----------------------------------------------------------------------
+         * [4-13. MASTER SYSTEM BOOT SEQUENCE]
+         * ----------------------------------------------------------------------
+         * 시스템 구동 시 종속성이 꼬이지 않도록 명확한 Boot Order를 정의합니다.
          */
         function SystemBoot() {
             try {
+                // [P0 버그 픽스] PageEngine의 이미지 그리기 연산 이전에 Canvas DOM 컨텍스트가 먼저 잡혀야만 크래시가 발생하지 않습니다.
                 CanvasEngine.init(); 
+                
                 RGBRingEngine.init(); 
                 AudioEngine.init();
+                
+                // 가장 마지막에 화면 라우팅 엔진 가동
                 PageEngine.init(); 
-                Logger.log("Enterprise System Boot Complete");
-            } catch(e) {
-                Logger.error("System Boot Failed", e);
+                
+                Logger.log("Enterprise System Initial Boot Complete");
+            } catch(error) {
+                Logger.error("Master System Booting Phase Failed", error);
             }
         }
     </script>

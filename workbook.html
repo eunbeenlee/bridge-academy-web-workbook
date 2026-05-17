@@ -24,7 +24,7 @@
         content="#FCFBF9"
     >
     
-    <title>Bridge Academy | Premium AI Lab V100.43</title>
+    <title>Bridge Academy | Premium AI Lab V100.44</title>
 
     <link 
         rel="icon" 
@@ -309,7 +309,6 @@
             visibility: hidden;
         }
 
-        /* 캔버스 드로잉 영역에서는 정밀 십자선 커서 강제 적용 */
         .stage-wrapper {
             cursor: crosshair !important;
         }
@@ -322,7 +321,6 @@
             cursor: crosshair !important;
         }
 
-        /* 터치/펜 환경(모바일/태블릿) 커스텀 커서 비활성화 */
         @media (pointer: coarse) {
             .cursor-dot { 
                 display: none !important; 
@@ -741,7 +739,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-8. WORKSPACE & TOP CONTEXT BAR]
+           [4-8. TOP CONTEXT BAR]
         ---------------------------------------------------------------------- */
         .workspace { 
             flex: 1; 
@@ -2793,7 +2791,7 @@
                 role="alert"
             >
                 <i class="fa-solid fa-triangle-exclamation"></i> 
-                <span id="error-toast-msg">Error</span>
+                <span id="error-toast-msg">Error Message</span>
             </div>
 
             <main class="stage-wrapper interactive-hover">
@@ -3066,9 +3064,11 @@
             log(msg, data = "") { 
                 console.log(`[BRIDGE OK] ${msg}`, data); 
             },
+            
             warn(msg, data = "") { 
                 console.warn(`[BRIDGE WARN] ${msg}`, data); 
             },
+            
             error(msg, err) { 
                 console.error(`[BRIDGE FATAL] ${msg}`, err); 
                 
@@ -3089,7 +3089,6 @@
 
         /**
          * [5-3. PREMIUM CUSTOM MODAL ENGINE]
-         * (P0 Fix: Defined before ANY other code calls it)
          */
         const CustomModalEngine = {
             overlay: null,
@@ -3120,6 +3119,7 @@
                 const btnOk = document.createElement('button');
                 btnOk.className = "bridge-modal-btn bridge-modal-confirm neutral interactive-hover";
                 btnOk.innerText = "OK";
+                
                 btnOk.onclick = () => {
                     this.close();
                 };
@@ -3142,6 +3142,7 @@
                 const btnCancel = document.createElement('button');
                 btnCancel.className = "bridge-modal-btn bridge-modal-cancel interactive-hover";
                 btnCancel.innerText = "Keep It";
+                
                 btnCancel.onclick = () => {
                     this.close();
                 };
@@ -3149,6 +3150,7 @@
                 const btnConfirm = document.createElement('button');
                 btnConfirm.className = "bridge-modal-btn bridge-modal-confirm interactive-hover";
                 btnConfirm.innerText = "Yes, Clear";
+                
                 btnConfirm.onclick = () => {
                     this.close();
                     if (typeof onConfirm === 'function') {
@@ -3171,7 +3173,6 @@
 
         /**
          * [5-4. ZERO-LATENCY DYNAMIC CURSOR TRACKER]
-         * (P2 Fix: Restored the missing engine to prevent ReferenceError)
          */
         const CursorEngine = {
             dot: null,
@@ -3704,14 +3705,19 @@
                 
                 const seriesChar = unitId.charAt(0);
                 const t = Date.now(); 
+                
+                /* [P0 Fix] 파일명 탐색을 위한 패딩 포맷 생성 (1 -> 01) */
+                const padNum = String(pageNum).padStart(2, '0');
 
                 const possiblePaths = [
                     `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${pageNum}.png`,
+                    `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${padNum}.png`,
                     `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${pageNum}.png`,
+                    `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${padNum}.png`,
                     `${CONFIG.STORAGE_URL}${unitId}/${unitId}-${pageNum}.png`,
+                    `${CONFIG.STORAGE_URL}${unitId}/${unitId}-${padNum}.png`,
                     `${CONFIG.STORAGE_URL}${unitId}/${pageNum}.png`,
-                    `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${pageNum}.jpg`,
-                    `${CONFIG.STORAGE_URL}${unitId}/${pageNum}.jpg`
+                    `${CONFIG.STORAGE_URL}${unitId}/${padNum}.png`
                 ];
 
                 const tryLoad = (index) => {
@@ -3735,6 +3741,9 @@
 
                     const testUrl = `${possiblePaths[index]}?t=${t}`;
                     const tempImg = new Image();
+                    
+                    /* [P0 Fix] CORS 캐시 오염을 막기 위한 크로스오리진 속성 부여 */
+                    tempImg.crossOrigin = "anonymous";
 
                     tempImg.onload = () => {
                         if (token !== this.requestToken) {
@@ -3748,12 +3757,17 @@
                         }
                         
                         if (imgElement) {
+                            /* [P0 Fix] 실제 img 태그가 이미지를 다 불러오고 나서야 리사이즈를 하도록 onload 바인딩 */
+                            imgElement.onload = () => {
+                                imgElement.style.opacity = '1';
+                                CanvasEngine.resizeCanvas();
+                                StorageEngine.loadCanvasLocal();
+                            };
                             imgElement.src = testUrl;
-                            imgElement.style.opacity = '1';
+                        } else {
+                            CanvasEngine.resizeCanvas();
+                            StorageEngine.loadCanvasLocal();
                         }
-                        
-                        CanvasEngine.resizeCanvas();
-                        StorageEngine.loadCanvasLocal();
                     };
 
                     tempImg.onerror = () => {
@@ -5164,10 +5178,6 @@
             }
         };
 
-        /**
-         * [5-20. FINAL BOOTSTRAP]
-         * 로그인 세션이 확인된 후 모든 엔진을 안전하게 초기화합니다.
-         */
         let systemBooted = false;
         
         function SystemBoot() {
@@ -5187,13 +5197,10 @@
                 BadgeEngine.renderAll(); 
                 PageEngine.init(); 
                 SyncIndicatorEngine.init();
-                
-                Logger.log("V100.43 Enterprise Master System Boot Complete.");
             } catch(error) { 
                 Logger.error("Framework initialization error:", error); 
             }
         }
-        
     </script>
 </body>
 </html>

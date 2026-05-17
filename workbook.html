@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#FCFBF9">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Bridge Academy | Premium AI Lab V100.30</title>
+    <meta name="theme-color" content="#FCFBF9">
+    
+    <title>Bridge Academy | Premium AI Lab V100.34</title>
     
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Jua&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
@@ -15,77 +17,63 @@
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> 
-
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <style>
-        /* ----------------------------------------------------------------------
-           [4-1. DESIGN TOKENS & CSS VARIABLES]
-        ---------------------------------------------------------------------- */
         :root {
-            /* Brand Primary Colors */
             --br-green: #91D3B4; 
             --br-gold: #CBAE75; 
             --br-blue: #7CA6C1; 
             --br-charcoal: #363431;
             
-            /* UI Background Colors */
             --br-bg: #FCFBF9; 
             --br-paper: #FFFFFF; 
             --br-ai-soft: #F8FAFF;
             
-            /* Text & Border Colors */
             --br-text: #2A2825; 
             --br-muted: #8C8985;
             --br-border: #F0EFEB; 
             
-            /* Utility & Status Colors */
             --br-error: #E74C3C; 
             --br-error-light: #FEF2F2;
             --br-error-border: #FCA5A5;
             --br-success: #2ECC71;
             
-            /* Dimensional Layout Variables */
             --sidebar-width: 320px;
             --topbar-height: 85px;
             --dock-height: 110px;
             
-            /* Environmental Variables for Mobile Safe Area */
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-left: env(safe-area-inset-left, 0px);
             --safe-right: env(safe-area-inset-right, 0px);
             
-            /* Animation & Transition Timings */
             --transition-smooth: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
             --transition-fast: all 0.2s ease-in-out;
             --transition-elastic: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             
-            /* Box Shadows */
             --shadow-float: 0px 25px 70px rgba(0, 0, 0, 0.07);
             --shadow-button: 0px 10px 20px rgba(0, 0, 0, 0.05);
             --shadow-premium: 0px 30px 60px rgba(54, 52, 49, 0.15);
         }
 
-        /* ----------------------------------------------------------------------
-           [4-2. BASE RESET & FALLBACKS]
-        ---------------------------------------------------------------------- */
         * { 
-            margin-top: 0; 
-            margin-right: 0; 
-            margin-bottom: 0; 
-            margin-left: 0; 
-            padding-top: 0; 
-            padding-right: 0; 
-            padding-bottom: 0; 
-            padding-left: 0; 
+            margin-top: 0px; 
+            margin-right: 0px; 
+            margin-bottom: 0px; 
+            margin-left: 0px; 
+            padding-top: 0px; 
+            padding-right: 0px; 
+            padding-bottom: 0px; 
+            padding-left: 0px; 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
+            cursor: none !important;
         }
 
-        html, body { 
+        html {
             width: 100%; 
             height: 100dvh; 
             overflow-x: hidden; 
@@ -96,46 +84,47 @@
             pointer-events: auto !important; 
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
-            cursor: none; 
         }
 
-        a, button, input, select, textarea {
-            cursor: none !important;
+        body {
+            width: 100%; 
+            height: 100dvh; 
+            overflow-x: hidden; 
+            overflow-y: hidden; 
+            background-color: var(--br-bg); 
+            color: var(--br-text); 
+            font-family: 'Pretendard', sans-serif; 
+            pointer-events: auto !important; 
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale;
         }
+
+        a { cursor: none !important; }
+        button { cursor: none !important; border-width: 0px; background-color: transparent; font-family: inherit; outline-width: 0px; }
+        input { cursor: none !important; }
+        select { cursor: none !important; }
+        textarea { cursor: none !important; }
+
+        ul { list-style-type: none; }
+        ol { list-style-type: none; }
+        li { list-style-type: none; }
 
         @supports not (height: 100dvh) {
-            html, body {
-                height: 100vh;
-            }
-            .app-container { 
-                height: 100vh; 
-            }
-        }
-
-        button { 
-            border-top-width: 0; 
-            border-right-width: 0; 
-            border-bottom-width: 0; 
-            border-left-width: 0; 
-            background-color: transparent; 
-            font-family: inherit; 
-            outline-width: 0; 
-        }
-
-        ul, ol, li { 
-            list-style-type: none; 
+            html { height: 100vh; }
+            body { height: 100vh; }
+            .app-container { height: 100vh; }
         }
 
         /* ----------------------------------------------------------------------
-           [4-3. PREMIUM CUSTOM CURSOR]
+           [4-3. PREMIUM CUSTOM CURSOR - CHILD SAFE OPTIMIZED]
         ---------------------------------------------------------------------- */
         .cursor-dot {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 8px;
-            height: 8px;
-            background-color: var(--br-charcoal);
+            top: 0px;
+            left: 0px;
+            width: 4px;
+            height: 4px;
+            background-color: rgba(54, 52, 49, 0.75);
             border-top-left-radius: 50%;
             border-top-right-radius: 50%;
             border-bottom-right-radius: 50%;
@@ -143,22 +132,29 @@
             pointer-events: none;
             z-index: 99999;
             transform: translate(-50%, -50%);
-            transition-property: width, height, background-color;
-            transition-duration: 0.2s;
+            transition-property: width, height, opacity, background-color;
+            transition-duration: 0.16s;
+            transition-timing-function: ease;
         }
 
         .cursor-ring {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 40px;
-            height: 40px;
-            border-top-width: 2px;
-            border-right-width: 2px;
-            border-bottom-width: 2px;
-            border-left-width: 2px;
-            border-style: solid;
-            border-color: var(--br-charcoal);
+            top: 0px;
+            left: 0px;
+            width: 22px;
+            height: 22px;
+            border-top-width: 1px;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            border-top-style: solid;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-top-color: rgba(54, 52, 49, 0.28);
+            border-right-color: rgba(54, 52, 49, 0.28);
+            border-bottom-color: rgba(54, 52, 49, 0.28);
+            border-left-color: rgba(54, 52, 49, 0.28);
             border-top-left-radius: 50%;
             border-top-right-radius: 50%;
             border-bottom-right-radius: 50%;
@@ -166,33 +162,66 @@
             pointer-events: none;
             z-index: 99998;
             transform: translate(-50%, -50%);
-            transition-property: width, height, border-color, background-color;
-            transition-duration: 0.3s;
+            transition-property: width, height, opacity, border-color, background-color;
+            transition-duration: 0.22s;
             transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .cursor-dot.hovered {
-            background-color: transparent;
+            width: 3px;
+            height: 3px;
+            background-color: rgba(145, 211, 180, 0.8);
         }
-        
+
         .cursor-ring.hovered {
-            width: 60px;
-            height: 60px;
-            background-color: rgba(145, 211, 180, 0.1);
-            border-color: var(--br-green);
+            width: 32px;
+            height: 32px;
+            background-color: rgba(145, 211, 180, 0.06);
+            border-top-color: rgba(145, 211, 180, 0.55);
+            border-right-color: rgba(145, 211, 180, 0.55);
+            border-bottom-color: rgba(145, 211, 180, 0.55);
+            border-left-color: rgba(145, 211, 180, 0.55);
+        }
+
+        .cursor-dot.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .cursor-ring.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .stage-wrapper {
+            cursor: crosshair !important;
+        }
+
+        .drawing-board {
+            cursor: crosshair !important;
+        }
+
+        #draw-layer {
+            cursor: crosshair !important;
         }
 
         @media (pointer: coarse) {
-            .cursor-dot, .cursor-ring {
-                display: none !important;
-            }
-            html, body, a, button, input, select, textarea {
-                cursor: auto !important;
-            }
+            .cursor-dot { display: none !important; }
+            .cursor-ring { display: none !important; }
+            html { cursor: auto !important; }
+            body { cursor: auto !important; }
+            a { cursor: auto !important; }
+            button { cursor: auto !important; }
+            input { cursor: auto !important; }
+            select { cursor: auto !important; }
+            textarea { cursor: auto !important; }
+            .stage-wrapper { cursor: auto !important; }
+            .drawing-board { cursor: auto !important; }
+            #draw-layer { cursor: auto !important; }
         }
         
         /* ----------------------------------------------------------------------
-           [4-4. MASTER APP CONTAINER]
+           [4-4. APP CONTAINER]
         ---------------------------------------------------------------------- */
         .app-container { 
             display: flex; 
@@ -204,7 +233,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [4-5. SIDEBAR NAVIGATION & BACKDROP]
+           [4-5. SIDEBAR]
         ---------------------------------------------------------------------- */
         .sidebar { 
             width: var(--sidebar-width); 
@@ -225,10 +254,10 @@
 
         .sidebar-backdrop {
             position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
             background-color: rgba(0, 0, 0, 0.18);
             z-index: 1500; 
             opacity: 0;
@@ -253,7 +282,9 @@
             border-bottom-width: 1px; 
             border-bottom-style: solid; 
             border-bottom-color: var(--br-border); 
-            transition: var(--transition-smooth);
+            transition-property: background-color;
+            transition-duration: 0.4s;
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
         }
         
         .sidebar-header:hover {
@@ -274,7 +305,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [4-6. STUDENT PROFILE WIDGET]
+           [4-6. STUDENT PROFILE]
         ---------------------------------------------------------------------- */
         .student-profile { 
             padding-top: 25px;
@@ -318,7 +349,9 @@
             font-weight: 900; 
             font-size: 22px; 
             font-family: 'Nunito', sans-serif; 
-            transition: var(--transition-smooth); 
+            transition-property: background-color, box-shadow, color;
+            transition-duration: 0.4s;
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
             box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05);
         }
 
@@ -376,8 +409,14 @@
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            border-style: solid; 
-            border-color: var(--br-border); 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
             color: var(--br-charcoal); 
             font-weight: 800; 
             display: flex; 
@@ -390,7 +429,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-7. CURRICULUM NAVIGATION LIST]
+           [4-7. NAVIGATION LIST]
         ---------------------------------------------------------------------- */
         .nav-list { 
             flex: 1; 
@@ -436,18 +475,29 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            transition: var(--transition-smooth); 
+            transition-property: transform, background-color, border-color, box-shadow;
+            transition-duration: 0.4s;
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
             border-top-width: 1px; 
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            border-style: solid; 
-            border-color: transparent; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: transparent; 
+            border-right-color: transparent; 
+            border-bottom-color: transparent; 
+            border-left-color: transparent; 
         }
 
         .nav-item:hover { 
             background-color: #FFFFFF; 
-            border-color: var(--br-border); 
+            border-top-color: var(--br-border);
+            border-right-color: var(--br-border);
+            border-bottom-color: var(--br-border);
+            border-left-color: var(--br-border);
             transform: translateY(-2px); 
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.02); 
         }
@@ -492,14 +542,14 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-8. MAIN WORKSPACE & TOP HEADER]
+           [4-8. WORKSPACE TOP BAR & INDICATOR]
         ---------------------------------------------------------------------- */
         .workspace { 
             flex: 1; 
             display: flex; 
             flex-direction: column; 
             height: 100%; 
-            min-width: 0; 
+            min-width: 0px; 
             position: relative; 
             overflow-x: hidden; 
             overflow-y: hidden; 
@@ -508,9 +558,9 @@
 
         .top-bar { 
             height: var(--topbar-height); 
-            padding-top: 0;
+            padding-top: 0px;
             padding-right: 45px;
-            padding-bottom: 0;
+            padding-bottom: 0px;
             padding-left: 45px;
             display: flex; 
             justify-content: space-between; 
@@ -557,7 +607,6 @@
             margin-top: 2px; 
         }
 
-        /* [Premium Feature] Cloud Sync Indicator */
         .sync-indicator-container {
             display: flex;
             align-items: center;
@@ -575,24 +624,38 @@
             border-right-width: 1px;
             border-bottom-width: 1px;
             border-left-width: 1px;
-            border-style: solid;
-            border-color: var(--br-border);
+            border-top-style: solid;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-top-color: var(--br-border);
+            border-right-color: var(--br-border);
+            border-bottom-color: var(--br-border);
+            border-left-color: var(--br-border);
             font-size: 12px;
             font-weight: 700;
             color: var(--br-muted);
-            transition: var(--transition-smooth);
+            transition-property: background-color, color, border-color;
+            transition-duration: 0.4s;
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .sync-indicator-container.saving {
             color: var(--br-blue);
             background-color: #F0F4F8;
-            border-color: #D9E4EC;
+            border-top-color: #D9E4EC;
+            border-right-color: #D9E4EC;
+            border-bottom-color: #D9E4EC;
+            border-left-color: #D9E4EC;
         }
 
         .sync-indicator-container.saved {
             color: var(--br-success);
             background-color: #F0FDF4;
-            border-color: #DCFCE7;
+            border-top-color: #DCFCE7;
+            border-right-color: #DCFCE7;
+            border-bottom-color: #DCFCE7;
+            border-left-color: #DCFCE7;
         }
 
         .sync-icon {
@@ -626,8 +689,14 @@
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            border-style: solid; 
-            border-color: var(--br-error-border); 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-error-border); 
+            border-right-color: var(--br-error-border); 
+            border-bottom-color: var(--br-error-border); 
+            border-left-color: var(--br-error-border); 
             animation-name: popIn; 
             animation-duration: 0.3s; 
             animation-timing-function: ease-out; 
@@ -643,7 +712,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [4-9. DRAWING STAGE & PREMIUM CANVAS BOARD]
+           [4-9. DRAWING STAGE]
         ---------------------------------------------------------------------- */
         .stage-wrapper { 
             flex: 1; 
@@ -669,7 +738,9 @@
             border-bottom-left-radius: 20px; 
             box-shadow: var(--shadow-premium); 
             background-color: #FFFFFF; 
-            transition: var(--transition-smooth); 
+            transition-property: opacity, transform;
+            transition-duration: 0.4s;
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
             transform-origin: center; 
             pointer-events: auto !important; 
             max-width: 100%;
@@ -678,12 +749,11 @@
             overflow-y: hidden;
         }
 
-        /* [Premium Framing] 미세한 종이 질감 오버레이 효과 */
         .drawing-board::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 0px;
+            left: 0px;
             width: 100%;
             height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
@@ -702,8 +772,14 @@
             border-right-width: 2px; 
             border-bottom-width: 2px; 
             border-left-width: 2px; 
-            border-style: dashed; 
-            border-color: var(--br-error); 
+            border-top-style: dashed; 
+            border-right-style: dashed; 
+            border-bottom-style: dashed; 
+            border-left-style: dashed; 
+            border-top-color: var(--br-error); 
+            border-right-color: var(--br-error); 
+            border-bottom-color: var(--br-error); 
+            border-left-color: var(--br-error); 
             background-color: #FFF0F0; 
         }
 
@@ -731,8 +807,8 @@
 
         #draw-layer { 
             position: absolute; 
-            top: 0; 
-            left: 0; 
+            top: 0px; 
+            left: 0px; 
             width: 100%; 
             height: 100%; 
             z-index: 9999 !important; 
@@ -744,7 +820,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-10. BOTTOM DOCK & DRAWING TOOLS]
+           [4-10. BOTTOM DOCK]
         ---------------------------------------------------------------------- */
         .bottom-dock { 
             height: var(--dock-height); 
@@ -755,7 +831,7 @@
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
-            padding-top: 0;
+            padding-top: 0px;
             padding-right: 50px;
             padding-bottom: var(--safe-bottom);
             padding-left: 50px;
@@ -779,8 +855,14 @@
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            border-style: solid; 
-            border-color: var(--br-border); 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
         }
 
         .color-preview { 
@@ -794,10 +876,18 @@
             border-right-width: 3px; 
             border-bottom-width: 3px; 
             border-left-width: 3px; 
-            border-style: solid; 
-            border-color: #FFFFFF; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: #FFFFFF; 
+            border-right-color: #FFFFFF; 
+            border-bottom-color: #FFFFFF; 
+            border-left-color: #FFFFFF; 
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); 
-            transition: var(--transition-elastic); 
+            transition-property: transform;
+            transition-duration: 0.5s;
+            transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .color-preview:active { 
@@ -810,7 +900,9 @@
             padding-right: 5px; 
             padding-bottom: 5px; 
             padding-left: 5px; 
-            transition: var(--transition-elastic); 
+            transition-property: transform, filter, opacity;
+            transition-duration: 0.5s;
+            transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
             filter: grayscale(100%); 
             opacity: 0.6; 
         }
@@ -829,8 +921,10 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-left: 10px;
+            margin-top: 0px;
             margin-right: 10px;
+            margin-bottom: 0px;
+            margin-left: 10px;
         }
 
         .brush-slider { 
@@ -864,14 +958,22 @@
             padding-bottom: 10px;
             padding-left: 14px;
             color: var(--br-charcoal); 
-            transition: var(--transition-elastic); 
+            transition-property: transform, background-color, color;
+            transition-duration: 0.4s;
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
             background-color: #FFFFFF; 
             border-top-width: 1px; 
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            border-style: solid; 
-            border-color: var(--br-border); 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
             border-top-left-radius: 12px; 
             border-top-right-radius: 12px; 
             border-bottom-right-radius: 12px; 
@@ -898,9 +1000,17 @@
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            border-style: solid; 
-            border-color: var(--br-border); 
-            transition: var(--transition-fast); 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
+            transition-property: background-color, color, border-color, transform;
+            transition-duration: 0.2s;
+            transition-timing-function: ease-in-out;
             color: var(--br-charcoal); 
         }
 
@@ -911,7 +1021,10 @@
         .btn-erase.active { 
             background-color: var(--br-error); 
             color: #FFFFFF; 
-            border-color: var(--br-error); 
+            border-top-color: var(--br-error);
+            border-right-color: var(--br-error);
+            border-bottom-color: var(--br-error);
+            border-left-color: var(--br-error);
         }
         
         .btn-reset-all {
@@ -930,9 +1043,17 @@
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            border-style: solid; 
-            border-color: #FFEBEB; 
-            transition: var(--transition-fast); 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: #FFEBEB; 
+            border-right-color: #FFEBEB; 
+            border-bottom-color: #FFEBEB; 
+            border-left-color: #FFEBEB; 
+            transition-property: background-color, border-color, transform;
+            transition-duration: 0.2s;
+            transition-timing-function: ease-in-out;
             color: var(--br-error);
             display: flex;
             align-items: center;
@@ -941,7 +1062,10 @@
         
         .btn-reset-all:hover {
             background-color: var(--br-error-light);
-            border-color: var(--br-error-border);
+            border-top-color: var(--br-error-border);
+            border-right-color: var(--br-error-border);
+            border-bottom-color: var(--br-error-border);
+            border-left-color: var(--br-error-border);
         }
         
         .btn-reset-all:active {
@@ -949,7 +1073,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-11. ACTION BUTTONS (NAVIGATION & SUBMIT)]
+           [4-11. ACTION NAVIGATION MODULES]
         ---------------------------------------------------------------------- */
         .action-group { 
             display: flex; 
@@ -968,11 +1092,19 @@
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            border-style: solid; 
-            border-color: var(--br-border); 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
             background-color: #FFFFFF; 
             font-size: 24px; 
-            transition: var(--transition-elastic); 
+            transition-property: background-color, border-color, transform;
+            transition-duration: 0.5s;
+            transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
             color: var(--br-charcoal); 
             display: flex; 
             justify-content: center; 
@@ -982,7 +1114,10 @@
 
         .btn-nav:hover { 
             background-color: #FAFAFA; 
-            border-color: var(--br-charcoal); 
+            border-top-color: var(--br-charcoal);
+            border-right-color: var(--br-charcoal);
+            border-bottom-color: var(--br-charcoal);
+            border-left-color: var(--br-charcoal);
         }
 
         .btn-nav:active { 
@@ -991,9 +1126,9 @@
 
         .btn-main { 
             height: 60px; 
-            padding-top: 0;
+            padding-top: 0px;
             padding-right: 35px;
-            padding-bottom: 0;
+            padding-bottom: 0px;
             padding-left: 35px;
             border-top-left-radius: 18px; 
             border-top-right-radius: 18px; 
@@ -1005,7 +1140,9 @@
             display: flex; 
             align-items: center; 
             gap: 12px; 
-            transition: var(--transition-elastic); 
+            transition-property: background-color, color, border-color, transform, box-shadow;
+            transition-duration: 0.5s;
+            transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
             text-transform: uppercase; 
             font-family: 'Nunito', sans-serif; 
         }
@@ -1016,13 +1153,22 @@
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            border-style: solid; 
-            border-color: var(--br-border); 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
             color: var(--br-charcoal); 
         }
 
         .btn-record:hover { 
-            border-color: var(--br-error); 
+            border-top-color: var(--br-error);
+            border-right-color: var(--br-error);
+            border-bottom-color: var(--br-error);
+            border-left-color: var(--br-error);
             color: var(--br-error); 
         }
         
@@ -1033,14 +1179,11 @@
         .btn-record.recording { 
             background-color: #FFF0F0; 
             color: var(--br-error); 
-            border-color: var(--br-error); 
+            border-top-color: var(--br-error);
+            border-right-color: var(--br-error);
+            border-bottom-color: var(--br-error);
+            border-left-color: var(--br-error);
             box-shadow: inset 0px 0px 0px 2px var(--br-error); 
-        }
-
-        .btn-record:disabled, .btn-chat-action:disabled {
-            opacity: 0.5;
-            box-shadow: none;
-            pointer-events: none;
         }
 
         .btn-record .dot { 
@@ -1052,7 +1195,8 @@
             border-bottom-right-radius: 50%; 
             border-bottom-left-radius: 50%; 
             opacity: 0; 
-            transition: 0.3s; 
+            transition-property: opacity;
+            transition-duration: 0.3s;
         }
 
         .btn-record.recording .dot { 
@@ -1079,11 +1223,11 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-12. AI TUTOR CHAT PANEL]
+           [4-12. AI RESPONSIVE SIDE PANEL]
         ---------------------------------------------------------------------- */
         .ai-panel { 
             position: absolute; 
-            top: 0; 
+            top: 0px; 
             right: -480px; 
             width: 480px; 
             height: 100%; 
@@ -1101,7 +1245,7 @@
         }
 
         .ai-panel.open { 
-            right: 0; 
+            right: 0px; 
         }
 
         .ai-header { 
@@ -1131,7 +1275,9 @@
             font-size: 34px; 
             color: var(--br-muted); 
             line-height: 1; 
-            transition: var(--transition-fast); 
+            transition-property: color, transform;
+            transition-duration: 0.2s;
+            transition-timing-function: ease-in-out;
         }
 
         .btn-close-ai:hover { 
@@ -1179,8 +1325,14 @@
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            border-style: solid; 
-            border-color: var(--br-border); 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
             color: var(--br-text); 
         }
 
@@ -1195,9 +1347,9 @@
         .ai-loading-container { 
             text-align: center; 
             padding-top: 50px;
-            padding-right: 0;
+            padding-right: 0px;
             padding-bottom: 50px;
-            padding-left: 0;
+            padding-left: 0px;
         }
 
         .ai-loading-icon { 
@@ -1219,8 +1371,14 @@
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            border-style: solid; 
-            border-color: var(--br-border); 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
             border-top-left-radius: 24px; 
             border-top-right-radius: 24px; 
             border-bottom-right-radius: 24px; 
@@ -1309,7 +1467,9 @@
             border-bottom-right-radius: 18px; 
             border-bottom-left-radius: 18px; 
             font-weight: 900; 
-            transition: var(--transition-elastic); 
+            transition-property: background-color, transform;
+            transition-duration: 0.3s;
+            transition-timing-function: ease;
             font-size: 16px; 
             letter-spacing: 1px; 
             display: flex; 
@@ -1345,12 +1505,12 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-13. PREMIUM CUSTOM MODALS & OVERLAYS]
+           [4-13. SUBSYSTEM DIALOG CUSTOM MODALS]
         ---------------------------------------------------------------------- */
         .bridge-modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0px;
+            left: 0px;
             width: 100vw;
             height: 100dvh;
             background-color: rgba(42, 40, 37, 0.6);
@@ -1392,7 +1552,7 @@
         }
 
         .bridge-modal-overlay.active .bridge-modal-box {
-            transform: scale(1) translateY(0);
+            transform: scale(1) translateY(0px);
         }
 
         .bridge-modal-icon {
@@ -1441,8 +1601,9 @@
             font-family: 'Nunito', sans-serif;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: var(--transition-elastic);
-            cursor: none; 
+            transition-property: transform, background-color, box-shadow;
+            transition-duration: 0.5s;
+            transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .bridge-modal-btn:active {
@@ -1456,8 +1617,14 @@
             border-right-width: 1px;
             border-bottom-width: 1px;
             border-left-width: 1px;
-            border-style: solid;
-            border-color: transparent;
+            border-top-style: solid;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-top-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-left-color: transparent;
         }
         
         .bridge-modal-cancel:hover {
@@ -1471,8 +1638,14 @@
             border-right-width: 1px;
             border-bottom-width: 1px;
             border-left-width: 1px;
-            border-style: solid;
-            border-color: transparent;
+            border-top-style: solid;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-top-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-left-color: transparent;
             box-shadow: 0px 8px 15px rgba(231, 76, 60, 0.2);
         }
         
@@ -1490,7 +1663,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-14. COLOR PICKER & CERTIFICATE MODALS]
+           [4-14. COLOR PALETTE & CERTIFICATE OVERLAYS]
         ---------------------------------------------------------------------- */
         .rgb-modal { 
             position: absolute; 
@@ -1510,7 +1683,7 @@
             opacity: 0; 
             pointer-events: none; 
             transform: translateY(20px); 
-            transition-property: all; 
+            transition-property: opacity, transform; 
             transition-duration: 0.3s; 
             transition-timing-function: ease; 
         }
@@ -1518,7 +1691,7 @@
         .rgb-modal.active { 
             opacity: 1; 
             pointer-events: auto; 
-            transform: translateY(0); 
+            transform: translateY(0px); 
         }
         
         .rgb-modal-close { 
@@ -1535,11 +1708,12 @@
             color: var(--br-charcoal); 
         }
 
-        /* [P0 Fix] 누락되었던 수료증 모달 오버레이 스타일 완벽 복구 및 전개 */
         .cert-modal-overlay { 
             position: fixed; 
-            top: 0; 
-            left: 0; 
+            top: 0px; 
+            right: 0px;
+            bottom: 0px;
+            left: 0px; 
             width: 100vw; 
             height: 100dvh; 
             background-color: rgba(0, 0, 0, 0.85); 
@@ -1590,8 +1764,14 @@
             border-right-width: 10px; 
             border-bottom-width: 10px; 
             border-left-width: 10px; 
-            border-style: solid; 
-            border-color: var(--br-gold); 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-gold); 
+            border-right-color: var(--br-gold); 
+            border-bottom-color: var(--br-gold); 
+            border-left-color: var(--br-gold); 
             border-top-left-radius: 25px; 
             border-top-right-radius: 25px; 
             border-bottom-right-radius: 25px; 
@@ -1635,7 +1815,7 @@
             width: 100%; 
             max-width: 450px; 
             height: 280px; 
-            margin-top: 0;
+            margin-top: 0px;
             margin-right: auto;
             margin-bottom: 35px;
             margin-left: auto;
@@ -1647,8 +1827,14 @@
             border-right-width: 3px; 
             border-bottom-width: 3px; 
             border-left-width: 3px; 
-            border-style: dashed; 
-            border-color: var(--br-border); 
+            border-top-style: dashed; 
+            border-right-style: dashed; 
+            border-bottom-style: dashed; 
+            border-left-style: dashed; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
             overflow-x: hidden; 
             overflow-y: hidden; 
             display: flex; 
@@ -1689,7 +1875,9 @@
             align-items: center; 
             gap: 12px; 
             box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.15); 
-            transition: var(--transition-elastic); 
+            transition-property: transform, box-shadow, background-color;
+            transition-duration: 0.5s;
+            transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .btn-print:hover { 
@@ -1709,7 +1897,9 @@
             font-size: 35px; 
             color: var(--br-muted); 
             font-weight: 900; 
-            transition: var(--transition-fast); 
+            transition-property: color, transform; 
+            transition-duration: 0.2s; 
+            transition-timing-function: ease-in-out;
         }
         
         .cert-close:hover { 
@@ -1718,7 +1908,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-15. KEYFRAME ANIMATIONS]
+           [4-15. CSS KEYFRAMES ANIMATIONS]
         ---------------------------------------------------------------------- */
         @keyframes popIn { 
             from { 
@@ -1727,7 +1917,7 @@
             } 
             to { 
                 opacity: 1; 
-                transform: scale(1) translateY(0); 
+                transform: scale(1) translateY(0px); 
             } 
         }
         
@@ -1743,39 +1933,40 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-16. DEVICE COMPATIBILITY & RESPONSIVE QUERIES]
+           [4-16. MOBILE DEVICE RESPONSIVE MEDIA CONSTRAINTS]
         ---------------------------------------------------------------------- */
         
-        /* 터치 타겟 규격 최적화 (태블릿/모바일) */
         @media (pointer: coarse) {
-            .btn-nav, .btn-main, .btn-tool, .btn-erase, .btn-magic, .color-preview, .btn-reset-all { 
-                min-width: 44px; 
-                min-height: 44px; 
-            }
+            .btn-nav { min-width: 44px; min-height: 44px; }
+            .btn-main { min-width: 44px; min-height: 44px; }
+            .btn-tool { min-width: 44px; min-height: 44px; }
+            .btn-erase { min-width: 44px; min-height: 44px; }
+            .btn-magic { min-width: 44px; min-height: 44px; }
+            .color-preview { min-width: 44px; min-height: 44px; }
+            .btn-reset-all { min-width: 44px; min-height: 44px; }
         }
 
-        /* Tablet landscape (801px - 1180px) */
         @media (min-width: 801px) and (max-width: 1180px) {
             .mobile-menu-btn { display: block; }
             
             .sidebar { 
                 position: fixed; 
-                top: 0; 
-                left: 0; 
+                top: 0px; 
+                left: 0px; 
                 transform: translateX(-100%); 
                 box-shadow: none; 
             }
             .sidebar.open { 
-                transform: translateX(0); 
+                transform: translateX(0px); 
                 box-shadow: 20px 0px 50px rgba(0, 0, 0, 0.18); 
             }
             
             .workspace { width: 100%; }
             .top-bar { 
                 height: 76px; 
-                padding-top: 0;
+                padding-top: 0px;
                 padding-right: 24px;
-                padding-bottom: 0;
+                padding-bottom: 0px;
                 padding-left: 24px;
             }
             
@@ -1795,31 +1986,23 @@
                 gap: 14px; 
             }
             
-            .tool-group, .action-group { 
-                flex-wrap: wrap; 
-                justify-content: center; 
-            }
-            .btn-main { 
-                padding-top: 0;
-                padding-right: 22px;
-                padding-bottom: 0;
-                padding-left: 22px;
-            }
+            .tool-group { flex-wrap: wrap; justify-content: center; }
+            .action-group { flex-wrap: wrap; justify-content: center; }
+            .btn-main { padding-top: 0px; padding-right: 22px; padding-bottom: 0px; padding-left: 22px; }
         }
 
-        /* Phone / Small Tablet (max-width: 800px) */
         @media (max-width: 800px) {
             .mobile-menu-btn { display: block; }
             
             .sidebar { 
                 position: fixed; 
-                top: 0; 
-                left: 0; 
+                top: 0px; 
+                left: 0px; 
                 transform: translateX(-100%); 
                 box-shadow: none; 
             }
             .sidebar.open { 
-                transform: translateX(0); 
+                transform: translateX(0px); 
                 box-shadow: 20px 0px 50px rgba(0, 0, 0, 0.2); 
             }
             
@@ -1832,7 +2015,7 @@
             }
             
             #worksheet-img { 
-                min-width: 0; 
+                min-width: 0px; 
                 width: 100%; 
                 max-width: 100%; 
                 max-height: calc(100dvh - 240px); 
@@ -1849,8 +2032,8 @@
                 gap: 12px; 
                 border-top-left-radius: 25px; 
                 border-top-right-radius: 25px; 
-                border-bottom-right-radius: 0; 
-                border-bottom-left-radius: 0; 
+                border-bottom-right-radius: 0px; 
+                border-bottom-left-radius: 0px; 
             }
             
             .tool-group { 
@@ -1862,15 +2045,16 @@
                 padding-left: 20px;
             }
             .action-group { width: 100%; justify-content: space-between; }
-            .btn-nav, .btn-main { height: 50px; font-size: 13px; }
-            .ai-panel { width: 100%; right: -100%; border-left-width: 0; }
+            .btn-nav { height: 50px; font-size: 13px; }
+            .btn-main { height: 50px; font-size: 13px; }
+            .ai-panel { width: 100%; right: -100%; border-left-width: 0px; }
             
             .rgb-modal { 
                 left: 50%; 
                 transform: translateX(-50%) translateY(20px); 
                 bottom: calc(160px + var(--safe-bottom)); 
             }
-            .rgb-modal.active { transform: translateX(-50%) translateY(0); }
+            .rgb-modal.active { transform: translateX(-50%) translateY(0px); }
             
             .cert-card { 
                 padding-top: 30px;
@@ -1895,29 +2079,23 @@
             }
         }
 
-        /* 안드로이드 스마트폰 구간 */
         @media (max-width: 560px) {
             .top-bar { 
                 height: 68px; 
-                padding-top: 0;
+                padding-top: 0px;
                 padding-right: 14px;
-                padding-bottom: 0;
+                padding-bottom: 0px;
                 padding-left: 14px;
             }
             .unit-info { font-size: 10px; letter-spacing: 1.8px; }
             .page-info { font-size: 24px; }
             
-            .ai-header, .ai-content, .chat-footer {
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-            .chat-bubble {
-                max-width: 96%;
-                font-size: 15px;
-            }
+            .ai-header { padding-left: 20px; padding-right: 20px; }
+            .ai-content { padding-left: 20px; padding-right: 20px; }
+            .chat-footer { padding-left: 20px; padding-right: 20px; }
+            .chat-bubble { max-width: 96%; font-size: 15px; }
         }
 
-        /* Extra Small Phone (iPhone SE 계열) */
         @media (max-width: 480px) {
             .bottom-dock { 
                 height: calc(170px + var(--safe-bottom)); 
@@ -1946,9 +2124,9 @@
             
             .btn-main { 
                 height: 48px; 
-                padding-top: 0;
+                padding-top: 0px;
                 padding-right: 14px;
-                padding-bottom: 0;
+                padding-bottom: 0px;
                 padding-left: 14px;
                 font-size: 12px; 
                 flex: 1; 
@@ -1984,7 +2162,7 @@
             </section>
             
             <section class="nav-list" id="nav-list" aria-label="Weekly Lessons">
-                </section>
+            </section>
         </nav>
 
         <div class="workspace">
@@ -2011,7 +2189,7 @@
                 <span id="error-toast-msg">Error Message</span>
             </div>
 
-            <main class="stage-wrapper interactive-hover" aria-label="Drawing Canvas Area">
+            <main class="stage-wrapper" aria-label="Drawing Canvas Area">
                 <div class="drawing-board" id="drawing-board">
                     <img src="" id="worksheet-img" crossorigin="anonymous" alt="Educational Worksheet Background">
                     <canvas id="draw-layer" aria-label="Interactive Drawing Layer"></canvas>
@@ -2087,8 +2265,7 @@
                 <i class="fa-solid fa-circle-exclamation bridge-modal-icon" id="custom-modal-icon"></i>
                 <h2 class="bridge-modal-title" id="custom-modal-title">Notice</h2>
                 <p class="bridge-modal-text" id="custom-modal-text">This is a custom alert message.</p>
-                <div class="bridge-modal-actions" id="custom-modal-actions">
-                    </div>
+                <div class="bridge-modal-actions" id="custom-modal-actions"></div>
             </div>
         </div>
 
@@ -2124,29 +2301,22 @@
     <script>
         /**
          * ----------------------------------------------------------------------
-         * [5-1. CONFIGURATION & SECRETS]
+         * [5-1. SYSTEM CONFIGURATION ENGINE]
          * ----------------------------------------------------------------------
-         * [No-Storage 0원 플랜] 파이어베이스 스토리지 과금 없이 
-         * 무료 Firestore DB와 클라우드플레어 Workers 조합으로 상용 구동합니다.
          */
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
-            
-            // ⚠️ 대망의 상용화용 Cloudflare Workers Proxy Endpoint 바인딩 완료
             API_TUTOR_ENDPOINT: "https://sparkling-sky-6699.ebin22725.workers.dev", 
-            
             FIREBASE_CONFIG: {
                 apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk",
                 authDomain: "bridge-academy-6d6a9.firebaseapp.com",
                 projectId: "bridge-academy-6d6a9",
-                // Storage Bucket 값은 존재하지만 호출 코드를 완전히 배제하여 과금을 원천 차단합니다.
                 storageBucket: "bridge-academy-6d6a9.appspot.com", 
                 messagingSenderId: "581314243350",
                 appId: "1:581314243350:web:57897ed73d787eb02efe37"
             }
         };
 
-        // 파이어베이스 코어 모듈 및 인증, 데이터베이스 인스턴스 초기화 수행
         firebase.initializeApp(CONFIG.FIREBASE_CONFIG);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -2155,7 +2325,6 @@
          * ----------------------------------------------------------------------
          * [5-2. ENTERPRISE LOGGER UTILITY]
          * ----------------------------------------------------------------------
-         * 서비스 안정성을 모니터링하기 위한 체계적인 로그 트래커 및 토스트 UI 시스템
          */
         const Logger = {
             log(msg, data = "") { 
@@ -2170,7 +2339,6 @@
                 if(toast) {
                     document.getElementById('error-toast-msg').innerText = msg;
                     toast.classList.add('show');
-                    // 5초 후 UI에서 토스트 팝업 강제 해제 처리
                     setTimeout(() => {
                         toast.classList.remove('show');
                     }, 5000);
@@ -2180,10 +2348,8 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [5-3. PREMIUM CUSTOM MODAL ENGINE]
+         * [5-3. CUSTOM DIALOG POPUP MODAL COMPONENT]
          * ----------------------------------------------------------------------
-         * 투박한 브라우저 window.alert() 및 window.confirm()을 완벽히 대체하여
-         * 앱의 프리미엄 감성을 유지하는 자체 디자인 모달 시스템입니다.
          */
         const CustomModalEngine = {
             overlay: null,
@@ -2200,37 +2366,32 @@
                 this.actionsEl = document.getElementById('custom-modal-actions');
             },
 
-            /**
-             * 단순 경고/안내 메시지를 띄우는 프리미엄 Alert 기능
-             * @param {string} title 모달 제목
-             * @param {string} message 모달 본문 메시지
-             */
             alert(title, message) {
-                if (!this.overlay) this.init();
+                if (!this.overlay) {
+                    this.init();
+                }
                 
                 this.titleEl.innerText = title;
                 this.textEl.innerText = message;
                 this.iconEl.className = "fa-solid fa-circle-exclamation bridge-modal-icon warning";
                 
-                this.actionsEl.innerHTML = ''; // 버튼 구역 초기화
+                this.actionsEl.innerHTML = ''; 
                 
                 const btnOk = document.createElement('button');
                 btnOk.className = "bridge-modal-btn bridge-modal-confirm neutral interactive-hover";
                 btnOk.innerText = "OK";
-                btnOk.onclick = () => this.close();
+                btnOk.onclick = () => {
+                    this.close();
+                };
                 
                 this.actionsEl.appendChild(btnOk);
                 this.overlay.classList.add('active');
             },
 
-            /**
-             * 사용자의 선택(예/아니오)을 묻는 프리미엄 Confirm 기능 (All Reset 등에 사용)
-             * @param {string} title 모달 제목
-             * @param {string} message 모달 본문 메시지
-             * @param {Function} onConfirm 확인 버튼 클릭 시 실행할 콜백 함수
-             */
             confirm(title, message, onConfirm) {
-                if (!this.overlay) this.init();
+                if (!this.overlay) {
+                    this.init();
+                }
 
                 this.titleEl.innerText = title;
                 this.textEl.innerText = message;
@@ -2241,14 +2402,18 @@
                 const btnCancel = document.createElement('button');
                 btnCancel.className = "bridge-modal-btn bridge-modal-cancel interactive-hover";
                 btnCancel.innerText = "Keep It";
-                btnCancel.onclick = () => this.close();
+                btnCancel.onclick = () => {
+                    this.close();
+                };
                 
                 const btnConfirm = document.createElement('button');
                 btnConfirm.className = "bridge-modal-btn bridge-modal-confirm interactive-hover";
                 btnConfirm.innerText = "Yes, Clear";
                 btnConfirm.onclick = () => {
                     this.close();
-                    if (typeof onConfirm === 'function') onConfirm();
+                    if (typeof onConfirm === 'function') {
+                        onConfirm();
+                    }
                 };
                 
                 this.actionsEl.appendChild(btnCancel);
@@ -2266,10 +2431,8 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [5-4. PREMIUM CUSTOM CURSOR ENGINE]
+         * [5-4. ZERO-LATENCY DYNAMIC CURSOR TRACKER (CHILD SAFE)]
          * ----------------------------------------------------------------------
-         * 럭셔리 웹사이트에서 사용하는 마우스 포인터 팔로잉(Following) 효과입니다.
-         * [P2 Fix] 이벤트 위임(Event Delegation)을 통해 동적으로 렌더링된 요소에도 완벽 대응합니다.
          */
         const CursorEngine = {
             dot: null,
@@ -2281,29 +2444,42 @@
             initialized: false,
 
             init() {
-                // 터치 기기에서는 초기화 생략 방어 로직
-                if (window.matchMedia("(pointer: coarse)").matches) return;
+                if (window.matchMedia("(pointer: coarse)").matches) {
+                    return;
+                }
 
                 this.dot = document.getElementById('cursor-dot');
                 this.ring = document.getElementById('cursor-ring');
-                
-                if (!this.dot || !this.ring) return;
+
+                if (!this.dot || !this.ring) {
+                    return;
+                }
 
                 this.initialized = true;
 
-                // 마우스 이동 시 좌표 획득
                 document.addEventListener('mousemove', (e) => {
                     this.mouseX = e.clientX;
                     this.mouseY = e.clientY;
-                    
-                    // 내부 닷은 지연 없이 즉각 이동
+
                     this.dot.style.left = `${this.mouseX}px`;
                     this.dot.style.top = `${this.mouseY}px`;
+
+                    const isDrawingSurface = Boolean(e.target.closest('.stage-wrapper, .drawing-board, #draw-layer'));
+
+                    if (isDrawingSurface) {
+                        this.dot.classList.add('hidden');
+                        this.ring.classList.add('hidden');
+                    } else {
+                        this.dot.classList.remove('hidden');
+                        this.ring.classList.remove('hidden');
+                    }
                 });
 
-                // [P2 Fix] 이벤트 위임(Event Delegation) 적용
-                // DOM 트리에 동적으로 추가되는 내비게이션 요소 등에서도 커서 효과가 누락되지 않도록 방어합니다.
                 document.addEventListener('mouseover', (e) => {
+                    if (e.target.closest('.stage-wrapper, .drawing-board, #draw-layer')) {
+                        return;
+                    }
+
                     if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
                         this.dot.classList.add('hovered');
                         this.ring.classList.add('hovered');
@@ -2317,30 +2493,30 @@
                     }
                 });
 
-                // RequestAnimationFrame을 활용한 부드러운 보간 애니메이션 시작
                 this.render();
             },
 
             render() {
-                if (!this.initialized) return;
+                if (!this.initialized) {
+                    return;
+                }
 
-                // 선형 보간법(LERP)을 이용한 링의 부드러운 추적 효과 계산 (easing factor 0.15)
-                this.posX += (this.mouseX - this.posX) * 0.15;
-                this.posY += (this.mouseY - this.posY) * 0.15;
+                this.posX += (this.mouseX - this.posX) * 0.18;
+                this.posY += (this.mouseY - this.posY) * 0.18;
 
                 this.ring.style.left = `${this.posX}px`;
                 this.ring.style.top = `${this.posY}px`;
 
-                requestAnimationFrame(() => this.render());
+                requestAnimationFrame(() => {
+                    this.render();
+                });
             }
         };
 
         /**
          * ----------------------------------------------------------------------
-         * [5-5. CLOUD SYNC INDICATOR ENGINE]
+         * [5-5. LIVE STATUS SYNCHRONIZATION BAR ENGINE]
          * ----------------------------------------------------------------------
-         * 사용자가 그림을 그릴 때 클라우드 DB 연동 상태를 실시간 시각화하여 안도감을 제공.
-         * [P1 Fix] 인라인 스타일로 인한 상태 고착화 현상을 방지합니다.
          */
         const SyncIndicatorEngine = {
             container: null,
@@ -2353,20 +2529,22 @@
                 this.text = document.getElementById('sync-text');
             },
 
-            /**
-             * [P1 Fix] Offline 상태에서 주입된 인라인 스타일을 초기화하여
-             * CSS 클래스 기반의 테마 전환이 정상적으로 작동하도록 돕습니다.
-             */
             resetInlineStyle() {
-                if (!this.container) return;
+                if (!this.container) {
+                    return;
+                }
                 this.container.style.color = "";
                 this.container.style.backgroundColor = "";
                 this.container.style.borderColor = "";
             },
 
             setSaving() {
-                if (!this.container) this.init();
-                if (!this.container) return;
+                if (!this.container) {
+                    this.init();
+                }
+                if (!this.container) {
+                    return;
+                }
                 
                 this.resetInlineStyle();
 
@@ -2376,8 +2554,12 @@
             },
 
             setSaved() {
-                if (!this.container) this.init();
-                if (!this.container) return;
+                if (!this.container) {
+                    this.init();
+                }
+                if (!this.container) {
+                    return;
+                }
 
                 this.resetInlineStyle();
 
@@ -2385,7 +2567,6 @@
                 this.icon.className = "fa-solid fa-cloud-check sync-icon";
                 this.text.innerText = "Saved";
 
-                // 저장 완료 문구를 3초 뒤에 조용히 Idle 상태로 변환
                 setTimeout(() => {
                     if (this.container.classList.contains('saved')) {
                         this.container.className = "sync-indicator-container";
@@ -2396,8 +2577,12 @@
             },
             
             setError() {
-                if (!this.container) this.init();
-                if (!this.container) return;
+                if (!this.container) {
+                    this.init();
+                }
+                if (!this.container) {
+                    return;
+                }
 
                 this.container.className = "sync-indicator-container";
                 this.container.style.color = "var(--br-error)";
@@ -2412,8 +2597,6 @@
          * ----------------------------------------------------------------------
          * [5-6. MASTER CURRICULUM INTELLIGENCE DATABASE]
          * ----------------------------------------------------------------------
-         * 각 페이지별 "질문(question)" 속성을 AI 프롬프트에 주입하여
-         * 정밀한 Inquiry-Based Learning (탐구 기반 학습) 꼬리 대화를 유도합니다.
          */
         const PAGE_INTELLIGENCE = {
             "A-1": {
@@ -2459,60 +2642,94 @@
          * ----------------------------------------------------------------------
          * [5-7. DYNAMIC CURRICULUM ROUTER ENGINE]
          * ----------------------------------------------------------------------
-         * 유닛별 페이지 배열 및 동적 주차(Week) 계산기 알고리즘
          */
         const CurriculumEngine = {
-            /**
-             * 선택한 Unit의 가용 페이지 숫자 배열을 순차적으로 정렬하여 반환
-             */
             pages(unitId) {
-                const data = PAGE_INTELLIGENCE[unitId] || {};
-                return Object.keys(data).map(Number).sort((a, b) => a - b);
+                const data = PAGE_INTELLIGENCE[unitId];
+                if (data) {
+                    return Object.keys(data).map(Number).sort((a, b) => {
+                        return a - b;
+                    });
+                } else {
+                    return [];
+                }
             },
             
             first(unitId) {
                 const pageArray = this.pages(unitId);
-                return pageArray[0] || 1;
+                if (pageArray.length > 0) {
+                    return pageArray[0];
+                } else {
+                    return 1;
+                }
             },
             
             last(unitId) {
                 const pageArray = this.pages(unitId);
-                return pageArray[pageArray.length - 1] || 1;
+                if (pageArray.length > 0) {
+                    return pageArray[pageArray.length - 1];
+                } else {
+                    return 1;
+                }
             },
             
             clamp(unitId, page) {
                 const pageArray = this.pages(unitId);
                 if (pageArray.includes(page)) {
                     return page;
+                } else {
+                    if (pageArray.length > 0) {
+                        return pageArray[0];
+                    } else {
+                        return 1;
+                    }
                 }
-                return pageArray[0] || 1;
             },
             
             next(unitId, page, dir) {
                 const pageArray = this.pages(unitId);
-                const idx = pageArray.indexOf(page);
-                const safeIdx = (idx === -1) ? 0 : idx;
+                let idx = pageArray.indexOf(page);
+                let safeIdx = 0;
                 
-                const calcIdx = Math.min(Math.max(safeIdx + dir, 0), pageArray.length - 1);
-                return pageArray[calcIdx] || page;
+                if (idx === -1) {
+                    safeIdx = 0;
+                } else {
+                    safeIdx = idx;
+                }
+                
+                let calcIdx = Math.min(Math.max(safeIdx + dir, 0), pageArray.length - 1);
+                
+                if (pageArray[calcIdx]) {
+                    return pageArray[calcIdx];
+                } else {
+                    return page;
+                }
             },
 
-            /**
-             * 유닛 내부의 논리적 인덱스(0부터 시작)를 기반으로 4주차 시스템의 Week 번호를 연산합니다.
-             */
             weekIndex(unitId, page) {
                 const pages = this.pages(unitId);
                 const idx = pages.indexOf(page);
-                return idx === -1 ? 1 : Math.floor(idx / 4) + 1;
+                
+                if (idx === -1) {
+                    return 1;
+                } else {
+                    return Math.floor(idx / 4) + 1;
+                }
             },
 
-            /**
-             * 4페이지 사이클의 끝부분이거나, 해당 유닛 커리큘럼 자체의 마지막인지 판별하여 수료증 타이밍을 잰다.
-             */
             isWeekEnd(unitId, page) {
                 const pages = this.pages(unitId);
                 const idx = pages.indexOf(page);
-                return idx !== -1 && ((idx + 1) % 4 === 0 || idx === pages.length - 1);
+                
+                if (idx !== -1) {
+                    if ((idx + 1) % 4 === 0 || idx === pages.length - 1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
             }
         };
 
@@ -2520,7 +2737,6 @@
          * ----------------------------------------------------------------------
          * [5-8. GLOBAL STATE MANAGEMENT]
          * ----------------------------------------------------------------------
-         * 전역 싱글톤 컨텍스트 상태 관리 객체입니다.
          */
         const STATE = {
             uid: null, 
@@ -2539,27 +2755,25 @@
             brushType: 'normal'
         };
 
-        // 초기화 과정 중 유효하지 않은 Unit ID 접근 시 A-1으로 강제 폴백 처리
         if (!PAGE_INTELLIGENCE[STATE.unitId]) {
             Logger.warn(`Invalid Unit ID constraint detected: ${STATE.unitId}. Forcing fallback to foundational A-1.`);
             STATE.unitId = "A-1";
         }
         
-        // URL Parameter로 주입된 딥링킹 쿼리를 파싱하여 시작 페이지를 연산합니다.
-        STATE.currentPage = CurriculumEngine.clamp(
-            STATE.unitId, 
-            Number(new URLSearchParams(window.location.search).get('page')) || CurriculumEngine.first(STATE.unitId)
-        );
+        const rawPageParam = new URLSearchParams(window.location.search).get('page');
+        if (rawPageParam) {
+            STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, Number(rawPageParam));
+        } else {
+            STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, CurriculumEngine.first(STATE.unitId));
+        }
 
         /**
          * ----------------------------------------------------------------------
          * [5-9. FIREBASE AUTHENTICATION GUARD]
          * ----------------------------------------------------------------------
-         * Firebase 로그인 세션을 검증하고, 비정상 접근 시 커스텀 모달로 차단합니다.
          */
         auth.onAuthStateChanged((user) => {
             if (!user) { 
-                // 기존의 거친 alert() 대신 커스텀 모달 사용 후 리다이렉트
                 CustomModalEngine.alert(
                     "Session Expired", 
                     "안전한 진행을 위해 다시 로그인해 주세요."
@@ -2574,13 +2788,19 @@
                 STATE.studentName = user.email.split('@')[0].toUpperCase();
                 
                 const profileBox = document.getElementById('profile-box');
-                if(profileBox) profileBox.classList.add('registered');
+                if (profileBox) {
+                    profileBox.classList.add('registered');
+                }
                 
                 const displayNameEl = document.getElementById('display-name');
-                if(displayNameEl) displayNameEl.innerText = STATE.studentName;
+                if (displayNameEl) {
+                    displayNameEl.innerText = STATE.studentName;
+                }
                 
                 const avatarEl = document.getElementById('avatar-char');
-                if(avatarEl) avatarEl.innerText = STATE.studentName.charAt(0);
+                if (avatarEl) {
+                    avatarEl.innerText = STATE.studentName.charAt(0);
+                }
                 
                 SystemBoot(); 
             }
@@ -2590,17 +2810,19 @@
          * ----------------------------------------------------------------------
          * [5-10. BADGE ENGINE (Gamification Control)]
          * ----------------------------------------------------------------------
-         * 학생의 성취도를 시각화하는 다이내믹 게이미피케이션 엔진입니다.
          */
         const BadgeEngine = {
             add(label) {
-                // 중복 배지 부여 방어 로직 (멱등성 보장)
-                if (STATE.badges.includes(label)) return;
+                if (STATE.badges.includes(label)) {
+                    return;
+                }
                 
                 STATE.badges.push(label);
 
                 const box = document.getElementById('badge-container');
-                if (!box) return;
+                if (!box) {
+                    return;
+                }
 
                 const badge = document.createElement('div');
                 badge.className = 'badge';
@@ -2609,24 +2831,31 @@
 
                 StorageEngine.save();
                 
-                // 배지 획득 시 시각적인 축하 폭죽 파티클 효과 트리거
                 if (window.confetti) {
                     confetti({ 
                         particleCount: 80, 
                         spread: 70, 
-                        origin: { y: 0.8 }, 
-                        colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] 
+                        origin: { 
+                            y: 0.8 
+                        }, 
+                        colors: [
+                            '#CBAE75', 
+                            '#89BFA0', 
+                            '#7CA6C1'
+                        ] 
                     });
                 }
             },
             
             renderAll() {
                 const box = document.getElementById('badge-container');
-                if (!box) return;
+                if (!box) {
+                    return;
+                }
                 
                 box.innerHTML = '';
                 
-                STATE.badges.forEach(label => {
+                STATE.badges.forEach((label) => {
                     const badge = document.createElement('div');
                     badge.className = 'badge';
                     badge.textContent = label;
@@ -2639,15 +2868,13 @@
          * ----------------------------------------------------------------------
          * [5-11. SMART IMAGE LOADER ENGINE (Race-Condition Free)]
          * ----------------------------------------------------------------------
-         * 비동기 환경에서 사용자가 페이지를 미친 듯이 연타할 때 발생하는
-         * 배경 이미지 렌더링 꼬임(Race Condition)을 고유 토큰 발급으로 방어합니다.
          */
         const SmartImageLoader = {
             requestToken: 0,
 
             async findValidWorksheet(unitId, pageNum) {
-                // 새로운 렌더링 요청이 들어오면 토큰 값을 1 증가시킵니다.
-                const token = ++this.requestToken; 
+                this.requestToken = this.requestToken + 1;
+                const token = this.requestToken; 
                 
                 const imgElement = document.getElementById('worksheet-img');
                 const boardElement = document.getElementById('drawing-board');
@@ -2655,7 +2882,6 @@
                 const seriesChar = unitId.charAt(0);
                 const t = Date.now(); 
 
-                // 다양한 디렉토리 구조 및 확장자(.png, .jpg)에 대한 유연한 폴백 탐색 경로 배열
                 const possiblePaths = [
                     `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${pageNum}.png`,
                     `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${pageNum}.png`,
@@ -2666,48 +2892,51 @@
                 ];
 
                 const tryLoad = (index) => {
-                    // 비동기 요청 도중 토큰이 만료되었다면(사용자가 이미 다음 페이지로 넘어갔다면) 즉시 콜백 폐기
                     if (token !== this.requestToken) {
                         return;
                     }
 
                     if (index >= possiblePaths.length) {
                         Logger.error(`All sequential image paths failed. Worksheet resource missing for ${unitId} Page ${pageNum}.`);
-                        if(imgElement) imgElement.style.opacity = '1';
-                        if(boardElement) boardElement.classList.add('error-state');
+                        if (imgElement) {
+                            imgElement.style.opacity = '1';
+                        }
+                        if (boardElement) {
+                            boardElement.classList.add('error-state');
+                        }
                         CanvasEngine.resizeCanvas();
                         return;
                     }
 
-                    const testUrl = `${possiblePaths[index]}?t=${t}`; // 브라우저 강력 캐시 무력화 파라미터
+                    const testUrl = `${possiblePaths[index]}?t=${t}`;
                     const tempImg = new Image();
 
                     tempImg.onload = () => {
-                        // 로딩 성공 후에도 다시 한번 토큰 무결성 검증
-                        if (token !== this.requestToken) return;
+                        if (token !== this.requestToken) {
+                            return;
+                        }
                         
                         Logger.log("Valid image resource successfully found and mounted:", testUrl);
-                        if(boardElement) boardElement.classList.remove('error-state');
+                        if (boardElement) {
+                            boardElement.classList.remove('error-state');
+                        }
                         
-                        if(imgElement) {
+                        if (imgElement) {
                             imgElement.src = testUrl;
                             imgElement.style.opacity = '1';
                         }
                         
-                        // 배경지가 장착된 후 캔버스 좌표계 동기화 재조정 및 로컬 스크래치 복원
                         CanvasEngine.resizeCanvas();
                         StorageEngine.loadCanvasLocal();
                     };
 
                     tempImg.onerror = () => {
-                        // 에러 발생 시 재귀적으로 다음 포맷 경로 시도 (Fallback)
                         tryLoad(index + 1);
                     };
                     
                     tempImg.src = testUrl;
                 };
 
-                // 최초 0번 인덱스부터 탐색 엔진 시동
                 tryLoad(0);
             }
         };
@@ -2716,40 +2945,49 @@
          * ----------------------------------------------------------------------
          * [5-12. STORAGE & DEBOUNCED CLOUD SYNC ENGINE (No-Storage Plan)]
          * ----------------------------------------------------------------------
-         * 파이어베이스 스토리지 과금을 막기 위해, 고해상도 이미지를 로컬에 보관하고
-         * 클라우드 DB(Firestore)에는 1MB 제한을 회피할 수 있는 1024px -> 768px 단계적 경량 압축
-         * 바이너리(Base64)를 다이렉트로 적재하는 혁신적인 동기화 엔진입니다.
          */
         const StorageEngine = {
             cloudSaveTimer: null,
 
-            /**
-             * URL Deep Linking 파라미터를 로컬스토리지 기록보다 우선순위로 두어 
-             * 링크 공유를 통한 특정 페이지 강제 진입을 허용합니다.
-             */
             load() {
-                if(!STATE.uid) return;
+                if (!STATE.uid) {
+                    return;
+                }
                 try {
-                    const s = JSON.parse(localStorage.getItem(`br_data_${STATE.uid}_${STATE.unitId}`) || "{}");
+                    const rawStorage = localStorage.getItem(`br_data_${STATE.uid}_${STATE.unitId}`);
+                    let s = {};
+                    if (rawStorage) {
+                        s = JSON.parse(rawStorage);
+                    }
                     
-                    if (s.name) STATE.studentName = s.name; 
-                    if (s.badges) STATE.badges = s.badges;
+                    if (s.name) {
+                        STATE.studentName = s.name; 
+                    }
+                    if (s.badges) {
+                        STATE.badges = s.badges;
+                    }
 
                     const urlPage = Number(new URLSearchParams(window.location.search).get('page'));
                     
-                    if (urlPage && CurriculumEngine.pages(STATE.unitId).includes(urlPage)) {
-                        STATE.currentPage = urlPage;
-                        Logger.log(`Deep Link overriding local storage metadata. Target Page injected: ${urlPage}.`);
-                    } else if (s.page) {
-                        STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, s.page);
+                    if (urlPage) {
+                        if (CurriculumEngine.pages(STATE.unitId).includes(urlPage)) {
+                            STATE.currentPage = urlPage;
+                            Logger.log(`Deep Link prioritisation complete. Page state forced: ${urlPage}.`);
+                        }
+                    } else {
+                        if (s.page) {
+                            STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, s.page);
+                        }
                     }
                 } catch (e) {
-                    Logger.warn("Metadata Initialization Load Error occurred.", e);
+                    Logger.warn("Metadata local cache deserialization failed.", e);
                 }
             },
 
             async save() {
-                if(!STATE.uid) return;
+                if (!STATE.uid) {
+                    return;
+                }
                 try {
                     const data = { 
                         name: STATE.studentName, 
@@ -2760,59 +2998,62 @@
                     localStorage.setItem(`br_data_${STATE.uid}_${STATE.unitId}`, JSON.stringify(data));
                     
                     await db.collection("students").doc(STATE.uid).set({ 
-                        ...data, 
+                        name: data.name,
+                        page: data.page,
+                        badges: data.badges,
                         email: STATE.studentEmail, 
                         lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
-                    }, { merge: true });
+                    }, { 
+                        merge: true 
+                    });
                     
                 } catch (error) { 
-                    Logger.error("Metadata Cloud Database Save Transaction Error", error); 
+                    Logger.error("Core transaction metadata sync failed.", error); 
                 }
             },
             
-            /**
-             * 비동기 레이스 컨디션을 막기 위해 현재 화면의 상태를 영구 동결하는 불변 스냅샷을 생성합니다.
-             * Firestore 문서 용량 한계(1MB) 초과를 막기 위해 다이나믹 다운샘플러 폴백 루프를 적용했습니다.
-             * @param {boolean} compressForDatabase - Firestore 저장을 위한 압축 여부 강제 적용 플래그
-             */
             createCanvasSnapshot(compressForDatabase = false) {
-                if (!CanvasEngine.cvs || !STATE.uid) return null;
+                if (!CanvasEngine.cvs) {
+                    return null;
+                }
+                if (!STATE.uid) {
+                    return null;
+                }
                 
-                let canvasData;
+                let canvasData = null;
                 
                 if (compressForDatabase) {
-                    // 1차 시도: 1024px 스케일다운 (JPEG 0.55 품질)
                     canvasData = CanvasEngine.captureWorksheetWithDrawing(true, 1024); 
                     
-                    // Base64 인코딩 페이로드가 약 900KB (900,000 bytes)를 초과할 경우 Firestore에서 크래시가 발생할 수 있습니다.
-                    if (canvasData && canvasData.length > 900000) {
-                        Logger.warn("Canvas payload exceeds 900KB safety threshold. Initiating Level 1 Downsampling fallback (768px).");
-                        canvasData = CanvasEngine.captureWorksheetWithDrawing(true, 768);
+                    if (canvasData) {
+                        if (canvasData.length > 900000) {
+                            Logger.warn("Base64 string alert (>900KB). Scaling down to Level 2 (768px).");
+                            canvasData = CanvasEngine.captureWorksheetWithDrawing(true, 768);
+                        }
                     }
                     
-                    // 2차 시도 이후에도 900KB를 넘는 극단적인 칠하기 상황일 경우 최종 서바이벌 컷오프(640px)
-                    if (canvasData && canvasData.length > 900000) {
-                        Logger.warn("Canvas payload still exceeds 900KB. Initiating Level 2 Downsampling survival fallback (640px).");
-                        canvasData = CanvasEngine.captureWorksheetWithDrawing(true, 640);
+                    if (canvasData) {
+                        if (canvasData.length > 900000) {
+                            Logger.warn("Base64 string critical (>900KB). Scaling down to Level 3 (640px) survival mode.");
+                            canvasData = CanvasEngine.captureWorksheetWithDrawing(true, 640);
+                        }
                     }
 
                 } else {
-                    // 프론트엔드 Local Storage 복원용도: 학생의 투명 드로잉 레이어만 독립 보관
                     canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6); 
                 }
                 
                 const key = `br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`;
                 
-                // 로컬 스토리지에만 저장되는 것은 compressForDatabase 옵션과 관계없이 투명 드로잉 원본
                 if (!compressForDatabase) {
                     try {
                         localStorage.setItem(key, canvasData);
                     } catch(e) {
-                        Logger.warn("Local Storage Memory Capacity Full. Eviction algorithm required.", e);
+                        Logger.warn("QuotaExceededError: Local Storage space allocation discarded.", e);
                     }
                 }
 
-                return {
+                const resultObject = {
                     uid: STATE.uid,
                     studentEmail: STATE.studentEmail,
                     unitId: STATE.unitId,
@@ -2820,6 +3061,8 @@
                     transcript: STATE.lastTranscript,
                     canvasData: canvasData
                 };
+
+                return resultObject;
             },
 
             saveCanvasLocal() {
@@ -2827,46 +3070,53 @@
             },
 
             scheduleCloudSave() {
-                // 저장 행위 시작 전 UI 인디케이터를 'Saving...' 상태로 변경
                 SyncIndicatorEngine.setSaving();
-
-                // 클라우드 업로드 타이머 예약 시점의 스냅샷은 DB 압축용(true) 플래그를 넣어서 추출합니다.
                 const snapshot = this.createCanvasSnapshot(true);
                 
-                clearTimeout(this.cloudSaveTimer);
+                if (this.cloudSaveTimer) {
+                    clearTimeout(this.cloudSaveTimer);
+                }
                 
-                // 1.5초 텀의 디바운싱 로직 (사용자가 그림을 연속으로 그릴 때 발생하는 불필요한 트래픽 낭비 방어)
                 this.cloudSaveTimer = setTimeout(() => {
                     this.executeCloudSave(snapshot);
                 }, 1500); 
             },
 
             async executeCloudSave(snapshot = null) {
-                const payload = snapshot || this.createCanvasSnapshot(true);
-                if (!payload) return;
+                let payload = null;
+                
+                if (snapshot) {
+                    payload = snapshot;
+                } else {
+                    payload = this.createCanvasSnapshot(true);
+                }
+                
+                if (!payload) {
+                    return;
+                }
 
                 try {
                     const firestoreDocId = `${payload.uid}_${payload.unitId}_P${payload.page}`;
                     
-                    // Firestore Security Rules (request.resource.data.uid == request.auth.uid) 통과를 위한 속성 바인딩
                     await db.collection("student_drawings").doc(firestoreDocId).set({
                         uid: payload.uid,
                         studentID: payload.studentEmail, 
                         unitId: payload.unitId, 
                         page: payload.page,
-                        imageUrl: payload.canvasData, // 초경량 압축 Base64 바이너리가 스토리지 낭비 없이 다이렉트 문서 저장
+                        imageUrl: payload.canvasData, 
                         transcript: payload.transcript, 
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
+                    }, { 
+                        merge: true 
+                    });
                     
-                    Logger.log(`Cloud Direct DB Canvas Transaction Complete for Page ${payload.page}. Total Size: ~${Math.round(payload.canvasData.length / 1024)}KB`);
+                    let sizeKB = Math.round(payload.canvasData.length / 1024);
+                    Logger.log(`Transaction successful. Firestore doc allocated size: ~${sizeKB}KB`);
                     
-                    // 저장 성공 시 UI 인디케이터를 'Saved ✓' 상태로 변경
                     SyncIndicatorEngine.setSaved();
                     
                 } catch (error) { 
-                    Logger.warn("Cloud Direct Upload Transaction Failed", error); 
-                    // 에러 발생 시 UI 인디케이터를 Offline 경고 모드로 변경
+                    Logger.warn("Cloud persistence layer synchronization broken.", error); 
                     SyncIndicatorEngine.setError();
                 }
             },
@@ -2881,7 +3131,8 @@
                         img.onload = () => { 
                             CanvasEngine.ctx.drawImage(
                                 img, 
-                                0, 0, 
+                                0, 
+                                0, 
                                 CanvasEngine.cvs.width / CanvasEngine.dpr, 
                                 CanvasEngine.cvs.height / CanvasEngine.dpr
                             ); 
@@ -2892,7 +3143,7 @@
                         CanvasEngine.saveHistory(); 
                     }
                 } catch (error) { 
-                    Logger.error("Local Canvas Render Restore Engine Error", error); 
+                    Logger.error("Canvas vector layer loading exception occurred.", error); 
                     CanvasEngine.saveHistory(); 
                 }
             }
@@ -2900,264 +3151,8 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [5-13. CERTIFICATE ENGINE (html2canvas integration)]
+         * [5-13. ADVANCED INTERACTIVE CANVAS BOARD ENGINE]
          * ----------------------------------------------------------------------
-         * 주차(Week)가 종료될 때 동적으로 수료증을 생성하고 고품질 캡처본을 제공합니다.
-         */
-        const CertificateEngine = {
-            open(weekNum) {
-                const modal = document.getElementById('cert-modal');
-                if(!modal) return;
-                
-                const weekEl = document.getElementById('cert-week');
-                if(weekEl) weekEl.innerText = `WEEK ${weekNum} COMPLETED`;
-                
-                const nameEl = document.getElementById('cert-student-name');
-                if(nameEl) nameEl.innerText = STATE.studentName || "Global Explorer";
-                
-                const imgEl = document.getElementById('cert-canvas-img');
-                if(imgEl) {
-                    // 수료증에는 화질 저하를 막기 위해 압축되지 않은(false) 고해상도 병합 이미지를 렌더링
-                    const mergedImg = CanvasEngine.captureWorksheetWithDrawing(false);
-                    imgEl.src = mergedImg || CanvasEngine.cvs.toDataURL();
-                }
-                
-                const msgEl = document.getElementById('cert-ai-msg');
-                
-                const hasArt = STATE.badges.includes("🎨 Colorful Artist");
-                const hasVoice = STATE.badges.includes("🗣️ Great Speaker");
-                
-                let msg = "For showing amazing curiosity and completing your inquiry journey.";
-                if (hasArt && hasVoice) { 
-                    msg = "For your brilliant colorful art and speaking English so confidently!"; 
-                } else if (hasArt) { 
-                    msg = "For expressing your wonderful imagination through colorful art!"; 
-                } else if (hasVoice) { 
-                    msg = "For speaking English with a clear, brave voice like a true global explorer!"; 
-                }
-                
-                if(msgEl) msgEl.innerText = `"${msg}"`;
-                
-                modal.classList.add('active');
-                
-                // 수료증 전용 풍성한 파티클 컨페티 폭죽 효과 부여
-                if (window.confetti) {
-                    confetti({ 
-                        particleCount: 200, 
-                        spread: 120, 
-                        origin: { y: 0.5 }, 
-                        colors: ['#CBAE75', '#89BFA0', '#7CA6C1', '#363431'] 
-                    });
-                }
-            },
-            
-            close() {
-                const modal = document.getElementById('cert-modal');
-                if (modal) modal.classList.remove('active');
-
-                // 마지막 페이지(유닛의 끝) 도달 후 수료증을 닫으면 대시보드 로비로 강제 귀환 처리
-                if (STATE.currentPage === CurriculumEngine.last(STATE.unitId)) {
-                    Logger.log("Final page certificate closed. Redirecting user routing gracefully to dashboard.");
-                    location.href = 'dashboard.html';
-                    return;
-                }
-
-                AppEngine.smoothMove(1); 
-            },
-            
-            print() {
-                const card = document.getElementById('cert-card-content');
-                const closeBtn = document.querySelector('.cert-close');
-                const printBtn = document.querySelector('.btn-print');
-                
-                // 캡처 이미지 생성 시 방해되는 UI 컨트롤 요소 임시 은닉 처리
-                if(closeBtn) closeBtn.style.display = 'none'; 
-                if(printBtn) printBtn.style.display = 'none';
-                
-                // html2canvas 라이브러리를 활용한 고해상도(Scale 2) 이미지 렌더링 및 다운로드 로직 수행
-                if (window.html2canvas && card) {
-                    html2canvas(card, { 
-                        backgroundColor: '#FFFFFF', 
-                        scale: 2 // 레티나 디스플레이 및 프린트 화질 대응을 위한 스케일업
-                    }).then(canvas => {
-                        // 렌더링 종료 후 은닉 UI 요소 복구
-                        if(closeBtn) closeBtn.style.display = 'block'; 
-                        if(printBtn) printBtn.style.display = 'inline-flex';
-                        
-                        const imgData = canvas.toDataURL('image/png');
-                        const link = document.createElement('a');
-                        link.download = `Bridge_Academy_Certificate_${STATE.studentName}.png`;
-                        link.href = imgData;
-                        link.click();
-                    }).catch(e => {
-                        Logger.error("Failed to generate and download dynamic certificate image", e);
-                        // 에러 시전 후에도 UI 복구 보장
-                        if(closeBtn) closeBtn.style.display = 'block'; 
-                        if(printBtn) printBtn.style.display = 'inline-flex';
-                    });
-                } else {
-                    // html2canvas 스크립트 로드 실패 시 시스템 기본 인쇄 인터페이스로 폴백
-                    window.print();
-                    if(closeBtn) closeBtn.style.display = 'block'; 
-                    if(printBtn) printBtn.style.display = 'inline-flex';
-                }
-            }
-        };
-
-        /**
-         * ----------------------------------------------------------------------
-         * [5-14. PAGE & SIDEBAR RENDER ENGINE]
-         * ----------------------------------------------------------------------
-         * 좌측 사이드바 커리큘럼 리스트를 동적으로 주입하고, 화면 상태를 초기화합니다.
-         */
-        const PageEngine = {
-            init() {
-                const list = document.getElementById('nav-list');
-                if(!list) return;
-                
-                list.innerHTML = ''; 
-                
-                const unitData = PAGE_INTELLIGENCE[STATE.unitId];
-                
-                if (unitData) {
-                    Object.keys(unitData).forEach((pageKey) => {
-                        const ctx = unitData[pageKey];
-                        const weekBadgeNum = CurriculumEngine.weekIndex(STATE.unitId, Number(pageKey)); 
-                        
-                        const item = document.createElement('div');
-                        item.className = 'nav-item interactive-hover'; 
-                        item.id = `nav-${pageKey}`;
-                        
-                        item.innerHTML = `
-                            <span class="nav-title">${ctx.navTitle}</span>
-                            <span class="nav-badge">W${weekBadgeNum}-P.${String(pageKey).padStart(2,'0')}</span>
-                        `;
-                        
-                        item.onclick = () => { 
-                            const moveOffset = parseInt(pageKey) - STATE.currentPage;
-                            AppEngine.smoothMove(moveOffset); 
-                            UIEngine.closeSidebar(); 
-                        };
-                        
-                        list.appendChild(item);
-                    });
-                }
-                
-                this.load(STATE.currentPage);
-            },
-            
-            load(n) {
-                STATE.currentPage = n; 
-                STATE.lastTranscript = ""; 
-                STATE.sttConfidence = 0;
-                
-                const unitInfoEl = document.getElementById('unit-info');
-                if(unitInfoEl) unitInfoEl.innerText = `MASTER LAB: ${STATE.unitId}`;
-                
-                const pageInfoEl = document.getElementById('page-info');
-                if(pageInfoEl) pageInfoEl.innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
-                
-                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                
-                const activeNav = document.getElementById(`nav-${n}`);
-                if(activeNav) {
-                    activeNav.classList.add('active');
-                    
-                    const navList = document.getElementById('nav-list');
-                    if(navList) {
-                        const relativeScroll = activeNav.offsetTop - navList.offsetTop - 50;
-                        navList.scrollTo({ top: relativeScroll, behavior: 'smooth' });
-                    }
-                }
-                
-                // 페이지 이동 시 이전 캔버스 기록 초기화 및 AI 튜터창 강제 폐쇄 처리
-                CanvasEngine.hardReset(); 
-                AITutor.close();
-                
-                const worksheetImg = document.getElementById('worksheet-img');
-                if(worksheetImg) worksheetImg.style.opacity = '0';
-                
-                // 새로운 도화지 백그라운드 비동기 스마트 호출
-                SmartImageLoader.findValidWorksheet(STATE.unitId, STATE.currentPage);
-                
-                // 페이지 진입 정보를 파이어베이스 유저 메타데이터에 안전하게 업데이트
-                StorageEngine.save();
-            }
-        };
-
-        /**
-         * ----------------------------------------------------------------------
-         * [5-15. APPLICATION WORKFLOW ORCHESTRATOR]
-         * ----------------------------------------------------------------------
-         */
-        const AppEngine = {
-            smoothMove(dir) {
-                const nextPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir);
-                
-                if (nextPage === STATE.currentPage) return;
-
-                // 사용자가 그림을 그린 직후 빠르게 페이지를 넘길 경우
-                // 로컬 스토리지 보존 함수가 건너뛰어지는 데이터 증발(Race Condition)을 막기 위해,
-                // 클라우드 업로드 전 명시적으로 로컬 스토리지에 무압축 원본 투명 레이어를 락인(Lock-in)합니다.
-                StorageEngine.saveCanvasLocal();
-                
-                // 이후 클라우드 DB 보존을 위한 압축된(true) 스냅샷 방아쇠 격발
-                const snapshot = StorageEngine.createCanvasSnapshot(true);
-                StorageEngine.executeCloudSave(snapshot);
-                
-                const board = document.getElementById('drawing-board'); 
-                if(board) board.classList.add('fade-out');
-                
-                // 트랜지션 페이드 아웃 시간이 종료된 후 새 페이지 로딩 시퀀스 시작
-                setTimeout(() => {
-                    STATE.currentPage = nextPage;
-                    PageEngine.load(STATE.currentPage);
-                    
-                    setTimeout(() => {
-                        if(board) board.classList.remove('fade-out');
-                    }, 150);
-                }, 400);
-            },
-            
-            handleNextAdventure() {
-                AITutor.close(); 
-                
-                // 4페이지 단위의 주차 사이클이 끝났다면 수료증 발급, 아니면 스무스 무빙
-                if (CurriculumEngine.isWeekEnd(STATE.unitId, STATE.currentPage)) {
-                    CertificateEngine.open(CurriculumEngine.weekIndex(STATE.unitId, STATE.currentPage));
-                } else {
-                    this.smoothMove(1);
-                }
-            }
-        };
-
-        const UIEngine = {
-            toggleSidebar() { 
-                // 데스크톱 환경(1180px 초과)에서는 JS를 통한 사이드바 딤/토글 오작동 전면 차단
-                if (window.innerWidth > 1180) return;
-
-                const sb = document.getElementById('sidebar');
-                if(sb) sb.classList.toggle('open'); 
-                
-                const backdrop = document.getElementById('sidebar-backdrop');
-                if(backdrop) backdrop.classList.toggle('active');
-            },
-            
-            closeSidebar() {
-                const sb = document.getElementById('sidebar');
-                if(sb) sb.classList.remove('open'); 
-                
-                const backdrop = document.getElementById('sidebar-backdrop');
-                if(backdrop) backdrop.classList.remove('active');
-            }
-        };
-
-        /**
-         * ----------------------------------------------------------------------
-         * [5-16. CANVAS DRAWING ENGINE & MULTIMODAL MERGER]
-         * ----------------------------------------------------------------------
-         * 사용자의 터치/펜 입력을 정밀하게 벡터 좌표로 수집하여 시각화하고,
-         * 백엔드 AI에게 넘기기 위해 교재 배경과 학생의 선을 완벽히 병합(Merge)합니다.
          */
         const CanvasEngine = {
             isDrawing: false, 
@@ -3170,7 +3165,9 @@
             
             init() {
                 this.cvs = document.getElementById('draw-layer'); 
-                if(!this.cvs) return;
+                if(!this.cvs) {
+                    return;
+                }
                 
                 this.ctx = this.cvs.getContext('2d'); 
                 this.board = document.getElementById('drawing-board');
@@ -3179,41 +3176,52 @@
                 this.setupCanvas(); 
                 this.bind();
                 
-                // 브러시 두께 미리보기 연동 초기화
                 this.updateBrushPreview();
                 const slider = document.getElementById('brush-size');
                 if (slider) {
-                    slider.addEventListener('input', () => this.updateBrushPreview());
+                    slider.addEventListener('input', () => {
+                        this.updateBrushPreview();
+                    });
                 }
                 
-                // 반응형 레이아웃 대응을 위해 리사이즈 옵저버 탑재
-                if (window.ResizeObserver && this.board) { 
-                    new ResizeObserver(() => this.resizeCanvas()).observe(this.board); 
+                if (window.ResizeObserver) {
+                    if (this.board) { 
+                        const observer = new ResizeObserver(() => {
+                            this.resizeCanvas();
+                        });
+                        observer.observe(this.board); 
+                    }
                 }
             },
 
-            /**
-             * 브러시 슬라이더 값이 변경될 때마다 미리보기 원의 크기를 동기화합니다.
-             */
             updateBrushPreview() {
                 const slider = document.getElementById('brush-size');
                 const dot = document.getElementById('brush-preview-dot');
-                if (!slider || !dot) return;
+                if (!slider) {
+                    return;
+                }
+                if (!dot) {
+                    return;
+                }
                 
                 const val = parseInt(slider.value);
-                // 브러시 사이즈 값에 비례하여 동그라미의 픽셀 크기를 실시간 업데이트
                 dot.style.width = `${val}px`;
                 dot.style.height = `${val}px`;
-                dot.style.backgroundColor = this.isErasing ? "var(--br-muted)" : this.lastColor;
+                
+                if (this.isErasing) {
+                    dot.style.backgroundColor = "var(--br-muted)";
+                } else {
+                    dot.style.backgroundColor = this.lastColor;
+                }
             },
 
-            /**
-             * CPU 부하 없는 초경량 캔버스 빈 도화지 프로브 검사기.
-             * 방대한 해상도 캔버스를 64x64 사이즈의 썸네일로 다운샘플링 복사하여
-             * 메인 스레드 끊김(Jank) 현상을 방어하고 배지 알고리즘을 안전하게 수행합니다.
-             */
             isCanvasBlank() {
-                if (!this.cvs || !this.ctx) return true;
+                if (!this.cvs) {
+                    return true;
+                }
+                if (!this.ctx) {
+                    return true;
+                }
                 
                 try {
                     const probe = document.createElement('canvas');
@@ -3221,133 +3229,177 @@
                     probe.height = 64;
                     
                     const pctx = probe.getContext('2d');
-                    
-                    // 원본을 64x64 로 압축 복사 명령
                     pctx.drawImage(this.cvs, 0, 0, 64, 64);
                     
                     const pixels = pctx.getImageData(0, 0, 64, 64).data;
                     
-                    // Alpha Channel(투명도 배열 인덱스)을 4칸 스텝으로 스캔하여 칠해진 픽셀이 있는지 판독
-                    for (let i = 3; i < pixels.length; i += 4) {
-                        if (pixels[i] !== 0) return false;
+                    for (let i = 3; i < pixels.length; i = i + 4) {
+                        if (pixels[i] !== 0) {
+                            return false;
+                        }
                     }
                     
                     return true;
                 } catch(e) {
-                    Logger.warn("Canvas probe scaling evaluation failed. Assuming blank to prevent crash sequence.", e);
                     return true;
                 }
             },
             
-            /**
-             * 워크시트(교재 배경)와 학생의 드로잉 레이어를 고품질로 병합(Merge)합니다.
-             * Firestore 문서 최대 크기 제한(1MiB) 대응을 위한 maxWidth 파라미터를 사용합니다.
-             * @param {boolean} compressForDatabase - Firestore 업로드용일 경우 압축 로직을 적용합니다.
-             * @param {number} maxWidth - DB 저장용 강제 리사이징 픽셀 상한선 (기본 1024, 폴백 시 768, 640 순환)
-             */
             captureWorksheetWithDrawing(compressForDatabase = false, maxWidth = 1024) {
                 const worksheet = document.getElementById('worksheet-img');
                 const draw = this.cvs;
                 
-                if (!worksheet || !draw) return null;
+                if (!worksheet) {
+                    return null;
+                }
+                if (!draw) {
+                    return null;
+                }
 
-                // 워크시트 이미지가 네트워크 지연으로 인해 미완성 상태일 경우 즉시 투명 캔버스로 안전하게 Fallback.
-                if (!worksheet.complete || worksheet.naturalWidth === 0) {
-                    Logger.warn("Worksheet background image asset is not ready for merge. Falling back to drawing-only layer.");
-                    return draw.toDataURL('image/jpeg', compressForDatabase ? 0.55 : 0.72);
+                if (!worksheet.complete) {
+                    Logger.warn("Resource busy. Encoding baseline transparent context vectors.");
+                    if (compressForDatabase) {
+                        return draw.toDataURL('image/jpeg', 0.55);
+                    } else {
+                        return draw.toDataURL('image/jpeg', 0.72);
+                    }
+                }
+                
+                if (worksheet.naturalWidth === 0) {
+                    Logger.warn("Resource busy. Encoding baseline transparent context vectors.");
+                    if (compressForDatabase) {
+                        return draw.toDataURL('image/jpeg', 0.55);
+                    } else {
+                        return draw.toDataURL('image/jpeg', 0.72);
+                    }
                 }
 
                 const merged = document.createElement('canvas');
+                let scale = 1;
                 
-                // Firestore 문서 1MB 사이즈 오버플로우를 막기 위한 다이나믹 스케일다운 알고리즘
-                const scale = compressForDatabase ? Math.min(maxWidth / draw.width, 1) : 1;
+                if (compressForDatabase) {
+                    scale = Math.min(maxWidth / draw.width, 1);
+                } else {
+                    scale = 1;
+                }
                 
-                // Math.floor 처리하여 소수점 픽셀 렌더링에 의한 브라우저 메모리 왜곡 방지
                 merged.width = Math.floor(draw.width * scale);
                 merged.height = Math.floor(draw.height * scale);
 
                 const ctx = merged.getContext('2d');
-                
-                // 투명 배경이 검정색으로 깨지는 PNG 투명도 혼선을 막기 위한 흰색 매트 배경 선행 매핑
                 ctx.fillStyle = '#FFFFFF';
                 ctx.fillRect(0, 0, merged.width, merged.height);
 
                 try {
-                    // 베이스 도화지 그리기
                     ctx.drawImage(worksheet, 0, 0, merged.width, merged.height);
-                    // 그 위에 학생의 터치 벡터 선 그리기
                     ctx.drawImage(draw, 0, 0, merged.width, merged.height);
                     
-                    // Database 목적이면 JPEG 0.55 품질로 타이트하게 압축, 렌더링 목적이면 72% 화질 인코딩 반환
-                    return merged.toDataURL('image/jpeg', compressForDatabase ? 0.55 : 0.72);
+                    if (compressForDatabase) {
+                        return merged.toDataURL('image/jpeg', 0.55);
+                    } else {
+                        return merged.toDataURL('image/jpeg', 0.72);
+                    }
                 } catch(e) {
-                    Logger.warn("CORS Security Taint Issue detected during Canvas Merge Processing. Falling back to transparent layer extraction.", e);
                     return draw.toDataURL('image/jpeg', 0.55);
                 }
             },
 
             setupCanvas() {
-                if(!this.board || !this.cvs) return;
+                if (!this.board) {
+                    return;
+                }
+                if (!this.cvs) {
+                    return;
+                }
                 
                 const rect = this.board.getBoundingClientRect(); 
-                if (rect.width === 0) return;
+                if (rect.width === 0) {
+                    return;
+                }
                 
                 this.cvs.style.width = rect.width + "px"; 
                 this.cvs.style.height = rect.height + "px";
                 
-                // 레티나 디스플레이(고해상도 망막 화면)에서의 계단 현상을 없애기 위한 dpr 승수 연산
                 this.cvs.width = rect.width * this.dpr; 
                 this.cvs.height = rect.height * this.dpr;
                 
                 this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); 
-                
-                // 아이들의 부드러운 펜 질감을 흉내 내기 위한 둥근 마감 처리
                 this.ctx.lineCap = 'round'; 
                 this.ctx.lineJoin = 'round';
             },
             
             resizeCanvas() {
-                if (!this.cvs || !this.ctx || !this.board) return;
+                if (!this.cvs) {
+                    return;
+                }
+                if (!this.ctx) {
+                    return;
+                }
+                if (!this.board) {
+                    return;
+                }
                 
                 const rect = this.board.getBoundingClientRect(); 
-                if (rect.width === 0 || rect.height === 0) return;
+                if (rect.width === 0) {
+                    return;
+                }
+                if (rect.height === 0) {
+                    return;
+                }
 
-                // 기존에 그려진 그림이 날아가지 않도록 임시 캔버스 메모리에 버퍼링 복사
                 const temp = document.createElement('canvas'); 
                 temp.width = this.cvs.width; 
                 temp.height = this.cvs.height;
                 
                 const tempCtx = temp.getContext('2d');
-                if (this.cvs.width > 0 && this.cvs.height > 0) { 
-                    tempCtx.drawImage(this.cvs, 0, 0); 
+                if (this.cvs.width > 0) {
+                    if (this.cvs.height > 0) { 
+                        tempCtx.drawImage(this.cvs, 0, 0); 
+                    }
                 }
                 
                 this.setupCanvas();
                 
-                // 크기 조정이 끝나면 버퍼에서 다시 캔버스로 붙여넣어 사이즈 보정 완료
-                if (temp.width > 0 && temp.height > 0) { 
-                    this.ctx.drawImage(
-                        temp, 
-                        0, 0, temp.width, temp.height, 
-                        0, 0, rect.width, rect.height  
-                    ); 
+                if (temp.width > 0) {
+                    if (temp.height > 0) { 
+                        this.ctx.drawImage(
+                            temp, 
+                            0, 
+                            0, 
+                            temp.width, 
+                            temp.height, 
+                            0, 
+                            0, 
+                            rect.width, 
+                            rect.height  
+                        ); 
+                    }
                 }
             },
             
             bind() {
-                if(!this.cvs) return;
+                if (!this.cvs) {
+                    return;
+                }
                 
                 const getP = (e) => { 
                     const r = this.cvs.getBoundingClientRect(); 
                     let cx = e.clientX;
                     let cy = e.clientY;
                     
-                    // 멀티 터치 및 애플 펜슬 포인터 좌표계 호환 정규화
-                    if(e.touches && e.touches.length > 0){
-                        cx = e.touches[0].clientX;
-                        cy = e.touches[0].clientY;
+                    if (e.touches) {
+                        if (e.touches.length > 0) {
+                            cx = e.touches[0].clientX;
+                            cy = e.touches[0].clientY;
+                        }
                     }
-                    return { x: cx - r.left, y: cy - r.top }; 
+                    
+                    const result = {
+                        x: cx - r.left,
+                        y: cy - r.top
+                    };
+                    
+                    return result; 
                 };
                 
                 const start = (e) => { 
@@ -3360,30 +3412,50 @@
                 };
                 
                 const move = (e) => {
-                    if (!this.isDrawing) return; 
+                    if (!this.isDrawing) {
+                        return;
+                    } 
                     e.preventDefault(); 
                     this.hasMoved = true; 
                     const p = getP(e);
                     
-                    // 지우개 모드일 경우 globalCompositeOperation 속성을 조작하여 선을 지움
-                    this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over";
+                    if (this.isErasing) {
+                        this.ctx.globalCompositeOperation = "destination-out";
+                    } else {
+                        this.ctx.globalCompositeOperation = "source-over";
+                    }
                     
-                    const sliderVal = document.getElementById('brush-size').value; 
-                    // 지우개는 아이들의 답답함을 없애기 위해 기본 두께의 3배로 보정 확장
-                    this.ctx.lineWidth = this.isErasing ? sliderVal * 3 : sliderVal;
+                    const slider = document.getElementById('brush-size');
+                    const sliderVal = slider.value; 
                     
-                    this.ctx.strokeStyle = this.isErasing ? "#FFFFFF" : this.lastColor;
+                    if (this.isErasing) {
+                        this.ctx.lineWidth = sliderVal * 3;
+                    } else {
+                        this.ctx.lineWidth = sliderVal;
+                    }
                     
-                    // 브러시 타입 매직 렌더링 로직 (레인보우 및 네온사인)
-                    if(STATE.brushType === 'rainbow' && !this.isErasing) { 
-                        // 시간차에 따른 다이나믹 HSL 레인보우 스펙트럼 생성
-                        const rainbowColor = `hsl(${(Date.now()/10)%360}, 100%, 50%)`;
-                        this.ctx.strokeStyle = rainbowColor; 
-                    } else if (STATE.brushType === 'neon' && !this.isErasing) { 
-                        this.ctx.shadowBlur = parseInt(sliderVal) + 10; 
-                        this.ctx.shadowColor = this.lastColor; 
-                    } else { 
-                        this.ctx.shadowBlur = 0; 
+                    if (this.isErasing) {
+                        this.ctx.strokeStyle = "#FFFFFF";
+                    } else {
+                        this.ctx.strokeStyle = this.lastColor;
+                    }
+                    
+                    if (STATE.brushType === 'rainbow') {
+                        if (!this.isErasing) { 
+                            const timeNow = Date.now();
+                            const hue = (timeNow / 10) % 360;
+                            const rainbowColor = `hsl(${hue}, 100%, 50%)`;
+                            this.ctx.strokeStyle = rainbowColor; 
+                        }
+                    } else {
+                        if (STATE.brushType === 'neon') {
+                            if (!this.isErasing) { 
+                                this.ctx.shadowBlur = parseInt(sliderVal) + 10; 
+                                this.ctx.shadowColor = this.lastColor; 
+                            }
+                        } else { 
+                            this.ctx.shadowBlur = 0; 
+                        }
                     }
                     
                     this.ctx.lineTo(p.x, p.y); 
@@ -3393,18 +3465,16 @@
                     this.ctx.moveTo(p.x, p.y);
                 };
                 
-                const end = (e) => { 
+                const end = () => { 
                     this.isDrawing = false; 
                     this.ctx.shadowBlur = 0; 
                     if (this.hasMoved) { 
-                        // 한 획 긋기가 끝나면 언두(Undo) 배열에 저장하고 클라우드 동기화 큐에 진입
                         this.saveHistory(); 
                         StorageEngine.saveCanvasLocal();
                         StorageEngine.scheduleCloudSave();
                     } 
                 };
                 
-                // 통합 포인터 이벤트 리스너 바인딩 
                 this.cvs.addEventListener('pointerdown', start); 
                 this.cvs.addEventListener('pointermove', move); 
                 this.cvs.addEventListener('pointerup', end); 
@@ -3412,20 +3482,21 @@
             },
             
             saveHistory() { 
-                this.historyIndex++; 
+                this.historyIndex = this.historyIndex + 1; 
                 this.historyStack.length = this.historyIndex; 
-                this.historyStack.push(this.cvs.toDataURL()); 
                 
-                // 과도한 메모리 누수를 막기 위해 최대 20개의 언두 히스토리 큐만 유지
+                const dataUrl = this.cvs.toDataURL();
+                this.historyStack.push(dataUrl); 
+                
                 if (this.historyStack.length > 20) {
                     this.historyStack.shift(); 
-                    this.historyIndex--;
+                    this.historyIndex = this.historyIndex - 1;
                 }
             },
             
             undo() { 
                 if (this.historyIndex > 0) { 
-                    this.historyIndex--; 
+                    this.historyIndex = this.historyIndex - 1; 
                     this.restore(); 
                     StorageEngine.saveCanvasLocal();
                     StorageEngine.scheduleCloudSave();
@@ -3433,13 +3504,25 @@
             },
             
             restore() { 
-                if(!this.ctx || !this.cvs) return;
+                if (!this.ctx) {
+                    return;
+                }
+                if (!this.cvs) {
+                    return;
+                }
+                
                 const img = new Image(); 
                 img.onload = () => { 
                     this.ctx.save(); 
-                    this.ctx.setTransform(1,0,0,1,0,0); 
-                    this.ctx.clearRect(0,0,this.cvs.width,this.cvs.height); 
-                    this.ctx.drawImage(img,0,0,this.cvs.width/this.dpr,this.cvs.height/this.dpr); 
+                    this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
+                    this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
+                    this.ctx.drawImage(
+                        img, 
+                        0, 
+                        0, 
+                        this.cvs.width / this.dpr, 
+                        this.cvs.height / this.dpr
+                    ); 
                     this.ctx.restore(); 
                 }; 
                 img.src = this.historyStack[this.historyIndex]; 
@@ -3447,52 +3530,79 @@
             
             setBrush(t) { 
                 STATE.brushType = t; 
-                document.querySelectorAll('.btn-magic').forEach(el => el.classList.remove('active')); 
-                const activeBtn = document.getElementById(`btn-brush-${t}`);
-                if(activeBtn) activeBtn.classList.add('active'); 
                 
-                if(this.isErasing) this.toggleEraser(); 
+                const allMagicBtns = document.querySelectorAll('.btn-magic');
+                allMagicBtns.forEach((el) => {
+                    el.classList.remove('active');
+                }); 
+                
+                const activeBtn = document.getElementById(`btn-brush-${t}`);
+                if (activeBtn) {
+                    activeBtn.classList.add('active'); 
+                }
+                
+                if (this.isErasing) {
+                    this.toggleEraser(); 
+                }
             },
             
             toggleEraser() { 
-                this.isErasing = !this.isErasing; 
+                if (this.isErasing) {
+                    this.isErasing = false;
+                } else {
+                    this.isErasing = true;
+                }
+                
                 const btn = document.getElementById('btn-eraser');
-                if(btn) btn.classList.toggle('active'); 
+                if (btn) {
+                    btn.classList.toggle('active'); 
+                }
+                
                 this.updateBrushPreview();
             },
             
             setColor(color) { 
                 this.lastColor = color; 
-                const preview = document.getElementById('btn-color');
-                if(preview) preview.style.background = color; 
                 
-                if(this.isErasing) this.toggleEraser(); 
+                const preview = document.getElementById('btn-color');
+                if (preview) {
+                    preview.style.background = color; 
+                }
+                
+                if (this.isErasing) {
+                    this.toggleEraser(); 
+                }
+                
                 this.updateBrushPreview();
             },
             
             setupUI() { 
                 const preview = document.getElementById('btn-color');
-                if(preview) preview.style.background = this.lastColor; 
+                if (preview) {
+                    preview.style.background = this.lastColor; 
+                }
             },
             
             hardReset() { 
-                if(!this.ctx || !this.cvs) return;
+                if (!this.ctx) {
+                    return;
+                }
+                if (!this.cvs) {
+                    return;
+                }
+                
                 try { 
                     this.ctx.save(); 
-                    this.ctx.setTransform(1,0,0,1,0,0); 
-                    this.ctx.clearRect(0,0,this.cvs.width, this.cvs.height); 
+                    this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
+                    this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
                     this.ctx.restore(); 
                     this.historyStack = []; 
                     this.historyIndex = -1; 
                 } catch(e) { 
-                    Logger.error("Canvas Internal Hard Reset Engine Error", e); 
+                    Logger.error("Wipe instruction set crashed.", e); 
                 } 
             },
 
-            /**
-             * 사용자 실수 보호를 위한 All Reset 이중 확인 프롬프트.
-             * 브라우저 기본 confirm() 대신 자체 디자인 CustomModalEngine을 호출합니다.
-             */
             promptHardReset() {
                 CustomModalEngine.confirm(
                     "Clear Canvas", 
@@ -3502,53 +3612,221 @@
                         this.saveHistory();
                         StorageEngine.saveCanvasLocal();
                         StorageEngine.scheduleCloudSave();
-                        Logger.log("User explicitly authorized canvas wipe sequence.");
+                        Logger.log("Wipe instruction sequence completed successfully.");
                     }
                 );
             }
         };
 
+        /**
+         * ----------------------------------------------------------------------
+         * [5-14. COLOR PALETTE]
+         * ----------------------------------------------------------------------
+         */
         const RGBRingEngine = {
             init() { 
                 const c = document.getElementById('color-wheel'); 
-                if(!c) return;
+                if (!c) {
+                    return;
+                }
                 
-                const ctx = c.getContext('2d', { willReadFrequently: true }); 
+                const ctx = c.getContext('2d', { 
+                    willReadFrequently: true 
+                }); 
                 const r = 75; 
                 
-                for (let a=0; a<360; a++) { 
+                for (let a = 0; a < 360; a = a + 1) { 
                     ctx.beginPath(); 
-                    ctx.moveTo(r,r); 
-                    ctx.arc(r,r,r, a*Math.PI/180, (a+2)*Math.PI/180); 
-                    ctx.fillStyle = `hsl(${a},100%,50%)`; 
+                    ctx.moveTo(r, r); 
+                    const startAngle = a * Math.PI / 180;
+                    const endAngle = (a + 2) * Math.PI / 180;
+                    ctx.arc(r, r, r, startAngle, endAngle); 
+                    ctx.fillStyle = `hsl(${a}, 100%, 50%)`; 
                     ctx.fill(); 
                 }
                 
                 c.onclick = (e) => { 
                     const rect = c.getBoundingClientRect(); 
-                    const data = ctx.getImageData(e.clientX-rect.left, e.clientY-rect.top, 1, 1).data; 
-                    CanvasEngine.setColor(`rgb(${data[0]},${data[1]},${data[2]})`); 
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const imageData = ctx.getImageData(x, y, 1, 1);
+                    const data = imageData.data; 
+                    const colorString = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+                    CanvasEngine.setColor(colorString); 
                     this.toggle(); 
                 };
             },
+            
             toggle() { 
                 const modal = document.getElementById('rgb-modal');
-                if(modal) modal.classList.toggle('active'); 
+                if (modal) {
+                    modal.classList.toggle('active'); 
+                }
             }
         };
 
         /**
          * ----------------------------------------------------------------------
-         * [5-17. AUDIO ENGINE & STATE MACHINE (STT Intergration)]
+         * [5-15. COMPREHENSIVE CERTIFICATE MANAGEMENT ENGINE]
          * ----------------------------------------------------------------------
-         * 아동들의 영어 발음을 실시간 텍스트로 인식하고 기록하는 엔진입니다.
-         * 마이크 미지원 환경(데스크톱 구버전 등)에서는 버튼을 비활성화하여 에러를 막습니다.
+         */
+        const CertificateEngine = {
+            open(weekNum) {
+                const modal = document.getElementById('cert-modal');
+                if (!modal) {
+                    return;
+                }
+                
+                const weekEl = document.getElementById('cert-week');
+                if (weekEl) {
+                    weekEl.innerText = `WEEK ${weekNum} COMPLETED`;
+                }
+                
+                const nameEl = document.getElementById('cert-student-name');
+                if (nameEl) {
+                    if (STATE.studentName) {
+                        nameEl.innerText = STATE.studentName;
+                    } else {
+                        nameEl.innerText = "Global Explorer";
+                    }
+                }
+                
+                const imgEl = document.getElementById('cert-canvas-img');
+                if (imgEl) {
+                    const mergedImg = CanvasEngine.captureWorksheetWithDrawing(false);
+                    if (mergedImg) {
+                        imgEl.src = mergedImg;
+                    } else {
+                        imgEl.src = CanvasEngine.cvs.toDataURL();
+                    }
+                }
+                
+                const msgEl = document.getElementById('cert-ai-msg');
+                
+                const hasArt = STATE.badges.includes("🎨 Colorful Artist");
+                const hasVoice = STATE.badges.includes("🗣️ Great Speaker");
+                
+                let msg = "For showing amazing curiosity and completing your inquiry journey.";
+                
+                if (hasArt) {
+                    if (hasVoice) { 
+                        msg = "For your brilliant colorful art and speaking English so confidently!"; 
+                    } else { 
+                        msg = "For expressing your wonderful imagination through colorful art!"; 
+                    }
+                } else {
+                    if (hasVoice) { 
+                        msg = "For speaking English with a clear, brave voice like a true global explorer!"; 
+                    }
+                }
+                
+                if (msgEl) {
+                    msgEl.innerText = `"${msg}"`;
+                }
+                
+                modal.classList.add('active');
+                
+                if (window.confetti) {
+                    confetti({ 
+                        particleCount: 200, 
+                        spread: 120, 
+                        origin: { 
+                            y: 0.5 
+                        }, 
+                        colors: [
+                            '#CBAE75', 
+                            '#89BFA0', 
+                            '#7CA6C1', 
+                            '#363431'
+                        ] 
+                    });
+                }
+            },
+            
+            close() {
+                const modal = document.getElementById('cert-modal');
+                if (modal) {
+                    modal.classList.remove('active');
+                }
+
+                if (STATE.currentPage === CurriculumEngine.last(STATE.unitId)) {
+                    Logger.log("Curriculum scope finished. Evicting user to workspace main lobby.");
+                    location.href = 'dashboard.html';
+                    return;
+                }
+
+                AppEngine.smoothMove(1); 
+            },
+            
+            print() {
+                const card = document.getElementById('cert-card-content');
+                const closeBtn = document.querySelector('.cert-close');
+                const printBtn = document.querySelector('.btn-print');
+                
+                if (closeBtn) {
+                    closeBtn.style.display = 'none'; 
+                }
+                if (printBtn) {
+                    printBtn.style.display = 'none';
+                }
+                
+                if (window.html2canvas) {
+                    if (card) {
+                        html2canvas(card, { 
+                            backgroundColor: '#FFFFFF', 
+                            scale: 2 
+                        }).then((canvas) => {
+                            if (closeBtn) {
+                                closeBtn.style.display = 'block'; 
+                            }
+                            if (printBtn) {
+                                printBtn.style.display = 'inline-flex';
+                            }
+                            
+                            const imgData = canvas.toDataURL('image/png');
+                            const link = document.createElement('a');
+                            link.download = `Bridge_Academy_Certificate_${STATE.studentName}.png`;
+                            link.href = imgData;
+                            link.click();
+                        }).catch((e) => {
+                            Logger.error("DOM capturing error during file compression.", e);
+                            if (closeBtn) {
+                                closeBtn.style.display = 'block'; 
+                            }
+                            if (printBtn) {
+                                printBtn.style.display = 'inline-flex';
+                            }
+                        });
+                    }
+                } else {
+                    window.print();
+                    if (closeBtn) {
+                        closeBtn.style.display = 'block'; 
+                    }
+                    if (printBtn) {
+                        printBtn.style.display = 'inline-flex';
+                    }
+                }
+            }
+        };
+
+        /**
+         * ----------------------------------------------------------------------
+         * [5-16. VOICE LOG ANALYSIS AUDIO INTERFACES]
+         * ----------------------------------------------------------------------
          */
         const AudioEngine = {
             recordingMode: 'main', 
 
             init() {
-                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+                let SR = null;
+                if (window.SpeechRecognition) {
+                    SR = window.SpeechRecognition;
+                } else {
+                    if (window.webkitSpeechRecognition) {
+                        SR = window.webkitSpeechRecognition;
+                    }
+                }
                 
                 if (SR) {
                     this.rec = new SR(); 
@@ -3557,12 +3835,16 @@
                     this.rec.interimResults = false;
                     
                     this.rec.onresult = (e) => { 
-                        STATE.lastTranscript = e.results[0][0].transcript; 
-                        STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); 
+                        const resultList = e.results[0];
+                        const alternative = resultList[0];
+                        STATE.lastTranscript = alternative.transcript; 
+                        STATE.sttConfidence = Math.round(alternative.confidence * 100); 
                     };
 
                     this.rec.onend = () => { 
-                        if (!STATE.isRecording) return;
+                        if (!STATE.isRecording) {
+                            return;
+                        }
                         
                         if (this.recordingMode === 'chat') {
                             this.toggleChat();
@@ -3572,46 +3854,58 @@
                     };
 
                     this.rec.onerror = (e) => { 
-                        Logger.error("Web Speech API Hardware Exception Traced:", e.error); 
+                        Logger.error("STT buffer array error:", e.error); 
                         
-                        if(STATE.isRecording) {
+                        if (STATE.isRecording) {
                             STATE.isRecording = false;
                             
                             const btnRecord = document.getElementById('btn-record');
-                            if(btnRecord) btnRecord.classList.remove('recording');
+                            if (btnRecord) {
+                                btnRecord.classList.remove('recording');
+                            }
                             
-                            const btnChat = document.getElementById('btn-chat-record');
-                            if(btnChat) btnChat.classList.remove('recording');
+                            const btnChatRecord = document.getElementById('btn-chat-record');
+                            if (btnChatRecord) {
+                                btnChatRecord.classList.remove('recording');
+                            }
                             
-                            const recText = document.getElementById('record-text');
-                            if(recText) recText.innerText = "Voice Log";
+                            const recordText = document.getElementById('record-text');
+                            if (recordText) {
+                                recordText.innerText = "Voice Log";
+                            }
                             
-                            CustomModalEngine.alert("Microphone Error", "마이크를 사용할 수 없습니다. 브라우저 설정이나 마이크 권한을 확인해 주세요.");
+                            CustomModalEngine.alert(
+                                "Microphone Error", 
+                                "마이크를 사용할 수 없습니다. 권한 설정을 체크하십시오."
+                            );
                         }
                     }
                 } else { 
-                    Logger.warn("Web Speech API System Environment is not natively supported in this browser viewport. Graceful UI degradation applied."); 
+                    Logger.warn("Speech synthesis API driver absent. Voice logs set to dormant."); 
                     
-                    ['btn-record', 'btn-chat-record'].forEach(id => {
+                    const btnIds = ['btn-record', 'btn-chat-record'];
+                    
+                    btnIds.forEach((id) => {
                         const btn = document.getElementById(id);
                         if (btn) {
                             btn.disabled = true;
                             btn.style.opacity = "0.5";
-                            btn.style.cursor = "not-allowed";
                         }
                     });
-
-                    const textEl = document.getElementById('record-text');
-                    if (textEl) textEl.innerText = "No Mic";
                     
-                    const chatTextEl = document.getElementById('btn-chat-record');
-                    if (chatTextEl) chatTextEl.innerText = "No Mic";
+                    const textEl = document.getElementById('record-text');
+                    if (textEl) {
+                        textEl.innerText = "No Mic";
+                    }
                 }
             },
             
             toggle() {
-                if(!this.rec) { 
-                    CustomModalEngine.alert("Mic Access Denied", "마이크 사용 권한이 없거나 지원되지 않는 환경입니다."); 
+                if (!this.rec) { 
+                    CustomModalEngine.alert(
+                        "Access Denied", 
+                        "마이크 하드웨어 장치를 인식할 수 없습니다."
+                    ); 
                     return; 
                 }
                 
@@ -3620,10 +3914,16 @@
                 const btnRecord = document.getElementById('btn-record');
                 const recText = document.getElementById('record-text');
 
-                if(!STATE.isRecording) { 
+                if (!STATE.isRecording) { 
                     STATE.isRecording = true; 
-                    if(btnRecord) btnRecord.classList.add('recording'); 
-                    if(recText) recText.innerText = "Listening...";
+                    
+                    if (btnRecord) {
+                        btnRecord.classList.add('recording'); 
+                    }
+                    
+                    if (recText) {
+                        recText.innerText = "Listening...";
+                    }
                     
                     try { 
                         this.rec.start(); 
@@ -3632,12 +3932,20 @@
                     } 
                 } else { 
                     STATE.isRecording = false; 
-                    if(btnRecord) btnRecord.classList.remove('recording'); 
-                    if(recText) recText.innerText = "Voice Log";
+                    
+                    if (btnRecord) {
+                        btnRecord.classList.remove('recording'); 
+                    }
+                    
+                    if (recText) {
+                        recText.innerText = "Voice Log";
+                    }
                     
                     try { 
                         this.rec.stop(); 
-                    } catch(e) {} 
+                    } catch(e) {
+                        
+                    } 
                     
                     setTimeout(() => { 
                         AITutor.submit(); 
@@ -3646,29 +3954,40 @@
             },
             
             toggleChat() {
-                if(!this.rec) return;
+                if (!this.rec) {
+                    return;
+                }
                 
                 this.recordingMode = 'chat';
+                
                 const btnChat = document.getElementById('btn-chat-record');
 
-                if(!STATE.isRecording) { 
+                if (!STATE.isRecording) { 
                     STATE.isRecording = true; 
-                    if(btnChat) {
+                    
+                    if (btnChat) {
                         btnChat.classList.add('recording'); 
                         btnChat.innerText = "Listening...";
                     }
+                    
                     try { 
                         this.rec.start(); 
-                    } catch(e) {} 
+                    } catch(e) {
+                        
+                    } 
                 } else { 
                     STATE.isRecording = false; 
-                    if(btnChat) {
+                    
+                    if (btnChat) {
                         btnChat.classList.remove('recording'); 
                         btnChat.innerText = "🎤 Speak to Teacher";
                     }
+                    
                     try { 
                         this.rec.stop(); 
-                    } catch(e) {} 
+                    } catch(e) {
+                        
+                    } 
                     
                     setTimeout(() => { 
                         AITutor.processReply(); 
@@ -3679,10 +3998,8 @@
 
         /**
          * ----------------------------------------------------------------------
-         * [5-18. 🔥 ENTERPRISE BACKEND PROXY AI TUTOR ENGINE]
+         * [5-17. 🔥 ENTERPRISE MULTIMODAL AI WRAPPER ENGINE]
          * ----------------------------------------------------------------------
-         * 파이어베이스 인증 토큰(Bearer)을 클라우드플레어 워커에 전송하여
-         * 해킹과 과금 위협으로부터 완전히 단절된 안전한 AI 분석 통신망을 구축합니다.
          */
         const AITutor = {
             isBusy: false,
@@ -3691,10 +4008,24 @@
                 try {
                     const user = auth.currentUser;
                     if (!user) {
-                        throw new Error("Unauthorized AI Rest Invocation Attempt Blocked. Firebase Bearer User Entity Not Found.");
+                        throw new Error("Anonymous token sequence refused.");
                     }
                     
                     const token = await user.getIdToken();
+                    
+                    const reqBody = {
+                        prompt: promptText,
+                        image: null,
+                        unitId: STATE.unitId,
+                        page: STATE.currentPage
+                    };
+                    
+                    if (base64Img) {
+                        const splitArr = base64Img.split(',');
+                        if (splitArr.length > 1) {
+                            reqBody.image = splitArr[1];
+                        }
+                    }
 
                     const response = await fetch(CONFIG.API_TUTOR_ENDPOINT, {
                         method: 'POST',
@@ -3702,30 +4033,25 @@
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}` 
                         },
-                        body: JSON.stringify({ 
-                            prompt: promptText,
-                            image: base64Img ? base64Img.split(',')[1] : null,
-                            unitId: STATE.unitId,
-                            page: STATE.currentPage
-                        })
+                        body: JSON.stringify(reqBody)
                     });
                     
                     const raw = await response.text();
                     
                     if (!response.ok) {
-                        throw new Error(`Backend Proxy Target Refused Connection with HTTP Protocol Status: ${response.status}. Body Content Output: ${raw}`);
+                        throw new Error(`Server returned error status: ${response.status}`);
                     }
                     
                     const data = JSON.parse(raw);
                     
                     if (!data.reply) {
-                        throw new Error(`Missing fundamental mandatory 'reply' object key in Backend Response JSON Payload. Raw Data Output: ${raw}`);
+                        throw new Error("Invalid schema shape.");
                     }
                     
                     return data.reply;
                     
                 } catch (e) {
-                    Logger.warn("Primary Backend Target Pool Unavailable. Graceful degrading UX protocol invoked.", e);
+                    Logger.warn("Gateway error.", e);
                     return "AI 선생님 연결에 실패했어요. 잠시 후 다시 눌러주세요.";
                 }
             },
@@ -3735,47 +4061,68 @@
                     AudioEngine.toggle(); 
                     return; 
                 }
-
-                // 중복 버튼 연타 어뷰징 방어를 위한 Mutex Lock
-                if (this.isBusy) return;
+                
+                if (this.isBusy) {
+                    return;
+                }
                 this.isBusy = true;
 
-                // 비동기 통신이 끝날 때까지 유저가 딴짓을 하지 못하게 렌더링 시점을 캐싱 동결
                 const requestPage = STATE.currentPage;
                 const requestUnit = STATE.unitId;
 
                 try {
                     const panel = document.getElementById('ai-panel'); 
-                    if(panel) panel.classList.add('open');
+                    if (panel) {
+                        panel.classList.add('open');
+                    }
                     
                     const content = document.getElementById('ai-content');
-                    if(!content) return;
+                    if (!content) {
+                        return;
+                    }
                     
-                    content.innerHTML = `
+                    const loadingHtml = `
                         <div class="ai-loading-container">
                             <i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i>
                             <p class="ai-loading-text">Teacher is looking at your art...</p>
                         </div>
                     `;
+                    content.innerHTML = loadingHtml;
 
-                    // 백엔드 통신 전 로컬 스토리지에 무압축 원본을 락인시키고, 잔여 타이머 일괄 플러시
                     StorageEngine.saveCanvasLocal();
                     StorageEngine.executeCloudSave();
 
-                    // 워크시트 배경과 그림 벡터 레이어를 고해상도로 합성하여 제미나이 엔진 시각 문맥 제공력 극대화
-                    // Firestore 저장을 위해 순환 폴백이 포함된 스냅샷 획득 로직을 간접 호출하여 메모리를 아낍니다.
                     const payloadSnapshot = StorageEngine.createCanvasSnapshot(true);
-                    const canvasImg = payloadSnapshot ? payloadSnapshot.canvasData : null;
+                    let canvasImg = null;
+                    if (payloadSnapshot) {
+                        canvasImg = payloadSnapshot.canvasData;
+                    }
                     
-                    const unitData = PAGE_INTELLIGENCE[STATE.unitId] ? PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage] : { goal: "Free Exploration", question: "Tell me more about it." };
+                    let unitData = null;
+                    if (PAGE_INTELLIGENCE[STATE.unitId]) {
+                        if (PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]) {
+                            unitData = PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage];
+                        }
+                    }
+                    
+                    if (!unitData) {
+                        unitData = { 
+                            goal: "Free Exploration", 
+                            question: "Tell me more about it." 
+                        };
+                    }
 
-                    // 프론트엔드 프롬프트 인젝션 방어 및 샌드위치 피드백 구조 강제화
+                    let studentSays = "Look at my beautiful drawing!";
+                    if (STATE.lastTranscript) {
+                        studentSays = STATE.lastTranscript;
+                    }
+
                     const prompt = `
                         You are an enthusiastic native English teacher at a prestigious global private school. Your name is Teacher Bridge.
                         Student Name: ${STATE.studentName}
                         Lesson Goal: ${unitData.goal}
                         Lesson Question: ${unitData.question}
-                        Student Said: "${STATE.lastTranscript || "Look at my beautiful drawing!"}"
+                        Student Said: "${studentSays}"
 
                         Instructions:
                         1. Praise their drawing explicitly based on the precise visual context you see.
@@ -3787,27 +4134,28 @@
 
                     const aiResponseText = await this.callBackendTutor(prompt, canvasImg);
                     
-                    // 응답이 서버에서 지연되어 돌아온 시점에서, 사용자가 이미 다른 커리큘럼으로 이동했다면 조용히 렌더링 무시 (레이스 컨디션 방어)
-                    if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) {
-                        Logger.log("AI Response transmission completely ignored because active page state changed during asynchronous network processing.");
+                    if (STATE.currentPage !== requestPage) {
+                        return;
+                    }
+                    if (STATE.unitId !== requestUnit) {
                         return;
                     }
 
                     const aiFailed = aiResponseText.includes("AI 선생님 연결에 실패");
                     
                     if (!aiFailed) {
-                        // 픽셀 스캔 고도화 함수를 통해 빈 도화지가 아니면 아티스트 배지 수여
                         if (!CanvasEngine.isCanvasBlank()) {
                             BadgeEngine.add("🎨 Colorful Artist");
                         }
-                        // 발음 및 문장 STT 인식 알고리즘 통과 시 스피커 배지 수여
-                        if (STATE.sttConfidence >= 80 && STATE.lastTranscript.length > 0) {
-                            BadgeEngine.add("🗣️ Great Speaker");
+                        
+                        if (STATE.sttConfidence >= 80) {
+                            if (STATE.lastTranscript.length > 0) {
+                                BadgeEngine.add("🗣️ Great Speaker");
+                            }
                         }
                     }
                     
-                    // XSS 보안 취약점 방어를 위한 DOM 엘리먼트 분리 매핑 렌더링 구조
-                    content.innerHTML = `
+                    const analyticsHtml = `
                         <div class="analytics-card">
                             <div class="analytics-title">Mission: ${unitData.goal}</div>
                             <div class="stat-row">
@@ -3821,6 +4169,7 @@
                             </div>
                         </div>
                     `;
+                    content.innerHTML = analyticsHtml;
                     
                     const aiBubble = document.createElement('div');
                     aiBubble.className = 'chat-bubble ai mt-4';
@@ -3828,7 +4177,9 @@
                     content.appendChild(aiBubble);
                     
                     const footer = document.getElementById('chat-footer');
-                    if(footer) footer.style.display = "block";
+                    if (footer) {
+                        footer.style.display = "block";
+                    }
                     
                     this.speak(aiResponseText);
                     
@@ -3838,18 +4189,20 @@
             },
 
             async processReply() {
-                if (!STATE.lastTranscript) return;
+                if (!STATE.lastTranscript) {
+                    return;
+                }
                 
-                if (this.isBusy) return;
+                if (this.isBusy) {
+                    return;
+                }
                 this.isBusy = true;
 
                 const requestPage = STATE.currentPage;
                 const requestUnit = STATE.unitId;
+                const content = document.getElementById('ai-content');
 
                 try {
-                    const content = document.getElementById('ai-content');
-                    if(!content) return;
-                    
                     const uBubble = document.createElement('div'); 
                     uBubble.className = "chat-bubble user mt-4"; 
                     uBubble.textContent = STATE.lastTranscript; 
@@ -3858,7 +4211,7 @@
 
                     const aBubble = document.createElement('div'); 
                     aBubble.className = "chat-bubble ai mt-4"; 
-                    aBubble.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 선생님이 대답을 생각하고 있어요...`;
+                    aBubble.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 생각 중...`;
                     content.appendChild(aBubble); 
                     content.scrollTop = content.scrollHeight;
 
@@ -3869,12 +4222,15 @@
                     
                     const aiReplyText = await this.callBackendTutor(conversationPrompt);
                     
-                    if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) {
-                        Logger.log("AI Chat subsequent Response intentionally ignored due to user page navigation manipulation.");
+                    if (STATE.currentPage !== requestPage) {
+                        return;
+                    }
+                    if (STATE.unitId !== requestUnit) {
                         return;
                     }
                     
                     aBubble.innerHTML = '';
+                    
                     const boldTextElement = document.createElement('b');
                     boldTextElement.style.color = 'var(--br-green)';
                     boldTextElement.style.fontWeight = '700';
@@ -3902,41 +4258,210 @@
             
             close() { 
                 const panel = document.getElementById('ai-panel');
-                if(panel) panel.classList.remove('open'); 
-                if(window.speechSynthesis) window.speechSynthesis.cancel(); 
+                if (panel) {
+                    panel.classList.remove('open'); 
+                }
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.cancel(); 
+                }
             }
         };
 
         /**
          * ----------------------------------------------------------------------
-         * [5-19. MASTER SYSTEM BOOT SEQUENCE]
+         * [5-18. PLATFORM FLOW ORCHESTRATORS]
          * ----------------------------------------------------------------------
-         * 인증이 확보된 사용자를 대상으로 앱의 모든 서브 엔진을 정해진 순서대로 기동시킵니다.
+         */
+        const AppEngine = {
+            smoothMove(dir) {
+                const nextPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir);
+                if (nextPage === STATE.currentPage) {
+                    return;
+                }
+
+                StorageEngine.saveCanvasLocal();
+                const snapshot = StorageEngine.createCanvasSnapshot(true);
+                StorageEngine.executeCloudSave(snapshot);
+                
+                const board = document.getElementById('drawing-board'); 
+                if (board) {
+                    board.classList.add('fade-out');
+                }
+                
+                setTimeout(() => {
+                    STATE.currentPage = nextPage;
+                    PageEngine.load(STATE.currentPage);
+                    
+                    setTimeout(() => {
+                        if (board) {
+                            board.classList.remove('fade-out');
+                        }
+                    }, 150);
+                }, 400);
+            },
+            
+            handleNextAdventure() {
+                AITutor.close(); 
+                
+                const isEnd = CurriculumEngine.isWeekEnd(STATE.unitId, STATE.currentPage);
+                if (isEnd) {
+                    const weekIdx = CurriculumEngine.weekIndex(STATE.unitId, STATE.currentPage);
+                    CertificateEngine.open(weekIdx);
+                } else {
+                    this.smoothMove(1);
+                }
+            }
+        };
+
+        const PageEngine = {
+            init() {
+                const list = document.getElementById('nav-list'); 
+                if (!list) {
+                    return; 
+                }
+                
+                list.innerHTML = ''; 
+                
+                const unitData = PAGE_INTELLIGENCE[STATE.unitId];
+                
+                if (unitData) {
+                    const keys = Object.keys(unitData);
+                    keys.forEach((pageKey) => {
+                        const ctx = unitData[pageKey];
+                        const numPageKey = Number(pageKey);
+                        const weekBadgeNum = CurriculumEngine.weekIndex(STATE.unitId, numPageKey); 
+                        
+                        const item = document.createElement('div');
+                        item.className = 'nav-item interactive-hover'; 
+                        item.id = `nav-${pageKey}`;
+                        
+                        const padString = String(pageKey).padStart(2, '0');
+                        
+                        item.innerHTML = `
+                            <span class="nav-title">${ctx.navTitle}</span>
+                            <span class="nav-badge">W${weekBadgeNum}-P.${padString}</span>
+                        `;
+                        
+                        item.onclick = () => { 
+                            const moveOffset = parseInt(pageKey) - STATE.currentPage;
+                            AppEngine.smoothMove(moveOffset); 
+                            UIEngine.closeSidebar(); 
+                        };
+                        
+                        list.appendChild(item);
+                    });
+                }
+                
+                this.load(STATE.currentPage);
+            },
+            
+            load(n) {
+                STATE.currentPage = n; 
+                STATE.lastTranscript = ""; 
+                STATE.sttConfidence = 0;
+                
+                const unitInfoLabel = document.getElementById('unit-info');
+                if (unitInfoLabel) {
+                    unitInfoLabel.innerText = `MASTER LAB: ${STATE.unitId}`;
+                }
+                
+                const pageInfoLabel = document.getElementById('page-info');
+                if (pageInfoLabel) {
+                    const padN = String(n).padStart(2, '0');
+                    pageInfoLabel.innerText = `Inquiry P.${padN}`;
+                }
+                
+                const allNavItems = document.querySelectorAll('.nav-item');
+                allNavItems.forEach((el) => {
+                    el.classList.remove('active');
+                });
+                
+                const activeNav = document.getElementById(`nav-${n}`);
+                if (activeNav) {
+                    activeNav.classList.add('active');
+                    
+                    const navList = document.getElementById('nav-list');
+                    if (navList) {
+                        const targetScroll = activeNav.offsetTop - navList.offsetTop - 50;
+                        navList.scrollTo({ 
+                            top: targetScroll, 
+                            behavior: 'smooth' 
+                        });
+                    }
+                }
+                
+                CanvasEngine.hardReset(); 
+                AITutor.close(); 
+                
+                const worksheetImg = document.getElementById('worksheet-img');
+                if (worksheetImg) {
+                    worksheetImg.style.opacity = '0';
+                }
+                
+                SmartImageLoader.findValidWorksheet(STATE.unitId, STATE.currentPage);
+                StorageEngine.save();
+            }
+        };
+
+        const UIEngine = {
+            toggleSidebar() { 
+                const windowWidth = window.innerWidth;
+                if (windowWidth > 1180) {
+                    return;
+                }
+                
+                const sb = document.getElementById('sidebar'); 
+                if (sb) {
+                    sb.classList.toggle('open'); 
+                }
+                
+                const backdrop = document.getElementById('sidebar-backdrop'); 
+                if (backdrop) {
+                    backdrop.classList.toggle('active');
+                }
+            },
+            closeSidebar() {
+                const sb = document.getElementById('sidebar'); 
+                if (sb) {
+                    sb.classList.remove('open'); 
+                }
+                
+                const backdrop = document.getElementById('sidebar-backdrop'); 
+                if (backdrop) {
+                    backdrop.classList.remove('active');
+                }
+            }
+        };
+
+        /**
+         * ----------------------------------------------------------------------
+         * [5-19. REVISION COMPLETE SYSTEM BOOT EXECUTION]
+         * ----------------------------------------------------------------------
          */
         let systemBooted = false; 
-
+        
         function SystemBoot() {
-            if (systemBooted) return;
+            if (systemBooted) {
+                return;
+            }
+            
             systemBooted = true;
-
+            
             try {
-                // 부팅 순서 엄수 - Storage 메타데이터 우선 로드하여 진도율부터 맞춤
                 StorageEngine.load();
                 
-                // 캔버스, 모달, 색상 팔레트, 녹음 엔진, 커서 엔진 등 UI 인터랙티브 모듈 순차 로드
                 CustomModalEngine.init();
                 CanvasEngine.init(); 
                 RGBRingEngine.init(); 
                 AudioEngine.init();
                 CursorEngine.init();
                 
-                // 기저장된 배지 렌더링 및 페이지 뼈대 생성
                 BadgeEngine.renderAll();
                 PageEngine.init(); 
                 
-                Logger.log("Enterprise Bridge Academy Software System Initial Boot Fully Complete and Verified.");
+                Logger.log("V100.34 Premium Commercial Framework deployed online successfully.");
             } catch(error) {
-                Logger.error("Master System Component Booting Phase Sequence Critical Failed", error);
+                Logger.error("System pipeline framework initialization failed.", error);
             }
         }
     </script>

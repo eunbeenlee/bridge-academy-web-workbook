@@ -24,7 +24,7 @@
         content="#FCFBF9"
     >
     
-    <title>Bridge Academy | Premium AI Lab V100.48</title>
+    <title>Bridge Academy | Premium AI Lab V100.49</title>
 
     <link 
         rel="icon" 
@@ -1024,6 +1024,7 @@
             background-color: #FFF0F0; 
         }
 
+        /* [P0 Fix] crossorigin="anonymous" 속성 제거에 맞춰 CSS 선택자 안정성 확보 */
         #worksheet-img { 
             display: block; 
             
@@ -2106,7 +2107,6 @@
             color: var(--br-charcoal); 
         }
 
-        /* 수료증 배경 차단 오버레이 가드 정밀 세팅 */
         .cert-modal-overlay { 
             position: fixed; 
             top: 0px; 
@@ -2744,7 +2744,7 @@
 
             <main class="stage-wrapper interactive-hover">
                 <div class="drawing-board" id="drawing-board">
-                    <img src="" id="worksheet-img" crossorigin="anonymous" alt="Worksheet">
+                    <img src="" id="worksheet-img" alt="Worksheet">
                     <canvas id="draw-layer"></canvas>
                 </div>
             </main>
@@ -3496,7 +3496,7 @@
 
         /**
          * [5-6. SMART IMAGE LOADER ENGINE]
-         * (P0 Fix: Targeted Routing for explicit file names)
+         * (P0 Fix: 단일 타겟팅, CORS 락 해제, 강제 DOM 업데이트 락(Lock) 도입)
          */
         const SmartImageLoader = {
             requestToken: 0,
@@ -3511,21 +3511,15 @@
                 const seriesChar = unitId.charAt(0);
                 const t = Date.now(); 
 
-                /* [P0 Target Routing] 깃허브 실제 디렉토리 구조 A/A-1/A-1-1.png 집중 타격 및 확장자 대응 */
-                const basePaths = [
-                    `${seriesChar}/${unitId}/${unitId}-${pageNum}`, // Primary: A/A-1/A-1-1
-                    `${unitId}/${unitId}-${pageNum}`,               // Secondary: A-1/A-1-1
-                    `${seriesChar}/${unitId}/${pageNum}`,           // Tertiary: A/A-1/1
-                    `${unitId}/${pageNum}`                          // Quaternary: A-1/1
+                /* [P0 Target Routing] 깃허브 실제 디렉토리 구조 A/A-1/A-1-1.png 집중 타격
+                   기존의 패딩(01)이나 불필요한 경로 탐색을 싹 걷어내어 404를 원천 차단했습니다.
+                   (확장자만 3종류 안전장치로 둡니다.)
+                */
+                const possiblePaths = [
+                    `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${pageNum}.png`,
+                    `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${pageNum}.jpg`,
+                    `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${pageNum}.jpeg`
                 ];
-
-                const possiblePaths = [];
-                
-                basePaths.forEach((base) => {
-                    possiblePaths.push(`${CONFIG.STORAGE_URL}${base}.png`);
-                    possiblePaths.push(`${CONFIG.STORAGE_URL}${base}.jpg`);
-                    possiblePaths.push(`${CONFIG.STORAGE_URL}${base}.jpeg`);
-                });
 
                 const tryLoad = (index) => {
                     if (token !== this.requestToken) {
@@ -3542,24 +3536,21 @@
                             boardElement.classList.add('error-state');
                         }
                         
-                        requestAnimationFrame(() => {
+                        setTimeout(() => {
                             if (token !== this.requestToken) {
                                 return;
                             }
                             CanvasEngine.resizeCanvas();
                             StorageEngine.loadCanvasLocal();
-                        });
+                        }, 50);
                         
                         return;
                     }
 
                     const testUrl = `${possiblePaths[index]}?t=${t}`;
-                    const tempImg = new Image();
                     
-                    /* CORS 보안 무력화 */
-                    tempImg.crossOrigin = "anonymous";
-
-                    tempImg.onload = () => {
+                    /* [P0 Fix] 이미지 로딩 캐시 레이스 컨디션을 해결하기 위해 DOM Element 자체를 리스너로 활용 */
+                    const loadHandler = () => {
                         if (token !== this.requestToken) {
                             return;
                         }
@@ -3571,18 +3562,9 @@
                         }
                         
                         if (imgElement) {
-                            /* DOM 레이아웃 안정성을 위한 로드 후 리사이징 강제 */
-                            imgElement.src = testUrl;
+                            imgElement.style.opacity = '1';
                             
-                            setTimeout(() => {
-                                if (token !== this.requestToken) {
-                                    return;
-                                }
-                                imgElement.style.opacity = '1';
-                                CanvasEngine.resizeCanvas();
-                                StorageEngine.loadCanvasLocal();
-                            }, 50);
-                        } else {
+                            /* 이미지가 DOM에 그려지는 Reflow 시간을 강제로 확보 (0.05초 대기) */
                             setTimeout(() => {
                                 if (token !== this.requestToken) {
                                     return;
@@ -3593,11 +3575,24 @@
                         }
                     };
 
-                    tempImg.onerror = () => {
+                    const errorHandler = () => {
                         tryLoad(index + 1);
                     };
-                    
-                    tempImg.src = testUrl;
+
+                    if (imgElement) {
+                        /* 기존 이벤트 리스너 청소 후 재바인딩 */
+                        imgElement.onload = null;
+                        imgElement.onerror = null;
+                        
+                        imgElement.onload = loadHandler;
+                        imgElement.onerror = errorHandler;
+                        imgElement.src = testUrl;
+                        
+                        /* 캐시에서 너무 빨리 불러와 onload가 안 터지는 현상 방어 */
+                        if (imgElement.complete) {
+                            loadHandler();
+                        }
+                    }
                 };
 
                 tryLoad(0);
@@ -3909,7 +3904,7 @@
                     return null;
                 }
                 
-                /* [P0 Fix 완료] 배경 블랙아웃 현상을 막기 위해 투명 캔버스 폴백 레이어 강제 생성 */
+                /* [P0 Fix 완료] 배경 블랙아웃 현상을 막기 위해 투명 캔버스 폴백 레이어 생성 */
                 if (!worksheet.complete || worksheet.naturalWidth === 0) {
                     const tempFallback = document.createElement('canvas');
                     tempFallback.width = draw.width;
@@ -5003,7 +4998,6 @@
 
         /**
          * [5-20. FINAL BOOTSTRAP]
-         * 로그인 인증 검증 직후 단 한 번만 실행되는 무결점 부팅 트리거
          */
         let systemBooted = false;
         
@@ -5025,7 +5019,7 @@
                 PageEngine.init(); 
                 SyncIndicatorEngine.init();
                 
-                Logger.log("V100.48 Enterprise Master System Boot Complete.");
+                Logger.log("V100.49 Enterprise Master System Boot Complete.");
             } catch(error) { 
                 Logger.error("Framework initialization error:", error); 
             }

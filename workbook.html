@@ -24,7 +24,7 @@
         content="#FCFBF9"
     >
     
-    <title>Bridge Academy | Premium AI Lab V100.51</title>
+    <title>Bridge Academy | Premium AI Lab V100.52</title>
 
     <link 
         rel="icon" 
@@ -66,45 +66,37 @@
            [4-1. DESIGN TOKENS & CSS VARIABLES]
         ---------------------------------------------------------------------- */
         :root {
-            /* 브랜드 컬러 시스템 지정 */
             --br-green: #91D3B4; 
             --br-gold: #CBAE75; 
             --br-blue: #7CA6C1; 
             --br-charcoal: #363431;
             
-            /* 백그라운드 색상 토큰 */
             --br-bg: #FCFBF9; 
             --br-paper: #FFFFFF; 
             --br-ai-soft: #F8FAFF;
             
-            /* 텍스트 및 경계선 색상 토큰 */
             --br-text: #2A2825; 
             --br-muted: #8C8985;
             --br-border: #F0EFEB; 
             
-            /* 시스템 상태(성공, 에러) 토큰 */
             --br-error: #E74C3C; 
             --br-error-light: #FEF2F2;
             --br-error-border: #FCA5A5;
             --br-success: #2ECC71;
             
-            /* 화면 분할 규격 치수 */
             --sidebar-width: 320px;
             --topbar-height: 85px;
             --dock-height: 110px;
             
-            /* 최신 모바일 기기(아이폰 노치 등) 안전 영역 환경 변수 할당 */
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-left: env(safe-area-inset-left, 0px);
             --safe-right: env(safe-area-inset-right, 0px);
             
-            /* 시스템 전역 애니메이션 시간축 변수 */
             --transition-smooth: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
             --transition-fast: all 0.2s ease-in-out;
             --transition-elastic: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             
-            /* 엘리먼트 섀도우 뎁스 토큰 */
             --shadow-float: 0px 25px 70px rgba(0, 0, 0, 0.07);
             --shadow-button: 0px 10px 20px rgba(0, 0, 0, 0.05);
             --shadow-premium: 0px 30px 60px rgba(54, 52, 49, 0.15);
@@ -114,13 +106,11 @@
            [4-2. BASE RESET & FALLBACKS]
         ---------------------------------------------------------------------- */
         * { 
-            /* 모든 요소의 브라우저 기본 마진 초기화 */
             margin-top: 0px; 
             margin-right: 0px; 
             margin-bottom: 0px; 
             margin-left: 0px; 
             
-            /* 모든 요소의 브라우저 기본 패딩 초기화 */
             padding-top: 0px; 
             padding-right: 0px; 
             padding-bottom: 0px; 
@@ -128,12 +118,8 @@
             
             box-sizing: border-box; 
             
-            /* 모바일 기기 터치 시 발생하는 반투명 하이라이트 박스 억제 */
             -webkit-tap-highlight-color: transparent; 
             
-            /* [P0 Fix] 프리미엄 커스텀 마우스 포인터 이식을 위해 브라우저의 기본 마우스 커서를
-               가장 최상단 부모 속성부터 !important 명령어로 억제합니다. 
-            */
             cursor: none !important;
         }
 
@@ -173,7 +159,6 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* [P0 Fix] 링크(a), 입력창(input) 등 상호작용 요소의 기본 커서도 강제 억제 */
         a { 
             cursor: none !important; 
         }
@@ -217,7 +202,6 @@
             list-style-type: none; 
         }
 
-        /* 모바일 사파리의 100dvh 미지원 환경을 위한 뷰포트 높이 폴백 */
         @supports not (height: 100dvh) {
             html { 
                 height: 100vh; 
@@ -231,7 +215,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-3. PREMIUM CUSTOM CURSOR SYSTEM (CHILD SAFE OPTIMIZED)]
+           [4-3. PREMIUM CUSTOM CURSOR - CHILD SAFE OPTIMIZED]
         ---------------------------------------------------------------------- */
         .cursor-dot {
             position: fixed;
@@ -253,7 +237,6 @@
             
             transform: translate(-50%, -50%);
             
-            /* 물리 딜레이가 아닌 CSS 선형 전환만 적용하여 제로 레이턴시 확보 */
             transition-property: width, height, opacity, background-color;
             transition-duration: 0.16s;
             transition-timing-function: ease;
@@ -300,12 +283,10 @@
         .cursor-dot.hovered {
             width: 3px;
             height: 3px;
-            
             background-color: rgba(145, 211, 180, 0.8);
         }
 
         .cursor-ring.hovered {
-            /* [P1 Fix] 버튼 호버 시 지나치게 비대해지지 않도록 아이들 시각에 맞춰 스케일업 최소화 */
             width: 28px;
             height: 28px;
             
@@ -327,9 +308,7 @@
             visibility: hidden;
         }
 
-        /* [핵심 로직] 캔버스 드로잉 영역에서는 정밀 십자선 커서(crosshair)가 강제 표출되도록
-            최우선순위(Important) 선언문을 각각의 스테이지 래퍼에 개별 주입합니다. 
-        */
+        /* 캔버스 드로잉 영역에서는 정밀 십자선 커서 강제 적용 */
         .stage-wrapper {
             cursor: crosshair !important;
         }
@@ -342,7 +321,7 @@
             cursor: crosshair !important;
         }
 
-        /* 터치/펜 환경(모바일/태블릿) 커스텀 커서 엔진 전면 비활성화 */
+        /* 터치/펜 환경(모바일/태블릿) 커스텀 커서 비활성화 */
         @media (pointer: coarse) {
             .cursor-dot { 
                 display: none !important; 
@@ -383,7 +362,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [4-4. GLOBAL APP CONTAINER]
+           [4-4. APP CONTAINER]
         ---------------------------------------------------------------------- */
         .app-container { 
             display: flex; 
@@ -398,7 +377,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [4-5. SIDEBAR NAVIGATION COMPONENT]
+           [4-5. SIDEBAR]
         ---------------------------------------------------------------------- */
         .sidebar { 
             width: var(--sidebar-width); 
@@ -484,7 +463,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [4-6. STUDENT PROFILE LAYOUT WIDGET]
+           [4-6. STUDENT PROFILE]
         ---------------------------------------------------------------------- */
         .student-profile { 
             padding-top: 25px;
@@ -632,7 +611,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-7. CURRICULUM NAVIGATION LIST]
+           [4-7. NAVIGATION LIST]
         ---------------------------------------------------------------------- */
         .nav-list { 
             flex: 1; 
@@ -761,7 +740,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-8. WORKSPACE STAGE & TOP BAR CONTROLS]
+           [4-8. WORKSPACE & TOP CONTEXT BAR]
         ---------------------------------------------------------------------- */
         .workspace { 
             flex: 1; 
@@ -960,7 +939,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [4-9. MAIN DRAWING BOARD RENDERING]
+           [4-9. STAGE & DRAWING BOARD]
         ---------------------------------------------------------------------- */
         .stage-wrapper { 
             flex: 1; 
@@ -980,6 +959,7 @@
             overflow-y: hidden; 
         }
 
+        /* [P1 Fix] min-width/height 삭제 및 shrink-wrap 레이아웃 최적화 */
         .drawing-board { 
             position: relative; 
             display: inline-flex; 
@@ -1069,8 +1049,6 @@
             user-select: none; 
             object-fit: contain;
             
-            min-width: 600px; 
-            min-height: 400px; 
             background-color: transparent;
         }
 
@@ -1092,7 +1070,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-10. BOTTOM DOCK & TOOL PALETTES]
+           [4-10. BOTTOM CONTROLS]
         ---------------------------------------------------------------------- */
         .bottom-dock { 
             height: var(--dock-height); 
@@ -2128,6 +2106,7 @@
             color: var(--br-charcoal); 
         }
 
+        /* 수료증 배경 차단 오버레이 가드 정밀 세팅 */
         .cert-modal-overlay { 
             position: fixed; 
             top: 0px; 
@@ -3715,7 +3694,6 @@
 
         /**
          * [5-6. SMART IMAGE LOADER ENGINE]
-         * (P0 Fix: 교재 이미지가 없을 때도 캔버스가 작동하도록 Fallback 레이싱 알고리즘 최적화)
          */
         const SmartImageLoader = {
             requestToken: 0,
@@ -3730,7 +3708,6 @@
                 const seriesChar = unitId.charAt(0);
                 const t = Date.now(); 
 
-                /* 깃허브 실제 디렉토리 구조 타겟팅 + 보안 락 해제된 경로 */
                 const basePaths = [
                     `${seriesChar}/${unitId}/${unitId}-${pageNum}`,
                     `${unitId}/${unitId}-${pageNum}`,
@@ -3787,24 +3764,16 @@
                         }
                         
                         if (imgElement) {
-                            /* 이미지 로드 완료 시점 감지 및 DOM Reflow 대기 */
-                            imgElement.onload = () => {
+                            imgElement.src = testUrl;
+                            
+                            setTimeout(() => {
                                 if (token !== this.requestToken) {
                                     return;
                                 }
-                                
                                 imgElement.style.opacity = '1';
-                                
-                                setTimeout(() => {
-                                    if (token !== this.requestToken) {
-                                        return;
-                                    }
-                                    CanvasEngine.resizeCanvas();
-                                    StorageEngine.loadCanvasLocal();
-                                }, 50);
-                            };
-                            
-                            imgElement.src = testUrl;
+                                CanvasEngine.resizeCanvas();
+                                StorageEngine.loadCanvasLocal();
+                            }, 50);
                         } else {
                             setTimeout(() => {
                                 if (token !== this.requestToken) {
@@ -4025,9 +3994,6 @@
             }
         };
 
-        /**
-         * [5-13. ADVANCED INTERACTIVE CANVAS BOARD ENGINE]
-         */
         const CanvasEngine = {
             isDrawing: false, 
             hasMoved: false, 
@@ -4135,7 +4101,24 @@
                     return null;
                 }
                 
-                /* [P0 Fix] Tainted Canvas 보안 예외 상황을 완벽 방어하는 트라이-캐치 병합기 */
+                /* [P0 Fix 완료] 배경 블랙아웃 현상을 막기 위해 투명 캔버스 폴백 레이어 생성 */
+                if (!worksheet.complete || worksheet.naturalWidth === 0) {
+                    const tempFallback = document.createElement('canvas');
+                    tempFallback.width = draw.width;
+                    tempFallback.height = draw.height;
+                    
+                    const tCtx = tempFallback.getContext('2d');
+                    tCtx.fillStyle = '#FFFFFF';
+                    tCtx.fillRect(0, 0, tempFallback.width, tempFallback.height);
+                    tCtx.drawImage(draw, 0, 0);
+                    
+                    if (compressForDatabase) {
+                        return tempFallback.toDataURL('image/jpeg', 0.55);
+                    } else {
+                        return tempFallback.toDataURL('image/jpeg', 0.72);
+                    }
+                }
+                
                 const merged = document.createElement('canvas');
                 let scale = 1;
                 
@@ -4153,9 +4136,7 @@
                 ctx.fillRect(0, 0, merged.width, merged.height);
                 
                 try {
-                    if (worksheet.complete && worksheet.naturalWidth > 0) {
-                        ctx.drawImage(worksheet, 0, 0, merged.width, merged.height); 
-                    }
+                    ctx.drawImage(worksheet, 0, 0, merged.width, merged.height); 
                     ctx.drawImage(draw, 0, 0, merged.width, merged.height);
                     
                     if (compressForDatabase) {
@@ -4164,20 +4145,19 @@
                         return merged.toDataURL('image/jpeg', 0.72);
                     }
                 } catch(e) { 
-                    /* 브라우저가 CORS 정책을 위반했다며 캔버스를 오염시킨 경우 
-                       교재 이미지를 포기하고, 아이가 그린 그림만 흰색 배경에 덧씌워 AI로 보냄 (절대 멈추지 않음) */
-                    const fallback = document.createElement('canvas');
-                    fallback.width = draw.width;
-                    fallback.height = draw.height;
-                    const fCtx = fallback.getContext('2d');
-                    fCtx.fillStyle = '#FFFFFF';
-                    fCtx.fillRect(0, 0, fallback.width, fallback.height);
-                    fCtx.drawImage(draw, 0, 0);
+                    /* Tainted Canvas 생존 알고리즘 가동 */
+                    const survivalCanvas = document.createElement('canvas');
+                    survivalCanvas.width = draw.width;
+                    survivalCanvas.height = draw.height;
+                    const sCtx = survivalCanvas.getContext('2d');
+                    sCtx.fillStyle = '#FFFFFF';
+                    sCtx.fillRect(0, 0, survivalCanvas.width, survivalCanvas.height);
+                    sCtx.drawImage(draw, 0, 0);
                     
                     if (compressForDatabase) {
-                        return fallback.toDataURL('image/jpeg', 0.55);
+                        return survivalCanvas.toDataURL('image/jpeg', 0.55);
                     } else {
-                        return fallback.toDataURL('image/jpeg', 0.72);
+                        return survivalCanvas.toDataURL('image/jpeg', 0.72);
                     }
                 }
             },
@@ -4867,9 +4847,19 @@
                     });
                     
                     const data = await response.json(); 
+                    
+                    if (!response.ok) {
+                        throw new Error("Backend Returned Status Fail");
+                    }
+                    
+                    if (!data.reply) {
+                        throw new Error("Backend JSON Format Error");
+                    }
+                    
                     return data.reply;
                 } catch (e) { 
-                    return "AI 선생님 연결에 실패했어요."; 
+                    Logger.error("Backend Gateway Issue:", e);
+                    return "앗, 네트워크 문제로 AI 선생님이 대답하지 못했어요. 다시 한 번 제출해주세요!"; 
                 }
             },
             
@@ -4937,7 +4927,7 @@
                         return;
                     }
                     
-                    const aiFailed = reply.includes("AI 선생님 연결에 실패");
+                    const aiFailed = reply.includes("앗, ");
                     
                     if (!aiFailed) {
                         const isBlank = CanvasEngine.isCanvasBlank();
@@ -5228,7 +5218,7 @@
 
         /**
          * [5-20. FINAL BOOTSTRAP]
-         * 로그인 세션 확인 직후 단 한 번만 실행되는 무결점 시스템 부트
+         * 로그인 인증 검증 직후 단 한 번만 실행되는 무결점 부팅 트리거
          */
         let systemBooted = false;
         
@@ -5250,7 +5240,7 @@
                 PageEngine.init(); 
                 SyncIndicatorEngine.init();
                 
-                Logger.log("V100.49 Enterprise Master System Boot Complete.");
+                Logger.log("V100.51 Enterprise Master System Boot Complete.");
             } catch(error) { 
                 Logger.error("Framework initialization error:", error); 
             }

@@ -24,7 +24,7 @@
         content="#FCFBF9"
     >
     
-    <title>Bridge Academy | Premium AI Lab V100.47</title>
+    <title>Bridge Academy | Premium AI Lab V100.48</title>
 
     <link 
         rel="icon" 
@@ -2739,7 +2739,7 @@
             
             <div id="error-toast" class="toast-error" role="alert">
                 <i class="fa-solid fa-triangle-exclamation"></i> 
-                <span id="error-toast-msg">Error</span>
+                <span id="error-toast-msg">Error Message</span>
             </div>
 
             <main class="stage-wrapper interactive-hover">
@@ -3496,7 +3496,7 @@
 
         /**
          * [5-6. SMART IMAGE LOADER ENGINE]
-         * (P0 Fix: Targeted Routing for explicit file names and double Macro-task validation)
+         * (P0 Fix: Targeted Routing for explicit file names)
          */
         const SmartImageLoader = {
             requestToken: 0,
@@ -3571,26 +3571,25 @@
                         }
                         
                         if (imgElement) {
-                            imgElement.onload = () => {
+                            /* DOM 레이아웃 안정성을 위한 로드 후 리사이징 강제 */
+                            imgElement.src = testUrl;
+                            
+                            setTimeout(() => {
                                 if (token !== this.requestToken) {
                                     return;
                                 }
-                                
                                 imgElement.style.opacity = '1';
-                                
-                                /* DOM Reflow 지연 방어 이중 락 */
-                                requestAnimationFrame(() => {
-                                    requestAnimationFrame(() => {
-                                        if (token !== this.requestToken) {
-                                            return;
-                                        }
-                                        CanvasEngine.resizeCanvas();
-                                        StorageEngine.loadCanvasLocal();
-                                    });
-                                });
-                            };
-                            
-                            imgElement.src = testUrl;
+                                CanvasEngine.resizeCanvas();
+                                StorageEngine.loadCanvasLocal();
+                            }, 50);
+                        } else {
+                            setTimeout(() => {
+                                if (token !== this.requestToken) {
+                                    return;
+                                }
+                                CanvasEngine.resizeCanvas();
+                                StorageEngine.loadCanvasLocal();
+                            }, 50);
                         }
                     };
 
@@ -3910,7 +3909,7 @@
                     return null;
                 }
                 
-                /* [P0 Fix] 배경 블랙아웃 현상을 막기 위해 투명 캔버스 폴백 레이어 생성 */
+                /* [P0 Fix 완료] 배경 블랙아웃 현상을 막기 위해 투명 캔버스 폴백 레이어 강제 생성 */
                 if (!worksheet.complete || worksheet.naturalWidth === 0) {
                     const tempFallback = document.createElement('canvas');
                     tempFallback.width = draw.width;
@@ -5004,6 +5003,7 @@
 
         /**
          * [5-20. FINAL BOOTSTRAP]
+         * 로그인 인증 검증 직후 단 한 번만 실행되는 무결점 부팅 트리거
          */
         let systemBooted = false;
         
@@ -5025,7 +5025,7 @@
                 PageEngine.init(); 
                 SyncIndicatorEngine.init();
                 
-                Logger.log("V100.47 Enterprise Master System Boot Complete.");
+                Logger.log("V100.48 Enterprise Master System Boot Complete.");
             } catch(error) { 
                 Logger.error("Framework initialization error:", error); 
             }

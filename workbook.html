@@ -24,7 +24,7 @@
         content="#FCFBF9"
     >
     
-    <title>Bridge Academy | Premium AI Lab V100.58</title>
+    <title>Bridge Academy | Premium AI Lab V100.60</title>
 
     <link 
         rel="icon" 
@@ -103,7 +103,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-2. BASE RESET & FALLBACKS]
+           [4-2. BASE RESET]
         ---------------------------------------------------------------------- */
         * { 
             margin-top: 0px; 
@@ -117,26 +117,21 @@
             padding-left: 0px; 
             
             box-sizing: border-box; 
-            
             -webkit-tap-highlight-color: transparent; 
-            
             cursor: none !important;
         }
 
         html {
             width: 100%; 
             height: 100dvh; 
-            
             overflow-x: hidden; 
             overflow-y: hidden; 
             
             background-color: var(--br-bg); 
             color: var(--br-text); 
-            
             font-family: 'Pretendard', sans-serif; 
             
             pointer-events: auto !important; 
-            
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
         }
@@ -144,102 +139,62 @@
         body {
             width: 100%; 
             height: 100dvh; 
-            
             overflow-x: hidden; 
             overflow-y: hidden; 
             
             background-color: var(--br-bg); 
             color: var(--br-text); 
-            
             font-family: 'Pretendard', sans-serif; 
             
             pointer-events: auto !important; 
-            
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
         }
 
-        a { 
+        a, button, input, select, textarea { 
             cursor: none !important; 
         }
 
         button { 
-            cursor: none !important; 
-            
             border-top-width: 0px;
             border-right-width: 0px;
             border-bottom-width: 0px;
             border-left-width: 0px;
-            
             background-color: transparent; 
-            
             font-family: inherit; 
-            
             outline-width: 0px; 
         }
 
-        input { 
-            cursor: none !important; 
-        }
-
-        select { 
-            cursor: none !important; 
-        }
-
-        textarea { 
-            cursor: none !important; 
-        }
-
-        ul { 
-            list-style-type: none; 
-        }
-
-        ol { 
-            list-style-type: none; 
-        }
-
-        li { 
+        ul, ol, li { 
             list-style-type: none; 
         }
 
         @supports not (height: 100dvh) {
-            html { 
-                height: 100vh; 
-            }
-            body { 
-                height: 100vh; 
-            }
-            .app-container { 
+            html, body, .app-container { 
                 height: 100vh; 
             }
         }
 
         /* ----------------------------------------------------------------------
-           [4-3. PREMIUM CUSTOM CURSOR - ZERO LATENCY GPU ACCELERATED]
+           [4-3. PREMIUM CUSTOM CURSOR]
         ---------------------------------------------------------------------- */
         .cursor-dot {
             position: fixed;
             top: 0px;
             left: 0px;
-            
             width: 4px;
             height: 4px;
-            
             background-color: rgba(54, 52, 49, 0.75);
-            
             border-top-left-radius: 50%;
             border-top-right-radius: 50%;
             border-bottom-right-radius: 50%;
             border-bottom-left-radius: 50%;
-            
             pointer-events: none;
             z-index: 99999;
-            
-            /* [P0 Fix] 위치 트랜지션을 삭제하여 즉각적인 마우스 반응(Zero-Latency) 확보 */
+            transform: translate(-50%, -50%);
             transition-property: width, height, opacity, background-color;
-            transition-duration: 0.1s;
+            transition-duration: 0.16s;
             transition-timing-function: ease;
-            
             will-change: transform;
         }
 
@@ -247,117 +202,63 @@
             position: fixed;
             top: 0px;
             left: 0px;
-            
             width: 22px;
             height: 22px;
-            
             border-top-width: 1px;
             border-right-width: 1px;
             border-bottom-width: 1px;
             border-left-width: 1px;
-            
             border-top-style: solid;
             border-right-style: solid;
             border-bottom-style: solid;
             border-left-style: solid;
-            
             border-top-color: rgba(54, 52, 49, 0.28);
             border-right-color: rgba(54, 52, 49, 0.28);
             border-bottom-color: rgba(54, 52, 49, 0.28);
             border-left-color: rgba(54, 52, 49, 0.28);
-            
             border-top-left-radius: 50%;
             border-top-right-radius: 50%;
             border-bottom-right-radius: 50%;
             border-bottom-left-radius: 50%;
-            
             pointer-events: none;
             z-index: 99998;
-            
-            /* [P0 Fix] 위치 렉(Lag) 현상 제거를 위해 transform을 transition 속성에서 도려냄 */
+            transform: translate(-50%, -50%);
             transition-property: width, height, opacity, border-color, background-color;
             transition-duration: 0.15s;
             transition-timing-function: ease;
-            
             will-change: transform;
         }
 
         .cursor-dot.hovered {
             width: 3px;
             height: 3px;
-            
             background-color: rgba(145, 211, 180, 0.8);
         }
 
         .cursor-ring.hovered {
             width: 28px;
             height: 28px;
-            
             background-color: rgba(145, 211, 180, 0.05);
-            
             border-top-color: rgba(145, 211, 180, 0.5);
             border-right-color: rgba(145, 211, 180, 0.5);
             border-bottom-color: rgba(145, 211, 180, 0.5);
             border-left-color: rgba(145, 211, 180, 0.5);
         }
 
-        .cursor-dot.hidden {
+        .cursor-dot.hidden, .cursor-ring.hidden {
             opacity: 0;
             visibility: hidden;
         }
 
-        .cursor-ring.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .stage-wrapper {
-            cursor: crosshair !important;
-        }
-
-        .drawing-board {
-            cursor: crosshair !important;
-        }
-
-        #draw-layer {
+        .stage-wrapper, .drawing-board, #draw-layer {
             cursor: crosshair !important;
         }
 
         @media (pointer: coarse) {
-            .cursor-dot { 
+            .cursor-dot, .cursor-ring { 
                 display: none !important; 
             }
-            .cursor-ring { 
-                display: none !important; 
-            }
-            html { 
-                cursor: auto !important; 
-            }
-            body { 
-                cursor: auto !important; 
-            }
-            a { 
-                cursor: auto !important; 
-            }
-            button { 
-                cursor: auto !important; 
-            }
-            input { 
-                cursor: auto !important; 
-            }
-            select { 
-                cursor: auto !important; 
-            }
-            textarea { 
-                cursor: auto !important; 
-            }
-            .stage-wrapper { 
-                cursor: auto !important; 
-            }
-            .drawing-board { 
-                cursor: auto !important; 
-            }
-            #draw-layer { 
+            html, body, a, button, input, select, textarea, .stage-wrapper, .drawing-board, #draw-layer { 
                 cursor: auto !important; 
             }
         }
@@ -368,12 +269,9 @@
         .app-container { 
             display: flex; 
             flex-direction: row;
-            
             width: 100vw; 
             height: 100dvh; 
-            
             position: relative; 
-            
             pointer-events: auto !important; 
         }
         
@@ -383,23 +281,17 @@
         .sidebar { 
             width: var(--sidebar-width); 
             height: 100%; 
-            
             background-color: var(--br-paper); 
-            
             border-right-width: 1px; 
             border-right-style: solid; 
             border-right-color: var(--br-border); 
-            
             display: flex; 
             flex-direction: column; 
-            
             z-index: 2000; 
             flex-shrink: 0; 
-            
             transition-property: transform; 
             transition-duration: 0.4s; 
             transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1); 
-            
             box-shadow: 5px 0px 15px rgba(0, 0, 0, 0.02);
         }
 
@@ -409,17 +301,13 @@
             right: 0px;
             bottom: 0px;
             left: 0px;
-            
             background-color: rgba(0, 0, 0, 0.18);
-            
             z-index: 1500; 
             opacity: 0;
             pointer-events: none;
-            
             transition-property: opacity;
             transition-duration: 0.3s;
             transition-timing-function: ease;
-            
             backdrop-filter: blur(3px); 
         }
 
@@ -433,13 +321,10 @@
             padding-right: 30px;
             padding-bottom: 35px;
             padding-left: 30px;
-            
             text-align: center; 
-            
             border-bottom-width: 1px; 
             border-bottom-style: solid; 
             border-bottom-color: var(--br-border); 
-            
             transition-property: background-color;
             transition-duration: 0.4s;
             transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
@@ -453,7 +338,6 @@
             font-family: 'Playfair Display', serif; 
             font-size: 28px; 
             font-weight: 900; 
-            
             color: var(--br-charcoal); 
             letter-spacing: -0.5px; 
         }
@@ -471,17 +355,13 @@
             padding-right: 30px;
             padding-bottom: 25px;
             padding-left: 30px;
-            
             border-bottom-width: 1px; 
             border-bottom-style: solid; 
             border-bottom-color: var(--br-border); 
-            
             display: flex; 
             flex-direction: column; 
             gap: 15px; 
-            
             background-color: #FAFAFA; 
-            
             transition-property: background-color; 
             transition-duration: 0.3s; 
             transition-timing-function: ease; 
@@ -500,27 +380,21 @@
         .profile-avatar { 
             width: 52px; 
             height: 52px; 
-            
             border-top-left-radius: 50%; 
             border-top-right-radius: 50%; 
             border-bottom-right-radius: 50%; 
             border-bottom-left-radius: 50%; 
-            
             background-color: var(--br-border); 
             color: #FFFFFF; 
-            
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            
             font-weight: 900; 
             font-size: 22px; 
             font-family: 'Nunito', sans-serif; 
-            
             transition-property: background-color, box-shadow, color;
             transition-duration: 0.4s;
             transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-            
             box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05);
         }
 
@@ -532,7 +406,6 @@
         .profile-info { 
             display: flex; 
             flex-direction: column; 
-            
             overflow-x: hidden; 
             overflow-y: hidden; 
         }
@@ -541,10 +414,8 @@
             font-family: 'Nunito', sans-serif; 
             font-size: 18px; 
             font-weight: 900; 
-            
             color: var(--br-charcoal); 
             text-transform: uppercase; 
-            
             white-space: nowrap; 
             overflow-x: hidden; 
             overflow-y: hidden; 
@@ -554,7 +425,6 @@
         .profile-role { 
             font-size: 11px; 
             font-weight: 700; 
-            
             color: var(--br-muted); 
             letter-spacing: 1.5px; 
             text-transform: uppercase; 
@@ -569,43 +439,33 @@
 
         .badge { 
             font-size: 11px; 
-            
             padding-top: 4px;
             padding-right: 10px;
             padding-bottom: 4px;
             padding-left: 10px;
-            
             border-top-left-radius: 12px; 
             border-top-right-radius: 12px; 
             border-bottom-right-radius: 12px; 
             border-bottom-left-radius: 12px; 
-            
             background-color: #FFFFFF; 
-            
             border-top-width: 1px; 
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            
             border-top-style: solid; 
             border-right-style: solid; 
             border-bottom-style: solid; 
             border-left-style: solid; 
-            
             border-top-color: var(--br-border); 
             border-right-color: var(--br-border); 
             border-bottom-color: var(--br-border); 
             border-left-color: var(--br-border); 
-            
             color: var(--br-charcoal); 
             font-weight: 800; 
-            
             display: flex; 
             align-items: center; 
             gap: 4px; 
-            
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.02); 
-            
             animation-name: popIn; 
             animation-duration: 0.4s; 
             animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
@@ -617,12 +477,10 @@
         .nav-list { 
             flex: 1; 
             overflow-y: auto; 
-            
             padding-top: 15px;
             padding-right: 15px;
             padding-bottom: 15px;
             padding-left: 15px;
-            
             scroll-behavior: smooth; 
         }
 
@@ -636,7 +494,6 @@
 
         .nav-list::-webkit-scrollbar-thumb { 
             background-color: #E8E6E1; 
-            
             border-top-left-radius: 10px; 
             border-top-right-radius: 10px; 
             border-bottom-right-radius: 10px; 
@@ -653,32 +510,25 @@
             padding-bottom: 18px;
             padding-left: 20px;
             margin-bottom: 10px; 
-            
             border-top-left-radius: 15px; 
             border-top-right-radius: 15px; 
             border-bottom-right-radius: 15px; 
             border-bottom-left-radius: 15px; 
-            
             background-color: #FAFAFA; 
-            
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            
             transition-property: transform, background-color, border-color, box-shadow;
             transition-duration: 0.4s;
             transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-            
             border-top-width: 1px; 
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            
             border-top-style: solid; 
             border-right-style: solid; 
             border-bottom-style: solid; 
             border-left-style: solid; 
-            
             border-top-color: transparent; 
             border-right-color: transparent; 
             border-bottom-color: transparent; 
@@ -687,27 +537,22 @@
 
         .nav-item:hover { 
             background-color: #FFFFFF; 
-            
             border-top-color: var(--br-border);
             border-right-color: var(--br-border);
             border-bottom-color: var(--br-border);
             border-left-color: var(--br-border);
-            
             transform: translateY(-2px); 
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.02); 
         }
 
         .nav-item.active { 
             background-color: var(--br-ai-soft); 
-            
             border-left-width: 6px; 
             border-left-style: solid; 
             border-left-color: var(--br-green); 
-            
             border-top-color: transparent; 
             border-right-color: transparent; 
             border-bottom-color: transparent; 
-            
             box-shadow: 0px 10px 25px rgba(145, 211, 180, 0.12); 
         }
 
@@ -715,7 +560,6 @@
             font-size: 14px; 
             font-weight: 700; 
             color: var(--br-charcoal); 
-            
             white-space: nowrap; 
             overflow-x: hidden; 
             overflow-y: hidden; 
@@ -747,34 +591,26 @@
             flex: 1; 
             display: flex; 
             flex-direction: column; 
-            
             min-width: 0px; 
             height: 100%; 
-            
             position: relative; 
-            
             overflow-x: hidden; 
             overflow-y: hidden; 
-            
             pointer-events: auto !important; 
         }
 
         .top-bar { 
             height: var(--topbar-height); 
-            
             padding-top: 0px;
             padding-right: 45px;
             padding-bottom: 0px;
             padding-left: 45px;
-            
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            
             border-bottom-width: 1px; 
             border-bottom-style: solid; 
             border-bottom-color: var(--br-border); 
-            
             background-color: #FFFFFF; 
             z-index: 10; 
         }
@@ -788,12 +624,10 @@
         .mobile-menu-btn { 
             display: none; 
             font-size: 28px; 
-            
             padding-top: 10px; 
             padding-right: 10px; 
             padding-bottom: 10px; 
             padding-left: 10px; 
-            
             color: var(--br-charcoal); 
             z-index: 1500; 
         }
@@ -802,7 +636,6 @@
             font-family: 'Nunito', sans-serif; 
             font-size: 13px; 
             font-weight: 900; 
-            
             color: var(--br-gold); 
             letter-spacing: 3px; 
             text-transform: uppercase; 
@@ -812,7 +645,6 @@
             font-family: 'Playfair Display', serif; 
             font-size: 34px; 
             font-weight: 900; 
-            
             color: var(--br-charcoal); 
             letter-spacing: -0.5px; 
             margin-top: 2px; 
@@ -822,38 +654,30 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            
             padding-top: 8px;
             padding-right: 16px;
             padding-bottom: 8px;
             padding-left: 16px;
-            
             border-top-left-radius: 50px;
             border-top-right-radius: 50px;
             border-bottom-right-radius: 50px;
             border-bottom-left-radius: 50px;
-            
             background-color: var(--br-bg);
-            
             border-top-width: 1px;
             border-right-width: 1px;
             border-bottom-width: 1px;
             border-left-width: 1px;
-            
             border-top-style: solid;
             border-right-style: solid;
             border-bottom-style: solid;
             border-left-style: solid;
-            
             border-top-color: var(--br-border);
             border-right-color: var(--br-border);
             border-bottom-color: var(--br-border);
             border-left-color: var(--br-border);
-            
             font-size: 12px;
             font-weight: 700;
             color: var(--br-muted);
-            
             transition-property: background-color, color, border-color;
             transition-duration: 0.4s;
             transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
@@ -862,7 +686,6 @@
         .sync-indicator-container.saving {
             color: var(--br-blue);
             background-color: #F0F4F8;
-            
             border-top-color: #D9E4EC; 
             border-right-color: #D9E4EC; 
             border-bottom-color: #D9E4EC; 
@@ -872,7 +695,6 @@
         .sync-indicator-container.saved {
             color: var(--br-success);
             background-color: #F0FDF4;
-            
             border-top-color: #DCFCE7; 
             border-right-color: #DCFCE7; 
             border-bottom-color: #DCFCE7; 
@@ -891,44 +713,34 @@
             align-items: center; 
             justify-content: center;
             gap: 8px; 
-            
             font-size: 12px; 
             font-weight: 700; 
-            
             color: var(--br-error); 
             background-color: var(--br-error-light); 
-            
             padding-top: 8px;
             padding-right: 16px;
             padding-bottom: 8px;
             padding-left: 16px;
-            
             border-top-left-radius: 50px; 
             border-top-right-radius: 50px; 
             border-bottom-right-radius: 50px; 
             border-bottom-left-radius: 50px; 
-            
             border-top-width: 1px; 
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            
             border-top-style: solid; 
             border-right-style: solid; 
             border-bottom-style: solid; 
             border-left-style: solid; 
-            
             border-top-color: var(--br-error-border); 
             border-right-color: var(--br-error-border); 
             border-bottom-color: var(--br-error-border); 
             border-left-color: var(--br-error-border); 
-            
             animation-name: popIn; 
             animation-duration: 0.3s; 
             animation-timing-function: ease-out; 
-            
             z-index: 5000;
-            
             position: absolute;
             top: 20px;
             left: 50%;
@@ -947,41 +759,33 @@
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            
             padding-top: 40px;
             padding-right: 40px;
             padding-bottom: 40px;
             padding-left: 40px;
-            
             background-color: var(--br-bg); 
             perspective: 1200px; 
-            
             overflow-x: hidden; 
             overflow-y: hidden; 
         }
 
         .drawing-board { 
             position: relative; 
+            /* [P0 Fix] 내부 교재 크기에 맞춰 쫀득하게 감싸는 Flex 레이아웃 */
             display: inline-flex; 
-            
             border-top-left-radius: 20px; 
             border-top-right-radius: 20px; 
             border-bottom-right-radius: 20px; 
             border-bottom-left-radius: 20px; 
-            
             box-shadow: var(--shadow-premium); 
             background-color: #FFFFFF; 
-            
             transition-property: opacity, transform; 
             transition-duration: 0.4s; 
             transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-            
             transform-origin: center; 
             pointer-events: auto !important; 
-            
             max-width: 100%; 
             max-height: 100%; 
-            
             overflow-x: hidden; 
             overflow-y: hidden;
         }
@@ -991,13 +795,10 @@
             position: absolute;
             top: 0px;
             left: 0px;
-            
             width: 100%;
             height: 100%;
-            
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
             pointer-events: none;
-            
             z-index: 10000; 
             mix-blend-mode: multiply;
         }
@@ -1012,43 +813,34 @@
             border-right-width: 2px; 
             border-bottom-width: 2px; 
             border-left-width: 2px; 
-            
             border-top-style: dashed; 
             border-right-style: dashed; 
             border-bottom-style: dashed; 
             border-left-style: dashed; 
-            
             border-top-color: var(--br-error); 
             border-right-color: var(--br-error); 
             border-bottom-color: var(--br-error); 
             border-left-color: var(--br-error); 
-            
             background-color: #FFF0F0; 
         }
 
         #worksheet-img { 
             display: block; 
-            
             max-width: 100%; 
             max-height: calc(100dvh - 250px); 
             width: auto; 
             height: auto; 
-            
             border-top-left-radius: 20px; 
             border-top-right-radius: 20px; 
             border-bottom-right-radius: 20px; 
             border-bottom-left-radius: 20px; 
-            
             pointer-events: none !important; 
             opacity: 0; 
-            
             transition-property: opacity; 
             transition-duration: 0.5s; 
             transition-timing-function: ease; 
-            
             user-select: none; 
             object-fit: contain;
-            
             background-color: transparent;
         }
 
@@ -1056,13 +848,10 @@
             position: absolute; 
             top: 0px; 
             left: 0px; 
-            
             width: 100%; 
             height: 100%; 
             z-index: 9999 !important; 
-            
             touch-action: none; 
-            
             border-top-left-radius: 20px; 
             border-top-right-radius: 20px; 
             border-bottom-right-radius: 20px; 
@@ -1074,22 +863,17 @@
         ---------------------------------------------------------------------- */
         .bottom-dock { 
             height: var(--dock-height); 
-            
             background-color: rgba(255, 255, 255, 0.98); 
-            
             border-top-width: 1px; 
             border-top-style: solid; 
             border-top-color: var(--br-border); 
-            
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
-            
             padding-top: 0px;
             padding-right: 50px;
             padding-bottom: var(--safe-bottom);
             padding-left: 50px;
-            
             z-index: 500; 
         }
 
@@ -1097,29 +881,23 @@
             display: flex; 
             align-items: center; 
             gap: 15px; 
-            
             background-color: #F8F9FA; 
-            
             padding-top: 12px;
             padding-right: 30px;
             padding-bottom: 12px;
             padding-left: 30px;
-            
             border-top-left-radius: 100px; 
             border-top-right-radius: 100px; 
             border-bottom-right-radius: 100px; 
             border-bottom-left-radius: 100px; 
-            
             border-top-width: 1px; 
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            
             border-top-style: solid; 
             border-right-style: solid; 
             border-bottom-style: solid; 
             border-left-style: solid; 
-            
             border-top-color: var(--br-border); 
             border-right-color: var(--br-border); 
             border-bottom-color: var(--br-border); 
@@ -1129,29 +907,23 @@
         .color-preview { 
             width: 44px; 
             height: 44px; 
-            
             border-top-left-radius: 50%; 
             border-top-right-radius: 50%; 
             border-bottom-right-radius: 50%; 
             border-bottom-left-radius: 50%; 
-            
             border-top-width: 3px; 
             border-right-width: 3px; 
             border-bottom-width: 3px; 
             border-left-width: 3px; 
-            
             border-top-style: solid; 
             border-right-style: solid; 
             border-bottom-style: solid; 
             border-left-style: solid; 
-            
             border-top-color: #FFFFFF; 
             border-right-color: #FFFFFF; 
             border-bottom-color: #FFFFFF; 
             border-left-color: #FFFFFF; 
-            
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); 
-            
             transition-property: transform;
             transition-duration: 0.5s;
             transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -1163,16 +935,13 @@
 
         .btn-magic { 
             font-size: 24px; 
-            
             padding-top: 5px; 
             padding-right: 5px; 
             padding-bottom: 5px; 
             padding-left: 5px; 
-            
             transition-property: transform, filter, opacity;
             transition-duration: 0.5s;
             transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            
             filter: grayscale(100%); 
             opacity: 0.6; 
         }
@@ -1191,7 +960,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            
             margin-top: 0px;
             margin-right: 10px;
             margin-bottom: 0px;
@@ -1202,7 +970,6 @@
             width: 90px; 
             accent-color: var(--br-green); 
             height: 6px; 
-            
             border-top-left-radius: 10px; 
             border-top-right-radius: 10px; 
             border-bottom-right-radius: 10px; 
@@ -1213,12 +980,10 @@
             width: 6px;
             height: 6px;
             background-color: var(--br-charcoal);
-            
             border-top-left-radius: 50%;
             border-top-right-radius: 50%;
             border-bottom-right-radius: 50%;
             border-bottom-left-radius: 50%;
-            
             transition-property: width, height, background-color;
             transition-duration: 0.1s, 0.1s, 0.3s;
             display: inline-block;
@@ -1227,35 +992,27 @@
         .btn-tool { 
             font-size: 18px; 
             font-weight: 900; 
-            
             padding-top: 10px;
             padding-right: 14px;
             padding-bottom: 10px;
             padding-left: 14px;
-            
             color: var(--br-charcoal); 
-            
             transition-property: transform, background-color, color;
             transition-duration: 0.4s;
             transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-            
             background-color: #FFFFFF; 
-            
             border-top-width: 1px; 
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            
             border-top-style: solid; 
             border-right-style: solid; 
             border-bottom-style: solid; 
             border-left-style: solid; 
-            
             border-top-color: var(--br-border); 
             border-right-color: var(--br-border); 
             border-bottom-color: var(--br-border); 
             border-left-color: var(--br-border); 
-            
             border-top-left-radius: 12px; 
             border-top-right-radius: 12px; 
             border-bottom-right-radius: 12px; 
@@ -1269,38 +1026,30 @@
         .btn-erase { 
             font-size: 14px; 
             font-weight: 900; 
-            
             padding-top: 12px;
             padding-right: 18px;
             padding-bottom: 12px;
             padding-left: 18px;
-            
             border-top-left-radius: 14px; 
             border-top-right-radius: 14px; 
             border-bottom-right-radius: 14px; 
             border-bottom-left-radius: 14px; 
-            
             background-color: #FFFFFF; 
-            
             border-top-width: 1px; 
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            
             border-top-style: solid; 
             border-right-style: solid; 
             border-bottom-style: solid; 
             border-left-style: solid; 
-            
             border-top-color: var(--br-border); 
             border-right-color: var(--br-border); 
             border-bottom-color: var(--br-border); 
             border-left-color: var(--br-border); 
-            
             transition-property: background-color, color, border-color, transform;
             transition-duration: 0.2s;
             transition-timing-function: ease-in-out;
-            
             color: var(--br-charcoal); 
         }
 
@@ -1311,7 +1060,6 @@
         .btn-erase.active { 
             background-color: var(--br-error); 
             color: #FFFFFF; 
-            
             border-top-color: var(--br-error);
             border-right-color: var(--br-error);
             border-bottom-color: var(--br-error);
@@ -1321,40 +1069,31 @@
         .btn-reset-all {
             font-size: 14px; 
             font-weight: 900; 
-            
             padding-top: 12px;
             padding-right: 18px;
             padding-bottom: 12px;
             padding-left: 18px;
-            
             border-top-left-radius: 14px; 
             border-top-right-radius: 14px; 
             border-bottom-right-radius: 14px; 
             border-bottom-left-radius: 14px; 
-            
             background-color: #FFF5F5; 
-            
             border-top-width: 1px; 
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            
             border-top-style: solid; 
             border-right-style: solid; 
             border-bottom-style: solid; 
             border-left-style: solid; 
-            
             border-top-color: #FFEBEB; 
             border-right-color: #FFEBEB; 
             border-bottom-color: #FFEBEB; 
             border-left-color: #FFEBEB; 
-            
             transition-property: background-color, border-color, transform;
             transition-duration: 0.2s;
             transition-timing-function: ease-in-out;
-            
             color: var(--br-error);
-            
             display: flex;
             align-items: center;
             gap: 6px;
@@ -1362,7 +1101,6 @@
         
         .btn-reset-all:hover {
             background-color: var(--br-error-light);
-            
             border-top-color: var(--br-error-border);
             border-right-color: var(--br-error-border);
             border-bottom-color: var(--br-error-border);
@@ -1385,45 +1123,36 @@
         .btn-nav { 
             width: 60px; 
             height: 60px; 
-            
             border-top-left-radius: 18px; 
             border-top-right-radius: 18px; 
             border-bottom-right-radius: 18px; 
             border-bottom-left-radius: 18px; 
-            
             border-top-width: 1px; 
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            
             border-top-style: solid; 
             border-right-style: solid; 
             border-bottom-style: solid; 
             border-left-style: solid; 
-            
             border-top-color: var(--br-border); 
             border-right-color: var(--br-border); 
             border-bottom-color: var(--br-border); 
             border-left-color: var(--br-border); 
-            
             background-color: #FFFFFF; 
             font-size: 24px; 
-            
             transition-property: background-color, border-color, transform;
             transition-duration: 0.5s;
             transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            
             color: var(--br-charcoal); 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            
             box-shadow: var(--shadow-button); 
         }
 
         .btn-nav:hover { 
             background-color: #FAFAFA; 
-            
             border-top-color: var(--br-charcoal);
             border-right-color: var(--br-charcoal);
             border-bottom-color: var(--br-charcoal);
@@ -1436,51 +1165,41 @@
 
         .btn-main { 
             height: 60px; 
-            
             padding-top: 0px;
             padding-right: 35px;
             padding-bottom: 0px;
             padding-left: 35px;
-            
             border-top-left-radius: 18px; 
             border-top-right-radius: 18px; 
             border-bottom-right-radius: 18px; 
             border-bottom-left-radius: 18px; 
-            
             font-weight: 900; 
             font-size: 15px; 
             letter-spacing: 1px; 
-            
             display: flex; 
             align-items: center; 
             gap: 12px; 
-            
             transition-property: background-color, color, border-color, transform, box-shadow;
             transition-duration: 0.5s;
             transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            
             text-transform: uppercase; 
             font-family: 'Nunito', sans-serif; 
         }
 
         .btn-record { 
             background-color: #FFFFFF; 
-            
             border-top-width: 1px; 
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            
             border-top-style: solid; 
             border-right-style: solid; 
             border-bottom-style: solid; 
             border-left-style: solid; 
-            
             border-top-color: var(--br-border); 
             border-right-color: var(--br-border); 
             border-bottom-color: var(--br-border); 
             border-left-color: var(--br-border); 
-            
             color: var(--br-charcoal); 
         }
 
@@ -1489,7 +1208,6 @@
             border-right-color: var(--br-error);
             border-bottom-color: var(--br-error);
             border-left-color: var(--br-error);
-            
             color: var(--br-error); 
         }
         
@@ -1500,26 +1218,21 @@
         .btn-record.recording { 
             background-color: #FFF0F0; 
             color: var(--br-error); 
-            
             border-top-color: var(--br-error);
             border-right-color: var(--br-error);
             border-bottom-color: var(--br-error);
             border-left-color: var(--br-error);
-            
             box-shadow: inset 0px 0px 0px 2px var(--br-error); 
         }
 
         .btn-record .dot { 
             width: 12px; 
             height: 12px; 
-            
             background-color: var(--br-error); 
-            
             border-top-left-radius: 50%; 
             border-top-right-radius: 50%; 
             border-bottom-right-radius: 50%; 
             border-bottom-left-radius: 50%; 
-            
             opacity: 0; 
             transition-property: opacity;
             transition-duration: 0.3s;
@@ -1555,21 +1268,16 @@
             position: absolute; 
             top: 0px; 
             right: -480px; 
-            
             width: 480px; 
             height: 100%; 
-            
             background-color: #FFFFFF; 
             box-shadow: -25px 0px 60px rgba(0, 0, 0, 0.12); 
             z-index: 10001; 
-            
             transition-property: right; 
             transition-duration: 0.6s; 
             transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1); 
-            
             display: flex; 
             flex-direction: column; 
-            
             border-left-width: 1px; 
             border-left-style: solid; 
             border-left-color: var(--br-border); 
@@ -1584,13 +1292,10 @@
             padding-right: 35px;
             padding-bottom: 30px;
             padding-left: 35px;
-            
             background-color: var(--br-ai-soft); 
-            
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            
             border-bottom-width: 1px; 
             border-bottom-style: solid; 
             border-bottom-color: var(--br-border); 
@@ -1600,7 +1305,6 @@
             font-family: 'Jua', sans-serif; 
             font-size: 24px; 
             color: var(--br-green); 
-            
             display: flex; 
             align-items: center; 
             gap: 12px; 
@@ -1610,7 +1314,6 @@
             font-size: 34px; 
             color: var(--br-muted); 
             line-height: 1; 
-            
             transition-property: color, transform;
             transition-duration: 0.2s;
             transition-timing-function: ease-in-out;
@@ -1626,35 +1329,28 @@
             padding-right: 35px;
             padding-bottom: 30px;
             padding-left: 35px;
-            
             flex: 1; 
             overflow-y: auto; 
-            
             display: flex; 
             flex-direction: column; 
             gap: 20px; 
-            
             scroll-behavior: smooth; 
         }
         
         .chat-bubble { 
             max-width: 90%; 
-            
             padding-top: 20px;
             padding-right: 25px;
             padding-bottom: 20px;
             padding-left: 25px;
-            
             border-top-left-radius: 22px; 
             border-top-right-radius: 22px; 
             border-bottom-right-radius: 22px; 
             border-bottom-left-radius: 22px; 
-            
             font-size: 16px; 
             line-height: 1.7; 
             font-weight: 500; 
             word-break: keep-all; 
-            
             animation-name: popIn; 
             animation-duration: 0.5s; 
             animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
@@ -1663,24 +1359,19 @@
         .chat-bubble.ai { 
             align-self: flex-start; 
             background-color: #F8F9FA; 
-            
             border-bottom-left-radius: 4px; 
-            
             border-top-width: 1px; 
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            
             border-top-style: solid; 
             border-right-style: solid; 
             border-bottom-style: solid; 
             border-left-style: solid; 
-            
             border-top-color: var(--br-border); 
             border-right-color: var(--br-border); 
             border-bottom-color: var(--br-border); 
             border-left-color: var(--br-border); 
-            
             color: var(--br-text); 
         }
 
@@ -1688,14 +1379,12 @@
             align-self: flex-end; 
             background-color: var(--br-green); 
             color: #FFFFFF; 
-            
             border-bottom-right-radius: 4px; 
             box-shadow: 0px 8px 20px rgba(145, 211, 180, 0.3); 
         }
         
         .ai-loading-container { 
             text-align: center; 
-            
             padding-top: 50px;
             padding-right: 0px;
             padding-bottom: 50px;
@@ -1717,32 +1406,26 @@
 
         .analytics-card { 
             background-color: #FAFAFA; 
-            
             border-top-width: 1px; 
             border-right-width: 1px; 
             border-bottom-width: 1px; 
             border-left-width: 1px; 
-            
             border-top-style: solid; 
             border-right-style: solid; 
             border-bottom-style: solid; 
             border-left-style: solid; 
-            
             border-top-color: var(--br-border); 
             border-right-color: var(--br-border); 
             border-bottom-color: var(--br-border); 
             border-left-color: var(--br-border); 
-            
             border-top-left-radius: 24px; 
             border-top-right-radius: 24px; 
             border-bottom-right-radius: 24px; 
             border-bottom-left-radius: 24px; 
-            
             padding-top: 25px;
             padding-right: 25px;
             padding-bottom: 25px;
             padding-left: 25px;
-            
             align-self: stretch; 
             margin-bottom: 10px; 
         }
@@ -1755,11 +1438,9 @@
             font-weight: 900; 
             text-transform: uppercase; 
             letter-spacing: 2px; 
-            
             border-bottom-width: 1px; 
             border-bottom-style: dashed; 
             border-bottom-color: var(--br-border); 
-            
             padding-bottom: 12px; 
         }
 
@@ -1782,12 +1463,10 @@
             width: 100%; 
             height: 10px; 
             background-color: #E8E6E1; 
-            
             border-top-left-radius: 12px; 
             border-top-right-radius: 12px; 
             border-bottom-right-radius: 12px; 
             border-bottom-left-radius: 12px; 
-            
             overflow-x: hidden; 
             overflow-y: hidden; 
         }
@@ -1797,7 +1476,6 @@
             transition-property: width; 
             transition-duration: 1.2s; 
             transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            
             border-top-left-radius: 12px; 
             border-top-right-radius: 12px; 
             border-bottom-right-radius: 12px; 
@@ -1809,44 +1487,34 @@
             padding-right: 35px;
             padding-bottom: 25px;
             padding-left: 35px;
-            
             border-top-width: 1px; 
             border-top-style: solid; 
             border-top-color: var(--br-border); 
-            
             display: flex; 
             flex-direction: column; 
             gap: 15px; 
-            
             background-color: #FFFFFF; 
         }
 
         .btn-chat-action { 
             width: 100%; 
             height: 60px; 
-            
             background-color: var(--br-charcoal); 
             color: #FFFFFF; 
-            
             border-top-left-radius: 18px; 
             border-top-right-radius: 18px; 
             border-bottom-right-radius: 18px; 
             border-bottom-left-radius: 18px; 
-            
             font-weight: 900; 
-            
             transition-property: background-color, transform;
             transition-duration: 0.3s;
             transition-timing-function: ease;
-            
             font-size: 16px; 
             letter-spacing: 1px; 
-            
             display: flex; 
             justify-content: center; 
             align-items: center; 
             gap: 10px; 
-            
             font-family: 'Nunito', sans-serif; 
             box-shadow: 0px 10px 20px rgba(54, 52, 49, 0.2); 
         }
@@ -1867,7 +1535,6 @@
             font-weight: bold; 
             color: var(--br-blue); 
             margin-top: 15px; 
-            
             transition-property: color; 
             transition-duration: 0.3s; 
         }
@@ -1892,11 +1559,9 @@
             align-items: center;
             opacity: 0;
             pointer-events: none;
-            
             transition-property: opacity;
             transition-duration: 0.3s;
             transition-timing-function: ease;
-            
             backdrop-filter: blur(8px);
         }
 
@@ -1909,22 +1574,17 @@
             background-color: var(--br-paper);
             width: 420px;
             max-width: 90%;
-            
             border-top-left-radius: 24px;
             border-top-right-radius: 24px;
             border-bottom-right-radius: 24px;
             border-bottom-left-radius: 24px;
-            
             padding-top: 40px;
             padding-right: 35px;
             padding-bottom: 35px;
             padding-left: 35px;
-            
             text-align: center;
             box-shadow: var(--shadow-premium);
-            
             transform: scale(0.9) translateY(20px);
-            
             transition-property: transform;
             transition-duration: 0.4s;
             transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1969,21 +1629,17 @@
 
         .bridge-modal-btn {
             flex: 1;
-            
             padding-top: 15px;
             padding-bottom: 15px;
-            
             border-top-left-radius: 14px;
             border-top-right-radius: 14px;
             border-bottom-right-radius: 14px;
             border-bottom-left-radius: 14px;
-            
             font-weight: 900;
             font-size: 15px;
             font-family: 'Nunito', sans-serif;
             text-transform: uppercase;
             letter-spacing: 1px;
-            
             transition-property: transform, background-color, box-shadow;
             transition-duration: 0.5s;
             transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -1996,17 +1652,14 @@
         .bridge-modal-cancel {
             background-color: #F0EFEB;
             color: var(--br-charcoal);
-            
             border-top-width: 1px;
             border-right-width: 1px;
             border-bottom-width: 1px;
             border-left-width: 1px;
-            
             border-top-style: solid;
             border-right-style: solid;
             border-bottom-style: solid;
             border-left-style: solid;
-            
             border-top-color: transparent;
             border-right-color: transparent;
             border-bottom-color: transparent;
@@ -2020,22 +1673,18 @@
         .bridge-modal-confirm {
             background-color: var(--br-error);
             color: #FFFFFF;
-            
             border-top-width: 1px;
             border-right-width: 1px;
             border-bottom-width: 1px;
             border-left-width: 1px;
-            
             border-top-style: solid;
             border-right-style: solid;
             border-bottom-style: solid;
             border-left-style: solid;
-            
             border-top-color: transparent;
             border-right-color: transparent;
             border-bottom-color: transparent;
             border-left-color: transparent;
-            
             box-shadow: 0px 8px 15px rgba(231, 76, 60, 0.2);
         }
         
@@ -2059,27 +1708,20 @@
             position: absolute; 
             bottom: 130px; 
             left: 50px; 
-            
             background-color: #FFFFFF; 
-            
             border-top-left-radius: 25px; 
             border-top-right-radius: 25px; 
             border-bottom-right-radius: 25px; 
             border-bottom-left-radius: 25px; 
-            
             padding-top: 25px;
             padding-right: 25px;
             padding-bottom: 25px;
             padding-left: 25px;
-            
             box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.15); 
             z-index: 5000; 
-            
             opacity: 0; 
             pointer-events: none; 
-            
             transform: translateY(20px); 
-            
             transition-property: opacity, transform; 
             transition-duration: 0.3s; 
             transition-timing-function: ease; 
@@ -2097,7 +1739,6 @@
             margin-top: 12px; 
             font-weight: 900; 
             color: var(--br-muted); 
-            
             transition-property: color; 
             transition-duration: 0.2s;
         }
@@ -2112,24 +1753,18 @@
             right: 0px;
             bottom: 0px;
             left: 0px; 
-            
             width: 100vw; 
             height: 100dvh; 
-            
             background-color: rgba(0, 0, 0, 0.85); 
             z-index: 30000; 
-            
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            
             opacity: 0; 
             pointer-events: none; 
-            
             transition-property: opacity;
             transition-duration: 0.4s;
             transition-timing-function: ease; 
-            
             backdrop-filter: blur(15px); 
         }
 
@@ -2142,23 +1777,18 @@
             background-color: #FFFFFF; 
             width: 850px; 
             max-width: 90%; 
-            
             border-top-left-radius: 35px; 
             border-top-right-radius: 35px; 
             border-bottom-right-radius: 35px; 
             border-bottom-left-radius: 35px; 
-            
             padding-top: 60px;
             padding-right: 60px;
             padding-bottom: 60px;
             padding-left: 60px;
-            
             text-align: center; 
             position: relative; 
             box-shadow: 0px 40px 80px rgba(0, 0, 0, 0.4); 
-            
             transform: scale(0.85); 
-            
             transition-property: transform; 
             transition-duration: 0.5s; 
             transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
@@ -2173,27 +1803,22 @@
             border-right-width: 10px; 
             border-bottom-width: 10px; 
             border-left-width: 10px; 
-            
             border-top-style: solid; 
             border-right-style: solid; 
             border-bottom-style: solid; 
             border-left-style: solid; 
-            
             border-top-color: var(--br-gold); 
             border-right-color: var(--br-gold); 
             border-bottom-color: var(--br-gold); 
             border-left-color: var(--br-gold); 
-            
             border-top-left-radius: 25px; 
             border-top-right-radius: 25px; 
             border-bottom-right-radius: 25px; 
             border-bottom-left-radius: 25px; 
-            
             padding-top: 50px;
             padding-right: 50px;
             padding-bottom: 50px;
             padding-left: 50px;
-            
             position: relative; 
         }
 
@@ -2221,7 +1846,6 @@
             color: var(--br-green); 
             font-weight: 900; 
             margin-bottom: 25px; 
-            
             text-decoration-line: underline; 
             text-decoration-color: var(--br-gold); 
         }
@@ -2230,35 +1854,28 @@
             width: 100%; 
             max-width: 450px; 
             height: 280px; 
-            
             margin-top: 0px;
             margin-right: auto;
             margin-bottom: 35px;
             margin-left: auto;
-            
             border-top-left-radius: 18px; 
             border-top-right-radius: 18px; 
             border-bottom-right-radius: 18px; 
             border-bottom-left-radius: 18px; 
-            
             border-top-width: 3px; 
             border-right-width: 3px; 
             border-bottom-width: 3px; 
             border-left-width: 3px; 
-            
             border-top-style: dashed; 
             border-right-style: dashed; 
             border-bottom-style: dashed; 
             border-left-style: dashed; 
-            
             border-top-color: var(--br-border); 
             border-right-color: var(--br-border); 
             border-bottom-color: var(--br-border); 
             border-left-color: var(--br-border); 
-            
             overflow-x: hidden; 
             overflow-y: hidden; 
-            
             display: flex; 
             justify-content: center; 
             align-items: center; 
@@ -2283,26 +1900,20 @@
         .btn-print { 
             background-color: var(--br-charcoal); 
             color: #FFFFFF; 
-            
             padding-top: 18px;
             padding-right: 45px;
             padding-bottom: 18px;
             padding-left: 45px;
-            
             font-size: 18px; 
             font-weight: 900; 
-            
             border-top-left-radius: 100px; 
             border-top-right-radius: 100px; 
             border-bottom-right-radius: 100px; 
             border-bottom-left-radius: 100px; 
-            
             display: inline-flex; 
             align-items: center; 
             gap: 12px; 
-            
             box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.15); 
-            
             transition-property: transform, box-shadow, background-color;
             transition-duration: 0.5s;
             transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -2322,11 +1933,9 @@
             position: absolute; 
             top: 25px; 
             right: 35px; 
-            
             font-size: 35px; 
             color: var(--br-muted); 
             font-weight: 900; 
-            
             transition-property: color, transform; 
             transition-duration: 0.2s; 
             transition-timing-function: ease-in-out;
@@ -2689,345 +2298,141 @@
 </head>
 <body>
 
-    <div 
-        class="cursor-dot" 
-        id="cursor-dot"
-    ></div>
-    <div 
-        class="cursor-ring" 
-        id="cursor-ring"
-    ></div>
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
 
     <div class="app-container">
         
-        <div 
-            class="sidebar-backdrop" 
-            id="sidebar-backdrop" 
-            onclick="UIEngine.closeSidebar()"
-        ></div>
+        <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="UIEngine.closeSidebar()"></div>
 
-        <nav 
-            class="sidebar" 
-            id="sidebar" 
-            aria-label="Curriculum Navigation"
-        >
-            <header 
-                class="sidebar-header" 
-                onclick="location.href='dashboard.html'"
-            >
-                <div class="brand-logo">
-                    Bridge<span>Academy</span>
-                </div>
+        <nav class="sidebar" id="sidebar" aria-label="Curriculum Navigation">
+            <header class="sidebar-header" onclick="location.href='dashboard.html'">
+                <div class="brand-logo">Bridge<span>Academy</span></div>
             </header>
-            <section 
-                class="student-profile" 
-                id="profile-box"
-            >
+            <section class="student-profile" id="profile-box">
                 <div class="profile-top">
-                    <div 
-                        class="profile-avatar" 
-                        id="avatar-char"
-                    >?</div>
+                    <div class="profile-avatar" id="avatar-char">?</div>
                     <div class="profile-info">
-                        <span 
-                            class="profile-name" 
-                            id="display-name"
-                        >Guest</span>
-                        <span class="profile-role">
-                            Global Premium Explorer
-                        </span>
+                        <span class="profile-name" id="display-name">Guest</span>
+                        <span class="profile-role">Global Premium Explorer</span>
                     </div>
                 </div>
-                <div 
-                    class="badge-container" 
-                    id="badge-container"
-                ></div>
+                <div class="badge-container" id="badge-container"></div>
             </section>
-            <section 
-                class="nav-list" 
-                id="nav-list" 
-                aria-label="Weekly Lessons"
-            ></section>
+            <section class="nav-list" id="nav-list" aria-label="Weekly Lessons"></section>
         </nav>
 
         <div class="workspace">
             <header class="top-bar">
                 <div class="top-bar-left">
-                    <button 
-                        class="mobile-menu-btn interactive-hover" 
-                        onclick="UIEngine.toggleSidebar()"
-                    >
+                    <button class="mobile-menu-btn interactive-hover" onclick="UIEngine.toggleSidebar()">
                         <i class="fa-solid fa-bars"></i>
                     </button>
                     <div>
-                        <div 
-                            id="unit-info" 
-                            class="unit-info"
-                        >UNIT LOADING...</div>
-                        <div 
-                            id="page-info" 
-                            class="page-info"
-                        >Inquiry P.01</div>
+                        <div id="unit-info" class="unit-info">UNIT LOADING...</div>
+                        <div id="page-info" class="page-info">Inquiry P.01</div>
                     </div>
                 </div>
-                <div 
-                    class="sync-indicator-container" 
-                    id="sync-indicator"
-                >
-                    <i 
-                        class="fa-solid fa-cloud sync-icon" 
-                        id="sync-icon"
-                    ></i>
-                    <span id="sync-text">
-                        Synced
-                    </span>
+                <div class="sync-indicator-container" id="sync-indicator">
+                    <i class="fa-solid fa-cloud sync-icon" id="sync-icon"></i>
+                    <span id="sync-text">Synced</span>
                 </div>
             </header>
             
-            <div 
-                id="error-toast" 
-                class="toast-error" 
-                role="alert"
-            >
+            <div id="error-toast" class="toast-error" role="alert">
                 <i class="fa-solid fa-triangle-exclamation"></i> 
                 <span id="error-toast-msg">Error Message</span>
             </div>
 
             <main class="stage-wrapper interactive-hover">
-                <div 
-                    class="drawing-board" 
-                    id="drawing-board"
-                >
-                    <img 
-                        src="" 
-                        id="worksheet-img" 
-                        crossorigin="anonymous"
-                        alt="Worksheet"
-                    >
+                <div class="drawing-board" id="drawing-board">
+                    <img src="" id="worksheet-img" crossorigin="anonymous" alt="Worksheet">
                     <canvas id="draw-layer"></canvas>
                 </div>
             </main>
 
             <footer class="bottom-dock">
-                <div 
-                    class="tool-group" 
-                    role="group" 
-                    aria-label="Drawing Tools"
-                >
-                    <div 
-                        class="color-preview interactive-hover" 
-                        id="btn-color" 
-                        onclick="RGBRingEngine.toggle()"
-                    ></div>
-                    <input 
-                        type="color" 
-                        id="native-color-picker" 
-                        style="opacity:0; position:absolute; width:1px; height:1px;" 
-                        aria-hidden="true" 
-                        tabindex="-1"
-                    >
-                    <button 
-                        class="btn-magic active interactive-hover" 
-                        id="btn-brush-normal" 
-                        onclick="CanvasEngine.setBrush('normal')"
-                    >🖍️</button>
-                    <button 
-                        class="btn-magic interactive-hover" 
-                        id="btn-brush-neon" 
-                        onclick="CanvasEngine.setBrush('neon')"
-                    >🌟</button>
-                    <button 
-                        class="btn-magic interactive-hover" 
-                        id="btn-brush-rainbow" 
-                        onclick="CanvasEngine.setBrush('rainbow')"
-                    >🌈</button>
+                <div class="tool-group" role="group" aria-label="Drawing Tools">
+                    <div class="color-preview interactive-hover" id="btn-color" onclick="RGBRingEngine.toggle()"></div>
+                    <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;" aria-hidden="true" tabindex="-1">
+                    
+                    <button class="btn-magic active interactive-hover" id="btn-brush-normal" onclick="CanvasEngine.setBrush('normal')">🖍️</button>
+                    <button class="btn-magic interactive-hover" id="btn-brush-neon" onclick="CanvasEngine.setBrush('neon')">🌟</button>
+                    <button class="btn-magic interactive-hover" id="btn-brush-rainbow" onclick="CanvasEngine.setBrush('rainbow')">🌈</button>
                     
                     <div class="brush-slider-wrapper">
-                        <input 
-                            type="range" 
-                            class="brush-slider interactive-hover" 
-                            id="brush-size" 
-                            min="2" 
-                            max="35" 
-                            value="6"
-                        >
-                        <div 
-                            class="brush-preview-dot" 
-                            id="brush-preview-dot"
-                        ></div>
+                        <input type="range" class="brush-slider interactive-hover" id="brush-size" min="2" max="35" value="6">
+                        <div class="brush-preview-dot" id="brush-preview-dot"></div>
                     </div>
                     
-                    <button 
-                        class="btn-tool interactive-hover" 
-                        onclick="CanvasEngine.undo()"
-                    >
+                    <button class="btn-tool interactive-hover" onclick="CanvasEngine.undo()">
                         <i class="fa-solid fa-rotate-left"></i>
                     </button>
-                    <button 
-                        class="btn-erase interactive-hover" 
-                        id="btn-eraser" 
-                        onclick="CanvasEngine.toggleEraser()"
-                    >ERASER</button>
-                    <button 
-                        class="btn-reset-all interactive-hover" 
-                        onclick="CanvasEngine.promptHardReset()"
-                    >
+                    <button class="btn-erase interactive-hover" id="btn-eraser" onclick="CanvasEngine.toggleEraser()">ERASER</button>
+                    <button class="btn-reset-all interactive-hover" onclick="CanvasEngine.promptHardReset()">
                         <i class="fa-solid fa-trash-can"></i> CLEAR
                     </button>
                 </div>
                 
-                <div 
-                    class="action-group" 
-                    role="group"
-                >
-                    <button 
-                        class="btn-nav interactive-hover" 
-                        onclick="AppEngine.smoothMove(-1)"
-                    >
+                <div class="action-group" role="group">
+                    <button class="btn-nav interactive-hover" onclick="AppEngine.smoothMove(-1)">
                         <i class="fa-solid fa-chevron-left"></i>
                     </button>
-                    <button 
-                        class="btn-main btn-record interactive-hover" 
-                        id="btn-record" 
-                        onclick="AudioEngine.toggle()"
-                    >
+                    <button class="btn-main btn-record interactive-hover" id="btn-record" onclick="AudioEngine.toggle()">
                         <div class="dot"></div>
                         <span id="record-text">Voice Log</span>
                     </button>
-                    <button 
-                        class="btn-main btn-submit interactive-hover" 
-                        onclick="AITutor.submit()"
-                    >Submit ✨</button>
-                    <button 
-                        class="btn-nav interactive-hover" 
-                        onclick="AppEngine.smoothMove(1)"
-                    >
+                    <button class="btn-main btn-submit interactive-hover" onclick="AITutor.submit()">Submit ✨</button>
+                    <button class="btn-nav interactive-hover" onclick="AppEngine.smoothMove(1)">
                         <i class="fa-solid fa-chevron-right"></i>
                     </button>
                 </div>
             </footer>
         </div>
 
-        <aside 
-            class="ai-panel" 
-            id="ai-panel"
-        >
+        <aside class="ai-panel" id="ai-panel">
             <header class="ai-header">
                 <div class="ai-title">✨ Private Tutor</div>
-                <button 
-                    class="btn-close-ai interactive-hover" 
-                    onclick="AITutor.close()"
-                >
+                <button class="btn-close-ai interactive-hover" onclick="AITutor.close()">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </header>
-            <section 
-                class="ai-content" 
-                id="ai-content" 
-                aria-live="polite"
-            ></section>
-            <footer 
-                class="chat-footer" 
-                id="chat-footer" 
-                style="display:none;"
-            >
-                <button 
-                    class="btn-chat-action interactive-hover" 
-                    id="btn-chat-record" 
-                    onclick="AudioEngine.toggleChat()"
-                >🎤 Speak to Teacher</button>
-                <div 
-                    class="btn-chat-next interactive-hover" 
-                    onclick="AppEngine.handleNextAdventure()"
-                >Next Page 🚀</div>
+            <section class="ai-content" id="ai-content" aria-live="polite"></section>
+            <footer class="chat-footer" id="chat-footer" style="display:none;">
+                <button class="btn-chat-action interactive-hover" id="btn-chat-record" onclick="AudioEngine.toggleChat()">🎤 Speak to Teacher</button>
+                <div class="btn-chat-next interactive-hover" onclick="AppEngine.handleNextAdventure()">Next Page 🚀</div>
             </footer>
         </aside>
 
-        <div 
-            class="bridge-modal-overlay" 
-            id="custom-modal-overlay" 
-            role="dialog"
-        >
+        <div class="bridge-modal-overlay" id="custom-modal-overlay" role="dialog">
             <div class="bridge-modal-box">
-                <i 
-                    class="fa-solid fa-circle-exclamation bridge-modal-icon" 
-                    id="custom-modal-icon"
-                ></i>
-                <h2 
-                    class="bridge-modal-title" 
-                    id="custom-modal-title"
-                >Notice</h2>
-                <p 
-                    class="bridge-modal-text" 
-                    id="custom-modal-text"
-                >Message</p>
-                <div 
-                    class="bridge-modal-actions" 
-                    id="custom-modal-actions"
-                ></div>
+                <i class="fa-solid fa-circle-exclamation bridge-modal-icon" id="custom-modal-icon"></i>
+                <h2 class="bridge-modal-title" id="custom-modal-title">Notice</h2>
+                <p class="bridge-modal-text" id="custom-modal-text">Message</p>
+                <div class="bridge-modal-actions" id="custom-modal-actions"></div>
             </div>
         </div>
 
-        <div 
-            class="rgb-modal" 
-            id="rgb-modal" 
-            role="dialog"
-        >
-            <canvas 
-                id="color-wheel" 
-                width="150" 
-                height="150"
-            ></canvas>
-            <p 
-                class="rgb-modal-close interactive-hover" 
-                onclick="RGBRingEngine.toggle()"
-            >CLOSE</p>
+        <div class="rgb-modal" id="rgb-modal" role="dialog">
+            <canvas id="color-wheel" width="150" height="150"></canvas>
+            <p class="rgb-modal-close interactive-hover" onclick="RGBRingEngine.toggle()">CLOSE</p>
         </div>
 
-        <div 
-            class="cert-modal-overlay" 
-            id="cert-modal" 
-            role="dialog"
-        >
-            <div 
-                class="cert-card" 
-                id="cert-card-content"
-            >
-                <div 
-                    class="cert-close interactive-hover" 
-                    onclick="CertificateEngine.close()"
-                >×</div>
+        <div class="cert-modal-overlay" id="cert-modal" role="dialog">
+            <div class="cert-card" id="cert-card-content">
+                <div class="cert-close interactive-hover" onclick="CertificateEngine.close()">×</div>
                 <div class="cert-border">
-                    <div 
-                        class="cert-subtitle" 
-                        id="cert-week"
-                    >WEEK 1 COMPLETED</div>
-                    <div 
-                        class="cert-title" 
-                        id="cert-title"
-                    >Certificate of Exploration</div>
+                    <div class="cert-subtitle" id="cert-week">WEEK 1 COMPLETED</div>
+                    <div class="cert-title" id="cert-title">Certificate of Exploration</div>
                     <p style="margin-bottom:20px; color:var(--br-muted); font-weight:500;">
                         This certificate is presented to
                     </p>
-                    <div 
-                        class="cert-name" 
-                        id="cert-student-name"
-                    >Student Name</div>
+                    <div class="cert-name" id="cert-student-name">Student Name</div>
                     <div class="cert-img-container">
-                        <img 
-                            id="cert-canvas-img" 
-                            src="" 
-                            alt="Masterpiece"
-                        >
+                        <img id="cert-canvas-img" src="" alt="Masterpiece">
                     </div>
-                    <div 
-                        class="cert-msg" 
-                        id="cert-ai-msg"
-                    ></div>
-                    <button 
-                        class="btn-print interactive-hover" 
-                        onclick="CertificateEngine.print()"
-                    >
+                    <div class="cert-msg" id="cert-ai-msg"></div>
+                    <button class="btn-print interactive-hover" onclick="CertificateEngine.print()">
                         <i class="fa-solid fa-print"></i> Save & Print
                     </button>
                 </div>
@@ -3148,6 +2553,11 @@
         const CursorEngine = {
             dot: null,
             ring: null,
+            posX: 0,
+            posY: 0,
+            mouseX: 0,
+            mouseY: 0,
+            initialized: false,
 
             init() {
                 if (window.matchMedia("(pointer: coarse)").matches) return;
@@ -3157,8 +2567,12 @@
 
                 if (!this.dot || !this.ring) return;
 
+                this.initialized = true;
+
                 document.addEventListener('mousemove', (e) => {
-                    // GPU 가속을 활용한 즉각적인(Zero-Latency) 마우스 위치 동기화
+                    this.mouseX = e.clientX;
+                    this.mouseY = e.clientY;
+
                     this.dot.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
                     this.ring.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
 
@@ -3187,6 +2601,7 @@
                         this.ring.classList.remove('hovered');
                     }
                 });
+
             }
         };
 
@@ -3404,7 +2819,7 @@
                 const seriesChar = unitId.charAt(0);
                 const t = Date.now(); 
 
-                /* 깃허브 절대 경로 매칭 알고리즘 (패딩 포맷 제외, 정확한 타겟팅만 수행) */
+                /* 깃허브 절대 경로 매칭 알고리즘 */
                 const basePaths = [
                     `${seriesChar}/${unitId}/${unitId}-${pageNum}`,
                     `${unitId}/${unitId}-${pageNum}`,
@@ -4135,253 +3550,4 @@
                     const canvasImg = CanvasEngine.captureWorksheetWithDrawing(true);
                     let unitData = { goal: "Free Exploration", question: "Tell me more about it." };
                     
-                    if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]) {
-                        unitData = PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage];
-                    }
-                    
-                    let saidText = STATE.lastTranscript || "Look at my art!";
-                    
-                    const prompt = `You are Teacher Bridge. Name: ${STATE.studentName}, Goal: ${unitData.goal}, Question: ${unitData.question}, Student Said: "${saidText}". Praise explicitly, max 3 short sentences, mix easy Korean contextually. Plain text only.`;
-                    
-                    const reply = await this.callBackendTutor(prompt, canvasImg);
-                    
-                    if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
-                    
-                    const aiFailed = reply.includes("앗,");
-                    if (!aiFailed) {
-                        if (!CanvasEngine.isCanvasBlank()) BadgeEngine.add("🎨 Colorful Artist");
-                        if (STATE.sttConfidence >= 80 && STATE.lastTranscript.length > 0) BadgeEngine.add("🗣️ Great Speaker");
-                    }
-                    
-                    if (content) {
-                        content.innerHTML = `
-                            <div class="analytics-card">
-                                <div class="analytics-title">Mission: ${unitData.goal}</div>
-                                <div class="stat-row">
-                                    <div class="stat-label"><span>Voice Confidence</span><span>${STATE.sttConfidence}%</span></div>
-                                    <div class="bar-bg"><div class="bar-fill" style="width:${STATE.sttConfidence}%; background-color:var(--br-blue)"></div></div>
-                                </div>
-                            </div>
-                        `;
-                        const bbl = document.createElement('div'); 
-                        bbl.className = 'chat-bubble ai mt-4'; 
-                        bbl.textContent = reply; 
-                        content.appendChild(bbl);
-                    }
-                    
-                    const footer = document.getElementById('chat-footer');
-                    if (footer) footer.style.display = "block"; 
-                    
-                    this.speak(reply);
-                } finally { 
-                    this.isBusy = false; 
-                }
-            },
-            async processReply() {
-                if (!STATE.lastTranscript || this.isBusy) return; 
-                this.isBusy = true;
-                
-                const requestPage = STATE.currentPage;
-                const requestUnit = STATE.unitId;
-                const content = document.getElementById('ai-content');
-                
-                if (content) {
-                    const uBbl = document.createElement('div'); 
-                    uBbl.className = "chat-bubble user mt-4"; 
-                    uBbl.textContent = STATE.lastTranscript; 
-                    content.appendChild(uBbl);
-                    
-                    const aBbl = document.createElement('div'); 
-                    aBbl.className = "chat-bubble ai mt-4"; 
-                    aBbl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 생각 중...`; 
-                    content.appendChild(aBbl); 
-                    content.scrollTop = content.scrollHeight;
-                    
-                    try {
-                        const reply = await this.callBackendTutor(`Respond to student's remark: "${STATE.lastTranscript}". 1-2 short sentences, friendly, plain text.`);
-                        if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
-                        
-                        aBbl.innerHTML = ''; 
-                        const b = document.createElement('b'); 
-                        b.style.color = 'var(--br-green)'; 
-                        b.textContent = reply; 
-                        aBbl.appendChild(b);
-                        content.scrollTop = content.scrollHeight; 
-                        
-                        this.speak(reply);
-                    } finally { 
-                        this.isBusy = false; 
-                    }
-                } else {
-                    this.isBusy = false;
-                }
-            },
-            speak(text) { 
-                if (window.speechSynthesis) { 
-                    window.speechSynthesis.cancel(); 
-                    const u = new SpeechSynthesisUtterance(text); 
-                    u.lang = 'en-US'; 
-                    u.rate = 0.95; 
-                    window.speechSynthesis.speak(u); 
-                } 
-            },
-            close() { 
-                const panel = document.getElementById('ai-panel');
-                if (panel) panel.classList.remove('open'); 
-                if (window.speechSynthesis) window.speechSynthesis.cancel(); 
-            }
-        };
-
-        const AppEngine = {
-            smoothMove(dir) {
-                const nextPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir); 
-                if (nextPage === STATE.currentPage) return;
-                
-                StorageEngine.saveCanvasLocal(); 
-                StorageEngine.executeCloudSave(StorageEngine.createCanvasSnapshot(true));
-                
-                const board = document.getElementById('drawing-board');
-                if (board) board.classList.add('fade-out');
-                
-                setTimeout(() => { 
-                    STATE.currentPage = nextPage; 
-                    PageEngine.load(STATE.currentPage); 
-                    setTimeout(() => { 
-                        if (board) board.classList.remove('fade-out'); 
-                    }, 150); 
-                }, 400);
-            },
-            handleNextAdventure() { 
-                AITutor.close(); 
-                if (CurriculumEngine.isWeekEnd(STATE.unitId, STATE.currentPage)) {
-                    CertificateEngine.open(CurriculumEngine.weekIndex(STATE.unitId, STATE.currentPage)); 
-                } else {
-                    this.smoothMove(1); 
-                }
-            }
-        };
-
-        const PageEngine = {
-            init() {
-                const list = document.getElementById('nav-list'); 
-                if (!list) return; 
-                list.innerHTML = '';
-                
-                const unitData = PAGE_INTELLIGENCE[STATE.unitId];
-                if (unitData) {
-                    Object.keys(unitData).forEach((key) => {
-                        const item = document.createElement('div'); 
-                        item.className = 'nav-item interactive-hover'; 
-                        item.id = `nav-${key}`;
-                        
-                        const titleText = unitData[key].navTitle;
-                        const numKey = Number(key);
-                        const weekIdx = CurriculumEngine.weekIndex(STATE.unitId, numKey);
-                        
-                        item.innerHTML = `<span class="nav-title">${titleText}</span><span class="nav-badge">W${weekIdx}-P.${key}</span>`;
-                        item.onclick = () => { 
-                            AppEngine.smoothMove(numKey - STATE.currentPage); 
-                            UIEngine.closeSidebar(); 
-                        }; 
-                        list.appendChild(item);
-                    });
-                }
-                this.load(STATE.currentPage);
-            },
-            load(n) {
-                STATE.currentPage = n; 
-                STATE.lastTranscript = ""; 
-                STATE.sttConfidence = 0;
-                
-                const unitInfo = document.getElementById('unit-info');
-                if (unitInfo) unitInfo.innerText = `MASTER LAB: ${STATE.unitId}`; 
-                
-                const pageInfo = document.getElementById('page-info');
-                if (pageInfo) pageInfo.innerText = `Inquiry P.${String(n).padStart(2, '0')}`;
-                
-                document.querySelectorAll('.nav-item').forEach((el) => el.classList.remove('active'));
-                const activeNav = document.getElementById(`nav-${n}`);
-                const navList = document.getElementById('nav-list');
-                
-                if (activeNav) {
-                    activeNav.classList.add('active');
-                    if (navList) {
-                        navList.scrollTo({ top: activeNav.offsetTop - navList.offsetTop - 50, behavior: 'smooth' });
-                    }
-                }
-                
-                CanvasEngine.hardReset(); 
-                AITutor.close(); 
-                
-                const worksheetImg = document.getElementById('worksheet-img');
-                if (worksheetImg) worksheetImg.style.opacity = '0';
-                
-                SmartImageLoader.findValidWorksheet(STATE.unitId, STATE.currentPage); 
-                StorageEngine.save();
-            }
-        };
-
-        const UIEngine = {
-            toggleSidebar() { 
-                if (window.innerWidth > 1180) return; 
-                const sb = document.getElementById('sidebar');
-                if (sb) sb.classList.toggle('open'); 
-                const bd = document.getElementById('sidebar-backdrop');
-                if (bd) bd.classList.toggle('active'); 
-            },
-            closeSidebar() { 
-                const sb = document.getElementById('sidebar');
-                if (sb) sb.classList.remove('open'); 
-                const bd = document.getElementById('sidebar-backdrop');
-                if (bd) bd.classList.remove('active'); 
-            }
-        };
-
-        /**
-         * [5-20. FINAL BOOTSTRAP]
-         * 로그인 세션 확인 직후 단 한 번만 실행되는 무결점 시스템 부트
-         */
-        let systemBooted = false;
-        function SystemBoot() {
-            if (systemBooted) return; 
-            systemBooted = true;
-            try {
-                StorageEngine.load(); 
-                CustomModalEngine.init(); 
-                CanvasEngine.init(); 
-                RGBRingEngine.init(); 
-                AudioEngine.init(); 
-                CursorEngine.init(); 
-                BadgeEngine.renderAll(); 
-                PageEngine.init(); 
-                SyncIndicatorEngine.init();
-                Logger.log("V100.56 Enterprise Master System Boot Complete.");
-            } catch(error) { 
-                Logger.error("Framework initialization error:", error); 
-            }
-        }
-
-        // [최하단 보안 검증: 이메일 확보 후 부팅 진행]
-        auth.onAuthStateChanged((user) => {
-            if (!user) { 
-                CustomModalEngine.alert("Session Expired", "안전한 진행을 위해 다시 로그인해 주세요.");
-                setTimeout(() => { window.location.replace('login.html'); }, 2000);
-            } else {
-                Logger.log("Secured Session Authenticated:", user.email);
-                STATE.uid = user.uid; 
-                STATE.studentEmail = user.email;
-                STATE.studentName = user.email.split('@')[0].toUpperCase() || "EXPLORER";
-                
-                const profileBox = document.getElementById('profile-box');
-                if (profileBox) profileBox.classList.add('registered');
-                const displayNameEl = document.getElementById('display-name');
-                if (displayNameEl) displayNameEl.innerText = STATE.studentName;
-                const avatarEl = document.getElementById('avatar-char');
-                if (avatarEl) avatarEl.innerText = STATE.studentName.charAt(0);
-                
-                SystemBoot(); 
-            }
-        });
-    </script>
-</body>
-</html>
+                    if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELL

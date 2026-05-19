@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#FCFBF9">
     
-    <title>Bridge Academy | Premium AI Lab V100.75</title>
+    <title>Bridge Academy | Premium AI Lab V100.85</title>
 
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     
@@ -25,6 +25,9 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <style>
+        /* ----------------------------------------------------------------------
+           [4-1. DESIGN TOKENS & CSS VARIABLES]
+        ---------------------------------------------------------------------- */
         :root {
             --br-green: #91D3B4; 
             --br-gold: #CBAE75; 
@@ -62,6 +65,9 @@
             --shadow-premium: 0px 30px 60px rgba(54, 52, 49, 0.15);
         }
 
+        /* ----------------------------------------------------------------------
+           [4-2. BASE RESET & FONT ENFORCEMENT]
+        ---------------------------------------------------------------------- */
         * { 
             margin-top: 0px; 
             margin-right: 0px; 
@@ -83,7 +89,7 @@
             overflow-y: hidden; 
             background-color: var(--br-bg); 
             color: var(--br-text); 
-            font-family: 'Pretendard', sans-serif; 
+            font-family: 'Nunito', 'Pretendard', sans-serif; 
             pointer-events: auto !important; 
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
@@ -96,20 +102,29 @@
             overflow-y: hidden; 
             background-color: var(--br-bg); 
             color: var(--br-text); 
-            font-family: 'Pretendard', sans-serif; 
+            font-family: 'Nunito', 'Pretendard', sans-serif; 
             pointer-events: auto !important; 
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
         }
 
-        a { cursor: none !important; }
-        button { border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; background-color: transparent; font-family: inherit; outline-width: 0px; cursor: none !important; }
-        input { cursor: none !important; }
-        select { cursor: none !important; }
-        textarea { cursor: none !important; }
-        ul { list-style-type: none; }
-        ol { list-style-type: none; }
-        li { list-style-type: none; }
+        a, button, input, select, textarea { 
+            font-family: inherit; 
+            cursor: none !important; 
+        }
+
+        button { 
+            border-top-width: 0px;
+            border-right-width: 0px;
+            border-bottom-width: 0px;
+            border-left-width: 0px;
+            background-color: transparent; 
+            outline-width: 0px; 
+        }
+
+        ul, ol, li { 
+            list-style-type: none; 
+        }
 
         @supports not (height: 100dvh) {
             html { height: 100vh; }
@@ -117,6 +132,9 @@
             .app-container { height: 100vh; }
         }
 
+        /* ----------------------------------------------------------------------
+           [4-3. ZERO-LATENCY CUSTOM CURSOR]
+        ---------------------------------------------------------------------- */
         .cursor-dot {
             position: fixed;
             top: 0px;
@@ -132,7 +150,7 @@
             z-index: 99999;
             transform: translate(-50%, -50%);
             transition-property: width, height, opacity, background-color;
-            transition-duration: 0.16s;
+            transition-duration: 0.1s;
             transition-timing-function: ease;
             will-change: transform;
         }
@@ -163,8 +181,8 @@
             z-index: 99998;
             transform: translate(-50%, -50%);
             transition-property: width, height, opacity, border-color, background-color;
-            transition-duration: 0.22s;
-            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+            transition-duration: 0.15s;
+            transition-timing-function: ease;
             will-change: transform;
         }
 
@@ -194,18 +212,14 @@
         @media (pointer: coarse) {
             .cursor-dot { display: none !important; }
             .cursor-ring { display: none !important; }
-            html { cursor: auto !important; }
-            body { cursor: auto !important; }
-            a { cursor: auto !important; }
-            button { cursor: auto !important; }
-            input { cursor: auto !important; }
-            select { cursor: auto !important; }
-            textarea { cursor: auto !important; }
-            .stage-wrapper { cursor: auto !important; }
-            .drawing-board { cursor: auto !important; }
-            #draw-layer { cursor: auto !important; }
+            html, body, a, button, input, select, textarea, .stage-wrapper, .drawing-board, #draw-layer { 
+                cursor: auto !important; 
+            }
         }
         
+        /* ----------------------------------------------------------------------
+           [4-4. APP CONTAINER STRUCTURE]
+        ---------------------------------------------------------------------- */
         .app-container { 
             display: flex; 
             flex-direction: row;
@@ -215,6 +229,9 @@
             pointer-events: auto !important; 
         }
         
+        /* ----------------------------------------------------------------------
+           [4-5. SIDEBAR NAVIGATION]
+        ---------------------------------------------------------------------- */
         .sidebar { 
             width: var(--sidebar-width); 
             height: 100%; 
@@ -284,6 +301,9 @@
             font-style: italic; 
         }
         
+        /* ----------------------------------------------------------------------
+           [4-6. STUDENT PROFILE WIDGET]
+        ---------------------------------------------------------------------- */
         .student-profile { 
             padding-top: 25px;
             padding-right: 30px;
@@ -405,6 +425,9 @@
             animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
+        /* ----------------------------------------------------------------------
+           [4-7. LESSON NAVIGATION LIST]
+        ---------------------------------------------------------------------- */
         .nav-list { 
             flex: 1; 
             overflow-y: auto; 
@@ -515,6 +538,9 @@
             opacity: 1; 
         }
 
+        /* ----------------------------------------------------------------------
+           [4-8. WORKSPACE & TOP BAR (GOAL INCLUDED)]
+        ---------------------------------------------------------------------- */
         .workspace { 
             flex: 1; 
             display: flex; 
@@ -570,12 +596,43 @@
         }
 
         .page-info { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 34px; 
+            font-family: 'Nunito', sans-serif; 
+            font-size: 24px; 
             font-weight: 900; 
             color: var(--br-charcoal); 
             letter-spacing: -0.5px; 
             margin-top: 2px; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .page-goal {
+            font-family: 'Pretendard', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--br-muted);
+            background-color: #F8F9FA;
+            padding-top: 4px;
+            padding-right: 12px;
+            padding-bottom: 4px;
+            padding-left: 12px;
+            border-top-left-radius: 50px;
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+            border-bottom-left-radius: 50px;
+            border-top-width: 1px;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            border-top-style: solid;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-top-color: var(--br-border);
+            border-right-color: var(--br-border);
+            border-bottom-color: var(--br-border);
+            border-left-color: var(--br-border);
         }
 
         .sync-indicator-container {
@@ -679,6 +736,9 @@
             display: flex; 
         }
         
+        /* ----------------------------------------------------------------------
+           [4-9. STAGE & DRAWING BOARD (Shrink-Wrap Flex Layout)]
+        ---------------------------------------------------------------------- */
         .stage-wrapper { 
             flex: 1; 
             display: flex; 
@@ -696,11 +756,14 @@
 
         .drawing-board { 
             position: relative; 
-            display: inline-flex; 
+            display: inline-flex; /* 교재 이미지 크기에 맞춰 캔버스가 스스로 착 달라붙도록 설계 */
             border-top-left-radius: 20px; 
             border-top-right-radius: 20px; 
             border-bottom-right-radius: 20px; 
             border-bottom-left-radius: 20px; 
+            /* 빈 화면 방어선: 이미지가 없어도 최소한의 크기를 확보하여 캔버스가 죽지 않도록 설정 */
+            min-width: 300px;
+            min-height: 200px;
             box-shadow: var(--shadow-premium); 
             background-color: #FFFFFF; 
             transition-property: opacity, transform; 
@@ -782,6 +845,9 @@
             border-bottom-left-radius: 20px; 
         }
 
+        /* ----------------------------------------------------------------------
+           [4-10. BOTTOM CONTROLS & TOOLS]
+        ---------------------------------------------------------------------- */
         .bottom-dock { 
             height: var(--dock-height); 
             background-color: rgba(255, 255, 255, 0.98); 
@@ -1101,7 +1167,6 @@
             transition-duration: 0.5s;
             transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
             text-transform: uppercase; 
-            font-family: 'Nunito', sans-serif; 
         }
 
         .btn-record { 
@@ -1349,7 +1414,6 @@
         }
 
         .analytics-title { 
-            font-family: 'Nunito', sans-serif; 
             color: var(--br-gold); 
             font-size: 14px; 
             margin-bottom: 20px; 
@@ -1433,7 +1497,6 @@
             justify-content: center; 
             align-items: center; 
             gap: 10px; 
-            font-family: 'Nunito', sans-serif; 
             box-shadow: 0px 10px 20px rgba(54, 52, 49, 0.2); 
         }
         
@@ -1524,7 +1587,6 @@
         }
 
         .bridge-modal-title {
-            font-family: 'Playfair Display', serif;
             font-size: 26px;
             font-weight: 900;
             color: var(--br-charcoal);
@@ -1555,7 +1617,6 @@
             border-bottom-left-radius: 14px;
             font-weight: 900;
             font-size: 15px;
-            font-family: 'Nunito', sans-serif;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition-property: transform, background-color, box-shadow;
@@ -1741,7 +1802,6 @@
         }
 
         .cert-title { 
-            font-family: 'Playfair Display', serif; 
             font-size: 50px; 
             color: var(--br-charcoal); 
             font-weight: 900; 
@@ -1749,7 +1809,6 @@
         }
 
         .cert-subtitle { 
-            font-family: 'Nunito', sans-serif; 
             font-size: 18px; 
             color: var(--br-muted); 
             font-weight: 900; 
@@ -1759,7 +1818,6 @@
         }
 
         .cert-name { 
-            font-family: 'Nunito', sans-serif; 
             font-size: 40px; 
             color: var(--br-green); 
             font-weight: 900; 
@@ -1879,30 +1937,19 @@
         }
         
         @keyframes blink { 
-            0% { 
-                opacity: 1; 
-            }
-            50% { 
-                opacity: 0.3; 
-            } 
-            100% { 
-                opacity: 1; 
-            }
+            0% { opacity: 1; }
+            50% { opacity: 0.3; } 
+            100% { opacity: 1; }
         }
         
         @keyframes spin {
-            0% { 
-                transform: rotate(0deg); 
-            }
-            100% { 
-                transform: rotate(360deg); 
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* ----------------------------------------------------------------------
            [4-16. MOBILE DEVICE RESPONSIVE MEDIA CONSTRAINTS]
         ---------------------------------------------------------------------- */
-        
         @media (pointer: coarse) {
             .btn-nav { min-width: 44px; min-height: 44px; }
             .btn-main { min-width: 44px; min-height: 44px; }
@@ -1950,7 +1997,8 @@
         @media (max-width: 560px) {
             .top-bar { height: 68px; padding-top: 0px; padding-right: 14px; padding-bottom: 0px; padding-left: 14px; }
             .unit-info { font-size: 10px; letter-spacing: 1.8px; }
-            .page-info { font-size: 24px; }
+            .page-info { font-size: 18px; flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 4px; }
+            .page-goal { font-size: 12px; padding-top: 2px; padding-right: 8px; padding-bottom: 2px; padding-left: 8px; }
             .ai-header { padding-left: 20px; padding-right: 20px; }
             .ai-content { padding-left: 20px; padding-right: 20px; }
             .chat-footer { padding-left: 20px; padding-right: 20px; }
@@ -2002,7 +2050,10 @@
                     </button>
                     <div>
                         <div id="unit-info" class="unit-info">UNIT LOADING...</div>
-                        <div id="page-info" class="page-info">Inquiry P.01</div>
+                        <div id="page-info" class="page-info">
+                            <span id="page-number-text">Inquiry P.01</span>
+                            <span id="page-goal-text" class="page-goal">Loading Goal...</span>
+                        </div>
                     </div>
                 </div>
                 <div class="sync-indicator-container" id="sync-indicator">
@@ -2472,7 +2523,7 @@
         };
 
         /**
-         * [5-6. SMART IMAGE LOADER ENGINE (Defensive Preloader)]
+         * [5-6. SMART IMAGE LOADER ENGINE (P0 이미지 타임아웃 방어 로직 완벽 복구)]
          */
         const SmartImageLoader = {
             requestToken: 0,
@@ -2508,14 +2559,12 @@
 
                     if (index >= possiblePaths.length) {
                         Logger.error(`Worksheet missing. 404 on ${unitId} Page ${pageNum}`);
-                        
                         if (imgElement) {
                             imgElement.style.opacity = '1';
                         }
                         if (boardElement) {
                             boardElement.classList.add('error-state');
                         }
-                        
                         setTimeout(() => {
                             if (token !== this.requestToken) {
                                 return;
@@ -2529,14 +2578,17 @@
                     const testUrl = `${possiblePaths[index]}?t=${t}`;
                     const tempImg = new Image();
                     
-                    // [Defense 5] 이미지 타임아웃 방어
+                    // [Defense 5] 이미지 로딩 8초 무한 대기 데드락 폭파 타이머
                     let loadTimeout = setTimeout(() => {
-                        if (token !== this.requestToken) return;
-                        Logger.warn("Image Load Timeout. Forcing next fallback.");
+                        if (token !== this.requestToken) {
+                            return;
+                        }
+                        Logger.warn(`Image Load Timeout on ${testUrl}. Forcing next fallback.`);
                         tempImg.src = "";
                         tryLoad(index + 1);
-                    }, 10000);
+                    }, 8000);
                     
+                    // CORS Taint 방어를 위한 익명 헤더 필수 탑재
                     tempImg.crossOrigin = "anonymous";
 
                     tempImg.onload = () => {
@@ -2545,20 +2597,17 @@
                             return;
                         }
                         Logger.log("Mounted:", testUrl);
-                        
                         if (boardElement) {
                             boardElement.classList.remove('error-state');
                         }
                         
                         if (imgElement) {
                             imgElement.crossOrigin = "anonymous";
-                            
                             imgElement.onload = () => {
                                 if (token !== this.requestToken) {
                                     return;
                                 }
                                 imgElement.style.opacity = '1';
-                                
                                 requestAnimationFrame(() => {
                                     requestAnimationFrame(() => {
                                         if (token !== this.requestToken) {
@@ -2569,7 +2618,6 @@
                                     });
                                 });
                             };
-                            
                             imgElement.src = testUrl;
                         }
                     };
@@ -2587,7 +2635,7 @@
         };
 
         /**
-         * [5-7. CLOUD FIREBASE STORAGE ENGINE (Quota Defense)]
+         * [5-7. CLOUD FIREBASE STORAGE ENGINE]
          */
         const StorageEngine = {
             cloudSaveTimer: null,
@@ -2661,7 +2709,6 @@
                 }
                 
                 if (!compressForDatabase) {
-                    // [Defense 2] LocalStorage 용량 초과 방어 (Emergency Flush)
                     try { 
                         localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, canvasData); 
                     } catch(e) {
@@ -3003,11 +3050,9 @@
                 this.cvs.addEventListener('pointerleave', end);
             },
             
-            // [Defense 6] 스택 깊은 복사 방어
             saveHistory() { 
                 this.historyIndex++; 
                 this.historyStack.length = this.historyIndex; 
-                // 원본을 훼손시키지 않기 위해 DataURL 문자열로 저장하여 독립성 보장
                 this.historyStack.push(this.cvs.toDataURL()); 
                 
                 if (this.historyStack.length > 20) { 
@@ -3046,12 +3091,10 @@
                 document.querySelectorAll('.btn-magic').forEach((el) => {
                     el.classList.remove('active');
                 });
-                
                 const activeBtn = document.getElementById(`btn-brush-${t}`); 
                 if (activeBtn) {
                     activeBtn.classList.add('active'); 
                 }
-                
                 if (this.isErasing) {
                     this.toggleEraser(); 
                 }
@@ -3242,6 +3285,20 @@
 
         const AudioEngine = {
             recordingMode: 'main',
+            
+            async ensurePermission() {
+                try {
+                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                        await navigator.mediaDevices.getUserMedia({ audio: true });
+                        return true;
+                    }
+                    return false;
+                } catch (e) {
+                    CustomModalEngine.alert("Microphone Needed", "마이크 사용을 허용해주셔야 선생님과 이야기할 수 있어요!");
+                    return false;
+                }
+            },
+            
             init() {
                 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
                 if (SR) {
@@ -3308,20 +3365,6 @@
                 }
             },
             
-            // [Defense 3] 마이크 권한 거부 시 방어 로직
-            async ensurePermission() {
-                try {
-                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                        await navigator.mediaDevices.getUserMedia({ audio: true });
-                        return true;
-                    }
-                    return false;
-                } catch (e) {
-                    CustomModalEngine.alert("Microphone Needed", "마이크 사용을 허용해주셔야 선생님과 이야기할 수 있어요!");
-                    return false;
-                }
-            },
-            
             async toggle() {
                 if (!this.rec) {
                     return; 
@@ -3332,7 +3375,6 @@
                 }
                 
                 this.recordingMode = 'main';
-                
                 const recBtn = document.getElementById('btn-record');
                 const recText = document.getElementById('record-text');
                 
@@ -3367,7 +3409,6 @@
                 }
                 
                 this.recordingMode = 'chat';
-                
                 const chatBtn = document.getElementById('btn-chat-record');
                 
                 if (!STATE.isRecording) { 
@@ -3391,8 +3432,8 @@
         const AITutor = {
             isBusy: false,
             
-            // [Defense 1] 네트워크 지연 시 15초 강제 타임아웃 AbortController 도입
             async callBackendTutor(promptText, base64Img = null) {
+                // [Defense 1] AI 통신 지연 시 무한 로딩 방어선 (15초)
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 15000);
                 
@@ -3429,8 +3470,8 @@
                     });
                     
                     clearTimeout(timeoutId);
-                    
                     const data = await response.json(); 
+                    
                     if (data.reply) {
                         return data.reply;
                     } else {
@@ -3439,11 +3480,12 @@
                 } catch (e) { 
                     clearTimeout(timeoutId);
                     if (e.name === 'AbortError') {
-                        return "앗, 연결 시간이 너무 오래 걸렸어요. 다시 버튼을 눌러주세요!";
+                        return "앗, 선생님과 연결하는 시간이 너무 오래 걸렸어요. 다시 버튼을 눌러볼까요?";
                     }
                     return "앗, 네트워크 문제로 AI 선생님이 대답하지 못했어요. 다시 제출해주세요!"; 
                 }
             },
+            
             async submit() {
                 if (STATE.isRecording) { 
                     AudioEngine.toggle(); 
@@ -3534,6 +3576,7 @@ Output: Respond with a highly engaging, encouraging message in very simple, natu
                     this.isBusy = false; 
                 }
             },
+            
             async processReply() {
                 if (!STATE.lastTranscript || this.isBusy) {
                     return; 
@@ -3579,12 +3622,255 @@ Output: Respond with a highly engaging, encouraging message in very simple, natu
                     this.isBusy = false;
                 }
             },
+            
             speak(text) { 
                 if (window.speechSynthesis) { 
-                    // [Defense 4] TTS 엔진 가비지 컬렉션 (이전 대화가 씹히는 렉 방어)
                     window.speechSynthesis.cancel(); 
-                    
                     const u = new SpeechSynthesisUtterance(text); 
                     u.lang = 'en-US'; 
-                    u.rate = 0.9; 
-                    u.pitch = 1.05;
+                    u.rate = 0.85; 
+                    u.pitch = 1.1; 
+                    
+                    const voices = window.speechSynthesis.getVoices();
+                    const preferredVoices = voices.filter(v => v.lang.startsWith('en-') && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Siri') || v.name.includes('Alex')));
+                    
+                    if (preferredVoices.length > 0) {
+                        u.voice = preferredVoices[0];
+                    }
+                    
+                    window.speechSynthesis.speak(u); 
+                } 
+            },
+            
+            close() { 
+                const panel = document.getElementById('ai-panel');
+                if (panel) {
+                    panel.classList.remove('open'); 
+                }
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.cancel(); 
+                }
+            }
+        };
+
+        if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = () => { 
+                window.speechSynthesis.getVoices(); 
+            };
+        }
+
+        const AppEngine = {
+            smoothMove(dir) {
+                const nextPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir); 
+                if (nextPage === STATE.currentPage) {
+                    return;
+                }
+                
+                StorageEngine.saveCanvasLocal(); 
+                StorageEngine.executeCloudSave(StorageEngine.createCanvasSnapshot(true));
+                
+                const board = document.getElementById('drawing-board');
+                if (board) {
+                    board.classList.add('fade-out');
+                }
+                
+                setTimeout(() => { 
+                    STATE.currentPage = nextPage; 
+                    PageEngine.load(STATE.currentPage); 
+                    setTimeout(() => { 
+                        if (board) {
+                            board.classList.remove('fade-out'); 
+                        }
+                    }, 150); 
+                }, 400);
+            },
+            handleNextAdventure() { 
+                AITutor.close(); 
+                if (CurriculumEngine.isWeekEnd(STATE.unitId, STATE.currentPage)) {
+                    CertificateEngine.open(CurriculumEngine.weekIndex(STATE.unitId, STATE.currentPage)); 
+                } else {
+                    this.smoothMove(1); 
+                }
+            }
+        };
+
+        const PageEngine = {
+            init() {
+                const list = document.getElementById('nav-list'); 
+                if (!list) {
+                    return; 
+                }
+                list.innerHTML = '';
+                
+                const unitData = PAGE_INTELLIGENCE[STATE.unitId];
+                if (unitData) {
+                    Object.keys(unitData).forEach((key) => {
+                        const item = document.createElement('div'); 
+                        item.className = 'nav-item interactive-hover'; 
+                        item.id = `nav-${key}`;
+                        
+                        const titleText = unitData[key].navTitle;
+                        const numKey = Number(key);
+                        const weekIdx = CurriculumEngine.weekIndex(STATE.unitId, numKey);
+                        
+                        item.innerHTML = `<span class="nav-title">${titleText}</span><span class="nav-badge">W${weekIdx}-P.${key}</span>`;
+                        item.onclick = () => { 
+                            AppEngine.smoothMove(numKey - STATE.currentPage); 
+                            UIEngine.closeSidebar(); 
+                        }; 
+                        list.appendChild(item);
+                    });
+                }
+                this.load(STATE.currentPage);
+            },
+            load(n) {
+                STATE.currentPage = n; 
+                STATE.lastTranscript = ""; 
+                STATE.sttConfidence = 0;
+                
+                const unitInfo = document.getElementById('unit-info');
+                if (unitInfo) {
+                    unitInfo.innerText = `MASTER LAB: ${STATE.unitId}`; 
+                }
+                
+                const pageInfo = document.getElementById('page-info');
+                const pageGoal = document.getElementById('page-goal-text');
+                const padN = String(n).padStart(2, '0');
+                
+                if (document.getElementById('page-number-text')) {
+                    document.getElementById('page-number-text').innerText = `Inquiry P.${padN}`;
+                }
+                
+                let goalText = "Free Exploration";
+                if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][n]) {
+                    goalText = PAGE_INTELLIGENCE[STATE.unitId][n].goal;
+                }
+                
+                if (pageGoal) {
+                    pageGoal.innerText = goalText;
+                }
+                
+                document.querySelectorAll('.nav-item').forEach((el) => {
+                    el.classList.remove('active');
+                });
+                
+                const activeNav = document.getElementById(`nav-${n}`);
+                const navList = document.getElementById('nav-list');
+                
+                if (activeNav) {
+                    activeNav.classList.add('active');
+                    if (navList) {
+                        navList.scrollTo({ top: activeNav.offsetTop - navList.offsetTop - 50, behavior: 'smooth' });
+                    }
+                }
+                
+                CanvasEngine.hardReset(); 
+                AITutor.close(); 
+                
+                const worksheetImg = document.getElementById('worksheet-img');
+                if (worksheetImg) {
+                    worksheetImg.style.opacity = '0';
+                }
+                
+                SmartImageLoader.findValidWorksheet(STATE.unitId, STATE.currentPage); 
+                StorageEngine.save();
+            }
+        };
+
+        const UIEngine = {
+            toggleSidebar() { 
+                if (window.innerWidth > 1180) {
+                    return; 
+                }
+                const sb = document.getElementById('sidebar');
+                if (sb) {
+                    sb.classList.toggle('open'); 
+                }
+                const bd = document.getElementById('sidebar-backdrop');
+                if (bd) {
+                    bd.classList.toggle('active'); 
+                }
+            },
+            closeSidebar() { 
+                const sb = document.getElementById('sidebar');
+                if (sb) {
+                    sb.classList.remove('open'); 
+                }
+                const bd = document.getElementById('sidebar-backdrop');
+                if (bd) {
+                    bd.classList.remove('active'); 
+                }
+            }
+        };
+
+        /**
+         * [5-20. FINAL BOOTSTRAP - THE ULTIMATE FALLBACK ENGINE]
+         * 어떤 상황에서도 화면이 하얗게 멈추지 않도록 강제 기동하는 철통 방어선
+         */
+        let systemBooted = false;
+        function SystemBoot() {
+            if (systemBooted) {
+                return; 
+            }
+            systemBooted = true;
+            
+            try {
+                StorageEngine.load(); 
+                CustomModalEngine.init(); 
+                CanvasEngine.init(); 
+                RGBRingEngine.init(); 
+                AudioEngine.init(); 
+                CursorEngine.init(); 
+                BadgeEngine.renderAll(); 
+                PageEngine.init(); 
+                SyncIndicatorEngine.init();
+                Logger.log("V100.85 Enterprise Defense Layer Boot Complete.");
+            } catch(error) { 
+                Logger.error("Framework initialization error:", error); 
+            }
+        }
+
+        try {
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    Logger.log("Secured Session Authenticated:", user.email);
+                    STATE.uid = user.uid; 
+                    STATE.studentEmail = user.email;
+                    STATE.studentName = user.email.split('@')[0].toUpperCase() || "EXPLORER";
+                    
+                    const profileBox = document.getElementById('profile-box');
+                    if (profileBox) {
+                        profileBox.classList.add('registered');
+                    }
+                    const displayNameEl = document.getElementById('display-name');
+                    if (displayNameEl) {
+                        displayNameEl.innerText = STATE.studentName;
+                    }
+                    const avatarEl = document.getElementById('avatar-char');
+                    if (avatarEl) {
+                        avatarEl.innerText = STATE.studentName.charAt(0);
+                    }
+                } else {
+                    Logger.warn("No active session. Launching in Guest Fallback Mode to prevent blackout.");
+                    STATE.studentName = "GUEST";
+                }
+                // 인증 결과와 상관없이 무조건 렌더링 부트
+                SystemBoot(); 
+            });
+        } catch (authException) {
+            Logger.error("Firebase Auth Module Failed. Engaging fallback boot.", authException);
+            SystemBoot();
+        }
+
+        // [최후의 보루] 만약 위의 모든 과정이 3.5초 이상 지연되면, 무조건 강제로 화면을 켭니다.
+        setTimeout(() => {
+            if (!systemBooted) {
+                Logger.warn("Absolute Timeout Triggered. Force booting the system.");
+                STATE.studentName = "GUEST";
+                SystemBoot();
+            }
+        }, 3500);
+
+    </script>
+</body>
+</html>

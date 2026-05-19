@@ -2,27 +2,69 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#FCFBF9">
-    <title>Bridge Academy | Premium AI Lab V100.61</title>
+    
+    <meta 
+        name="viewport" 
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    >
+    <meta 
+        name="mobile-web-app-capable" 
+        content="yes"
+    >
+    <meta 
+        name="apple-mobile-web-app-capable" 
+        content="yes"
+    >
+    <meta 
+        name="apple-mobile-web-app-status-bar-style" 
+        content="black-translucent"
+    >
+    <meta 
+        name="theme-color" 
+        content="#FCFBF9"
+    >
+    
+    <title>Bridge Academy | Premium AI Lab V100.65</title>
 
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link 
+        rel="icon" 
+        href="data:;base64,iVBORw0KGgo="
+    >
     
-    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Jua&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link 
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" 
+        rel="stylesheet"
+    >
+    <link 
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Jua&family=Nunito:wght@700;900&display=swap" 
+        rel="stylesheet"
+    >
+    <link 
+        rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
     
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> 
+    <script 
+        src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"
+    ></script>
+    <script 
+        src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"
+    ></script> 
     
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script 
+        src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"
+    ></script>
+    <script 
+        src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"
+    ></script>
+    <script 
+        src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"
+    ></script>
 
     <style>
+        /* ----------------------------------------------------------------------
+           [4-1. DESIGN TOKENS & CSS VARIABLES]
+        ---------------------------------------------------------------------- */
         :root {
             --br-green: #91D3B4; 
             --br-gold: #CBAE75; 
@@ -48,6 +90,8 @@
             
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --safe-top: env(safe-area-inset-top, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
             
             --transition-smooth: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
             --transition-fast: all 0.2s ease-in-out;
@@ -58,73 +102,178 @@
             --shadow-premium: 0px 30px 60px rgba(54, 52, 49, 0.15);
         }
 
+        /* ----------------------------------------------------------------------
+           [4-2. BASE RESET & FALLBACKS]
+        ---------------------------------------------------------------------- */
         * { 
-            margin: 0; 
-            padding: 0; 
+            margin-top: 0px; 
+            margin-right: 0px; 
+            margin-bottom: 0px; 
+            margin-left: 0px; 
+            
+            padding-top: 0px; 
+            padding-right: 0px; 
+            padding-bottom: 0px; 
+            padding-left: 0px; 
+            
             box-sizing: border-box; 
+            
             -webkit-tap-highlight-color: transparent; 
             cursor: none !important;
         }
 
-        html, body {
+        html {
             width: 100%; 
             height: 100dvh; 
-            overflow: hidden; 
+            
+            overflow-x: hidden; 
+            overflow-y: hidden; 
+            
             background-color: var(--br-bg); 
             color: var(--br-text); 
+            
             font-family: 'Pretendard', sans-serif; 
+            
             pointer-events: auto !important; 
             -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        a, button, input, select, textarea { 
+        body {
+            width: 100%; 
+            height: 100dvh; 
+            
+            overflow-x: hidden; 
+            overflow-y: hidden; 
+            
+            background-color: var(--br-bg); 
+            color: var(--br-text); 
+            
+            font-family: 'Pretendard', sans-serif; 
+            
+            pointer-events: auto !important; 
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a { 
             cursor: none !important; 
         }
 
         button { 
-            border: none; 
+            cursor: none !important; 
+            
+            border-top-width: 0px;
+            border-right-width: 0px;
+            border-bottom-width: 0px;
+            border-left-width: 0px;
+            
             background-color: transparent; 
             font-family: inherit; 
-            outline: none; 
+            outline-width: 0px; 
         }
 
-        ul, ol, li { 
-            list-style: none; 
+        input { 
+            cursor: none !important; 
+        }
+
+        select { 
+            cursor: none !important; 
+        }
+
+        textarea { 
+            cursor: none !important; 
+        }
+
+        ul { 
+            list-style-type: none; 
+        }
+
+        ol { 
+            list-style-type: none; 
+        }
+
+        li { 
+            list-style-type: none; 
         }
 
         @supports not (height: 100dvh) {
-            html, body, .app-container { 
+            html { 
+                height: 100vh; 
+            }
+            body { 
+                height: 100vh; 
+            }
+            .app-container { 
                 height: 100vh; 
             }
         }
 
+        /* ----------------------------------------------------------------------
+           [4-3. PREMIUM CUSTOM CURSOR]
+        ---------------------------------------------------------------------- */
         .cursor-dot {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0px;
+            left: 0px;
+            
             width: 4px;
             height: 4px;
+            
             background-color: rgba(54, 52, 49, 0.75);
-            border-radius: 50%;
+            
+            border-top-left-radius: 50%;
+            border-top-right-radius: 50%;
+            border-bottom-right-radius: 50%;
+            border-bottom-left-radius: 50%;
+            
             pointer-events: none;
             z-index: 99999;
+            
             transform: translate(-50%, -50%);
-            transition: width 0.16s ease, height 0.16s ease, opacity 0.16s ease, background-color 0.16s ease;
+            
+            transition-property: width, height, opacity, background-color;
+            transition-duration: 0.16s;
+            transition-timing-function: ease;
             will-change: transform;
         }
 
         .cursor-ring {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0px;
+            left: 0px;
+            
             width: 22px;
             height: 22px;
-            border: 1px solid rgba(54, 52, 49, 0.28);
-            border-radius: 50%;
+            
+            border-top-width: 1px;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            
+            border-top-style: solid;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            
+            border-top-color: rgba(54, 52, 49, 0.28);
+            border-right-color: rgba(54, 52, 49, 0.28);
+            border-bottom-color: rgba(54, 52, 49, 0.28);
+            border-left-color: rgba(54, 52, 49, 0.28);
+            
+            border-top-left-radius: 50%;
+            border-top-right-radius: 50%;
+            border-bottom-right-radius: 50%;
+            border-bottom-left-radius: 50%;
+            
             pointer-events: none;
             z-index: 99998;
+            
             transform: translate(-50%, -50%);
-            transition: width 0.15s ease, height 0.15s ease, opacity 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+            
+            transition-property: width, height, opacity, border-color, background-color;
+            transition-duration: 0.15s;
+            transition-timing-function: ease;
             will-change: transform;
         }
 
@@ -138,27 +287,76 @@
             width: 28px;
             height: 28px;
             background-color: rgba(145, 211, 180, 0.05);
-            border-color: rgba(145, 211, 180, 0.5);
+            border-top-color: rgba(145, 211, 180, 0.5);
+            border-right-color: rgba(145, 211, 180, 0.5);
+            border-bottom-color: rgba(145, 211, 180, 0.5);
+            border-left-color: rgba(145, 211, 180, 0.5);
         }
 
-        .cursor-dot.hidden, .cursor-ring.hidden {
+        .cursor-dot.hidden {
             opacity: 0;
             visibility: hidden;
         }
 
-        .stage-wrapper, .drawing-board, #draw-layer {
+        .cursor-ring.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .stage-wrapper {
+            cursor: crosshair !important;
+        }
+
+        .drawing-board {
+            cursor: crosshair !important;
+        }
+
+        #draw-layer {
             cursor: crosshair !important;
         }
 
         @media (pointer: coarse) {
-            .cursor-dot, .cursor-ring { 
+            .cursor-dot { 
                 display: none !important; 
             }
-            html, body, a, button, input, select, textarea, .stage-wrapper, .drawing-board, #draw-layer { 
+            .cursor-ring { 
+                display: none !important; 
+            }
+            html { 
+                cursor: auto !important; 
+            }
+            body { 
+                cursor: auto !important; 
+            }
+            a { 
+                cursor: auto !important; 
+            }
+            button { 
+                cursor: auto !important; 
+            }
+            input { 
+                cursor: auto !important; 
+            }
+            select { 
+                cursor: auto !important; 
+            }
+            textarea { 
+                cursor: auto !important; 
+            }
+            .stage-wrapper { 
+                cursor: auto !important; 
+            }
+            .drawing-board { 
+                cursor: auto !important; 
+            }
+            #draw-layer { 
                 cursor: auto !important; 
             }
         }
         
+        /* ----------------------------------------------------------------------
+           [4-4. APP CONTAINER]
+        ---------------------------------------------------------------------- */
         .app-container { 
             display: flex; 
             flex-direction: row;
@@ -168,30 +366,39 @@
             pointer-events: auto !important; 
         }
         
+        /* ----------------------------------------------------------------------
+           [4-5. SIDEBAR]
+        ---------------------------------------------------------------------- */
         .sidebar { 
             width: var(--sidebar-width); 
             height: 100%; 
             background-color: var(--br-paper); 
-            border-right: 1px solid var(--br-border); 
+            border-right-width: 1px; 
+            border-right-style: solid; 
+            border-right-color: var(--br-border); 
             display: flex; 
             flex-direction: column; 
             z-index: 2000; 
             flex-shrink: 0; 
-            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); 
+            transition-property: transform; 
+            transition-duration: 0.4s; 
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1); 
             box-shadow: 5px 0px 15px rgba(0, 0, 0, 0.02);
         }
 
         .sidebar-backdrop {
             position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
             background-color: rgba(0, 0, 0, 0.18);
             z-index: 1500; 
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition-property: opacity;
+            transition-duration: 0.3s;
+            transition-timing-function: ease;
             backdrop-filter: blur(3px); 
         }
 
@@ -201,10 +408,17 @@
         }
 
         .sidebar-header { 
-            padding: 35px 30px;
+            padding-top: 35px;
+            padding-right: 30px;
+            padding-bottom: 35px;
+            padding-left: 30px;
             text-align: center; 
-            border-bottom: 1px solid var(--br-border); 
-            transition: background-color 0.4s ease;
+            border-bottom-width: 1px; 
+            border-bottom-style: solid; 
+            border-bottom-color: var(--br-border); 
+            transition-property: background-color;
+            transition-duration: 0.4s;
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
         }
         
         .sidebar-header:hover {
@@ -224,14 +438,24 @@
             font-style: italic; 
         }
         
+        /* ----------------------------------------------------------------------
+           [4-6. STUDENT PROFILE]
+        ---------------------------------------------------------------------- */
         .student-profile { 
-            padding: 25px 30px;
-            border-bottom: 1px solid var(--br-border); 
+            padding-top: 25px;
+            padding-right: 30px;
+            padding-bottom: 25px;
+            padding-left: 30px;
+            border-bottom-width: 1px; 
+            border-bottom-style: solid; 
+            border-bottom-color: var(--br-border); 
             display: flex; 
             flex-direction: column; 
             gap: 15px; 
             background-color: #FAFAFA; 
-            transition: background-color 0.3s ease; 
+            transition-property: background-color; 
+            transition-duration: 0.3s; 
+            transition-timing-function: ease; 
         }
 
         .student-profile.registered { 
@@ -247,7 +471,10 @@
         .profile-avatar { 
             width: 52px; 
             height: 52px; 
-            border-radius: 50%; 
+            border-top-left-radius: 50%; 
+            border-top-right-radius: 50%; 
+            border-bottom-right-radius: 50%; 
+            border-bottom-left-radius: 50%; 
             background-color: var(--br-border); 
             color: #FFFFFF; 
             display: flex; 
@@ -256,7 +483,9 @@
             font-weight: 900; 
             font-size: 22px; 
             font-family: 'Nunito', sans-serif; 
-            transition: all 0.4s ease;
+            transition-property: background-color, box-shadow, color;
+            transition-duration: 0.4s;
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
             box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05);
         }
 
@@ -268,7 +497,8 @@
         .profile-info { 
             display: flex; 
             flex-direction: column; 
-            overflow: hidden; 
+            overflow-x: hidden; 
+            overflow-y: hidden; 
         }
 
         .profile-name { 
@@ -278,7 +508,8 @@
             color: var(--br-charcoal); 
             text-transform: uppercase; 
             white-space: nowrap; 
-            overflow: hidden; 
+            overflow-x: hidden; 
+            overflow-y: hidden; 
             text-overflow: ellipsis; 
         }
 
@@ -299,23 +530,48 @@
 
         .badge { 
             font-size: 11px; 
-            padding: 4px 10px;
-            border-radius: 12px; 
+            padding-top: 4px;
+            padding-right: 10px;
+            padding-bottom: 4px;
+            padding-left: 10px;
+            border-top-left-radius: 12px; 
+            border-top-right-radius: 12px; 
+            border-bottom-right-radius: 12px; 
+            border-bottom-left-radius: 12px; 
             background-color: #FFFFFF; 
-            border: 1px solid var(--br-border); 
+            border-top-width: 1px; 
+            border-right-width: 1px; 
+            border-bottom-width: 1px; 
+            border-left-width: 1px; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
             color: var(--br-charcoal); 
             font-weight: 800; 
             display: flex; 
             align-items: center; 
             gap: 4px; 
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.02); 
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            animation-name: popIn; 
+            animation-duration: 0.4s; 
+            animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
+        /* ----------------------------------------------------------------------
+           [4-7. NAVIGATION LIST]
+        ---------------------------------------------------------------------- */
         .nav-list { 
             flex: 1; 
             overflow-y: auto; 
-            padding: 15px;
+            padding-top: 15px;
+            padding-right: 15px;
+            padding-bottom: 15px;
+            padding-left: 15px;
             scroll-behavior: smooth; 
         }
 
@@ -329,7 +585,10 @@
 
         .nav-list::-webkit-scrollbar-thumb { 
             background-color: #E8E6E1; 
-            border-radius: 10px; 
+            border-top-left-radius: 10px; 
+            border-top-right-radius: 10px; 
+            border-bottom-right-radius: 10px; 
+            border-bottom-left-radius: 10px; 
         }
 
         .nav-list::-webkit-scrollbar-thumb:hover { 
@@ -337,27 +596,51 @@
         }
 
         .nav-item { 
-            padding: 18px 20px;
+            padding-top: 18px;
+            padding-right: 20px;
+            padding-bottom: 18px;
+            padding-left: 20px;
             margin-bottom: 10px; 
-            border-radius: 15px; 
+            border-top-left-radius: 15px; 
+            border-top-right-radius: 15px; 
+            border-bottom-right-radius: 15px; 
+            border-bottom-left-radius: 15px; 
             background-color: #FAFAFA; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-            border: 1px solid transparent; 
+            transition-property: transform, background-color, border-color, box-shadow;
+            transition-duration: 0.4s;
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+            border-top-width: 1px; 
+            border-right-width: 1px; 
+            border-bottom-width: 1px; 
+            border-left-width: 1px; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: transparent; 
+            border-right-color: transparent; 
+            border-bottom-color: transparent; 
+            border-left-color: transparent; 
         }
 
         .nav-item:hover { 
             background-color: #FFFFFF; 
-            border-color: var(--br-border);
+            border-top-color: var(--br-border);
+            border-right-color: var(--br-border);
+            border-bottom-color: var(--br-border);
+            border-left-color: var(--br-border);
             transform: translateY(-2px); 
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.02); 
         }
 
         .nav-item.active { 
             background-color: var(--br-ai-soft); 
-            border-left: 6px solid var(--br-green); 
+            border-left-width: 6px; 
+            border-left-style: solid; 
+            border-left-color: var(--br-green); 
             border-top-color: transparent; 
             border-right-color: transparent; 
             border-bottom-color: transparent; 
@@ -369,7 +652,8 @@
             font-weight: 700; 
             color: var(--br-charcoal); 
             white-space: nowrap; 
-            overflow: hidden; 
+            overflow-x: hidden; 
+            overflow-y: hidden; 
             text-overflow: ellipsis; 
             max-width: 170px; 
         }
@@ -391,24 +675,33 @@
             opacity: 1; 
         }
 
+        /* ----------------------------------------------------------------------
+           [4-8. WORKSPACE & TOP CONTEXT BAR]
+        ---------------------------------------------------------------------- */
         .workspace { 
             flex: 1; 
             display: flex; 
             flex-direction: column; 
-            min-width: 0; 
+            min-width: 0px; 
             height: 100%; 
             position: relative; 
-            overflow: hidden; 
+            overflow-x: hidden; 
+            overflow-y: hidden; 
             pointer-events: auto !important; 
         }
 
         .top-bar { 
             height: var(--topbar-height); 
-            padding: 0 45px;
+            padding-top: 0px;
+            padding-right: 45px;
+            padding-bottom: 0px;
+            padding-left: 45px;
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            border-bottom: 1px solid var(--br-border); 
+            border-bottom-width: 1px; 
+            border-bottom-style: solid; 
+            border-bottom-color: var(--br-border); 
             background-color: #FFFFFF; 
             z-index: 10; 
         }
@@ -422,7 +715,10 @@
         .mobile-menu-btn { 
             display: none; 
             font-size: 28px; 
-            padding: 10px; 
+            padding-top: 10px; 
+            padding-right: 10px; 
+            padding-bottom: 10px; 
+            padding-left: 10px; 
             color: var(--br-charcoal); 
             z-index: 1500; 
         }
@@ -449,30 +745,58 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 16px;
-            border-radius: 50px;
+            padding-top: 8px;
+            padding-right: 16px;
+            padding-bottom: 8px;
+            padding-left: 16px;
+            border-top-left-radius: 50px;
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+            border-bottom-left-radius: 50px;
             background-color: var(--br-bg);
-            border: 1px solid var(--br-border);
+            border-top-width: 1px;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            border-top-style: solid;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-top-color: var(--br-border);
+            border-right-color: var(--br-border);
+            border-bottom-color: var(--br-border);
+            border-left-color: var(--br-border);
             font-size: 12px;
             font-weight: 700;
             color: var(--br-muted);
-            transition: all 0.4s ease;
+            transition-property: background-color, color, border-color;
+            transition-duration: 0.4s;
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .sync-indicator-container.saving {
             color: var(--br-blue);
             background-color: #F0F4F8;
-            border-color: #D9E4EC; 
+            border-top-color: #D9E4EC; 
+            border-right-color: #D9E4EC; 
+            border-bottom-color: #D9E4EC; 
+            border-left-color: #D9E4EC;
         }
 
         .sync-indicator-container.saved {
             color: var(--br-success);
             background-color: #F0FDF4;
-            border-color: #DCFCE7; 
+            border-top-color: #DCFCE7; 
+            border-right-color: #DCFCE7; 
+            border-bottom-color: #DCFCE7; 
+            border-left-color: #DCFCE7;
         }
 
         .sync-icon.spin { 
-            animation: spin 1s linear infinite; 
+            animation-name: spin; 
+            animation-duration: 1s; 
+            animation-timing-function: linear; 
+            animation-iteration-count: infinite; 
         }
 
         .toast-error { 
@@ -484,10 +808,29 @@
             font-weight: 700; 
             color: var(--br-error); 
             background-color: var(--br-error-light); 
-            padding: 8px 16px;
-            border-radius: 50px; 
-            border: 1px solid var(--br-error-border); 
-            animation: popIn 0.3s ease-out; 
+            padding-top: 8px;
+            padding-right: 16px;
+            padding-bottom: 8px;
+            padding-left: 16px;
+            border-top-left-radius: 50px; 
+            border-top-right-radius: 50px; 
+            border-bottom-right-radius: 50px; 
+            border-bottom-left-radius: 50px; 
+            border-top-width: 1px; 
+            border-right-width: 1px; 
+            border-bottom-width: 1px; 
+            border-left-width: 1px; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-error-border); 
+            border-right-color: var(--br-error-border); 
+            border-bottom-color: var(--br-error-border); 
+            border-left-color: var(--br-error-border); 
+            animation-name: popIn; 
+            animation-duration: 0.3s; 
+            animation-timing-function: ease-out; 
             z-index: 5000;
             position: absolute;
             top: 20px;
@@ -499,37 +842,51 @@
             display: flex; 
         }
         
+        /* ----------------------------------------------------------------------
+           [4-9. STAGE & DRAWING BOARD (Shrink-Wrap Layout)]
+        ---------------------------------------------------------------------- */
         .stage-wrapper { 
             flex: 1; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            padding: 40px;
+            padding-top: 40px;
+            padding-right: 40px;
+            padding-bottom: 40px;
+            padding-left: 40px;
             background-color: var(--br-bg); 
             perspective: 1200px; 
-            overflow: hidden; 
+            overflow-x: hidden; 
+            overflow-y: hidden; 
         }
 
-        /* Shrink-Wrap 레이아웃 복원: 교재 원본 비율 유지 */
         .drawing-board { 
             position: relative; 
             display: inline-flex; 
-            border-radius: 20px; 
+            border-top-left-radius: 20px; 
+            border-top-right-radius: 20px; 
+            border-bottom-right-radius: 20px; 
+            border-bottom-left-radius: 20px; 
             box-shadow: var(--shadow-premium); 
             background-color: #FFFFFF; 
-            transition: opacity 0.4s, transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            transition-property: opacity, transform; 
+            transition-duration: 0.4s; 
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
             transform-origin: center; 
             pointer-events: auto !important; 
             max-width: 100%; 
             max-height: 100%; 
-            overflow: hidden;
+            overflow-x: hidden; 
+            overflow-y: hidden;
         }
 
         .drawing-board::after {
             content: '';
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
             pointer-events: none;
             z-index: 10000; 
@@ -542,7 +899,18 @@
         }
 
         .drawing-board.error-state { 
-            border: 2px dashed var(--br-error); 
+            border-top-width: 2px; 
+            border-right-width: 2px; 
+            border-bottom-width: 2px; 
+            border-left-width: 2px; 
+            border-top-style: dashed; 
+            border-right-style: dashed; 
+            border-bottom-style: dashed; 
+            border-left-style: dashed; 
+            border-top-color: var(--br-error); 
+            border-right-color: var(--br-error); 
+            border-bottom-color: var(--br-error); 
+            border-left-color: var(--br-error); 
             background-color: #FFF0F0; 
         }
 
@@ -552,10 +920,15 @@
             max-height: calc(100dvh - 250px); 
             width: auto; 
             height: auto; 
-            border-radius: 20px; 
+            border-top-left-radius: 20px; 
+            border-top-right-radius: 20px; 
+            border-bottom-right-radius: 20px; 
+            border-bottom-left-radius: 20px; 
             pointer-events: none !important; 
             opacity: 0; 
-            transition: opacity 0.5s ease; 
+            transition-property: opacity; 
+            transition-duration: 0.5s; 
+            transition-timing-function: ease; 
             user-select: none; 
             object-fit: contain;
             background-color: transparent;
@@ -563,21 +936,34 @@
 
         #draw-layer { 
             position: absolute; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
+            top: 0px; 
+            left: 0px; 
+            width: 100%; 
+            height: 100%; 
             z-index: 9999 !important; 
             touch-action: none; 
-            border-radius: 20px; 
+            border-top-left-radius: 20px; 
+            border-top-right-radius: 20px; 
+            border-bottom-right-radius: 20px; 
+            border-bottom-left-radius: 20px; 
         }
 
+        /* ----------------------------------------------------------------------
+           [4-10. BOTTOM CONTROLS]
+        ---------------------------------------------------------------------- */
         .bottom-dock { 
             height: var(--dock-height); 
             background-color: rgba(255, 255, 255, 0.98); 
-            border-top: 1px solid var(--br-border); 
+            border-top-width: 1px; 
+            border-top-style: solid; 
+            border-top-color: var(--br-border); 
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
-            padding: 0 50px var(--safe-bottom) 50px;
+            padding-top: 0px;
+            padding-right: 50px;
+            padding-bottom: var(--safe-bottom);
+            padding-left: 50px;
             z-index: 500; 
         }
 
@@ -586,18 +972,51 @@
             align-items: center; 
             gap: 15px; 
             background-color: #F8F9FA; 
-            padding: 12px 30px;
-            border-radius: 100px; 
-            border: 1px solid var(--br-border); 
+            padding-top: 12px;
+            padding-right: 30px;
+            padding-bottom: 12px;
+            padding-left: 30px;
+            border-top-left-radius: 100px; 
+            border-top-right-radius: 100px; 
+            border-bottom-right-radius: 100px; 
+            border-bottom-left-radius: 100px; 
+            border-top-width: 1px; 
+            border-right-width: 1px; 
+            border-bottom-width: 1px; 
+            border-left-width: 1px; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
         }
 
         .color-preview { 
             width: 44px; 
             height: 44px; 
-            border-radius: 50%; 
-            border: 3px solid #FFFFFF; 
+            border-top-left-radius: 50%; 
+            border-top-right-radius: 50%; 
+            border-bottom-right-radius: 50%; 
+            border-bottom-left-radius: 50%; 
+            border-top-width: 3px; 
+            border-right-width: 3px; 
+            border-bottom-width: 3px; 
+            border-left-width: 3px; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: #FFFFFF; 
+            border-right-color: #FFFFFF; 
+            border-bottom-color: #FFFFFF; 
+            border-left-color: #FFFFFF; 
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); 
-            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition-property: transform;
+            transition-duration: 0.5s;
+            transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .color-preview:active { 
@@ -606,8 +1025,13 @@
 
         .btn-magic { 
             font-size: 24px; 
-            padding: 5px;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            padding-top: 5px; 
+            padding-right: 5px; 
+            padding-bottom: 5px; 
+            padding-left: 5px; 
+            transition-property: transform, filter, opacity;
+            transition-duration: 0.5s;
+            transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
             filter: grayscale(100%); 
             opacity: 0.6; 
         }
@@ -626,34 +1050,63 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin: 0 10px;
+            margin-top: 0px;
+            margin-right: 10px;
+            margin-bottom: 0px;
+            margin-left: 10px;
         }
 
         .brush-slider { 
             width: 90px; 
             accent-color: var(--br-green); 
             height: 6px; 
-            border-radius: 10px; 
+            border-top-left-radius: 10px; 
+            border-top-right-radius: 10px; 
+            border-bottom-right-radius: 10px; 
+            border-bottom-left-radius: 10px; 
         }
 
         .brush-preview-dot {
             width: 6px;
             height: 6px;
             background-color: var(--br-charcoal);
-            border-radius: 50%;
-            transition: all 0.2s ease;
+            border-top-left-radius: 50%;
+            border-top-right-radius: 50%;
+            border-bottom-right-radius: 50%;
+            border-bottom-left-radius: 50%;
+            transition-property: width, height, background-color;
+            transition-duration: 0.1s, 0.1s, 0.3s;
             display: inline-block;
         }
 
         .btn-tool { 
             font-size: 18px; 
             font-weight: 900; 
-            padding: 10px 14px;
+            padding-top: 10px;
+            padding-right: 14px;
+            padding-bottom: 10px;
+            padding-left: 14px;
             color: var(--br-charcoal); 
-            transition: all 0.4s ease;
+            transition-property: transform, background-color, color;
+            transition-duration: 0.4s;
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
             background-color: #FFFFFF; 
-            border: 1px solid var(--br-border); 
-            border-radius: 12px; 
+            border-top-width: 1px; 
+            border-right-width: 1px; 
+            border-bottom-width: 1px; 
+            border-left-width: 1px; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
+            border-top-left-radius: 12px; 
+            border-top-right-radius: 12px; 
+            border-bottom-right-radius: 12px; 
+            border-bottom-left-radius: 12px; 
         }
 
         .btn-tool:active { 
@@ -663,11 +1116,30 @@
         .btn-erase { 
             font-size: 14px; 
             font-weight: 900; 
-            padding: 12px 18px;
-            border-radius: 14px; 
+            padding-top: 12px;
+            padding-right: 18px;
+            padding-bottom: 12px;
+            padding-left: 18px;
+            border-top-left-radius: 14px; 
+            border-top-right-radius: 14px; 
+            border-bottom-right-radius: 14px; 
+            border-bottom-left-radius: 14px; 
             background-color: #FFFFFF; 
-            border: 1px solid var(--br-border); 
-            transition: all 0.2s ease;
+            border-top-width: 1px; 
+            border-right-width: 1px; 
+            border-bottom-width: 1px; 
+            border-left-width: 1px; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
+            transition-property: background-color, color, border-color, transform;
+            transition-duration: 0.2s;
+            transition-timing-function: ease-in-out;
             color: var(--br-charcoal); 
         }
 
@@ -678,17 +1150,39 @@
         .btn-erase.active { 
             background-color: var(--br-error); 
             color: #FFFFFF; 
-            border-color: var(--br-error);
+            border-top-color: var(--br-error);
+            border-right-color: var(--br-error);
+            border-bottom-color: var(--br-error);
+            border-left-color: var(--br-error);
         }
         
         .btn-reset-all {
             font-size: 14px; 
             font-weight: 900; 
-            padding: 12px 18px;
-            border-radius: 14px; 
+            padding-top: 12px;
+            padding-right: 18px;
+            padding-bottom: 12px;
+            padding-left: 18px;
+            border-top-left-radius: 14px; 
+            border-top-right-radius: 14px; 
+            border-bottom-right-radius: 14px; 
+            border-bottom-left-radius: 14px; 
             background-color: #FFF5F5; 
-            border: 1px solid #FFEBEB; 
-            transition: all 0.2s ease;
+            border-top-width: 1px; 
+            border-right-width: 1px; 
+            border-bottom-width: 1px; 
+            border-left-width: 1px; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: #FFEBEB; 
+            border-right-color: #FFEBEB; 
+            border-bottom-color: #FFEBEB; 
+            border-left-color: #FFEBEB; 
+            transition-property: background-color, border-color, transform;
+            transition-duration: 0.2s;
+            transition-timing-function: ease-in-out;
             color: var(--br-error);
             display: flex;
             align-items: center;
@@ -697,13 +1191,19 @@
         
         .btn-reset-all:hover {
             background-color: var(--br-error-light);
-            border-color: var(--br-error-border);
+            border-top-color: var(--br-error-border);
+            border-right-color: var(--br-error-border);
+            border-bottom-color: var(--br-error-border);
+            border-left-color: var(--br-error-border);
         }
         
         .btn-reset-all:active {
             transform: scale(0.9);
         }
 
+        /* ----------------------------------------------------------------------
+           [4-11. ACTION NAVIGATION MODULES]
+        ---------------------------------------------------------------------- */
         .action-group { 
             display: flex; 
             gap: 15px; 
@@ -713,11 +1213,27 @@
         .btn-nav { 
             width: 60px; 
             height: 60px; 
-            border-radius: 18px; 
-            border: 1px solid var(--br-border); 
+            border-top-left-radius: 18px; 
+            border-top-right-radius: 18px; 
+            border-bottom-right-radius: 18px; 
+            border-bottom-left-radius: 18px; 
+            border-top-width: 1px; 
+            border-right-width: 1px; 
+            border-bottom-width: 1px; 
+            border-left-width: 1px; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
             background-color: #FFFFFF; 
             font-size: 24px; 
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition-property: background-color, border-color, transform;
+            transition-duration: 0.5s;
+            transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
             color: var(--br-charcoal); 
             display: flex; 
             justify-content: center; 
@@ -727,7 +1243,10 @@
 
         .btn-nav:hover { 
             background-color: #FAFAFA; 
-            border-color: var(--br-charcoal);
+            border-top-color: var(--br-charcoal);
+            border-right-color: var(--br-charcoal);
+            border-bottom-color: var(--br-charcoal);
+            border-left-color: var(--br-charcoal);
         }
 
         .btn-nav:active { 
@@ -736,27 +1255,49 @@
 
         .btn-main { 
             height: 60px; 
-            padding: 0 35px;
-            border-radius: 18px; 
+            padding-top: 0px;
+            padding-right: 35px;
+            padding-bottom: 0px;
+            padding-left: 35px;
+            border-top-left-radius: 18px; 
+            border-top-right-radius: 18px; 
+            border-bottom-right-radius: 18px; 
+            border-bottom-left-radius: 18px; 
             font-weight: 900; 
             font-size: 15px; 
             letter-spacing: 1px; 
             display: flex; 
             align-items: center; 
             gap: 12px; 
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition-property: background-color, color, border-color, transform, box-shadow;
+            transition-duration: 0.5s;
+            transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
             text-transform: uppercase; 
             font-family: 'Nunito', sans-serif; 
         }
 
         .btn-record { 
             background-color: #FFFFFF; 
-            border: 1px solid var(--br-border); 
+            border-top-width: 1px; 
+            border-right-width: 1px; 
+            border-bottom-width: 1px; 
+            border-left-width: 1px; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
             color: var(--br-charcoal); 
         }
 
         .btn-record:hover { 
-            border-color: var(--br-error);
+            border-top-color: var(--br-error);
+            border-right-color: var(--br-error);
+            border-bottom-color: var(--br-error);
+            border-left-color: var(--br-error);
             color: var(--br-error); 
         }
         
@@ -767,7 +1308,10 @@
         .btn-record.recording { 
             background-color: #FFF0F0; 
             color: var(--br-error); 
-            border-color: var(--br-error);
+            border-top-color: var(--br-error);
+            border-right-color: var(--br-error);
+            border-bottom-color: var(--br-error);
+            border-left-color: var(--br-error);
             box-shadow: inset 0px 0px 0px 2px var(--br-error); 
         }
 
@@ -775,14 +1319,20 @@
             width: 12px; 
             height: 12px; 
             background-color: var(--br-error); 
-            border-radius: 50%; 
+            border-top-left-radius: 50%; 
+            border-top-right-radius: 50%; 
+            border-bottom-right-radius: 50%; 
+            border-bottom-left-radius: 50%; 
             opacity: 0; 
-            transition: opacity 0.3s ease;
+            transition-property: opacity;
+            transition-duration: 0.3s;
         }
 
         .btn-record.recording .dot { 
             opacity: 1; 
-            animation: blink 1s infinite; 
+            animation-name: blink; 
+            animation-duration: 1s; 
+            animation-iteration-count: infinite; 
         }
 
         .btn-submit { 
@@ -798,22 +1348,29 @@
         }
 
         .btn-submit:active { 
-            transform: scale(0.9) translateY(0); 
+            transform: scale(0.9) translateY(0px); 
         }
 
+        /* ----------------------------------------------------------------------
+           [4-12. AI RESPONSIVE SIDE PANEL]
+        ---------------------------------------------------------------------- */
         .ai-panel { 
             position: absolute; 
-            top: 0; 
+            top: 0px; 
             right: -480px; 
             width: 480px; 
             height: 100%; 
             background-color: #FFFFFF; 
             box-shadow: -25px 0px 60px rgba(0, 0, 0, 0.12); 
             z-index: 10001; 
-            transition: right 0.6s cubic-bezier(0.19, 1, 0.22, 1); 
+            transition-property: right; 
+            transition-duration: 0.6s; 
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1); 
             display: flex; 
             flex-direction: column; 
-            border-left: 1px solid var(--br-border); 
+            border-left-width: 1px; 
+            border-left-style: solid; 
+            border-left-color: var(--br-border); 
         }
 
         .ai-panel.open { 
@@ -821,12 +1378,17 @@
         }
 
         .ai-header { 
-            padding: 30px 35px;
+            padding-top: 30px;
+            padding-right: 35px;
+            padding-bottom: 30px;
+            padding-left: 35px;
             background-color: var(--br-ai-soft); 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            border-bottom: 1px solid var(--br-border); 
+            border-bottom-width: 1px; 
+            border-bottom-style: solid; 
+            border-bottom-color: var(--br-border); 
         }
 
         .ai-title { 
@@ -842,7 +1404,9 @@
             font-size: 34px; 
             color: var(--br-muted); 
             line-height: 1; 
-            transition: all 0.2s ease;
+            transition-property: color, transform;
+            transition-duration: 0.2s;
+            transition-timing-function: ease-in-out;
         }
 
         .btn-close-ai:hover { 
@@ -851,7 +1415,10 @@
         }
         
         .ai-content { 
-            padding: 30px 35px;
+            padding-top: 30px;
+            padding-right: 35px;
+            padding-bottom: 30px;
+            padding-left: 35px;
             flex: 1; 
             overflow-y: auto; 
             display: flex; 
@@ -862,20 +1429,39 @@
         
         .chat-bubble { 
             max-width: 90%; 
-            padding: 20px 25px;
-            border-radius: 22px; 
+            padding-top: 20px;
+            padding-right: 25px;
+            padding-bottom: 20px;
+            padding-left: 25px;
+            border-top-left-radius: 22px; 
+            border-top-right-radius: 22px; 
+            border-bottom-right-radius: 22px; 
+            border-bottom-left-radius: 22px; 
             font-size: 16px; 
             line-height: 1.7; 
             font-weight: 500; 
             word-break: keep-all; 
-            animation: popIn 0.5s ease; 
+            animation-name: popIn; 
+            animation-duration: 0.5s; 
+            animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
         .chat-bubble.ai { 
             align-self: flex-start; 
             background-color: #F8F9FA; 
             border-bottom-left-radius: 4px; 
-            border: 1px solid var(--br-border); 
+            border-top-width: 1px; 
+            border-right-width: 1px; 
+            border-bottom-width: 1px; 
+            border-left-width: 1px; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
             color: var(--br-text); 
         }
 
@@ -889,7 +1475,10 @@
         
         .ai-loading-container { 
             text-align: center; 
-            padding: 50px 0;
+            padding-top: 50px;
+            padding-right: 0px;
+            padding-bottom: 50px;
+            padding-left: 0px;
         }
 
         .ai-loading-icon { 
@@ -907,9 +1496,26 @@
 
         .analytics-card { 
             background-color: #FAFAFA; 
-            border: 1px solid var(--br-border); 
-            border-radius: 24px; 
-            padding: 25px;
+            border-top-width: 1px; 
+            border-right-width: 1px; 
+            border-bottom-width: 1px; 
+            border-left-width: 1px; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
+            border-top-left-radius: 24px; 
+            border-top-right-radius: 24px; 
+            border-bottom-right-radius: 24px; 
+            border-bottom-left-radius: 24px; 
+            padding-top: 25px;
+            padding-right: 25px;
+            padding-bottom: 25px;
+            padding-left: 25px;
             align-self: stretch; 
             margin-bottom: 10px; 
         }
@@ -922,7 +1528,9 @@
             font-weight: 900; 
             text-transform: uppercase; 
             letter-spacing: 2px; 
-            border-bottom: 1px dashed var(--br-border); 
+            border-bottom-width: 1px; 
+            border-bottom-style: dashed; 
+            border-bottom-color: var(--br-border); 
             padding-bottom: 12px; 
         }
 
@@ -945,19 +1553,33 @@
             width: 100%; 
             height: 10px; 
             background-color: #E8E6E1; 
-            border-radius: 12px; 
-            overflow: hidden; 
+            border-top-left-radius: 12px; 
+            border-top-right-radius: 12px; 
+            border-bottom-right-radius: 12px; 
+            border-bottom-left-radius: 12px; 
+            overflow-x: hidden; 
+            overflow-y: hidden; 
         }
 
         .bar-fill { 
             height: 100%; 
-            transition: width 1.2s ease; 
-            border-radius: 12px; 
+            transition-property: width; 
+            transition-duration: 1.2s; 
+            transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            border-top-left-radius: 12px; 
+            border-top-right-radius: 12px; 
+            border-bottom-right-radius: 12px; 
+            border-bottom-left-radius: 12px; 
         }
 
         .chat-footer { 
-            padding: 25px 35px;
-            border-top: 1px solid var(--br-border); 
+            padding-top: 25px;
+            padding-right: 35px;
+            padding-bottom: 25px;
+            padding-left: 35px;
+            border-top-width: 1px; 
+            border-top-style: solid; 
+            border-top-color: var(--br-border); 
             display: flex; 
             flex-direction: column; 
             gap: 15px; 
@@ -969,9 +1591,14 @@
             height: 60px; 
             background-color: var(--br-charcoal); 
             color: #FFFFFF; 
-            border-radius: 18px; 
+            border-top-left-radius: 18px; 
+            border-top-right-radius: 18px; 
+            border-bottom-right-radius: 18px; 
+            border-bottom-left-radius: 18px; 
             font-weight: 900; 
-            transition: all 0.3s ease;
+            transition-property: background-color, transform;
+            transition-duration: 0.3s;
+            transition-timing-function: ease;
             font-size: 16px; 
             letter-spacing: 1px; 
             display: flex; 
@@ -998,22 +1625,33 @@
             font-weight: bold; 
             color: var(--br-blue); 
             margin-top: 15px; 
-            transition: color 0.3s ease; 
+            transition-property: color; 
+            transition-duration: 0.3s; 
         }
         
         .btn-chat-next:hover { 
             color: var(--br-gold); 
         }
 
+        /* ----------------------------------------------------------------------
+           [4-13. SUBSYSTEM DIALOG CUSTOM MODALS]
+        ---------------------------------------------------------------------- */
         .bridge-modal-overlay {
             position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100dvh;
+            top: 0px;
+            left: 0px;
+            width: 100vw;
+            height: 100dvh;
             background-color: rgba(42, 40, 37, 0.6);
             z-index: 40000;
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition-property: opacity;
+            transition-duration: 0.3s;
+            transition-timing-function: ease;
             backdrop-filter: blur(8px);
         }
 
@@ -1024,17 +1662,26 @@
 
         .bridge-modal-box {
             background-color: var(--br-paper);
-            width: 420px; max-width: 90%;
-            border-radius: 24px;
-            padding: 40px 35px 35px 35px;
+            width: 420px;
+            max-width: 90%;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            border-bottom-right-radius: 24px;
+            border-bottom-left-radius: 24px;
+            padding-top: 40px;
+            padding-right: 35px;
+            padding-bottom: 35px;
+            padding-left: 35px;
             text-align: center;
             box-shadow: var(--shadow-premium);
             transform: scale(0.9) translateY(20px);
-            transition: transform 0.4s ease;
+            transition-property: transform;
+            transition-duration: 0.4s;
+            transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .bridge-modal-overlay.active .bridge-modal-box {
-            transform: scale(1) translateY(0);
+            transform: scale(1) translateY(0px);
         }
 
         .bridge-modal-icon {
@@ -1050,7 +1697,8 @@
 
         .bridge-modal-title {
             font-family: 'Playfair Display', serif;
-            font-size: 26px; font-weight: 900;
+            font-size: 26px;
+            font-weight: 900;
             color: var(--br-charcoal);
             margin-bottom: 12px;
         }
@@ -1064,15 +1712,27 @@
         }
 
         .bridge-modal-actions {
-            display: flex; gap: 12px; justify-content: center;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
         }
 
         .bridge-modal-btn {
-            flex: 1; padding: 15px 0; border-radius: 14px;
-            font-weight: 900; font-size: 15px;
+            flex: 1;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-top-left-radius: 14px;
+            border-top-right-radius: 14px;
+            border-bottom-right-radius: 14px;
+            border-bottom-left-radius: 14px;
+            font-weight: 900;
+            font-size: 15px;
             font-family: 'Nunito', sans-serif;
-            text-transform: uppercase; letter-spacing: 1px;
-            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition-property: transform, background-color, box-shadow;
+            transition-duration: 0.5s;
+            transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .bridge-modal-btn:active {
@@ -1080,124 +1740,642 @@
         }
 
         .bridge-modal-cancel {
-            background-color: #F0EFEB; color: var(--br-charcoal);
-            border: 1px solid transparent;
+            background-color: #F0EFEB;
+            color: var(--br-charcoal);
+            border-top-width: 1px;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            border-top-style: solid;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-top-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-left-color: transparent;
         }
         
-        .bridge-modal-cancel:hover { background-color: #E5E4E0; }
+        .bridge-modal-cancel:hover {
+            background-color: #E5E4E0;
+        }
 
         .bridge-modal-confirm {
-            background-color: var(--br-error); color: #FFFFFF;
-            border: 1px solid transparent;
+            background-color: var(--br-error);
+            color: #FFFFFF;
+            border-top-width: 1px;
+            border-right-width: 1px;
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            border-top-style: solid;
+            border-right-style: solid;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-top-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            border-left-color: transparent;
             box-shadow: 0px 8px 15px rgba(231, 76, 60, 0.2);
         }
         
-        .bridge-modal-confirm:hover { background-color: #C0392B; }
+        .bridge-modal-confirm:hover {
+            background-color: #C0392B;
+        }
         
         .bridge-modal-confirm.neutral {
             background-color: var(--br-charcoal);
             box-shadow: 0px 8px 15px rgba(54, 52, 49, 0.2);
         }
         
-        .bridge-modal-confirm.neutral:hover { background-color: var(--br-gold); }
-
-        .rgb-modal { 
-            position: absolute; bottom: 130px; left: 50px; 
-            background-color: #FFFFFF; border-radius: 25px; padding: 25px; 
-            box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.15); 
-            z-index: 5000; opacity: 0; pointer-events: none; 
-            transform: translateY(20px); transition: all 0.3s ease; 
+        .bridge-modal-confirm.neutral:hover {
+            background-color: var(--br-gold);
         }
 
-        .rgb-modal.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .rgb-modal-close { text-align: center; font-size: 10px; margin-top: 12px; font-weight: 900; color: var(--br-muted); transition: color 0.2s ease; }
-        .rgb-modal-close:hover { color: var(--br-charcoal); }
+        /* ----------------------------------------------------------------------
+           [4-14. COLOR PALETTE & CERTIFICATE OVERLAYS]
+        ---------------------------------------------------------------------- */
+        .rgb-modal { 
+            position: absolute; 
+            bottom: 130px; 
+            left: 50px; 
+            background-color: #FFFFFF; 
+            border-top-left-radius: 25px; 
+            border-top-right-radius: 25px; 
+            border-bottom-right-radius: 25px; 
+            border-bottom-left-radius: 25px; 
+            padding-top: 25px;
+            padding-right: 25px;
+            padding-bottom: 25px;
+            padding-left: 25px;
+            box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.15); 
+            z-index: 5000; 
+            opacity: 0; 
+            pointer-events: none; 
+            transform: translateY(20px); 
+            transition-property: opacity, transform; 
+            transition-duration: 0.3s; 
+            transition-timing-function: ease; 
+        }
+
+        .rgb-modal.active { 
+            opacity: 1; 
+            pointer-events: auto; 
+            transform: translateY(0px); 
+        }
+        
+        .rgb-modal-close { 
+            text-align: center; 
+            font-size: 10px; 
+            margin-top: 12px; 
+            font-weight: 900; 
+            color: var(--br-muted); 
+            transition-property: color; 
+            transition-duration: 0.2s;
+        }
+
+        .rgb-modal-close:hover { 
+            color: var(--br-charcoal); 
+        }
 
         .cert-modal-overlay { 
-            position: fixed; inset: 0; width: 100vw; height: 100dvh; 
-            background-color: rgba(0, 0, 0, 0.85); z-index: 30000; 
-            display: flex; justify-content: center; align-items: center; 
-            opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(15px); 
+            position: fixed; 
+            top: 0px; 
+            right: 0px;
+            bottom: 0px;
+            left: 0px; 
+            width: 100vw; 
+            height: 100dvh; 
+            background-color: rgba(0, 0, 0, 0.85); 
+            z-index: 30000; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition-property: opacity;
+            transition-duration: 0.4s;
+            transition-timing-function: ease; 
+            backdrop-filter: blur(15px); 
         }
 
-        .cert-modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .cert-modal-overlay.active { 
+            opacity: 1; 
+            pointer-events: auto; 
+        }
 
         .cert-card { 
-            background-color: #FFFFFF; width: 850px; max-width: 90%; 
-            border-radius: 35px; padding: 60px; text-align: center; position: relative; 
+            background-color: #FFFFFF; 
+            width: 850px; 
+            max-width: 90%; 
+            border-top-left-radius: 35px; 
+            border-top-right-radius: 35px; 
+            border-bottom-right-radius: 35px; 
+            border-bottom-left-radius: 35px; 
+            padding-top: 60px;
+            padding-right: 60px;
+            padding-bottom: 60px;
+            padding-left: 60px;
+            text-align: center; 
+            position: relative; 
             box-shadow: 0px 40px 80px rgba(0, 0, 0, 0.4); 
-            transform: scale(0.85); transition: transform 0.5s ease; 
+            transform: scale(0.85); 
+            transition-property: transform; 
+            transition-duration: 0.5s; 
+            transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
-        .cert-modal-overlay.active .cert-card { transform: scale(1); }
+        .cert-modal-overlay.active .cert-card { 
+            transform: scale(1); 
+        }
 
-        .cert-border { border: 10px solid var(--br-gold); border-radius: 25px; padding: 50px; position: relative; }
-        .cert-title { font-family: 'Playfair Display', serif; font-size: 50px; color: var(--br-charcoal); font-weight: 900; margin-bottom: 15px; }
-        .cert-subtitle { font-family: 'Nunito', sans-serif; font-size: 18px; color: var(--br-muted); font-weight: 900; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 35px; }
-        .cert-name { font-family: 'Nunito', sans-serif; font-size: 40px; color: var(--br-green); font-weight: 900; margin-bottom: 25px; text-decoration: underline; text-decoration-color: var(--br-gold); }
-        .cert-img-container { width: 100%; max-width: 450px; height: 280px; margin: 0 auto 35px auto; border-radius: 18px; border: 3px dashed var(--br-border); overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: var(--br-bg); }
-        .cert-img-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .cert-msg { font-size: 18px; color: var(--br-text); line-height: 1.6; font-weight: 600; margin-bottom: 35px; font-style: italic; }
-        .btn-print { background-color: var(--br-charcoal); color: #FFFFFF; padding: 18px 45px; font-size: 18px; font-weight: 900; border-radius: 100px; display: inline-flex; align-items: center; gap: 12px; box-shadow: 0 12px 25px rgba(0,0,0,0.15); transition: all 0.5s ease; }
-        .btn-print:hover { transform: translateY(-4px); box-shadow: 0 20px 35px rgba(203,174,117,0.3); background-color: var(--br-gold); }
-        .cert-close { position: absolute; top: 25px; right: 35px; font-size: 35px; color: var(--br-muted); font-weight: 900; transition: all 0.2s ease; }
-        .cert-close:hover { color: var(--br-error); transform: rotate(90deg); }
+        .cert-border { 
+            border-top-width: 10px; 
+            border-right-width: 10px; 
+            border-bottom-width: 10px; 
+            border-left-width: 10px; 
+            border-top-style: solid; 
+            border-right-style: solid; 
+            border-bottom-style: solid; 
+            border-left-style: solid; 
+            border-top-color: var(--br-gold); 
+            border-right-color: var(--br-gold); 
+            border-bottom-color: var(--br-gold); 
+            border-left-color: var(--br-gold); 
+            border-top-left-radius: 25px; 
+            border-top-right-radius: 25px; 
+            border-bottom-right-radius: 25px; 
+            border-bottom-left-radius: 25px; 
+            padding-top: 50px;
+            padding-right: 50px;
+            padding-bottom: 50px;
+            padding-left: 50px;
+            position: relative; 
+        }
 
-        @keyframes popIn { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .cert-title { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 50px; 
+            color: var(--br-charcoal); 
+            font-weight: 900; 
+            margin-bottom: 15px; 
+        }
 
-        /* ======================================================================
-           [13] MOBILE RESPONSIVE
-           ====================================================================== */
+        .cert-subtitle { 
+            font-family: 'Nunito', sans-serif; 
+            font-size: 18px; 
+            color: var(--br-muted); 
+            font-weight: 900; 
+            letter-spacing: 4px; 
+            text-transform: uppercase; 
+            margin-bottom: 35px; 
+        }
+
+        .cert-name { 
+            font-family: 'Nunito', sans-serif; 
+            font-size: 40px; 
+            color: var(--br-green); 
+            font-weight: 900; 
+            margin-bottom: 25px; 
+            text-decoration-line: underline; 
+            text-decoration-color: var(--br-gold); 
+        }
+
+        .cert-img-container { 
+            width: 100%; 
+            max-width: 450px; 
+            height: 280px; 
+            margin-top: 0px;
+            margin-right: auto;
+            margin-bottom: 35px;
+            margin-left: auto;
+            border-top-left-radius: 18px; 
+            border-top-right-radius: 18px; 
+            border-bottom-right-radius: 18px; 
+            border-bottom-left-radius: 18px; 
+            border-top-width: 3px; 
+            border-right-width: 3px; 
+            border-bottom-width: 3px; 
+            border-left-width: 3px; 
+            border-top-style: dashed; 
+            border-right-style: dashed; 
+            border-bottom-style: dashed; 
+            border-left-style: dashed; 
+            border-top-color: var(--br-border); 
+            border-right-color: var(--br-border); 
+            border-bottom-color: var(--br-border); 
+            border-left-color: var(--br-border); 
+            overflow-x: hidden; 
+            overflow-y: hidden; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background-color: var(--br-bg); 
+        }
+
+        .cert-img-container img { 
+            max-width: 100%; 
+            max-height: 100%; 
+            object-fit: contain; 
+        }
+
+        .cert-msg { 
+            font-size: 18px; 
+            color: var(--br-text); 
+            line-height: 1.6; 
+            font-weight: 600; 
+            margin-bottom: 35px; 
+            font-style: italic; 
+        }
+
+        .btn-print { 
+            background-color: var(--br-charcoal); 
+            color: #FFFFFF; 
+            padding-top: 18px;
+            padding-right: 45px;
+            padding-bottom: 18px;
+            padding-left: 45px;
+            font-size: 18px; 
+            font-weight: 900; 
+            border-top-left-radius: 100px; 
+            border-top-right-radius: 100px; 
+            border-bottom-right-radius: 100px; 
+            border-bottom-left-radius: 100px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 12px; 
+            box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.15); 
+            transition-property: transform, box-shadow, background-color;
+            transition-duration: 0.5s;
+            transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .btn-print:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0px 20px 35px rgba(203, 174, 117, 0.3); 
+            background-color: var(--br-gold); 
+        }
+        
+        .btn-print:active {
+            transform: scale(0.95);
+        }
+
+        .cert-close { 
+            position: absolute; 
+            top: 25px; 
+            right: 35px; 
+            font-size: 35px; 
+            color: var(--br-muted); 
+            font-weight: 900; 
+            transition-property: color, transform; 
+            transition-duration: 0.2s; 
+            transition-timing-function: ease-in-out;
+        }
+        
+        .cert-close:hover { 
+            color: var(--br-error); 
+            transform: rotate(90deg); 
+        }
+
+        /* ----------------------------------------------------------------------
+           [4-15. CSS KEYFRAMES ANIMATIONS]
+        ---------------------------------------------------------------------- */
+        @keyframes popIn { 
+            from { 
+                opacity: 0; 
+                transform: scale(0.92) translateY(15px); 
+            } 
+            to { 
+                opacity: 1; 
+                transform: scale(1) translateY(0px); 
+            } 
+        }
+        
+        @keyframes blink { 
+            0% { 
+                opacity: 1; 
+            }
+            50% { 
+                opacity: 0.3; 
+            } 
+            100% { 
+                opacity: 1; 
+            }
+        }
+        
+        @keyframes spin {
+            0% { 
+                transform: rotate(0deg); 
+            }
+            100% { 
+                transform: rotate(360deg); 
+            }
+        }
+
+        /* ----------------------------------------------------------------------
+           [4-16. MOBILE DEVICE RESPONSIVE MEDIA CONSTRAINTS]
+        ---------------------------------------------------------------------- */
+        
         @media (pointer: coarse) {
-            .btn-nav, .btn-main, .btn-tool, .btn-erase, .btn-magic, .color-preview, .btn-reset-all { min-width: 44px; min-height: 44px; }
+            .btn-nav { 
+                min-width: 44px; 
+                min-height: 44px; 
+            }
+            .btn-main { 
+                min-width: 44px; 
+                min-height: 44px; 
+            }
+            .btn-tool { 
+                min-width: 44px; 
+                min-height: 44px; 
+            }
+            .btn-erase { 
+                min-width: 44px; 
+                min-height: 44px; 
+            }
+            .btn-magic { 
+                min-width: 44px; 
+                min-height: 44px; 
+            }
+            .color-preview { 
+                min-width: 44px; 
+                min-height: 44px; 
+            }
+            .btn-reset-all { 
+                min-width: 44px; 
+                min-height: 44px; 
+            }
         }
 
-        @media (max-width: 1180px) {
-            .mobile-menu-btn { display: block; }
-            .sidebar { position: fixed; inset: 0 auto 0 0; transform: translateX(-100%); box-shadow: none; }
-            .sidebar.open { transform: translateX(0); box-shadow: 20px 0 50px rgba(0,0,0,0.18); }
-            .workspace { width: 100%; }
-            .top-bar { height: 76px; padding: 0 24px; }
-            .stage-wrapper { padding: 20px; }
-            .bottom-dock { height: 128px; padding: 14px 24px; gap: 14px; }
-            .tool-group, .action-group { flex-wrap: wrap; justify-content: center; }
-            .btn-main { padding: 0 22px; }
+        @media (min-width: 801px) and (max-width: 1180px) {
+            .mobile-menu-btn { 
+                display: block; 
+            }
+            
+            .sidebar { 
+                position: fixed; 
+                top: 0px; 
+                left: 0px; 
+                transform: translateX(-100%); 
+                box-shadow: none; 
+            }
+            
+            .sidebar.open { 
+                transform: translateX(0px); 
+                box-shadow: 20px 0px 50px rgba(0, 0, 0, 0.18); 
+            }
+            
+            .workspace { 
+                width: 100%; 
+            }
+            
+            .top-bar { 
+                height: 76px; 
+                padding-top: 0px;
+                padding-right: 24px;
+                padding-bottom: 0px;
+                padding-left: 24px;
+            }
+            
+            .stage-wrapper { 
+                padding-top: 20px;
+                padding-right: 20px;
+                padding-bottom: 20px;
+                padding-left: 20px;
+            }
+            
+            .bottom-dock { 
+                height: 128px; 
+                padding-top: 14px;
+                padding-right: 24px;
+                padding-bottom: 14px;
+                padding-left: 24px;
+                gap: 14px; 
+            }
+            
+            .tool-group { 
+                flex-wrap: wrap; 
+                justify-content: center; 
+            }
+            
+            .action-group { 
+                flex-wrap: wrap; 
+                justify-content: center; 
+            }
+            
+            .btn-main { 
+                padding-top: 0px; 
+                padding-right: 22px; 
+                padding-bottom: 0px; 
+                padding-left: 22px; 
+            }
         }
 
         @media (max-width: 800px) {
-            .stage-wrapper { padding: 12px; }
-            #worksheet-img { min-width: 0; width: 100%; max-height: calc(100dvh - 240px); }
-            .bottom-dock { height: calc(140px + var(--safe-bottom)); flex-direction: column; padding: 10px 20px calc(10px + var(--safe-bottom)) 20px; gap: 12px; border-radius: 25px 25px 0 0; }
-            .tool-group { width: 100%; padding: 8px 20px; }
-            .action-group { width: 100%; justify-content: space-between; }
-            .btn-nav, .btn-main { height: 50px; font-size: 13px; }
-            .ai-panel { width: 100%; right: -100%; border-left: 0; }
-            .rgb-modal { left: 50%; transform: translateX(-50%) translateY(20px); bottom: calc(160px + var(--safe-bottom)); }
-            .rgb-modal.active { transform: translateX(-50%) translateY(0); }
-            .cert-card { padding: 30px 20px; }
-            .cert-border { padding: 20px; }
-            .cert-title { font-size: 30px; }
-            .bridge-modal-box { padding: 30px 20px; max-width: 95%; }
+            .mobile-menu-btn { 
+                display: block; 
+            }
+            
+            .sidebar { 
+                position: fixed; 
+                top: 0px; 
+                left: 0px; 
+                transform: translateX(-100%); 
+                box-shadow: none; 
+            }
+            
+            .sidebar.open { 
+                transform: translateX(0px); 
+                box-shadow: 20px 0px 50px rgba(0, 0, 0, 0.2); 
+            }
+            
+            .workspace { 
+                width: 100%; 
+            }
+            
+            .stage-wrapper { 
+                padding-top: 12px;
+                padding-right: 12px;
+                padding-bottom: 12px;
+                padding-left: 12px;
+            }
+            
+            #worksheet-img { 
+                min-width: 0px; 
+                width: 100%; 
+                max-width: 100%; 
+                max-height: calc(100dvh - 240px); 
+            }
+            
+            .bottom-dock { 
+                height: calc(140px + var(--safe-bottom)); 
+                flex-direction: column; 
+                justify-content: center; 
+                padding-top: 10px;
+                padding-right: 20px;
+                padding-bottom: calc(10px + var(--safe-bottom));
+                padding-left: 20px;
+                gap: 12px; 
+                border-top-left-radius: 25px; 
+                border-top-right-radius: 25px; 
+                border-bottom-right-radius: 0px; 
+                border-bottom-left-radius: 0px; 
+            }
+            
+            .tool-group { 
+                width: 100%; 
+                justify-content: center; 
+                padding-top: 8px;
+                padding-right: 20px;
+                padding-bottom: 8px;
+                padding-left: 20px;
+            }
+            
+            .action-group { 
+                width: 100%; 
+                justify-content: space-between; 
+            }
+            
+            .btn-nav { 
+                height: 50px; 
+                font-size: 13px; 
+            }
+            
+            .btn-main { 
+                height: 50px; 
+                font-size: 13px; 
+            }
+            
+            .ai-panel { 
+                width: 100%; 
+                right: -100%; 
+                border-left-width: 0px; 
+            }
+            
+            .rgb-modal { 
+                left: 50%; 
+                transform: translateX(-50%) translateY(20px); 
+                bottom: calc(160px + var(--safe-bottom)); 
+            }
+            
+            .rgb-modal.active { 
+                transform: translateX(-50%) translateY(0px); 
+            }
+            
+            .cert-card { 
+                padding-top: 30px;
+                padding-right: 20px;
+                padding-bottom: 30px;
+                padding-left: 20px;
+            }
+            
+            .cert-border { 
+                padding-top: 20px;
+                padding-right: 20px;
+                padding-bottom: 20px;
+                padding-left: 20px;
+            }
+            
+            .cert-title { 
+                font-size: 30px; 
+            }
+            
+            .bridge-modal-box {
+                padding-top: 30px;
+                padding-right: 20px;
+                padding-bottom: 30px;
+                padding-left: 20px;
+                max-width: 95%;
+            }
         }
 
         @media (max-width: 560px) {
-            .top-bar { height: 68px; padding: 0 14px; }
-            .unit-info { font-size: 10px; letter-spacing: 1.8px; }
-            .page-info { font-size: 24px; }
-            .ai-header, .ai-content, .chat-footer { padding: 0 20px; }
-            .chat-bubble { max-width: 96%; font-size: 15px; }
+            .top-bar { 
+                height: 68px; 
+                padding-top: 0px;
+                padding-right: 14px;
+                padding-bottom: 0px;
+                padding-left: 14px;
+            }
+            
+            .unit-info { 
+                font-size: 10px; 
+                letter-spacing: 1.8px; 
+            }
+            
+            .page-info { 
+                font-size: 24px; 
+            }
+            
+            .ai-header { 
+                padding-left: 20px; 
+                padding-right: 20px; 
+            }
+            
+            .ai-content { 
+                padding-left: 20px; 
+                padding-right: 20px; 
+            }
+            
+            .chat-footer { 
+                padding-left: 20px; 
+                padding-right: 20px; 
+            }
+            
+            .chat-bubble { 
+                max-width: 96%; 
+                font-size: 15px; 
+            }
         }
 
         @media (max-width: 480px) {
-            .bottom-dock { height: calc(170px + var(--safe-bottom)); padding: 10px 12px calc(10px + var(--safe-bottom)) 12px; }
-            .tool-group { gap: 6px; padding: 8px; border-radius: 18px; flex-wrap: wrap; }
-            .btn-magic { font-size: 20px; }
-            .brush-slider { width: 72px; }
-            #worksheet-img { max-height: calc(100dvh - 220px); }
-            .btn-main { height: 48px; padding: 0 14px; flex: 1; justify-content: center; }
-            .btn-nav { width: 48px; height: 48px; }
+            .bottom-dock { 
+                height: calc(170px + var(--safe-bottom)); 
+                padding-top: 10px;
+                padding-right: 12px;
+                padding-bottom: calc(10px + var(--safe-bottom));
+                padding-left: 12px;
+            }
+            
+            .tool-group { 
+                gap: 6px; 
+                padding-top: 8px;
+                padding-right: 8px;
+                padding-bottom: 8px;
+                padding-left: 8px;
+                border-top-left-radius: 18px; 
+                border-top-right-radius: 18px; 
+                border-bottom-right-radius: 18px; 
+                border-bottom-left-radius: 18px; 
+                flex-wrap: wrap; 
+            }
+            
+            .btn-magic { 
+                font-size: 20px; 
+            }
+            
+            .brush-slider { 
+                width: 72px; 
+            }
+            
+            #worksheet-img { 
+                max-height: calc(100dvh - 220px); 
+            }
+            
+            .btn-main { 
+                height: 48px; 
+                padding-top: 0px;
+                padding-right: 14px;
+                padding-bottom: 0px;
+                padding-left: 14px;
+                font-size: 12px; 
+                flex: 1; 
+                justify-content: center; 
+            }
+            
+            .btn-nav { 
+                width: 48px; 
+                height: 48px; 
+            }
         }
     </style>
 </head>
@@ -1210,7 +2388,7 @@
         
         <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="UIEngine.closeSidebar()"></div>
 
-        <nav class="sidebar" id="sidebar">
+        <nav class="sidebar" id="sidebar" aria-label="Curriculum Navigation">
             <header class="sidebar-header" onclick="location.href='dashboard.html'">
                 <div class="brand-logo">Bridge<span>Academy</span></div>
             </header>
@@ -1224,7 +2402,7 @@
                 </div>
                 <div class="badge-container" id="badge-container"></div>
             </section>
-            <section class="nav-list" id="nav-list"></section>
+            <section class="nav-list" id="nav-list" aria-label="Weekly Lessons"></section>
         </nav>
 
         <div class="workspace">
@@ -1241,7 +2419,10 @@
                 </div>
             </header>
             
-            <div id="error-toast" class="toast-error" role="alert"><i class="fa-solid fa-triangle-exclamation"></i> <span id="error-toast-msg">Error</span></div>
+            <div id="error-toast" class="toast-error" role="alert">
+                <i class="fa-solid fa-triangle-exclamation"></i> 
+                <span id="error-toast-msg">Error Message</span>
+            </div>
 
             <main class="stage-wrapper interactive-hover">
                 <div class="drawing-board" id="drawing-board">
@@ -1251,26 +2432,39 @@
             </main>
 
             <footer class="bottom-dock">
-                <div class="tool-group" role="group">
+                <div class="tool-group" role="group" aria-label="Drawing Tools">
                     <div class="color-preview interactive-hover" id="btn-color" onclick="RGBRingEngine.toggle()"></div>
-                    <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;" tabindex="-1">
+                    <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;" aria-hidden="true" tabindex="-1">
                     <button class="btn-magic active interactive-hover" id="btn-brush-normal" onclick="CanvasEngine.setBrush('normal')">🖍️</button>
                     <button class="btn-magic interactive-hover" id="btn-brush-neon" onclick="CanvasEngine.setBrush('neon')">🌟</button>
                     <button class="btn-magic interactive-hover" id="btn-brush-rainbow" onclick="CanvasEngine.setBrush('rainbow')">🌈</button>
+                    
                     <div class="brush-slider-wrapper">
                         <input type="range" class="brush-slider interactive-hover" id="brush-size" min="2" max="35" value="6">
                         <div class="brush-preview-dot" id="brush-preview-dot"></div>
                     </div>
-                    <button class="btn-tool interactive-hover" onclick="CanvasEngine.undo()"><i class="fa-solid fa-rotate-left"></i></button>
+                    
+                    <button class="btn-tool interactive-hover" onclick="CanvasEngine.undo()">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </button>
                     <button class="btn-erase interactive-hover" id="btn-eraser" onclick="CanvasEngine.toggleEraser()">ERASER</button>
-                    <button class="btn-reset-all interactive-hover" onclick="CanvasEngine.promptHardReset()"><i class="fa-solid fa-trash-can"></i> CLEAR</button>
+                    <button class="btn-reset-all interactive-hover" onclick="CanvasEngine.promptHardReset()">
+                        <i class="fa-solid fa-trash-can"></i> CLEAR
+                    </button>
                 </div>
                 
                 <div class="action-group" role="group">
-                    <button class="btn-nav interactive-hover" onclick="AppEngine.smoothMove(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-                    <button class="btn-main btn-record interactive-hover" id="btn-record" onclick="AudioEngine.toggle()"><div class="dot"></div><span id="record-text">Voice Log</span></button>
+                    <button class="btn-nav interactive-hover" onclick="AppEngine.smoothMove(-1)">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button class="btn-main btn-record interactive-hover" id="btn-record" onclick="AudioEngine.toggle()">
+                        <div class="dot"></div>
+                        <span id="record-text">Voice Log</span>
+                    </button>
                     <button class="btn-main btn-submit interactive-hover" onclick="AITutor.submit()">Submit ✨</button>
-                    <button class="btn-nav interactive-hover" onclick="AppEngine.smoothMove(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="btn-nav interactive-hover" onclick="AppEngine.smoothMove(1)">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
                 </div>
             </footer>
         </div>
@@ -1318,6 +2512,9 @@
     </div>
 
     <script>
+        /**
+         * [5-1. 플랫폼 부트셋 환경설정]
+         */
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
             API_TUTOR_ENDPOINT: "https://sparkling-sky-6699.ebin22725.workers.dev", 
@@ -1335,7 +2532,9 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // [Logger System]
+        /**
+         * [5-2. 시스템 로거 유틸리티]
+         */
         const Logger = {
             log(msg, data = "") { 
                 console.log(`[BRIDGE OK] ${msg}`, data); 
@@ -1347,9 +2546,9 @@
                 console.error(`[BRIDGE FATAL] ${msg}`, err); 
                 const toast = document.getElementById('error-toast');
                 if (toast) {
-                    const m = document.getElementById('error-toast-msg');
-                    if (m) {
-                        m.innerText = msg;
+                    const toastMsg = document.getElementById('error-toast-msg');
+                    if (toastMsg) {
+                        toastMsg.innerText = msg;
                     }
                     toast.classList.add('show');
                     setTimeout(() => {
@@ -1359,113 +2558,148 @@
             }
         };
 
-        // [Custom Modal Engine]
+        /**
+         * [5-3. 프리미엄 커스텀 모달 다이얼로그 엔진]
+         */
         const CustomModalEngine = {
-            init() { 
-                this.o = document.getElementById('custom-modal-overlay'); 
-                this.t = document.getElementById('custom-modal-title'); 
-                this.m = document.getElementById('custom-modal-text'); 
-                this.i = document.getElementById('custom-modal-icon'); 
-                this.a = document.getElementById('custom-modal-actions'); 
+            overlay: null,
+            titleEl: null,
+            textEl: null,
+            iconEl: null,
+            actionsEl: null,
+
+            init() {
+                this.overlay = document.getElementById('custom-modal-overlay');
+                this.titleEl = document.getElementById('custom-modal-title');
+                this.textEl = document.getElementById('custom-modal-text');
+                this.iconEl = document.getElementById('custom-modal-icon');
+                this.actionsEl = document.getElementById('custom-modal-actions');
             },
-            alert(title, msg) { 
-                if (!this.o) {
-                    this.init(); 
+
+            alert(title, message) {
+                if (!this.overlay) {
+                    this.init();
                 }
-                this.t.innerText = title; 
-                this.m.innerText = msg; 
-                this.i.className = "fa-solid fa-circle-exclamation bridge-modal-icon warning"; 
-                this.a.innerHTML = ''; 
+                this.titleEl.innerText = title;
+                this.textEl.innerText = message;
+                this.iconEl.className = "fa-solid fa-circle-exclamation bridge-modal-icon warning";
+                this.actionsEl.innerHTML = ''; 
                 
-                const btn = document.createElement('button'); 
-                btn.className = "bridge-modal-btn bridge-modal-confirm neutral interactive-hover"; 
-                btn.innerText = "OK"; 
-                btn.onclick = () => {
+                const btnOk = document.createElement('button');
+                btnOk.className = "bridge-modal-btn bridge-modal-confirm neutral interactive-hover";
+                btnOk.innerText = "OK";
+                btnOk.onclick = () => {
                     this.close();
                 };
                 
-                this.a.appendChild(btn); 
-                this.o.classList.add('active'); 
+                this.actionsEl.appendChild(btnOk);
+                this.overlay.classList.add('active');
             },
-            confirm(title, msg, onConfirm) { 
-                if (!this.o) {
-                    this.init(); 
+
+            confirm(title, message, onConfirm) {
+                if (!this.overlay) {
+                    this.init();
                 }
-                this.t.innerText = title; 
-                this.m.innerText = msg; 
-                this.i.className = "fa-solid fa-trash-can bridge-modal-icon warning"; 
-                this.a.innerHTML = ''; 
+                this.titleEl.innerText = title;
+                this.textEl.innerText = message;
+                this.iconEl.className = "fa-solid fa-trash-can bridge-modal-icon warning";
+                this.actionsEl.innerHTML = '';
                 
-                const c = document.createElement('button'); 
-                c.className = "bridge-modal-btn bridge-modal-cancel interactive-hover"; 
-                c.innerText = "Keep It"; 
-                c.onclick = () => {
+                const btnCancel = document.createElement('button');
+                btnCancel.className = "bridge-modal-btn bridge-modal-cancel interactive-hover";
+                btnCancel.innerText = "Keep It";
+                btnCancel.onclick = () => {
                     this.close();
                 };
                 
-                const k = document.createElement('button'); 
-                k.className = "bridge-modal-btn bridge-modal-confirm interactive-hover"; 
-                k.innerText = "Yes, Clear"; 
-                k.onclick = () => { 
-                    this.close(); 
-                    if (onConfirm) {
-                        onConfirm(); 
+                const btnConfirm = document.createElement('button');
+                btnConfirm.className = "bridge-modal-btn bridge-modal-confirm interactive-hover";
+                btnConfirm.innerText = "Yes, Clear";
+                btnConfirm.onclick = () => {
+                    this.close();
+                    if (typeof onConfirm === 'function') {
+                        onConfirm();
                     }
-                }; 
+                };
                 
-                this.a.appendChild(c); 
-                this.a.appendChild(k); 
-                this.o.classList.add('active'); 
+                this.actionsEl.appendChild(btnCancel);
+                this.actionsEl.appendChild(btnConfirm);
+                this.overlay.classList.add('active');
             },
-            close() { 
-                if (this.o) {
-                    this.o.classList.remove('active'); 
+
+            close() {
+                if (this.overlay) {
+                    this.overlay.classList.remove('active');
                 }
             }
         };
 
-        // [Zero-Latency Cursor Engine]
+        /**
+         * [5-4. 제로 레이턴시 다이나믹 커서 트래커]
+         */
         const CursorEngine = {
+            dot: null,
+            ring: null,
+            posX: 0,
+            posY: 0,
+            mouseX: 0,
+            mouseY: 0,
+            initialized: false,
+
             init() {
                 if (window.matchMedia("(pointer: coarse)").matches) {
                     return;
                 }
-                this.d = document.getElementById('cursor-dot'); 
-                this.r = document.getElementById('cursor-ring'); 
-                
-                if (!this.d || !this.r) {
+
+                this.dot = document.getElementById('cursor-dot');
+                this.ring = document.getElementById('cursor-ring');
+
+                if (!this.dot || !this.ring) {
                     return;
                 }
-                
-                document.addEventListener('mousemove', (e) => { 
-                    this.d.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
-                    this.r.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
-                    
-                    if (e.target.closest('.stage-wrapper, .drawing-board, #draw-layer')) { 
-                        this.d.classList.add('hidden'); 
-                        this.r.classList.add('hidden'); 
-                    } else { 
-                        this.d.classList.remove('hidden'); 
-                        this.r.classList.remove('hidden'); 
-                    } 
+
+                this.initialized = true;
+
+                document.addEventListener('mousemove', (e) => {
+                    this.mouseX = e.clientX;
+                    this.mouseY = e.clientY;
+
+                    this.dot.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
+                    this.ring.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
+
+                    const isDrawingSurface = Boolean(e.target.closest('.stage-wrapper, .drawing-board, #draw-layer'));
+
+                    if (isDrawingSurface) {
+                        this.dot.classList.add('hidden');
+                        this.ring.classList.add('hidden');
+                    } else {
+                        this.dot.classList.remove('hidden');
+                        this.ring.classList.remove('hidden');
+                    }
                 });
-                
-                document.addEventListener('mouseover', (e) => { 
-                    if (!e.target.closest('.stage-wrapper, .drawing-board, #draw-layer') && e.target.closest('.interactive-hover, a, button, input[type="range"]')) { 
-                        this.d.classList.add('hovered'); 
-                        this.r.classList.add('hovered'); 
-                    } 
+
+                document.addEventListener('mouseover', (e) => {
+                    if (e.target.closest('.stage-wrapper, .drawing-board, #draw-layer')) {
+                        return;
+                    }
+                    if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
+                        this.dot.classList.add('hovered');
+                        this.ring.classList.add('hovered');
+                    }
                 });
-                
-                document.addEventListener('mouseout', (e) => { 
-                    if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) { 
-                        this.d.classList.remove('hovered'); 
-                        this.r.classList.remove('hovered'); 
-                    } 
+
+                document.addEventListener('mouseout', (e) => {
+                    if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
+                        this.dot.classList.remove('hovered');
+                        this.ring.classList.remove('hovered');
+                    }
                 });
             }
         };
 
+        /**
+         * [5-5. 글로벌 상태 객체 컨텍스트]
+         */
         const STATE = {
             uid: null, 
             studentEmail: "", 
@@ -1524,68 +2758,63 @@
         };
 
         const CurriculumEngine = {
-            pages(u) { 
-                const d = PAGE_INTELLIGENCE[u]; 
-                if (d) {
-                    return Object.keys(d).map(Number).sort((a,b) => a - b);
-                } else {
-                    return [];
+            pages(unitId) {
+                const data = PAGE_INTELLIGENCE[unitId];
+                if (data) {
+                    const keys = Object.keys(data).map(Number);
+                    return keys.sort((a, b) => a - b);
                 }
+                return [];
             },
-            first(u) { 
-                const p = this.pages(u); 
-                if (p.length > 0) {
-                    return p[0];
-                } else {
+            first(unitId) {
+                const pageArray = this.pages(unitId);
+                if (pageArray.length > 0) {
+                    return pageArray[0];
+                }
+                return 1;
+            },
+            last(unitId) {
+                const pageArray = this.pages(unitId);
+                if (pageArray.length > 0) {
+                    return pageArray[pageArray.length - 1];
+                }
+                return 1;
+            },
+            clamp(unitId, page) {
+                const pageArray = this.pages(unitId);
+                if (pageArray.includes(page)) {
+                    return page;
+                }
+                if (pageArray.length > 0) {
+                    return pageArray[0];
+                }
+                return 1;
+            },
+            next(unitId, page, dir) {
+                const pageArray = this.pages(unitId);
+                let idx = pageArray.indexOf(page);
+                if (idx === -1) {
+                    idx = 0;
+                }
+                let calcIdx = Math.min(Math.max(idx + dir, 0), pageArray.length - 1);
+                if (pageArray[calcIdx]) {
+                    return pageArray[calcIdx];
+                }
+                return page;
+            },
+            weekIndex(unitId, page) {
+                const pages = this.pages(unitId);
+                const idx = pages.indexOf(page);
+                if (idx === -1) {
                     return 1;
                 }
+                return Math.floor(idx / 4) + 1;
             },
-            last(u) { 
-                const p = this.pages(u); 
-                if (p.length > 0) {
-                    return p[p.length - 1];
-                } else {
-                    return 1;
-                }
-            },
-            clamp(u, p) { 
-                const a = this.pages(u); 
-                if (a.includes(p)) {
-                    return p;
-                } else {
-                    if (a.length > 0) {
-                        return a[0];
-                    } else {
-                        return 1;
-                    }
-                }
-            },
-            next(u, p, d) { 
-                const a = this.pages(u); 
-                let i = a.indexOf(p); 
-                if (i === -1) {
-                    i = 0;
-                }
-                let n = Math.min(Math.max(i + d, 0), a.length - 1); 
-                if (a[n]) {
-                    return a[n];
-                } else {
-                    return p;
-                }
-            },
-            weekIndex(u, p) { 
-                const i = this.pages(u).indexOf(p); 
-                if (i === -1) {
-                    return 1;
-                } else {
-                    return Math.floor(i / 4) + 1;
-                }
-            },
-            isWeekEnd(u, p) { 
-                const a = this.pages(u); 
-                const i = a.indexOf(p); 
-                if (i !== -1) {
-                    if ((i + 1) % 4 === 0 || i === a.length - 1) {
+            isWeekEnd(unitId, page) {
+                const pages = this.pages(unitId);
+                const idx = pages.indexOf(page);
+                if (idx !== -1) {
+                    if ((idx + 1) % 4 === 0 || idx === pages.length - 1) {
                         return true;
                     }
                 }
@@ -1593,9 +2822,9 @@
             }
         };
 
-        if (!PAGE_INTELLIGENCE[STATE.unitId]) { 
-            Logger.warn(`Invalid Unit ID constraint detected. Fallback to A-1.`); 
-            STATE.unitId = "A-1"; 
+        if (!PAGE_INTELLIGENCE[STATE.unitId]) {
+            Logger.warn(`Invalid Unit ID constraint detected: ${STATE.unitId}. Forcing fallback to A-1.`);
+            STATE.unitId = "A-1";
         }
         
         const rawPageParam = new URLSearchParams(window.location.search).get('page');
@@ -1606,275 +2835,357 @@
         }
 
         const BadgeEngine = {
-            add(label) { 
+            add(label) {
                 if (STATE.badges.includes(label)) {
                     return;
                 }
-                STATE.badges.push(label); 
-                StorageEngine.save(); 
+                STATE.badges.push(label);
+                StorageEngine.save();
+                
+                const box = document.getElementById('badge-container');
+                if (box) {
+                    const badge = document.createElement('div');
+                    badge.className = 'badge';
+                    badge.textContent = label;
+                    box.appendChild(badge);
+                }
                 
                 if (window.confetti) {
-                    confetti({ particleCount: 80, spread: 70, origin: { y: 0.8 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] }); 
+                    confetti({ 
+                        particleCount: 80, 
+                        spread: 70, 
+                        origin: { y: 0.8 }, 
+                        colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] 
+                    });
                 }
-                this.renderAll(); 
             },
-            renderAll() { 
-                const box = document.getElementById('badge-container'); 
+            renderAll() {
+                const box = document.getElementById('badge-container');
                 if (!box) {
                     return;
                 }
-                box.innerHTML = ''; 
-                STATE.badges.forEach((l) => { 
-                    const b = document.createElement('div'); 
-                    b.className = 'badge'; 
-                    b.textContent = l; 
-                    box.appendChild(b); 
-                }); 
+                box.innerHTML = '';
+                STATE.badges.forEach((label) => {
+                    const badge = document.createElement('div');
+                    badge.className = 'badge';
+                    badge.textContent = label;
+                    box.appendChild(badge);
+                });
             }
         };
 
         const SyncIndicatorEngine = {
-            init() { 
-                this.c = document.getElementById('sync-indicator'); 
-                this.i = document.getElementById('sync-icon'); 
-                this.t = document.getElementById('sync-text'); 
+            container: null,
+            icon: null,
+            text: null,
+            init() {
+                this.container = document.getElementById('sync-indicator');
+                this.icon = document.getElementById('sync-icon');
+                this.text = document.getElementById('sync-text');
             },
-            reset() { 
-                if (!this.c) {
+            resetInlineStyle() {
+                if (!this.container) {
                     return;
                 }
-                this.c.style.color = ""; 
-                this.c.style.backgroundColor = ""; 
-                this.c.style.borderColor = ""; 
+                this.container.style.color = "";
+                this.container.style.backgroundColor = "";
+                this.container.style.borderColor = "";
             },
-            setSaving() { 
-                if (!this.c) {
+            setSaving() {
+                if (!this.container) {
                     this.init();
                 }
-                if (!this.c) {
+                if (!this.container) {
                     return;
                 }
-                this.reset(); 
-                this.c.className = "sync-indicator-container saving"; 
-                this.i.className = "fa-solid fa-spinner sync-icon spin"; 
-                this.t.innerText = "Saving..."; 
+                this.resetInlineStyle();
+                this.container.className = "sync-indicator-container saving";
+                this.icon.className = "fa-solid fa-spinner sync-icon spin";
+                this.text.innerText = "Saving...";
             },
-            setSaved() { 
-                if (!this.c) {
+            setSaved() {
+                if (!this.container) {
                     this.init();
                 }
-                if (!this.c) {
+                if (!this.container) {
                     return;
                 }
-                this.reset(); 
-                this.c.className = "sync-indicator-container saved"; 
-                this.i.className = "fa-solid fa-cloud-check sync-icon"; 
-                this.t.innerText = "Saved"; 
-                
-                setTimeout(() => { 
-                    if (this.c.classList.contains('saved')) { 
-                        this.c.className = "sync-indicator-container"; 
-                        this.i.className = "fa-solid fa-cloud sync-icon"; 
-                        this.t.innerText = "Synced"; 
-                    } 
-                }, 3000); 
+                this.resetInlineStyle();
+                this.container.className = "sync-indicator-container saved";
+                this.icon.className = "fa-solid fa-cloud-check sync-icon";
+                this.text.innerText = "Saved";
+                setTimeout(() => {
+                    if (this.container.classList.contains('saved')) {
+                        this.container.className = "sync-indicator-container";
+                        this.icon.className = "fa-solid fa-cloud sync-icon";
+                        this.text.innerText = "Synced";
+                    }
+                }, 3000);
             },
-            setError() { 
-                if (!this.c) {
+            setError() {
+                if (!this.container) {
                     this.init();
                 }
-                if (!this.c) {
+                if (!this.container) {
                     return;
                 }
-                this.c.className = "sync-indicator-container"; 
-                this.c.style.color = "var(--br-error)"; 
-                this.c.style.backgroundColor = "var(--br-error-light)"; 
-                this.c.style.borderColor = "var(--br-error-border)"; 
-                this.i.className = "fa-solid fa-triangle-exclamation sync-icon"; 
-                this.t.innerText = "Offline"; 
+                this.container.className = "sync-indicator-container";
+                this.container.style.color = "var(--br-error)";
+                this.container.style.backgroundColor = "var(--br-error-light)";
+                this.container.style.borderColor = "var(--br-error-border)";
+                this.icon.className = "fa-solid fa-triangle-exclamation sync-icon";
+                this.text.innerText = "Offline";
             }
         };
 
+        /**
+         * [5-6. SMART IMAGE LOADER ENGINE (CORS & 404 방어)]
+         */
         const SmartImageLoader = {
-            reqId: 0,
+            requestToken: 0,
+
             async findValidWorksheet(unitId, pageNum) {
-                this.reqId++; 
-                const token = this.reqId; 
-                const img = document.getElementById('worksheet-img'); 
-                const board = document.getElementById('drawing-board');
-                const sChar = unitId.charAt(0); 
-                const t = Date.now(); 
+                this.requestToken = this.requestToken + 1;
+                const token = this.requestToken; 
                 
-                const paths = [
-                    `${CONFIG.STORAGE_URL}${sChar}/${unitId}/${unitId}-${pageNum}.png`,
-                    `${CONFIG.STORAGE_URL}${sChar}/${unitId}/${unitId}-${pageNum}.jpg`,
-                    `${CONFIG.STORAGE_URL}${unitId}/${unitId}-${pageNum}.png`,
-                    `${CONFIG.STORAGE_URL}${unitId}/${pageNum}.png`
+                const imgElement = document.getElementById('worksheet-img');
+                const boardElement = document.getElementById('drawing-board');
+                
+                const seriesChar = unitId.charAt(0);
+                const t = Date.now(); 
+
+                const basePaths = [
+                    `${seriesChar}/${unitId}/${unitId}-${pageNum}`,
+                    `${unitId}/${unitId}-${pageNum}`,
+                    `${seriesChar}/${unitId}/${pageNum}`,
+                    `${unitId}/${pageNum}`
                 ];
 
-                const load = (idx) => {
-                    if (token !== this.reqId) {
+                const possiblePaths = [];
+                basePaths.forEach((base) => {
+                    possiblePaths.push(`${CONFIG.STORAGE_URL}${base}.png`);
+                    possiblePaths.push(`${CONFIG.STORAGE_URL}${base}.jpg`);
+                    possiblePaths.push(`${CONFIG.STORAGE_URL}${base}.jpeg`);
+                });
+
+                const tryLoad = (index) => {
+                    if (token !== this.requestToken) {
                         return;
                     }
-                    if (idx >= paths.length) { 
-                        Logger.error(`Worksheet 404 on ${unitId} Page ${pageNum}`); 
-                        if (img) {
-                            img.style.opacity = '1';
+
+                    if (index >= possiblePaths.length) {
+                        Logger.error(`Worksheet missing. 404 on ${unitId} Page ${pageNum}`);
+                        if (imgElement) {
+                            imgElement.style.opacity = '1';
                         }
-                        if (board) {
-                            board.classList.add('error-state');
+                        if (boardElement) {
+                            boardElement.classList.add('error-state');
                         }
-                        setTimeout(() => { 
-                            if (token === this.reqId) { 
-                                CanvasEngine.resizeCanvas(); 
-                                StorageEngine.loadCanvasLocal(); 
-                            } 
+                        setTimeout(() => {
+                            if (token !== this.requestToken) {
+                                return;
+                            }
+                            CanvasEngine.resizeCanvas();
+                            StorageEngine.loadCanvasLocal();
                         }, 50);
-                        return; 
+                        return;
                     }
 
-                    const testUrl = `${paths[idx]}?t=${t}`;
-                    const testImg = new Image();
+                    const testUrl = `${possiblePaths[index]}?t=${t}`;
+                    const tempImg = new Image();
                     
-                    testImg.crossOrigin = "anonymous";
-                    if (img) {
-                        img.crossOrigin = "anonymous";
-                    }
+                    // [P0] Tainted Canvas 보안 에러 원천 차단
+                    tempImg.crossOrigin = "anonymous";
 
-                    testImg.onload = () => {
-                        if (token !== this.reqId) {
+                    tempImg.onload = () => {
+                        if (token !== this.requestToken) {
                             return;
                         }
-                        if (board) {
-                            board.classList.remove('error-state');
+                        Logger.log("Mounted:", testUrl);
+                        if (boardElement) {
+                            boardElement.classList.remove('error-state');
                         }
-                        if (img) {
-                            img.onload = () => {
-                                if (token !== this.reqId) {
+                        
+                        if (imgElement) {
+                            imgElement.crossOrigin = "anonymous";
+                            imgElement.onload = () => {
+                                if (token !== this.requestToken) {
                                     return;
                                 }
-                                img.style.opacity = '1';
-                                setTimeout(() => { 
-                                    if (token === this.reqId) { 
-                                        CanvasEngine.resizeCanvas(); 
-                                        StorageEngine.loadCanvasLocal(); 
-                                    } 
-                                }, 50);
+                                imgElement.style.opacity = '1';
+                                requestAnimationFrame(() => {
+                                    requestAnimationFrame(() => {
+                                        if (token !== this.requestToken) {
+                                            return;
+                                        }
+                                        CanvasEngine.resizeCanvas();
+                                        StorageEngine.loadCanvasLocal();
+                                    });
+                                });
                             };
-                            img.src = testUrl;
+                            imgElement.src = testUrl;
                         }
                     };
-                    
-                    testImg.onerror = () => {
-                        load(idx + 1);
+
+                    tempImg.onerror = () => {
+                        tryLoad(index + 1);
                     };
-                    testImg.src = testUrl;
+                    
+                    tempImg.src = testUrl;
                 };
-                
-                load(0);
+
+                tryLoad(0);
             }
         };
 
+        /**
+         * [5-7. CLOUD FIREBASE STORAGE ENGINE]
+         */
         const StorageEngine = {
-            load() { 
+            cloudSaveTimer: null,
+
+            load() {
                 if (!STATE.uid) {
                     return;
                 }
-                try { 
-                    const s = JSON.parse(localStorage.getItem(`br_data_${STATE.uid}_${STATE.unitId}`) || "{}"); 
+                try {
+                    const rawStorage = localStorage.getItem(`br_data_${STATE.uid}_${STATE.unitId}`);
+                    let s = {};
+                    if (rawStorage) {
+                        s = JSON.parse(rawStorage);
+                    }
                     if (s.name) {
-                        STATE.studentName = s.name;
+                        STATE.studentName = s.name; 
                     }
                     if (s.badges) {
                         STATE.badges = s.badges;
                     }
                     
-                    const p = Number(new URLSearchParams(window.location.search).get('page')); 
-                    if (p && CurriculumEngine.pages(STATE.unitId).includes(p)) {
-                        STATE.currentPage = p;
+                    const urlPage = Number(new URLSearchParams(window.location.search).get('page'));
+                    if (urlPage) {
+                        if (CurriculumEngine.pages(STATE.unitId).includes(urlPage)) {
+                            STATE.currentPage = urlPage;
+                        }
                     } else if (s.page) {
                         STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, s.page);
                     }
-                } catch(e) {} 
+                } catch (e) { 
+                    Logger.warn("Metadata local cache failure", e); 
+                }
             },
-            async save() { 
+            
+            async save() {
                 if (!STATE.uid) {
                     return;
                 }
-                try { 
-                    const d = { name: STATE.studentName, page: STATE.currentPage, badges: STATE.badges || [] }; 
-                    localStorage.setItem(`br_data_${STATE.uid}_${STATE.unitId}`, JSON.stringify(d)); 
-                    await db.collection("students").doc(STATE.uid).set({ ...d, email: STATE.studentEmail, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }); 
-                } catch(e) {} 
+                try {
+                    const data = { 
+                        name: STATE.studentName, 
+                        page: STATE.currentPage, 
+                        badges: STATE.badges || [] 
+                    };
+                    localStorage.setItem(`br_data_${STATE.uid}_${STATE.unitId}`, JSON.stringify(data));
+                    await db.collection("students").doc(STATE.uid).set({ 
+                        name: data.name, 
+                        page: data.page, 
+                        badges: data.badges, 
+                        email: STATE.studentEmail, 
+                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
+                    }, { merge: true });
+                } catch (error) { 
+                    Logger.error("Core transaction metadata sync failed.", error); 
+                }
             },
-            createCanvasSnapshot(compress = false) {
+            
+            createCanvasSnapshot(compressForDatabase = false) {
                 if (!CanvasEngine.cvs || !STATE.uid) {
                     return null;
                 }
-                let c = null;
-                if (compress) { 
-                    c = CanvasEngine.captureWorksheetWithDrawing(true, 800); 
-                } else { 
-                    c = CanvasEngine.cvs.toDataURL('image/webp', 0.6); 
+                let canvasData = null;
+                
+                if (compressForDatabase) {
+                    canvasData = CanvasEngine.captureWorksheetWithDrawing(true, 600); // 전송 다이어트 최적화
+                } else {
+                    canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6); 
                 }
                 
-                if (!compress) { 
+                if (!compressForDatabase) {
                     try { 
-                        localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, c); 
-                    } catch(e) {} 
+                        localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, canvasData); 
+                    } catch(e) {}
                 }
-                return { uid: STATE.uid, studentEmail: STATE.studentEmail, unitId: STATE.unitId, page: STATE.currentPage, transcript: STATE.lastTranscript, canvasData: c };
+                
+                return { 
+                    uid: STATE.uid, 
+                    studentEmail: STATE.studentEmail, 
+                    unitId: STATE.unitId, 
+                    page: STATE.currentPage, 
+                    transcript: STATE.lastTranscript, 
+                    canvasData: canvasData 
+                };
             },
+            
             saveCanvasLocal() { 
                 return this.createCanvasSnapshot(false); 
             },
-            scheduleCloudSave() { 
-                SyncIndicatorEngine.setSaving(); 
-                if (this.timer) {
-                    clearTimeout(this.timer);
+            
+            scheduleCloudSave() {
+                SyncIndicatorEngine.setSaving();
+                const snapshot = this.createCanvasSnapshot(true);
+                if (this.cloudSaveTimer) {
+                    clearTimeout(this.cloudSaveTimer);
                 }
-                this.timer = setTimeout(() => {
-                    this.executeCloudSave(this.createCanvasSnapshot(true));
+                this.cloudSaveTimer = setTimeout(() => { 
+                    this.executeCloudSave(snapshot); 
                 }, 1500); 
             },
-            async executeCloudSave(p) { 
-                if (!p) {
+            
+            async executeCloudSave(snapshot = null) {
+                let payload = snapshot ? snapshot : this.createCanvasSnapshot(true);
+                if (!payload) {
                     return;
                 }
-                try { 
-                    await db.collection("student_drawings").doc(`${p.uid}_${p.unitId}_P${p.page}`).set({ 
-                        uid: p.uid, 
-                        studentID: p.studentEmail, 
-                        unitId: p.unitId, 
-                        page: p.page, 
-                        imageUrl: p.canvasData, 
-                        transcript: p.transcript, 
+                try {
+                    const firestoreDocId = `${payload.uid}_${payload.unitId}_P${payload.page}`;
+                    await db.collection("student_drawings").doc(firestoreDocId).set({ 
+                        uid: payload.uid, 
+                        studentID: payload.studentEmail, 
+                        unitId: payload.unitId, 
+                        page: payload.page, 
+                        imageUrl: payload.canvasData, 
+                        transcript: payload.transcript, 
                         timestamp: firebase.firestore.FieldValue.serverTimestamp() 
-                    }, { merge: true }); 
-                    SyncIndicatorEngine.setSaved(); 
-                } catch(e) { 
+                    }, { merge: true });
+                    SyncIndicatorEngine.setSaved();
+                } catch (error) { 
+                    Logger.warn("Cloud infrastructure save fault.", error); 
                     SyncIndicatorEngine.setError(); 
-                } 
+                }
             },
-            loadCanvasLocal() { 
-                try { 
-                    const d = localStorage.getItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`); 
-                    if (d) { 
-                        const i = new Image(); 
-                        i.onload = () => { 
-                            CanvasEngine.ctx.drawImage(i, 0, 0, CanvasEngine.cvs.width / CanvasEngine.dpr, CanvasEngine.cvs.height / CanvasEngine.dpr); 
+            
+            loadCanvasLocal() {
+                try {
+                    const cacheKey = `br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`;
+                    const localData = localStorage.getItem(cacheKey);
+                    if (localData) {
+                        const img = new Image();
+                        img.onload = () => { 
+                            CanvasEngine.ctx.drawImage(img, 0, 0, CanvasEngine.cvs.width / CanvasEngine.dpr, CanvasEngine.cvs.height / CanvasEngine.dpr); 
                             CanvasEngine.saveHistory(); 
-                        }; 
-                        i.src = d; 
-                    } else {
-                        CanvasEngine.saveHistory();
+                        };
+                        img.src = localData;
+                    } else { 
+                        CanvasEngine.saveHistory(); 
                     }
-                } catch(e){ 
+                } catch (error) { 
                     CanvasEngine.saveHistory(); 
-                } 
+                }
             }
         };
 
+        /**
+         * [5-8. INTERACTIVE CANVAS & DRAWING ENGINE]
+         */
         const CanvasEngine = {
             isDrawing: false, 
             hasMoved: false, 
@@ -1884,167 +3195,187 @@
             historyStack: [], 
             historyIndex: -1,
             
-            init() { 
+            init() {
                 this.cvs = document.getElementById('draw-layer'); 
                 if (!this.cvs) {
                     return;
                 }
                 this.ctx = this.cvs.getContext('2d'); 
-                this.board = document.getElementById('drawing-board'); 
+                this.board = document.getElementById('drawing-board');
                 
                 this.setupUI(); 
                 this.setupCanvas(); 
                 this.bind(); 
-                this.updateBrushPreview(); 
+                this.updateBrushPreview();
                 
-                const s = document.getElementById('brush-size'); 
-                if (s) {
-                    s.addEventListener('input', () => {
+                const slider = document.getElementById('brush-size');
+                if (slider) {
+                    slider.addEventListener('input', () => {
                         this.updateBrushPreview();
                     });
                 }
-                
-                if (window.ResizeObserver && this.board) {
+                if (window.ResizeObserver && this.board) { 
                     new ResizeObserver(() => {
                         this.resizeCanvas();
-                    }).observe(this.board);
+                    }).observe(this.board); 
                 }
             },
-            updateBrushPreview() { 
-                const s = document.getElementById('brush-size'); 
-                const d = document.getElementById('brush-preview-dot'); 
-                if (!s || !d) {
+            
+            updateBrushPreview() {
+                const slider = document.getElementById('brush-size'); 
+                const dot = document.getElementById('brush-preview-dot');
+                if (!slider || !dot) {
                     return;
                 }
-                const v = parseInt(s.value); 
-                d.style.width = `${v}px`; 
-                d.style.height = `${v}px`; 
-                d.style.backgroundColor = this.isErasing ? "var(--br-muted)" : this.lastColor; 
+                
+                const val = parseInt(slider.value); 
+                dot.style.width = `${val}px`; 
+                dot.style.height = `${val}px`;
+                dot.style.backgroundColor = this.isErasing ? "var(--br-muted)" : this.lastColor;
             },
-            isCanvasBlank() { 
+            
+            isCanvasBlank() {
                 if (!this.cvs || !this.ctx) {
                     return true;
                 }
-                try { 
-                    const p = document.createElement('canvas'); 
-                    p.width = 64; 
-                    p.height = 64; 
-                    const c = p.getContext('2d'); 
-                    c.drawImage(this.cvs, 0, 0, 64, 64); 
-                    const d = c.getImageData(0, 0, 64, 64).data; 
-                    for (let i = 3; i < d.length; i += 4) { 
-                        if (d[i] !== 0) {
-                            return false;
+                try {
+                    const probe = document.createElement('canvas'); 
+                    probe.width = 64; 
+                    probe.height = 64;
+                    const pctx = probe.getContext('2d'); 
+                    pctx.drawImage(this.cvs, 0, 0, 64, 64);
+                    const pixels = pctx.getImageData(0, 0, 64, 64).data;
+                    for (let i = 3; i < pixels.length; i += 4) { 
+                        if (pixels[i] !== 0) {
+                            return false; 
                         }
-                    } 
-                    return true; 
+                    }
+                    return true;
                 } catch(e) { 
                     return true; 
-                } 
+                }
             },
             
-            // [Tainted Canvas 생존 우회 로직]
-            captureWorksheetWithDrawing(compress = false, maxWidth = 800) {
-                const w = document.getElementById('worksheet-img'); 
-                const d = this.cvs; 
-                if (!d) {
+            /**
+             * [P0 Tainted Canvas & 502 Error 방어 Survival Engine]
+             */
+            captureWorksheetWithDrawing(compressForDatabase = false, initialMaxWidth = 600) {
+                const worksheet = document.getElementById('worksheet-img'); 
+                const draw = this.cvs;
+                if (!draw) {
                     return null;
                 }
                 
-                const m = document.createElement('canvas'); 
-                let scale = 1;
-                if (compress && d.width > maxWidth) {
-                    scale = maxWidth / d.width;
+                const merged = document.createElement('canvas');
+                let scaleRatio = 1.0;
+                
+                if (compressForDatabase === true) {
+                    if (draw.width > initialMaxWidth) {
+                        scaleRatio = initialMaxWidth / draw.width;
+                    }
                 }
                 
-                m.width = Math.floor(d.width * scale); 
-                m.height = Math.floor(d.height * scale);
-                const c = m.getContext('2d'); 
-                c.fillStyle = '#FFFFFF'; 
-                c.fillRect(0, 0, m.width, m.height);
+                merged.width = Math.floor(draw.width * scaleRatio); 
+                merged.height = Math.floor(draw.height * scaleRatio);
+                const ctx = merged.getContext('2d'); 
+                ctx.fillStyle = '#FFFFFF'; 
+                ctx.fillRect(0, 0, merged.width, merged.height);
                 
                 try {
-                    if (w && w.complete && w.naturalWidth > 0) {
-                        c.drawImage(w, 0, 0, m.width, m.height);
+                    if (worksheet && worksheet.complete && worksheet.naturalWidth > 0) {
+                        ctx.drawImage(worksheet, 0, 0, merged.width, merged.height); 
                     }
-                    c.drawImage(d, 0, 0, m.width, m.height);
+                    ctx.drawImage(draw, 0, 0, merged.width, merged.height);
                 } catch(e) { 
-                    // 보안 에러로 병합 실패 시 하얀 캔버스에 그림만 복원하여 앱 셧다운 방지
-                    const fb = document.createElement('canvas'); 
-                    fb.width = Math.floor(d.width * scale); 
-                    fb.height = Math.floor(d.height * scale);
-                    const fc = fb.getContext('2d'); 
-                    fc.fillStyle = '#FFFFFF'; 
-                    fc.fillRect(0, 0, fb.width, fb.height); 
-                    fc.drawImage(d, 0, 0, fb.width, fb.height);
-                    c.drawImage(fb, 0, 0);
+                    /* 캔버스가 오염되어 병합에 실패한 경우, 아이가 그린 '드로잉 영역'만 추출합니다. */
+                    Logger.warn("Security Canvas Taint Detected. Engaging fallback extraction.");
+                    const fallbackCanvas = document.createElement('canvas');
+                    fallbackCanvas.width = Math.floor(draw.width * scaleRatio);
+                    fallbackCanvas.height = Math.floor(draw.height * scaleRatio);
+                    const fCtx = fallbackCanvas.getContext('2d');
+                    fCtx.fillStyle = '#FFFFFF';
+                    fCtx.fillRect(0, 0, fallbackCanvas.width, fallbackCanvas.height);
+                    fCtx.drawImage(draw, 0, 0, fallbackCanvas.width, fallbackCanvas.height);
+                    ctx.drawImage(fallbackCanvas, 0, 0);
                 }
 
-                if (compress) {
-                    let q = 0.7; 
-                    let b64 = m.toDataURL('image/jpeg', q);
-                    while (b64.length > 400000 && q > 0.1) { 
-                        q = q - 0.15; 
-                        b64 = m.toDataURL('image/jpeg', q); 
+                if (compressForDatabase === true) {
+                    let qualityLevel = 0.7;
+                    let encodedString = merged.toDataURL('image/jpeg', qualityLevel);
+                    
+                    while (encodedString.length > 400000) {
+                        if (qualityLevel <= 0.1) {
+                            break;
+                        }
+                        qualityLevel = qualityLevel - 0.15;
+                        encodedString = merged.toDataURL('image/jpeg', qualityLevel);
                     }
-                    if (b64.length > 400000) {
-                        const micro = document.createElement('canvas'); 
-                        micro.width = Math.floor(m.width / 2); 
-                        micro.height = Math.floor(m.height / 2);
-                        const mc = micro.getContext('2d'); 
-                        mc.fillStyle = '#FFFFFF'; 
-                        mc.fillRect(0, 0, micro.width, micro.height); 
-                        mc.drawImage(m, 0, 0, micro.width, micro.height);
-                        b64 = micro.toDataURL('image/jpeg', 0.5);
+
+                    if (encodedString.length > 400000) {
+                        const microCanvas = document.createElement('canvas');
+                        microCanvas.width = Math.floor(merged.width / 2);
+                        microCanvas.height = Math.floor(merged.height / 2);
+                        const microCtx = microCanvas.getContext('2d');
+                        microCtx.fillStyle = '#FFFFFF';
+                        microCtx.fillRect(0, 0, microCanvas.width, microCanvas.height);
+                        microCtx.drawImage(merged, 0, 0, microCanvas.width, microCanvas.height);
+                        encodedString = microCanvas.toDataURL('image/jpeg', 0.5);
                     }
-                    return b64;
+                    return encodedString;
                 } else {
-                    return m.toDataURL('image/jpeg', 0.8);
+                    return merged.toDataURL('image/jpeg', 0.8); 
                 }
             },
             
-            setupCanvas() { 
+            setupCanvas() {
                 if (!this.board || !this.cvs) {
                     return;
                 }
-                const r = this.board.getBoundingClientRect(); 
-                if (r.width === 0) {
+                const rect = this.board.getBoundingClientRect(); 
+                if (rect.width === 0) {
                     return;
                 }
-                this.cvs.style.width = `${r.width}px`; 
-                this.cvs.style.height = `${r.height}px`; 
-                this.cvs.width = r.width * this.dpr; 
-                this.cvs.height = r.height * this.dpr; 
+                this.cvs.style.width = rect.width + "px"; 
+                this.cvs.style.height = rect.height + "px";
+                this.cvs.width = rect.width * this.dpr; 
+                this.cvs.height = rect.height * this.dpr;
                 this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); 
                 this.ctx.lineCap = 'round'; 
-                this.ctx.lineJoin = 'round'; 
+                this.ctx.lineJoin = 'round';
             },
-            resizeCanvas() { 
+            
+            resizeCanvas() {
                 if (!this.cvs || !this.ctx || !this.board) {
                     return;
                 }
-                const r = this.board.getBoundingClientRect(); 
-                if (r.width === 0 || r.height === 0) {
+                const rect = this.board.getBoundingClientRect(); 
+                if (rect.width === 0 || rect.height === 0) {
                     return;
                 }
-                const t = document.createElement('canvas'); 
-                t.width = this.cvs.width; 
-                t.height = this.cvs.height; 
+                
+                const temp = document.createElement('canvas'); 
+                temp.width = this.cvs.width; 
+                temp.height = this.cvs.height;
+                
                 if (this.cvs.width > 0 && this.cvs.height > 0) {
-                    t.getContext('2d').drawImage(this.cvs, 0, 0);
+                    temp.getContext('2d').drawImage(this.cvs, 0, 0);
                 }
-                this.setupCanvas(); 
-                if (t.width > 0 && t.height > 0) {
-                    this.ctx.drawImage(t, 0, 0, t.width, t.height, 0, 0, r.width, r.height);
+                
+                this.setupCanvas();
+                
+                if (temp.width > 0 && temp.height > 0) {
+                    this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, rect.width, rect.height);
                 }
             },
+            
             bind() {
                 const getP = (e) => { 
                     const r = this.cvs.getBoundingClientRect(); 
-                    let x = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0); 
-                    let y = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0); 
-                    return { x: x - r.left, y: y - r.top }; 
+                    let cx = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0); 
+                    let cy = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0); 
+                    return { x: cx - r.left, y: cy - r.top }; 
                 };
+                
                 const start = (e) => { 
                     e.preventDefault(); 
                     this.isDrawing = true; 
@@ -2053,30 +3384,35 @@
                     this.ctx.beginPath(); 
                     this.ctx.moveTo(p.x, p.y); 
                 };
-                const move = (e) => { 
+                
+                const move = (e) => {
                     if (!this.isDrawing) {
                         return;
                     }
                     e.preventDefault(); 
                     this.hasMoved = true; 
-                    const p = getP(e); 
-                    this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over"; 
-                    const v = document.getElementById('brush-size').value; 
-                    this.ctx.lineWidth = this.isErasing ? v * 3 : v; 
+                    const p = getP(e);
+                    
+                    this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over";
+                    const sliderVal = document.getElementById('brush-size').value; 
+                    this.ctx.lineWidth = this.isErasing ? sliderVal * 3 : sliderVal; 
                     this.ctx.strokeStyle = this.isErasing ? "#FFFFFF" : this.lastColor; 
+                    
                     if (STATE.brushType === 'rainbow' && !this.isErasing) {
-                        this.ctx.strokeStyle = `hsl(${(Date.now() / 10) % 360}, 100%, 50%)`;
+                        this.ctx.strokeStyle = `hsl(${(Date.now() / 10) % 360}, 100%, 50%)`; 
                     } else if (STATE.brushType === 'neon' && !this.isErasing) { 
-                        this.ctx.shadowBlur = parseInt(v) + 10; 
+                        this.ctx.shadowBlur = parseInt(sliderVal) + 10; 
                         this.ctx.shadowColor = this.lastColor; 
-                    } else {
-                        this.ctx.shadowBlur = 0;
+                    } else { 
+                        this.ctx.shadowBlur = 0; 
                     }
+                    
                     this.ctx.lineTo(p.x, p.y); 
                     this.ctx.stroke(); 
                     this.ctx.beginPath(); 
-                    this.ctx.moveTo(p.x, p.y); 
+                    this.ctx.moveTo(p.x, p.y);
                 };
+                
                 const end = () => { 
                     this.isDrawing = false; 
                     this.ctx.shadowBlur = 0; 
@@ -2086,11 +3422,13 @@
                         StorageEngine.scheduleCloudSave(); 
                     } 
                 };
+                
                 this.cvs.addEventListener('pointerdown', start); 
                 this.cvs.addEventListener('pointermove', move); 
                 this.cvs.addEventListener('pointerup', end); 
                 this.cvs.addEventListener('pointerleave', end);
             },
+            
             saveHistory() { 
                 this.historyIndex++; 
                 this.historyStack.length = this.historyIndex; 
@@ -2100,6 +3438,7 @@
                     this.historyIndex--; 
                 } 
             },
+            
             undo() { 
                 if (this.historyIndex > 0) { 
                     this.historyIndex--; 
@@ -2108,59 +3447,65 @@
                     StorageEngine.scheduleCloudSave(); 
                 } 
             },
+            
             restore() { 
                 if (!this.ctx || !this.cvs) {
                     return;
                 }
-                const i = new Image(); 
-                i.onload = () => { 
+                const img = new Image(); 
+                img.onload = () => { 
                     this.ctx.save(); 
                     this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
                     this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
-                    this.ctx.drawImage(i, 0, 0, this.cvs.width, this.cvs.height); 
-                    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); 
+                    this.ctx.drawImage(img, 0, 0, this.cvs.width, this.cvs.height); 
+                    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
                     this.ctx.restore(); 
                 }; 
-                i.src = this.historyStack[this.historyIndex]; 
+                img.src = this.historyStack[this.historyIndex]; 
             },
+            
             setBrush(t) { 
                 STATE.brushType = t; 
-                document.querySelectorAll('.btn-magic').forEach((e) => {
-                    e.classList.remove('active');
-                }); 
-                const b = document.getElementById(`btn-brush-${t}`); 
-                if (b) {
-                    b.classList.add('active');
+                document.querySelectorAll('.btn-magic').forEach((el) => {
+                    el.classList.remove('active');
+                });
+                const activeBtn = document.getElementById(`btn-brush-${t}`); 
+                if (activeBtn) {
+                    activeBtn.classList.add('active'); 
                 }
                 if (this.isErasing) {
-                    this.toggleEraser();
+                    this.toggleEraser(); 
                 }
             },
+            
             toggleEraser() { 
-                this.isErasing = !this.isErasing; 
-                const b = document.getElementById('btn-eraser'); 
-                if (b) {
-                    b.classList.toggle('active');
+                this.isErasing = !this.isErasing;
+                const btn = document.getElementById('btn-eraser'); 
+                if (btn) {
+                    btn.classList.toggle('active'); 
                 }
                 this.updateBrushPreview(); 
             },
-            setColor(c) { 
-                this.lastColor = c; 
-                const p = document.getElementById('btn-color'); 
-                if (p) {
-                    p.style.background = c;
+            
+            setColor(color) { 
+                this.lastColor = color; 
+                const preview = document.getElementById('btn-color'); 
+                if (preview) {
+                    preview.style.background = color; 
                 }
                 if (this.isErasing) {
-                    this.toggleEraser();
+                    this.toggleEraser(); 
                 }
                 this.updateBrushPreview(); 
             },
+            
             setupUI() { 
-                const p = document.getElementById('btn-color'); 
-                if (p) {
-                    p.style.background = this.lastColor;
+                const preview = document.getElementById('btn-color'); 
+                if (preview) {
+                    preview.style.background = this.lastColor; 
                 }
             },
+            
             hardReset() { 
                 if (!this.ctx || !this.cvs) {
                     return;
@@ -2172,8 +3517,11 @@
                     this.ctx.restore(); 
                     this.historyStack = []; 
                     this.historyIndex = -1; 
-                } catch(e) {} 
+                } catch(e) { 
+                    Logger.error("Canvas clear error", e); 
+                } 
             },
+            
             promptHardReset() { 
                 CustomModalEngine.confirm("Clear Canvas", "Are you absolutely sure you want to wipe this clean?", () => { 
                     this.hardReset(); 
@@ -2185,579 +3533,73 @@
         };
 
         const RGBRingEngine = {
-            init() { 
+            init() {
                 const c = document.getElementById('color-wheel'); 
                 if (!c) {
                     return;
                 }
                 const ctx = c.getContext('2d', { willReadFrequently: true }); 
+                
                 for (let a = 0; a < 360; a++) { 
                     ctx.beginPath(); 
                     ctx.moveTo(75, 75); 
                     ctx.arc(75, 75, 75, a * Math.PI / 180, (a + 2) * Math.PI / 180); 
                     ctx.fillStyle = `hsl(${a}, 100%, 50%)`; 
                     ctx.fill(); 
-                } 
+                }
+                
                 c.onclick = (e) => { 
-                    const r = c.getBoundingClientRect(); 
-                    const d = ctx.getImageData(e.clientX - r.left, e.clientY - r.top, 1, 1).data; 
-                    CanvasEngine.setColor(`rgb(${d[0]}, ${d[1]}, ${d[2]})`); 
+                    const rect = c.getBoundingClientRect(); 
+                    const pX = e.clientX - rect.left;
+                    const pY = e.clientY - rect.top;
+                    const imgData = ctx.getImageData(pX, pY, 1, 1);
+                    const rgbStr = `rgb(${imgData.data[0]}, ${imgData.data[1]}, ${imgData.data[2]})`;
+                    CanvasEngine.setColor(rgbStr); 
                     this.toggle(); 
-                }; 
+                };
             },
             toggle() { 
-                const m = document.getElementById('rgb-modal'); 
-                if (m) {
-                    m.classList.toggle('active');
+                const modal = document.getElementById('rgb-modal');
+                if (modal) {
+                    modal.classList.toggle('active'); 
                 }
             }
         };
 
         const CertificateEngine = {
-            open(w) { 
-                const m = document.getElementById('cert-modal'); 
-                if (!m) {
-                    return;
-                }
-                document.getElementById('cert-week').innerText = `WEEK ${w} COMPLETED`; 
-                document.getElementById('cert-student-name').innerText = STATE.studentName || "Explorer"; 
-                const i = document.getElementById('cert-canvas-img'); 
-                i.src = CanvasEngine.captureWorksheetWithDrawing(false) || CanvasEngine.cvs.toDataURL(); 
-                const a = STATE.badges.includes("🎨 Colorful Artist"); 
-                const v = STATE.badges.includes("🗣️ Great Speaker"); 
-                let s = "For showing amazing curiosity and completing your inquiry journey."; 
-                if (a && v) {
-                    s = "For your brilliant colorful art and speaking English so confidently!";
-                } else if (a) {
-                    s = "For expressing your wonderful imagination through colorful art!";
-                } else if (v) {
-                    s = "For speaking English with a clear, brave voice!";
-                }
-                document.getElementById('cert-ai-msg').innerText = `"${s}"`; 
-                m.classList.add('active'); 
-                if (window.confetti) {
-                    confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
-                }
-            },
-            close() { 
-                const m = document.getElementById('cert-modal'); 
-                if (m) {
-                    m.classList.remove('active');
-                }
-                if (STATE.currentPage === CurriculumEngine.last(STATE.unitId)) {
-                    location.href = 'dashboard.html';
-                } else {
-                    AppEngine.smoothMove(1);
-                }
-            },
-            print() { 
-                const c = document.getElementById('cert-card-content'); 
-                const cb = document.querySelector('.cert-close'); 
-                const pb = document.querySelector('.btn-print'); 
-                if (cb) {
-                    cb.style.display = 'none';
-                }
-                if (pb) {
-                    pb.style.display = 'none';
-                }
-                if (window.html2canvas && c) { 
-                    html2canvas(c, { backgroundColor: '#FFFFFF', scale: 2 }).then(cv => { 
-                        if (cb) {
-                            cb.style.display = 'block';
-                        }
-                        if (pb) {
-                            pb.style.display = 'inline-flex';
-                        }
-                        const l = document.createElement('a'); 
-                        l.download = `Certificate_${STATE.studentName}.png`; 
-                        l.href = cv.toDataURL('image/png'); 
-                        l.click(); 
-                    }); 
-                } else { 
-                    window.print(); 
-                    if (cb) {
-                        cb.style.display = 'block';
-                    }
-                    if (pb) {
-                        pb.style.display = 'inline-flex';
-                    }
-                } 
-            }
-        };
-
-        const AudioEngine = {
-            recordingMode: 'main',
-            init() {
-                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-                if (SR) {
-                    this.rec = new SR(); 
-                    this.rec.lang = 'en-US'; 
-                    this.rec.continuous = false; 
-                    this.rec.interimResults = false;
-                    
-                    this.rec.onresult = (e) => { 
-                        STATE.lastTranscript = e.results[0][0].transcript; 
-                        STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); 
-                    };
-                    
-                    this.rec.onend = () => { 
-                        if (!STATE.isRecording) {
-                            return;
-                        }
-                        STATE.isRecording = false; 
-                        if (this.recordingMode === 'chat') { 
-                            const cb = document.getElementById('btn-chat-record'); 
-                            if (cb) { 
-                                cb.classList.remove('recording'); 
-                                cb.innerText = "🎤 Speak to Teacher"; 
-                            } 
-                            setTimeout(() => {
-                                AITutor.processReply();
-                            }, 800); 
-                        } else { 
-                            const rb = document.getElementById('btn-record'); 
-                            const rt = document.getElementById('record-text'); 
-                            if (rb) {
-                                rb.classList.remove('recording');
-                            }
-                            if (rt) {
-                                rt.innerText = "Voice Log";
-                            }
-                            setTimeout(() => {
-                                AITutor.submit();
-                            }, 800); 
-                        } 
-                    };
-                    
-                    this.rec.onerror = () => { 
-                        if (STATE.isRecording) { 
-                            STATE.isRecording = false; 
-                            const rb = document.getElementById('btn-record'); 
-                            if (rb) {
-                                rb.classList.remove('recording');
-                            }
-                            const rt = document.getElementById('record-text'); 
-                            if (rt) {
-                                rt.innerText = "Voice Log";
-                            }
-                        } 
-                    };
-                } else { 
-                    ['btn-record', 'btn-chat-record'].forEach(id => { 
-                        const b = document.getElementById(id); 
-                        if (b) {
-                            b.disabled = true;
-                        }
-                    }); 
-                }
-            },
-            toggle() { 
-                if (!this.rec) {
-                    return;
-                }
-                this.recordingMode = 'main'; 
-                const rb = document.getElementById('btn-record'); 
-                const rt = document.getElementById('record-text'); 
-                if (!STATE.isRecording) { 
-                    STATE.isRecording = true; 
-                    if (rb) {
-                        rb.classList.add('recording');
-                    }
-                    if (rt) {
-                        rt.innerText = "Listening...";
-                    }
-                    this.rec.start(); 
-                } else { 
-                    STATE.isRecording = false; 
-                    if (rb) {
-                        rb.classList.remove('recording');
-                    }
-                    if (rt) {
-                        rt.innerText = "Voice Log";
-                    }
-                    this.rec.stop(); 
-                } 
-            },
-            toggleChat() { 
-                if (!this.rec) {
-                    return;
-                }
-                this.recordingMode = 'chat'; 
-                const cb = document.getElementById('btn-chat-record'); 
-                if (!STATE.isRecording) { 
-                    STATE.isRecording = true; 
-                    if (cb) { 
-                        cb.classList.add('recording'); 
-                        cb.innerText = "Listening..."; 
-                    } 
-                    this.rec.start(); 
-                } else { 
-                    STATE.isRecording = false; 
-                    if (cb) { 
-                        cb.classList.remove('recording'); 
-                        cb.innerText = "🎤 Speak to Teacher"; 
-                    } 
-                    this.rec.stop(); 
-                } 
-            }
-        };
-
-        const AITutor = {
-            isBusy: false,
-            async callBackendTutor(p, b = null) { 
-                try { 
-                    const u = auth.currentUser; 
-                    if (!u) {
-                        throw new Error();
-                    }
-                    const t = await u.getIdToken(); 
-                    const req = { prompt: p, image: b ? b.split(',')[1] : null, unitId: STATE.unitId, page: STATE.currentPage }; 
-                    const res = await fetch(CONFIG.API_TUTOR_ENDPOINT, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${t}`
-                        },
-                        body: JSON.stringify(req)
-                    }); 
-                    const d = await res.json(); 
-                    if (d.reply) {
-                        return d.reply;
-                    } else {
-                        return "앗, 선생님이 잠시 자리를 비웠어요.";
-                    }
-                } catch(e) { 
-                    return "앗, 네트워크 문제로 선생님이 대답하지 못했어요. 다시 시도해볼까요?"; 
-                } 
-            },
-            async submit() {
-                if (STATE.isRecording) { 
-                    AudioEngine.toggle(); 
-                    return; 
-                } 
-                if (this.isBusy) {
-                    return;
-                }
-                this.isBusy = true;
-                
-                const reqP = STATE.currentPage; 
-                const reqU = STATE.unitId; 
-                const c = document.getElementById('ai-content'); 
-                const p = document.getElementById('ai-panel');
-                
-                if (p) {
-                    p.classList.add('open');
-                }
-                if (c) {
-                    c.innerHTML = `<div class="ai-loading-container"><i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i><p>Teacher is looking at your art...</p></div>`;
-                }
-                
-                try {
-                    StorageEngine.saveCanvasLocal(); 
-                    StorageEngine.executeCloudSave(); 
-                    const img = CanvasEngine.captureWorksheetWithDrawing(true);
-                    
-                    let d = { goal: "Exploration", question: "Tell me." }; 
-                    if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]) {
-                        d = PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage];
-                    }
-                    
-                    /* [P0] 다중 분석 프롬프트 고도화: 그림과 음성을 모두 분석하여 자연스럽게 대답 */
-                    const pr = `Act as an enthusiastic, friendly teacher for a young student named ${STATE.studentName}.
-Task 1: Look carefully at the attached image. It shows the student's own drawing overlaid on top of their worksheet. Analyze what they drew.
-Task 2: Read what the student just said out loud: "${STATE.lastTranscript || "Look!"}".
-Context: The lesson goal is '${d.goal}' and the question asked was '${d.question}'.
-Output: Respond with a highly engaging, encouraging message in very simple, natural English suitable for young children. Praise specific details you see in BOTH their drawing and what they said. Maximum 3 to 4 short sentences. Plain text only, no emojis or markdown.`;
-                    
-                    const r = await this.callBackendTutor(pr, img);
-                    
-                    if (STATE.currentPage !== reqP || STATE.unitId !== reqU) {
-                        return;
-                    }
-                    
-                    if (!r.includes("앗,")) { 
-                        if (!CanvasEngine.isCanvasBlank()) {
-                            BadgeEngine.add("🎨 Colorful Artist");
-                        }
-                        if (STATE.sttConfidence >= 80 && STATE.lastTranscript.length > 0) {
-                            BadgeEngine.add("🗣️ Great Speaker");
-                        }
-                    }
-                    
-                    if (c) { 
-                        c.innerHTML = `<div class="analytics-card"><div class="analytics-title">Mission: ${d.goal}</div><div class="stat-row"><div class="stat-label"><span>Voice Confidence</span><span>${STATE.sttConfidence}%</span></div><div class="bar-bg"><div class="bar-fill" style="width:${STATE.sttConfidence}%; background-color:var(--br-blue)"></div></div></div></div>`; 
-                        const b = document.createElement('div'); 
-                        b.className = 'chat-bubble ai mt-4'; 
-                        b.textContent = r; 
-                        c.appendChild(b); 
-                    }
-                    
-                    const f = document.getElementById('chat-footer'); 
-                    if (f) {
-                        f.style.display = "block";
-                    }
-                    this.speak(r);
-                } finally { 
-                    this.isBusy = false; 
-                }
-            },
-            async processReply() {
-                if (!STATE.lastTranscript || this.isBusy) {
-                    return;
-                }
-                this.isBusy = true; 
-                const reqP = STATE.currentPage; 
-                const reqU = STATE.unitId; 
-                const c = document.getElementById('ai-content');
-                
-                if (c) { 
-                    const ub = document.createElement('div'); 
-                    ub.className = "chat-bubble user mt-4"; 
-                    ub.textContent = STATE.lastTranscript; 
-                    c.appendChild(ub); 
-                    
-                    const ab = document.createElement('div'); 
-                    ab.className = "chat-bubble ai mt-4"; 
-                    ab.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 생각 중...`; 
-                    c.appendChild(ab); 
-                    c.scrollTop = c.scrollHeight; 
-                    
-                    try { 
-                        const prompt = `Act as an enthusiastic, friendly teacher for a young student named ${STATE.studentName}. Respond directly to what the student just said: "${STATE.lastTranscript}". Give a highly engaging, encouraging message in very simple, natural English suitable for young children. Maximum 3 to 4 short sentences. Plain text only, no emojis or markdown.`;
-                        const r = await this.callBackendTutor(prompt); 
-                        
-                        if (STATE.currentPage !== reqP || STATE.unitId !== reqU) {
-                            return;
-                        }
-                        
-                        ab.innerHTML = ''; 
-                        const b = document.createElement('b'); 
-                        b.style.color = 'var(--br-green)'; 
-                        b.textContent = r; 
-                        ab.appendChild(b); 
-                        c.scrollTop = c.scrollHeight; 
-                        this.speak(r); 
-                    } finally { 
-                        this.isBusy = false; 
-                    } 
-                } else {
-                    this.isBusy = false;
-                }
-            },
-            speak(t) { 
-                if (window.speechSynthesis) { 
-                    window.speechSynthesis.cancel(); 
-                    const u = new SpeechSynthesisUtterance(t); 
-                    u.lang = 'en-US'; 
-                    // 아동용 학습에 적합한 조금 느리고 밝은 톤 적용
-                    u.rate = 0.9; 
-                    u.pitch = 1.05;
-                    
-                    // 네이티브 영어 발음 강제 할당 시도
-                    const voices = window.speechSynthesis.getVoices();
-                    const preferredVoices = voices.filter(v => v.lang.startsWith('en-') && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Siri') || v.name.includes('Alex')));
-                    if (preferredVoices.length > 0) {
-                        u.voice = preferredVoices[0];
-                    }
-                    
-                    window.speechSynthesis.speak(u); 
-                } 
-            },
-            close() { 
-                const p = document.getElementById('ai-panel'); 
-                if (p) {
-                    p.classList.remove('open');
-                }
-                if (window.speechSynthesis) {
-                    window.speechSynthesis.cancel();
-                }
-            }
-        };
-
-        // 크롬 등 일부 브라우저에서 목소리(Voice) 리스트가 비동기로 늦게 불러와지는 현상을 방어
-        if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
-            window.speechSynthesis.onvoiceschanged = () => { 
-                window.speechSynthesis.getVoices(); 
-            };
-        }
-
-        const AppEngine = {
-            smoothMove(dir) {
-                const n = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir); 
-                if (n === STATE.currentPage) {
+            open(weekNum) {
+                const modal = document.getElementById('cert-modal');
+                if (!modal) {
                     return;
                 }
                 
-                StorageEngine.saveCanvasLocal(); 
-                StorageEngine.executeCloudSave(StorageEngine.createCanvasSnapshot(true));
-                
-                const b = document.getElementById('drawing-board'); 
-                if (b) {
-                    b.classList.add('fade-out');
+                const weekLabel = document.getElementById('cert-week');
+                if (weekLabel) {
+                    weekLabel.innerText = `WEEK ${weekNum} COMPLETED`;
                 }
                 
-                setTimeout(() => { 
-                    STATE.currentPage = n; 
-                    PageEngine.load(STATE.currentPage); 
-                    setTimeout(() => { 
-                        if (b) {
-                            b.classList.remove('fade-out');
-                        }
-                    }, 150); 
-                }, 400);
-            },
-            handleNextAdventure() { 
-                AITutor.close(); 
-                if (CurriculumEngine.isWeekEnd(STATE.unitId, STATE.currentPage)) {
-                    CertificateEngine.open(CurriculumEngine.weekIndex(STATE.unitId, STATE.currentPage)); 
-                } else {
-                    this.smoothMove(1); 
-                }
-            }
-        };
-
-        const PageEngine = {
-            init() {
-                const list = document.getElementById('nav-list'); 
-                if (!list) {
-                    return;
-                }
-                list.innerHTML = ''; 
-                const d = PAGE_INTELLIGENCE[STATE.unitId];
-                
-                if (d) { 
-                    Object.keys(d).forEach((k) => { 
-                        const i = document.createElement('div'); 
-                        i.className = 'nav-item interactive-hover'; 
-                        i.id = `nav-${k}`; 
-                        i.innerHTML = `<span class="nav-title">${d[k].navTitle}</span><span class="nav-badge">W${CurriculumEngine.weekIndex(STATE.unitId, Number(k))}-P.${k}</span>`; 
-                        
-                        i.onclick = () => { 
-                            AppEngine.smoothMove(parseInt(k) - STATE.currentPage); 
-                            UIEngine.closeSidebar(); 
-                        }; 
-                        list.appendChild(i); 
-                    }); 
-                }
-                this.load(STATE.currentPage);
-            },
-            load(n) {
-                STATE.currentPage = n; 
-                STATE.lastTranscript = ""; 
-                STATE.sttConfidence = 0;
-                
-                const u = document.getElementById('unit-info'); 
-                if (u) {
-                    u.innerText = `MASTER LAB: ${STATE.unitId}`;
-                }
-                const p = document.getElementById('page-info'); 
-                if (p) {
-                    p.innerText = `Inquiry P.${String(n).padStart(2,'0')}`;
+                const nameLabel = document.getElementById('cert-student-name');
+                if (nameLabel) {
+                    nameLabel.innerText = STATE.studentName || "Global Explorer";
                 }
                 
-                document.querySelectorAll('.nav-item').forEach((e) => {
-                    e.classList.remove('active');
-                });
-                
-                const a = document.getElementById(`nav-${n}`); 
-                const l = document.getElementById('nav-list');
-                
-                if (a) { 
-                    a.classList.add('active'); 
-                    if (l) {
-                        l.scrollTo({ top: a.offsetTop - l.offsetTop - 50, behavior: 'smooth' });
-                    }
+                const imgEl = document.getElementById('cert-canvas-img');
+                const mergedImg = CanvasEngine.captureWorksheetWithDrawing(false);
+                if (imgEl) {
+                    imgEl.src = mergedImg || CanvasEngine.cvs.toDataURL();
                 }
                 
-                CanvasEngine.hardReset(); 
-                AITutor.close();
+                const msgEl = document.getElementById('cert-ai-msg');
+                const hasArt = STATE.badges.includes("🎨 Colorful Artist"); 
+                const hasVoice = STATE.badges.includes("🗣️ Great Speaker");
                 
-                const w = document.getElementById('worksheet-img'); 
-                if (w) {
-                    w.style.opacity = '0';
-                }
-                
-                SmartImageLoader.findValidWorksheet(STATE.unitId, STATE.currentPage); 
-                StorageEngine.save();
-            }
-        };
-
-        const UIEngine = {
-            toggleSidebar() { 
-                if (window.innerWidth > 1180) {
-                    return;
-                }
-                const s = document.getElementById('sidebar'); 
-                if (s) {
-                    s.classList.toggle('open');
-                }
-                const b = document.getElementById('sidebar-backdrop'); 
-                if (b) {
-                    b.classList.toggle('active');
-                }
-            },
-            closeSidebar() { 
-                const s = document.getElementById('sidebar'); 
-                if (s) {
-                    s.classList.remove('open');
-                }
-                const b = document.getElementById('sidebar-backdrop'); 
-                if (b) {
-                    b.classList.remove('active');
-                }
-            }
-        };
-
-        let systemBooted = false;
-        function SystemBoot() {
-            if (systemBooted) {
-                return;
-            }
-            systemBooted = true;
-            try { 
-                StorageEngine.load(); 
-                CustomModalEngine.init(); 
-                CanvasEngine.init(); 
-                RGBRingEngine.init(); 
-                AudioEngine.init(); 
-                CursorEngine.init(); 
-                BadgeEngine.renderAll(); 
-                PageEngine.init(); 
-                SyncIndicatorEngine.init(); 
-                Logger.log("V100.61 Boot Complete."); 
-            } catch(e) { 
-                Logger.error("Boot Error", e); 
-            }
-        }
-
-        // 로그인 세션 방어선
-        auth.onAuthStateChanged((u) => {
-            if (!u) { 
-                CustomModalEngine.alert("Session Expired", "로그인해 주세요."); 
-                setTimeout(() => window.location.replace('login.html'), 2000); 
-            } else { 
-                STATE.uid = u.uid; 
-                STATE.studentEmail = u.email; 
-                STATE.studentName = u.email.split('@')[0].toUpperCase(); 
-                
-                const b = document.getElementById('profile-box'); 
-                if (b) {
-                    b.classList.add('registered');
+                let msg = "For showing amazing curiosity and completing your inquiry journey.";
+                if (hasArt && hasVoice) {
+                    msg = "For your brilliant colorful art and speaking English so confidently!";
+                } else if (hasArt) {
+                    msg = "For expressing your wonderful imagination through colorful art!";
+                } else if (hasVoice) {
+                    msg = "For speaking English with a clear, brave voice!";
                 }
                 
-                const n = document.getElementById('display-name'); 
-                if (n) {
-                    n.innerText = STATE.studentName;
-                }
-                
-                const a = document.getElementById('avatar-char'); 
-                if (a) {
-                    a.innerText = STATE.studentName.charAt(0);
-                }
-                
-                SystemBoot(); 
-            }
-        });
-    </script>
-</body>
-</html>
+                if (msgEl) {

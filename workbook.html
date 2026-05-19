@@ -3,68 +3,28 @@
 <head>
     <meta charset="UTF-8">
     
-    <meta 
-        name="viewport" 
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
-    >
-    <meta 
-        name="mobile-web-app-capable" 
-        content="yes"
-    >
-    <meta 
-        name="apple-mobile-web-app-capable" 
-        content="yes"
-    >
-    <meta 
-        name="apple-mobile-web-app-status-bar-style" 
-        content="black-translucent"
-    >
-    <meta 
-        name="theme-color" 
-        content="#FCFBF9"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#FCFBF9">
     
-    <title>Bridge Academy | Premium AI Lab V100.65</title>
+    <title>Bridge Academy | Premium AI Lab V100.75</title>
 
-    <link 
-        rel="icon" 
-        href="data:;base64,iVBORw0KGgo="
-    >
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     
-    <link 
-        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" 
-        rel="stylesheet"
-    >
-    <link 
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Jua&family=Nunito:wght@700;900&display=swap" 
-        rel="stylesheet"
-    >
-    <link 
-        rel="stylesheet" 
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    >
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Jua&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <script 
-        src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"
-    ></script>
-    <script 
-        src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"
-    ></script> 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> 
     
-    <script 
-        src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"
-    ></script>
-    <script 
-        src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"
-    ></script>
-    <script 
-        src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"
-    ></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <style>
-        /* ----------------------------------------------------------------------
-           [4-1. DESIGN TOKENS & CSS VARIABLES]
-        ---------------------------------------------------------------------- */
         :root {
             --br-green: #91D3B4; 
             --br-gold: #CBAE75; 
@@ -102,22 +62,16 @@
             --shadow-premium: 0px 30px 60px rgba(54, 52, 49, 0.15);
         }
 
-        /* ----------------------------------------------------------------------
-           [4-2. BASE RESET & FALLBACKS]
-        ---------------------------------------------------------------------- */
         * { 
             margin-top: 0px; 
             margin-right: 0px; 
             margin-bottom: 0px; 
             margin-left: 0px; 
-            
             padding-top: 0px; 
             padding-right: 0px; 
             padding-bottom: 0px; 
             padding-left: 0px; 
-            
             box-sizing: border-box; 
-            
             -webkit-tap-highlight-color: transparent; 
             cursor: none !important;
         }
@@ -125,15 +79,11 @@
         html {
             width: 100%; 
             height: 100dvh; 
-            
             overflow-x: hidden; 
             overflow-y: hidden; 
-            
             background-color: var(--br-bg); 
             color: var(--br-text); 
-            
             font-family: 'Pretendard', sans-serif; 
-            
             pointer-events: auto !important; 
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
@@ -142,96 +92,45 @@
         body {
             width: 100%; 
             height: 100dvh; 
-            
             overflow-x: hidden; 
             overflow-y: hidden; 
-            
             background-color: var(--br-bg); 
             color: var(--br-text); 
-            
             font-family: 'Pretendard', sans-serif; 
-            
             pointer-events: auto !important; 
             -webkit-font-smoothing: antialiased; 
             -moz-osx-font-smoothing: grayscale;
         }
 
-        a { 
-            cursor: none !important; 
-        }
-
-        button { 
-            cursor: none !important; 
-            
-            border-top-width: 0px;
-            border-right-width: 0px;
-            border-bottom-width: 0px;
-            border-left-width: 0px;
-            
-            background-color: transparent; 
-            font-family: inherit; 
-            outline-width: 0px; 
-        }
-
-        input { 
-            cursor: none !important; 
-        }
-
-        select { 
-            cursor: none !important; 
-        }
-
-        textarea { 
-            cursor: none !important; 
-        }
-
-        ul { 
-            list-style-type: none; 
-        }
-
-        ol { 
-            list-style-type: none; 
-        }
-
-        li { 
-            list-style-type: none; 
-        }
+        a { cursor: none !important; }
+        button { border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; background-color: transparent; font-family: inherit; outline-width: 0px; cursor: none !important; }
+        input { cursor: none !important; }
+        select { cursor: none !important; }
+        textarea { cursor: none !important; }
+        ul { list-style-type: none; }
+        ol { list-style-type: none; }
+        li { list-style-type: none; }
 
         @supports not (height: 100dvh) {
-            html { 
-                height: 100vh; 
-            }
-            body { 
-                height: 100vh; 
-            }
-            .app-container { 
-                height: 100vh; 
-            }
+            html { height: 100vh; }
+            body { height: 100vh; }
+            .app-container { height: 100vh; }
         }
 
-        /* ----------------------------------------------------------------------
-           [4-3. PREMIUM CUSTOM CURSOR]
-        ---------------------------------------------------------------------- */
         .cursor-dot {
             position: fixed;
             top: 0px;
             left: 0px;
-            
             width: 4px;
             height: 4px;
-            
             background-color: rgba(54, 52, 49, 0.75);
-            
             border-top-left-radius: 50%;
             border-top-right-radius: 50%;
             border-bottom-right-radius: 50%;
             border-bottom-left-radius: 50%;
-            
             pointer-events: none;
             z-index: 99999;
-            
             transform: translate(-50%, -50%);
-            
             transition-property: width, height, opacity, background-color;
             transition-duration: 0.16s;
             transition-timing-function: ease;
@@ -242,38 +141,30 @@
             position: fixed;
             top: 0px;
             left: 0px;
-            
             width: 22px;
             height: 22px;
-            
             border-top-width: 1px;
             border-right-width: 1px;
             border-bottom-width: 1px;
             border-left-width: 1px;
-            
             border-top-style: solid;
             border-right-style: solid;
             border-bottom-style: solid;
             border-left-style: solid;
-            
             border-top-color: rgba(54, 52, 49, 0.28);
             border-right-color: rgba(54, 52, 49, 0.28);
             border-bottom-color: rgba(54, 52, 49, 0.28);
             border-left-color: rgba(54, 52, 49, 0.28);
-            
             border-top-left-radius: 50%;
             border-top-right-radius: 50%;
             border-bottom-right-radius: 50%;
             border-bottom-left-radius: 50%;
-            
             pointer-events: none;
             z-index: 99998;
-            
             transform: translate(-50%, -50%);
-            
             transition-property: width, height, opacity, border-color, background-color;
-            transition-duration: 0.15s;
-            transition-timing-function: ease;
+            transition-duration: 0.22s;
+            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
             will-change: transform;
         }
 
@@ -293,70 +184,28 @@
             border-left-color: rgba(145, 211, 180, 0.5);
         }
 
-        .cursor-dot.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
+        .cursor-dot.hidden { opacity: 0; visibility: hidden; }
+        .cursor-ring.hidden { opacity: 0; visibility: hidden; }
 
-        .cursor-ring.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .stage-wrapper {
-            cursor: crosshair !important;
-        }
-
-        .drawing-board {
-            cursor: crosshair !important;
-        }
-
-        #draw-layer {
-            cursor: crosshair !important;
-        }
+        .stage-wrapper { cursor: crosshair !important; }
+        .drawing-board { cursor: crosshair !important; }
+        #draw-layer { cursor: crosshair !important; }
 
         @media (pointer: coarse) {
-            .cursor-dot { 
-                display: none !important; 
-            }
-            .cursor-ring { 
-                display: none !important; 
-            }
-            html { 
-                cursor: auto !important; 
-            }
-            body { 
-                cursor: auto !important; 
-            }
-            a { 
-                cursor: auto !important; 
-            }
-            button { 
-                cursor: auto !important; 
-            }
-            input { 
-                cursor: auto !important; 
-            }
-            select { 
-                cursor: auto !important; 
-            }
-            textarea { 
-                cursor: auto !important; 
-            }
-            .stage-wrapper { 
-                cursor: auto !important; 
-            }
-            .drawing-board { 
-                cursor: auto !important; 
-            }
-            #draw-layer { 
-                cursor: auto !important; 
-            }
+            .cursor-dot { display: none !important; }
+            .cursor-ring { display: none !important; }
+            html { cursor: auto !important; }
+            body { cursor: auto !important; }
+            a { cursor: auto !important; }
+            button { cursor: auto !important; }
+            input { cursor: auto !important; }
+            select { cursor: auto !important; }
+            textarea { cursor: auto !important; }
+            .stage-wrapper { cursor: auto !important; }
+            .drawing-board { cursor: auto !important; }
+            #draw-layer { cursor: auto !important; }
         }
         
-        /* ----------------------------------------------------------------------
-           [4-4. APP CONTAINER]
-        ---------------------------------------------------------------------- */
         .app-container { 
             display: flex; 
             flex-direction: row;
@@ -366,9 +215,6 @@
             pointer-events: auto !important; 
         }
         
-        /* ----------------------------------------------------------------------
-           [4-5. SIDEBAR]
-        ---------------------------------------------------------------------- */
         .sidebar { 
             width: var(--sidebar-width); 
             height: 100%; 
@@ -438,9 +284,6 @@
             font-style: italic; 
         }
         
-        /* ----------------------------------------------------------------------
-           [4-6. STUDENT PROFILE]
-        ---------------------------------------------------------------------- */
         .student-profile { 
             padding-top: 25px;
             padding-right: 30px;
@@ -562,9 +405,6 @@
             animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
-        /* ----------------------------------------------------------------------
-           [4-7. NAVIGATION LIST]
-        ---------------------------------------------------------------------- */
         .nav-list { 
             flex: 1; 
             overflow-y: auto; 
@@ -675,9 +515,6 @@
             opacity: 1; 
         }
 
-        /* ----------------------------------------------------------------------
-           [4-8. WORKSPACE & TOP CONTEXT BAR]
-        ---------------------------------------------------------------------- */
         .workspace { 
             flex: 1; 
             display: flex; 
@@ -842,9 +679,6 @@
             display: flex; 
         }
         
-        /* ----------------------------------------------------------------------
-           [4-9. STAGE & DRAWING BOARD (Shrink-Wrap Layout)]
-        ---------------------------------------------------------------------- */
         .stage-wrapper { 
             flex: 1; 
             display: flex; 
@@ -948,9 +782,6 @@
             border-bottom-left-radius: 20px; 
         }
 
-        /* ----------------------------------------------------------------------
-           [4-10. BOTTOM CONTROLS]
-        ---------------------------------------------------------------------- */
         .bottom-dock { 
             height: var(--dock-height); 
             background-color: rgba(255, 255, 255, 0.98); 
@@ -1201,9 +1032,6 @@
             transform: scale(0.9);
         }
 
-        /* ----------------------------------------------------------------------
-           [4-11. ACTION NAVIGATION MODULES]
-        ---------------------------------------------------------------------- */
         .action-group { 
             display: flex; 
             gap: 15px; 
@@ -2076,306 +1904,67 @@
         ---------------------------------------------------------------------- */
         
         @media (pointer: coarse) {
-            .btn-nav { 
-                min-width: 44px; 
-                min-height: 44px; 
-            }
-            .btn-main { 
-                min-width: 44px; 
-                min-height: 44px; 
-            }
-            .btn-tool { 
-                min-width: 44px; 
-                min-height: 44px; 
-            }
-            .btn-erase { 
-                min-width: 44px; 
-                min-height: 44px; 
-            }
-            .btn-magic { 
-                min-width: 44px; 
-                min-height: 44px; 
-            }
-            .color-preview { 
-                min-width: 44px; 
-                min-height: 44px; 
-            }
-            .btn-reset-all { 
-                min-width: 44px; 
-                min-height: 44px; 
-            }
+            .btn-nav { min-width: 44px; min-height: 44px; }
+            .btn-main { min-width: 44px; min-height: 44px; }
+            .btn-tool { min-width: 44px; min-height: 44px; }
+            .btn-erase { min-width: 44px; min-height: 44px; }
+            .btn-magic { min-width: 44px; min-height: 44px; }
+            .color-preview { min-width: 44px; min-height: 44px; }
+            .btn-reset-all { min-width: 44px; min-height: 44px; }
         }
 
         @media (min-width: 801px) and (max-width: 1180px) {
-            .mobile-menu-btn { 
-                display: block; 
-            }
-            
-            .sidebar { 
-                position: fixed; 
-                top: 0px; 
-                left: 0px; 
-                transform: translateX(-100%); 
-                box-shadow: none; 
-            }
-            
-            .sidebar.open { 
-                transform: translateX(0px); 
-                box-shadow: 20px 0px 50px rgba(0, 0, 0, 0.18); 
-            }
-            
-            .workspace { 
-                width: 100%; 
-            }
-            
-            .top-bar { 
-                height: 76px; 
-                padding-top: 0px;
-                padding-right: 24px;
-                padding-bottom: 0px;
-                padding-left: 24px;
-            }
-            
-            .stage-wrapper { 
-                padding-top: 20px;
-                padding-right: 20px;
-                padding-bottom: 20px;
-                padding-left: 20px;
-            }
-            
-            .bottom-dock { 
-                height: 128px; 
-                padding-top: 14px;
-                padding-right: 24px;
-                padding-bottom: 14px;
-                padding-left: 24px;
-                gap: 14px; 
-            }
-            
-            .tool-group { 
-                flex-wrap: wrap; 
-                justify-content: center; 
-            }
-            
-            .action-group { 
-                flex-wrap: wrap; 
-                justify-content: center; 
-            }
-            
-            .btn-main { 
-                padding-top: 0px; 
-                padding-right: 22px; 
-                padding-bottom: 0px; 
-                padding-left: 22px; 
-            }
+            .mobile-menu-btn { display: block; }
+            .sidebar { position: fixed; top: 0px; left: 0px; transform: translateX(-100%); box-shadow: none; }
+            .sidebar.open { transform: translateX(0px); box-shadow: 20px 0px 50px rgba(0, 0, 0, 0.18); }
+            .workspace { width: 100%; }
+            .top-bar { height: 76px; padding-top: 0px; padding-right: 24px; padding-bottom: 0px; padding-left: 24px; }
+            .stage-wrapper { padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px; }
+            .bottom-dock { height: 128px; padding-top: 14px; padding-right: 24px; padding-bottom: 14px; padding-left: 24px; gap: 14px; }
+            .tool-group { flex-wrap: wrap; justify-content: center; }
+            .action-group { flex-wrap: wrap; justify-content: center; }
+            .btn-main { padding-top: 0px; padding-right: 22px; padding-bottom: 0px; padding-left: 22px; }
         }
 
         @media (max-width: 800px) {
-            .mobile-menu-btn { 
-                display: block; 
-            }
-            
-            .sidebar { 
-                position: fixed; 
-                top: 0px; 
-                left: 0px; 
-                transform: translateX(-100%); 
-                box-shadow: none; 
-            }
-            
-            .sidebar.open { 
-                transform: translateX(0px); 
-                box-shadow: 20px 0px 50px rgba(0, 0, 0, 0.2); 
-            }
-            
-            .workspace { 
-                width: 100%; 
-            }
-            
-            .stage-wrapper { 
-                padding-top: 12px;
-                padding-right: 12px;
-                padding-bottom: 12px;
-                padding-left: 12px;
-            }
-            
-            #worksheet-img { 
-                min-width: 0px; 
-                width: 100%; 
-                max-width: 100%; 
-                max-height: calc(100dvh - 240px); 
-            }
-            
-            .bottom-dock { 
-                height: calc(140px + var(--safe-bottom)); 
-                flex-direction: column; 
-                justify-content: center; 
-                padding-top: 10px;
-                padding-right: 20px;
-                padding-bottom: calc(10px + var(--safe-bottom));
-                padding-left: 20px;
-                gap: 12px; 
-                border-top-left-radius: 25px; 
-                border-top-right-radius: 25px; 
-                border-bottom-right-radius: 0px; 
-                border-bottom-left-radius: 0px; 
-            }
-            
-            .tool-group { 
-                width: 100%; 
-                justify-content: center; 
-                padding-top: 8px;
-                padding-right: 20px;
-                padding-bottom: 8px;
-                padding-left: 20px;
-            }
-            
-            .action-group { 
-                width: 100%; 
-                justify-content: space-between; 
-            }
-            
-            .btn-nav { 
-                height: 50px; 
-                font-size: 13px; 
-            }
-            
-            .btn-main { 
-                height: 50px; 
-                font-size: 13px; 
-            }
-            
-            .ai-panel { 
-                width: 100%; 
-                right: -100%; 
-                border-left-width: 0px; 
-            }
-            
-            .rgb-modal { 
-                left: 50%; 
-                transform: translateX(-50%) translateY(20px); 
-                bottom: calc(160px + var(--safe-bottom)); 
-            }
-            
-            .rgb-modal.active { 
-                transform: translateX(-50%) translateY(0px); 
-            }
-            
-            .cert-card { 
-                padding-top: 30px;
-                padding-right: 20px;
-                padding-bottom: 30px;
-                padding-left: 20px;
-            }
-            
-            .cert-border { 
-                padding-top: 20px;
-                padding-right: 20px;
-                padding-bottom: 20px;
-                padding-left: 20px;
-            }
-            
-            .cert-title { 
-                font-size: 30px; 
-            }
-            
-            .bridge-modal-box {
-                padding-top: 30px;
-                padding-right: 20px;
-                padding-bottom: 30px;
-                padding-left: 20px;
-                max-width: 95%;
-            }
+            .mobile-menu-btn { display: block; }
+            .sidebar { position: fixed; top: 0px; left: 0px; transform: translateX(-100%); box-shadow: none; }
+            .sidebar.open { transform: translateX(0px); box-shadow: 20px 0px 50px rgba(0, 0, 0, 0.2); }
+            .workspace { width: 100%; }
+            .stage-wrapper { padding-top: 12px; padding-right: 12px; padding-bottom: 12px; padding-left: 12px; }
+            #worksheet-img { min-width: 0px; width: 100%; max-width: 100%; max-height: calc(100dvh - 240px); }
+            .bottom-dock { height: calc(140px + var(--safe-bottom)); flex-direction: column; justify-content: center; padding-top: 10px; padding-right: 20px; padding-bottom: calc(10px + var(--safe-bottom)); padding-left: 20px; gap: 12px; border-top-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 0px; border-bottom-left-radius: 0px; }
+            .tool-group { width: 100%; justify-content: center; padding-top: 8px; padding-right: 20px; padding-bottom: 8px; padding-left: 20px; }
+            .action-group { width: 100%; justify-content: space-between; }
+            .btn-nav { height: 50px; font-size: 13px; }
+            .btn-main { height: 50px; font-size: 13px; }
+            .ai-panel { width: 100%; right: -100%; border-left-width: 0px; }
+            .rgb-modal { left: 50%; transform: translateX(-50%) translateY(20px); bottom: calc(160px + var(--safe-bottom)); }
+            .rgb-modal.active { transform: translateX(-50%) translateY(0px); }
+            .cert-card { padding-top: 30px; padding-right: 20px; padding-bottom: 30px; padding-left: 20px; }
+            .cert-border { padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px; }
+            .cert-title { font-size: 30px; }
+            .bridge-modal-box { padding-top: 30px; padding-right: 20px; padding-bottom: 30px; padding-left: 20px; max-width: 95%; }
         }
 
         @media (max-width: 560px) {
-            .top-bar { 
-                height: 68px; 
-                padding-top: 0px;
-                padding-right: 14px;
-                padding-bottom: 0px;
-                padding-left: 14px;
-            }
-            
-            .unit-info { 
-                font-size: 10px; 
-                letter-spacing: 1.8px; 
-            }
-            
-            .page-info { 
-                font-size: 24px; 
-            }
-            
-            .ai-header { 
-                padding-left: 20px; 
-                padding-right: 20px; 
-            }
-            
-            .ai-content { 
-                padding-left: 20px; 
-                padding-right: 20px; 
-            }
-            
-            .chat-footer { 
-                padding-left: 20px; 
-                padding-right: 20px; 
-            }
-            
-            .chat-bubble { 
-                max-width: 96%; 
-                font-size: 15px; 
-            }
+            .top-bar { height: 68px; padding-top: 0px; padding-right: 14px; padding-bottom: 0px; padding-left: 14px; }
+            .unit-info { font-size: 10px; letter-spacing: 1.8px; }
+            .page-info { font-size: 24px; }
+            .ai-header { padding-left: 20px; padding-right: 20px; }
+            .ai-content { padding-left: 20px; padding-right: 20px; }
+            .chat-footer { padding-left: 20px; padding-right: 20px; }
+            .chat-bubble { max-width: 96%; font-size: 15px; }
         }
 
         @media (max-width: 480px) {
-            .bottom-dock { 
-                height: calc(170px + var(--safe-bottom)); 
-                padding-top: 10px;
-                padding-right: 12px;
-                padding-bottom: calc(10px + var(--safe-bottom));
-                padding-left: 12px;
-            }
-            
-            .tool-group { 
-                gap: 6px; 
-                padding-top: 8px;
-                padding-right: 8px;
-                padding-bottom: 8px;
-                padding-left: 8px;
-                border-top-left-radius: 18px; 
-                border-top-right-radius: 18px; 
-                border-bottom-right-radius: 18px; 
-                border-bottom-left-radius: 18px; 
-                flex-wrap: wrap; 
-            }
-            
-            .btn-magic { 
-                font-size: 20px; 
-            }
-            
-            .brush-slider { 
-                width: 72px; 
-            }
-            
-            #worksheet-img { 
-                max-height: calc(100dvh - 220px); 
-            }
-            
-            .btn-main { 
-                height: 48px; 
-                padding-top: 0px;
-                padding-right: 14px;
-                padding-bottom: 0px;
-                padding-left: 14px;
-                font-size: 12px; 
-                flex: 1; 
-                justify-content: center; 
-            }
-            
-            .btn-nav { 
-                width: 48px; 
-                height: 48px; 
-            }
+            .bottom-dock { height: calc(170px + var(--safe-bottom)); padding-top: 10px; padding-right: 12px; padding-bottom: calc(10px + var(--safe-bottom)); padding-left: 12px; }
+            .tool-group { gap: 6px; padding-top: 8px; padding-right: 8px; padding-bottom: 8px; padding-left: 8px; border-top-left-radius: 18px; border-top-right-radius: 18px; border-bottom-right-radius: 18px; border-bottom-left-radius: 18px; flex-wrap: wrap; }
+            .btn-magic { font-size: 20px; }
+            .brush-slider { width: 72px; }
+            #worksheet-img { max-height: calc(100dvh - 220px); }
+            .btn-main { height: 48px; padding-top: 0px; padding-right: 14px; padding-bottom: 0px; padding-left: 14px; font-size: 12px; flex: 1; justify-content: center; }
+            .btn-nav { width: 48px; height: 48px; }
         }
     </style>
 </head>
@@ -2408,14 +1997,17 @@
         <div class="workspace">
             <header class="top-bar">
                 <div class="top-bar-left">
-                    <button class="mobile-menu-btn interactive-hover" onclick="UIEngine.toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+                    <button class="mobile-menu-btn interactive-hover" onclick="UIEngine.toggleSidebar()">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
                     <div>
                         <div id="unit-info" class="unit-info">UNIT LOADING...</div>
                         <div id="page-info" class="page-info">Inquiry P.01</div>
                     </div>
                 </div>
                 <div class="sync-indicator-container" id="sync-indicator">
-                    <i class="fa-solid fa-cloud sync-icon" id="sync-icon"></i><span id="sync-text">Synced</span>
+                    <i class="fa-solid fa-cloud sync-icon" id="sync-icon"></i>
+                    <span id="sync-text">Synced</span>
                 </div>
             </header>
             
@@ -2435,6 +2027,7 @@
                 <div class="tool-group" role="group" aria-label="Drawing Tools">
                     <div class="color-preview interactive-hover" id="btn-color" onclick="RGBRingEngine.toggle()"></div>
                     <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;" aria-hidden="true" tabindex="-1">
+                    
                     <button class="btn-magic active interactive-hover" id="btn-brush-normal" onclick="CanvasEngine.setBrush('normal')">🖍️</button>
                     <button class="btn-magic interactive-hover" id="btn-brush-neon" onclick="CanvasEngine.setBrush('neon')">🌟</button>
                     <button class="btn-magic interactive-hover" id="btn-brush-rainbow" onclick="CanvasEngine.setBrush('rainbow')">🌈</button>
@@ -2472,7 +2065,9 @@
         <aside class="ai-panel" id="ai-panel">
             <header class="ai-header">
                 <div class="ai-title">✨ Private Tutor</div>
-                <button class="btn-close-ai interactive-hover" onclick="AITutor.close()"><i class="fa-solid fa-xmark"></i></button>
+                <button class="btn-close-ai interactive-hover" onclick="AITutor.close()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </header>
             <section class="ai-content" id="ai-content" aria-live="polite"></section>
             <footer class="chat-footer" id="chat-footer" style="display:none;">
@@ -2635,70 +2230,7 @@
         };
 
         /**
-         * [5-4. 제로 레이턴시 다이나믹 커서 트래커]
-         */
-        const CursorEngine = {
-            dot: null,
-            ring: null,
-            posX: 0,
-            posY: 0,
-            mouseX: 0,
-            mouseY: 0,
-            initialized: false,
-
-            init() {
-                if (window.matchMedia("(pointer: coarse)").matches) {
-                    return;
-                }
-
-                this.dot = document.getElementById('cursor-dot');
-                this.ring = document.getElementById('cursor-ring');
-
-                if (!this.dot || !this.ring) {
-                    return;
-                }
-
-                this.initialized = true;
-
-                document.addEventListener('mousemove', (e) => {
-                    this.mouseX = e.clientX;
-                    this.mouseY = e.clientY;
-
-                    this.dot.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
-                    this.ring.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
-
-                    const isDrawingSurface = Boolean(e.target.closest('.stage-wrapper, .drawing-board, #draw-layer'));
-
-                    if (isDrawingSurface) {
-                        this.dot.classList.add('hidden');
-                        this.ring.classList.add('hidden');
-                    } else {
-                        this.dot.classList.remove('hidden');
-                        this.ring.classList.remove('hidden');
-                    }
-                });
-
-                document.addEventListener('mouseover', (e) => {
-                    if (e.target.closest('.stage-wrapper, .drawing-board, #draw-layer')) {
-                        return;
-                    }
-                    if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
-                        this.dot.classList.add('hovered');
-                        this.ring.classList.add('hovered');
-                    }
-                });
-
-                document.addEventListener('mouseout', (e) => {
-                    if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
-                        this.dot.classList.remove('hovered');
-                        this.ring.classList.remove('hovered');
-                    }
-                });
-            }
-        };
-
-        /**
-         * [5-5. 글로벌 상태 객체 컨텍스트]
+         * [5-4. 글로벌 상태 객체 컨텍스트]
          */
         const STATE = {
             uid: null, 
@@ -2914,6 +2446,7 @@
                 this.container.className = "sync-indicator-container saved";
                 this.icon.className = "fa-solid fa-cloud-check sync-icon";
                 this.text.innerText = "Saved";
+                
                 setTimeout(() => {
                     if (this.container.classList.contains('saved')) {
                         this.container.className = "sync-indicator-container";
@@ -2939,7 +2472,7 @@
         };
 
         /**
-         * [5-6. SMART IMAGE LOADER ENGINE (CORS & 404 방어)]
+         * [5-6. SMART IMAGE LOADER ENGINE (Defensive Preloader)]
          */
         const SmartImageLoader = {
             requestToken: 0,
@@ -2975,12 +2508,14 @@
 
                     if (index >= possiblePaths.length) {
                         Logger.error(`Worksheet missing. 404 on ${unitId} Page ${pageNum}`);
+                        
                         if (imgElement) {
                             imgElement.style.opacity = '1';
                         }
                         if (boardElement) {
                             boardElement.classList.add('error-state');
                         }
+                        
                         setTimeout(() => {
                             if (token !== this.requestToken) {
                                 return;
@@ -2994,25 +2529,36 @@
                     const testUrl = `${possiblePaths[index]}?t=${t}`;
                     const tempImg = new Image();
                     
-                    // [P0] Tainted Canvas 보안 에러 원천 차단
+                    // [Defense 5] 이미지 타임아웃 방어
+                    let loadTimeout = setTimeout(() => {
+                        if (token !== this.requestToken) return;
+                        Logger.warn("Image Load Timeout. Forcing next fallback.");
+                        tempImg.src = "";
+                        tryLoad(index + 1);
+                    }, 10000);
+                    
                     tempImg.crossOrigin = "anonymous";
 
                     tempImg.onload = () => {
+                        clearTimeout(loadTimeout);
                         if (token !== this.requestToken) {
                             return;
                         }
                         Logger.log("Mounted:", testUrl);
+                        
                         if (boardElement) {
                             boardElement.classList.remove('error-state');
                         }
                         
                         if (imgElement) {
                             imgElement.crossOrigin = "anonymous";
+                            
                             imgElement.onload = () => {
                                 if (token !== this.requestToken) {
                                     return;
                                 }
                                 imgElement.style.opacity = '1';
+                                
                                 requestAnimationFrame(() => {
                                     requestAnimationFrame(() => {
                                         if (token !== this.requestToken) {
@@ -3023,11 +2569,13 @@
                                     });
                                 });
                             };
+                            
                             imgElement.src = testUrl;
                         }
                     };
 
                     tempImg.onerror = () => {
+                        clearTimeout(loadTimeout);
                         tryLoad(index + 1);
                     };
                     
@@ -3039,7 +2587,7 @@
         };
 
         /**
-         * [5-7. CLOUD FIREBASE STORAGE ENGINE]
+         * [5-7. CLOUD FIREBASE STORAGE ENGINE (Quota Defense)]
          */
         const StorageEngine = {
             cloudSaveTimer: null,
@@ -3085,13 +2633,16 @@
                         badges: STATE.badges || [] 
                     };
                     localStorage.setItem(`br_data_${STATE.uid}_${STATE.unitId}`, JSON.stringify(data));
-                    await db.collection("students").doc(STATE.uid).set({ 
-                        name: data.name, 
-                        page: data.page, 
-                        badges: data.badges, 
-                        email: STATE.studentEmail, 
-                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
-                    }, { merge: true });
+                    
+                    if (navigator.onLine) {
+                        await db.collection("students").doc(STATE.uid).set({ 
+                            name: data.name, 
+                            page: data.page, 
+                            badges: data.badges, 
+                            email: STATE.studentEmail, 
+                            lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
+                        }, { merge: true });
+                    }
                 } catch (error) { 
                     Logger.error("Core transaction metadata sync failed.", error); 
                 }
@@ -3104,15 +2655,26 @@
                 let canvasData = null;
                 
                 if (compressForDatabase) {
-                    canvasData = CanvasEngine.captureWorksheetWithDrawing(true, 600); // 전송 다이어트 최적화
+                    canvasData = CanvasEngine.captureWorksheetWithDrawing(true, 600); 
                 } else {
                     canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6); 
                 }
                 
                 if (!compressForDatabase) {
+                    // [Defense 2] LocalStorage 용량 초과 방어 (Emergency Flush)
                     try { 
                         localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, canvasData); 
-                    } catch(e) {}
+                    } catch(e) {
+                        if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+                            Logger.warn("Local Storage Quota Exceeded. Engaging Emergency Flush.");
+                            localStorage.clear();
+                            try {
+                                localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, canvasData);
+                            } catch (fallbackError) {
+                                Logger.error("Emergency flush failed to recover space.", fallbackError);
+                            }
+                        }
+                    }
                 }
                 
                 return { 
@@ -3132,6 +2694,7 @@
             scheduleCloudSave() {
                 SyncIndicatorEngine.setSaving();
                 const snapshot = this.createCanvasSnapshot(true);
+                
                 if (this.cloudSaveTimer) {
                     clearTimeout(this.cloudSaveTimer);
                 }
@@ -3145,6 +2708,12 @@
                 if (!payload) {
                     return;
                 }
+                
+                if (!navigator.onLine) {
+                    SyncIndicatorEngine.setError();
+                    return;
+                }
+                
                 try {
                     const firestoreDocId = `${payload.uid}_${payload.unitId}_P${payload.page}`;
                     await db.collection("student_drawings").doc(firestoreDocId).set({ 
@@ -3167,6 +2736,7 @@
                 try {
                     const cacheKey = `br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`;
                     const localData = localStorage.getItem(cacheKey);
+                    
                     if (localData) {
                         const img = new Image();
                         img.onload = () => { 
@@ -3214,6 +2784,7 @@
                         this.updateBrushPreview();
                     });
                 }
+                
                 if (window.ResizeObserver && this.board) { 
                     new ResizeObserver(() => {
                         this.resizeCanvas();
@@ -3245,6 +2816,7 @@
                     const pctx = probe.getContext('2d'); 
                     pctx.drawImage(this.cvs, 0, 0, 64, 64);
                     const pixels = pctx.getImageData(0, 0, 64, 64).data;
+                    
                     for (let i = 3; i < pixels.length; i += 4) { 
                         if (pixels[i] !== 0) {
                             return false; 
@@ -3256,9 +2828,6 @@
                 }
             },
             
-            /**
-             * [P0 Tainted Canvas & 502 Error 방어 Survival Engine]
-             */
             captureWorksheetWithDrawing(compressForDatabase = false, initialMaxWidth = 600) {
                 const worksheet = document.getElementById('worksheet-img'); 
                 const draw = this.cvs;
@@ -3287,15 +2856,16 @@
                     }
                     ctx.drawImage(draw, 0, 0, merged.width, merged.height);
                 } catch(e) { 
-                    /* 캔버스가 오염되어 병합에 실패한 경우, 아이가 그린 '드로잉 영역'만 추출합니다. */
                     Logger.warn("Security Canvas Taint Detected. Engaging fallback extraction.");
                     const fallbackCanvas = document.createElement('canvas');
                     fallbackCanvas.width = Math.floor(draw.width * scaleRatio);
                     fallbackCanvas.height = Math.floor(draw.height * scaleRatio);
                     const fCtx = fallbackCanvas.getContext('2d');
+                    
                     fCtx.fillStyle = '#FFFFFF';
                     fCtx.fillRect(0, 0, fallbackCanvas.width, fallbackCanvas.height);
                     fCtx.drawImage(draw, 0, 0, fallbackCanvas.width, fallbackCanvas.height);
+                    
                     ctx.drawImage(fallbackCanvas, 0, 0);
                 }
 
@@ -3316,9 +2886,11 @@
                         microCanvas.width = Math.floor(merged.width / 2);
                         microCanvas.height = Math.floor(merged.height / 2);
                         const microCtx = microCanvas.getContext('2d');
+                        
                         microCtx.fillStyle = '#FFFFFF';
                         microCtx.fillRect(0, 0, microCanvas.width, microCanvas.height);
                         microCtx.drawImage(merged, 0, 0, microCanvas.width, microCanvas.height);
+                        
                         encodedString = microCanvas.toDataURL('image/jpeg', 0.5);
                     }
                     return encodedString;
@@ -3335,10 +2907,12 @@
                 if (rect.width === 0) {
                     return;
                 }
+                
                 this.cvs.style.width = rect.width + "px"; 
                 this.cvs.style.height = rect.height + "px";
                 this.cvs.width = rect.width * this.dpr; 
                 this.cvs.height = rect.height * this.dpr;
+                
                 this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); 
                 this.ctx.lineCap = 'round'; 
                 this.ctx.lineJoin = 'round';
@@ -3429,10 +3003,13 @@
                 this.cvs.addEventListener('pointerleave', end);
             },
             
+            // [Defense 6] 스택 깊은 복사 방어
             saveHistory() { 
                 this.historyIndex++; 
                 this.historyStack.length = this.historyIndex; 
+                // 원본을 훼손시키지 않기 위해 DataURL 문자열로 저장하여 독립성 보장
                 this.historyStack.push(this.cvs.toDataURL()); 
+                
                 if (this.historyStack.length > 20) { 
                     this.historyStack.shift(); 
                     this.historyIndex--; 
@@ -3469,10 +3046,12 @@
                 document.querySelectorAll('.btn-magic').forEach((el) => {
                     el.classList.remove('active');
                 });
+                
                 const activeBtn = document.getElementById(`btn-brush-${t}`); 
                 if (activeBtn) {
                     activeBtn.classList.add('active'); 
                 }
+                
                 if (this.isErasing) {
                     this.toggleEraser(); 
                 }
@@ -3603,3 +3182,409 @@
                 }
                 
                 if (msgEl) {
+                    msgEl.innerText = `"${msg}"`; 
+                }
+                
+                modal.classList.add('active');
+                
+                if (window.confetti) {
+                    confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
+                }
+            },
+            close() { 
+                const modal = document.getElementById('cert-modal');
+                if (modal) {
+                    modal.classList.remove('active'); 
+                }
+                
+                if (STATE.currentPage === CurriculumEngine.last(STATE.unitId)) {
+                    location.href = 'dashboard.html'; 
+                } else {
+                    AppEngine.smoothMove(1); 
+                }
+            },
+            print() {
+                const card = document.getElementById('cert-card-content');
+                const closeBtn = document.querySelector('.cert-close');
+                const printBtn = document.querySelector('.btn-print');
+                
+                if (closeBtn) {
+                    closeBtn.style.display = 'none'; 
+                }
+                if (printBtn) {
+                    printBtn.style.display = 'none';
+                }
+                
+                if (window.html2canvas && card) {
+                    html2canvas(card, { backgroundColor: '#FFFFFF', scale: 2 }).then((canvas) => {
+                        if (closeBtn) {
+                            closeBtn.style.display = 'block'; 
+                        }
+                        if (printBtn) {
+                            printBtn.style.display = 'inline-flex';
+                        }
+                        const link = document.createElement('a'); 
+                        link.download = `Certificate_${STATE.studentName}.png`; 
+                        link.href = canvas.toDataURL('image/png'); 
+                        link.click();
+                    });
+                } else { 
+                    window.print(); 
+                    if (closeBtn) {
+                        closeBtn.style.display = 'block'; 
+                    }
+                    if (printBtn) {
+                        printBtn.style.display = 'inline-flex'; 
+                    }
+                }
+            }
+        };
+
+        const AudioEngine = {
+            recordingMode: 'main',
+            init() {
+                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (SR) {
+                    this.rec = new SR(); 
+                    this.rec.lang = 'en-US'; 
+                    this.rec.continuous = false; 
+                    this.rec.interimResults = false;
+                    
+                    this.rec.onresult = (e) => { 
+                        STATE.lastTranscript = e.results[0][0].transcript; 
+                        STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); 
+                    };
+                    
+                    this.rec.onend = () => { 
+                        if (!STATE.isRecording) {
+                            return;
+                        }
+                        STATE.isRecording = false;
+                        
+                        if (this.recordingMode === 'chat') {
+                            const chatBtn = document.getElementById('btn-chat-record');
+                            if (chatBtn) {
+                                chatBtn.classList.remove('recording');
+                                chatBtn.innerText = "🎤 Speak to Teacher";
+                            }
+                            setTimeout(() => {
+                                AITutor.processReply();
+                            }, 800);
+                        } else {
+                            const recBtn = document.getElementById('btn-record');
+                            const recText = document.getElementById('record-text');
+                            if (recBtn) {
+                                recBtn.classList.remove('recording');
+                            }
+                            if (recText) {
+                                recText.innerText = "Voice Log";
+                            }
+                            setTimeout(() => {
+                                AITutor.submit();
+                            }, 800);
+                        }
+                    };
+                    
+                    this.rec.onerror = () => { 
+                        if (STATE.isRecording) { 
+                            STATE.isRecording = false; 
+                            const recBtn = document.getElementById('btn-record');
+                            const recText = document.getElementById('record-text');
+                            if (recBtn) {
+                                recBtn.classList.remove('recording'); 
+                            }
+                            if (recText) {
+                                recText.innerText = "Voice Log"; 
+                            }
+                        } 
+                    };
+                } else { 
+                    ['btn-record', 'btn-chat-record'].forEach((id) => { 
+                        const btn = document.getElementById(id);
+                        if (btn) {
+                            btn.disabled = true; 
+                        }
+                    }); 
+                }
+            },
+            
+            // [Defense 3] 마이크 권한 거부 시 방어 로직
+            async ensurePermission() {
+                try {
+                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                        await navigator.mediaDevices.getUserMedia({ audio: true });
+                        return true;
+                    }
+                    return false;
+                } catch (e) {
+                    CustomModalEngine.alert("Microphone Needed", "마이크 사용을 허용해주셔야 선생님과 이야기할 수 있어요!");
+                    return false;
+                }
+            },
+            
+            async toggle() {
+                if (!this.rec) {
+                    return; 
+                }
+                const hasPermission = await this.ensurePermission();
+                if (!hasPermission) {
+                    return;
+                }
+                
+                this.recordingMode = 'main';
+                
+                const recBtn = document.getElementById('btn-record');
+                const recText = document.getElementById('record-text');
+                
+                if (!STATE.isRecording) { 
+                    STATE.isRecording = true; 
+                    if (recBtn) {
+                        recBtn.classList.add('recording'); 
+                    }
+                    if (recText) {
+                        recText.innerText = "Listening..."; 
+                    }
+                    this.rec.start(); 
+                } else { 
+                    STATE.isRecording = false; 
+                    if (recBtn) {
+                        recBtn.classList.remove('recording'); 
+                    }
+                    if (recText) {
+                        recText.innerText = "Voice Log"; 
+                    }
+                    this.rec.stop(); 
+                }
+            },
+            
+            async toggleChat() {
+                if (!this.rec) {
+                    return; 
+                }
+                const hasPermission = await this.ensurePermission();
+                if (!hasPermission) {
+                    return;
+                }
+                
+                this.recordingMode = 'chat';
+                
+                const chatBtn = document.getElementById('btn-chat-record');
+                
+                if (!STATE.isRecording) { 
+                    STATE.isRecording = true; 
+                    if (chatBtn) {
+                        chatBtn.classList.add('recording'); 
+                        chatBtn.innerText = "Listening...";
+                    }
+                    this.rec.start(); 
+                } else { 
+                    STATE.isRecording = false; 
+                    if (chatBtn) {
+                        chatBtn.classList.remove('recording'); 
+                        chatBtn.innerText = "🎤 Speak to Teacher";
+                    }
+                    this.rec.stop(); 
+                }
+            }
+        };
+
+        const AITutor = {
+            isBusy: false,
+            
+            // [Defense 1] 네트워크 지연 시 15초 강제 타임아웃 AbortController 도입
+            async callBackendTutor(promptText, base64Img = null) {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000);
+                
+                try {
+                    const user = auth.currentUser; 
+                    if (!user) {
+                        throw new Error("Unauthorized");
+                    }
+                    
+                    const token = await user.getIdToken();
+                    let imageVal = null;
+                    if (base64Img) {
+                        const splitArr = base64Img.split(',');
+                        if (splitArr.length > 1) {
+                            imageVal = splitArr[1];
+                        }
+                    }
+                    
+                    const reqObj = {
+                        prompt: promptText, 
+                        image: imageVal, 
+                        unitId: STATE.unitId, 
+                        page: STATE.currentPage
+                    };
+                    
+                    const response = await fetch(CONFIG.API_TUTOR_ENDPOINT, {
+                        method: 'POST', 
+                        headers: { 
+                            'Content-Type': 'application/json', 
+                            'Authorization': `Bearer ${token}` 
+                        },
+                        body: JSON.stringify(reqObj),
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    const data = await response.json(); 
+                    if (data.reply) {
+                        return data.reply;
+                    } else {
+                        return "앗, 선생님이 지금 답변을 주기 어려워요.";
+                    }
+                } catch (e) { 
+                    clearTimeout(timeoutId);
+                    if (e.name === 'AbortError') {
+                        return "앗, 연결 시간이 너무 오래 걸렸어요. 다시 버튼을 눌러주세요!";
+                    }
+                    return "앗, 네트워크 문제로 AI 선생님이 대답하지 못했어요. 다시 제출해주세요!"; 
+                }
+            },
+            async submit() {
+                if (STATE.isRecording) { 
+                    AudioEngine.toggle(); 
+                    return; 
+                } 
+                if (this.isBusy) {
+                    return; 
+                }
+                this.isBusy = true;
+                
+                const requestPage = STATE.currentPage;
+                const requestUnit = STATE.unitId;
+                
+                const content = document.getElementById('ai-content'); 
+                const panel = document.getElementById('ai-panel');
+                
+                if (panel) {
+                    panel.classList.add('open');
+                }
+                
+                if (content) {
+                    content.innerHTML = `
+                        <div class="ai-loading-container">
+                            <i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i>
+                            <p>Teacher is reviewing your sketch...</p>
+                        </div>
+                    `;
+                }
+                
+                try {
+                    StorageEngine.saveCanvasLocal(); 
+                    StorageEngine.executeCloudSave();
+                    
+                    const canvasImg = CanvasEngine.captureWorksheetWithDrawing(true);
+                    let unitData = { goal: "Free Exploration", question: "Tell me more about it." };
+                    
+                    if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]) {
+                        unitData = PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage];
+                    }
+                    
+                    let saidText = STATE.lastTranscript || "Look at my art!";
+                    
+                    const prompt = `Act as an enthusiastic, friendly teacher for a young student named ${STATE.studentName}.
+Task 1: Look carefully at the attached image. It shows the student's own drawing overlaid on top of their worksheet. Analyze what they drew.
+Task 2: Read what the student just said out loud: "${saidText}".
+Context: The lesson goal is '${unitData.goal}' and the question asked was '${unitData.question}'.
+Output: Respond with a highly engaging, encouraging message in very simple, natural English suitable for young children. Praise specific details you see in BOTH their drawing and what they said. Maximum 3 to 4 short sentences. Plain text only, no emojis or markdown.`;
+                    
+                    const reply = await this.callBackendTutor(prompt, canvasImg);
+                    
+                    if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) {
+                        return;
+                    }
+                    
+                    const aiFailed = reply.includes("앗,");
+                    if (!aiFailed) {
+                        if (!CanvasEngine.isCanvasBlank()) {
+                            BadgeEngine.add("🎨 Colorful Artist");
+                        }
+                        if (STATE.sttConfidence >= 80 && STATE.lastTranscript.length > 0) {
+                            BadgeEngine.add("🗣️ Great Speaker");
+                        }
+                    }
+                    
+                    if (content) {
+                        content.innerHTML = `
+                            <div class="analytics-card">
+                                <div class="analytics-title">Mission: ${unitData.goal}</div>
+                                <div class="stat-row">
+                                    <div class="stat-label"><span>Voice Confidence</span><span>${STATE.sttConfidence}%</span></div>
+                                    <div class="bar-bg"><div class="bar-fill" style="width:${STATE.sttConfidence}%; background-color:var(--br-blue)"></div></div>
+                                </div>
+                            </div>
+                        `;
+                        const bbl = document.createElement('div'); 
+                        bbl.className = 'chat-bubble ai mt-4'; 
+                        bbl.textContent = reply; 
+                        content.appendChild(bbl);
+                    }
+                    
+                    const footer = document.getElementById('chat-footer');
+                    if (footer) {
+                        footer.style.display = "block"; 
+                    }
+                    
+                    this.speak(reply);
+                } finally { 
+                    this.isBusy = false; 
+                }
+            },
+            async processReply() {
+                if (!STATE.lastTranscript || this.isBusy) {
+                    return; 
+                }
+                this.isBusy = true;
+                
+                const requestPage = STATE.currentPage;
+                const requestUnit = STATE.unitId;
+                const content = document.getElementById('ai-content');
+                
+                if (content) {
+                    const uBbl = document.createElement('div'); 
+                    uBbl.className = "chat-bubble user mt-4"; 
+                    uBbl.textContent = STATE.lastTranscript; 
+                    content.appendChild(uBbl);
+                    
+                    const aBbl = document.createElement('div'); 
+                    aBbl.className = "chat-bubble ai mt-4"; 
+                    aBbl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 생각 중...`; 
+                    content.appendChild(aBbl); 
+                    content.scrollTop = content.scrollHeight;
+                    
+                    try {
+                        const prompt = `Act as an enthusiastic, friendly teacher for a young student named ${STATE.studentName}. Respond directly to what the student just said: "${STATE.lastTranscript}". Give a highly engaging, encouraging message in very simple, natural English suitable for young children. Maximum 3 to 4 short sentences. Plain text only, no emojis or markdown.`;
+                        const reply = await this.callBackendTutor(prompt);
+                        
+                        if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) {
+                            return;
+                        }
+                        
+                        aBbl.innerHTML = ''; 
+                        const b = document.createElement('b'); 
+                        b.style.color = 'var(--br-green)'; 
+                        b.textContent = reply; 
+                        aBbl.appendChild(b);
+                        content.scrollTop = content.scrollHeight; 
+                        
+                        this.speak(reply);
+                    } finally { 
+                        this.isBusy = false; 
+                    }
+                } else {
+                    this.isBusy = false;
+                }
+            },
+            speak(text) { 
+                if (window.speechSynthesis) { 
+                    // [Defense 4] TTS 엔진 가비지 컬렉션 (이전 대화가 씹히는 렉 방어)
+                    window.speechSynthesis.cancel(); 
+                    
+                    const u = new SpeechSynthesisUtterance(text); 
+                    u.lang = 'en-US'; 
+                    u.rate = 0.9; 
+                    u.pitch = 1.05;

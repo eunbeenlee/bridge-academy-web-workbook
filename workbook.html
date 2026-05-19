@@ -24,7 +24,7 @@
         content="#FCFBF9"
     >
     
-    <title>Bridge Academy | Premium AI Lab V100.56 Master</title>
+    <title>Bridge Academy | Premium AI Lab V100.58</title>
 
     <link 
         rel="icon" 
@@ -66,45 +66,37 @@
            [4-1. DESIGN TOKENS & CSS VARIABLES]
         ---------------------------------------------------------------------- */
         :root {
-            /* Brand Colors */
             --br-green: #91D3B4; 
             --br-gold: #CBAE75; 
             --br-blue: #7CA6C1; 
             --br-charcoal: #363431;
             
-            /* Background Colors */
             --br-bg: #FCFBF9; 
             --br-paper: #FFFFFF; 
             --br-ai-soft: #F8FAFF;
             
-            /* Text & Border */
             --br-text: #2A2825; 
             --br-muted: #8C8985;
             --br-border: #F0EFEB; 
             
-            /* Status Colors */
             --br-error: #E74C3C; 
             --br-error-light: #FEF2F2;
             --br-error-border: #FCA5A5;
             --br-success: #2ECC71;
             
-            /* Dimensions */
             --sidebar-width: 320px;
             --topbar-height: 85px;
             --dock-height: 110px;
             
-            /* Safe Areas for Mobile Devices */
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-left: env(safe-area-inset-left, 0px);
             --safe-right: env(safe-area-inset-right, 0px);
             
-            /* Animation Timings */
             --transition-smooth: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
             --transition-fast: all 0.2s ease-in-out;
             --transition-elastic: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             
-            /* Shadows */
             --shadow-float: 0px 25px 70px rgba(0, 0, 0, 0.07);
             --shadow-button: 0px 10px 20px rgba(0, 0, 0, 0.05);
             --shadow-premium: 0px 30px 60px rgba(54, 52, 49, 0.15);
@@ -126,10 +118,8 @@
             
             box-sizing: border-box; 
             
-            /* 터치 하이라이트 방어 */
             -webkit-tap-highlight-color: transparent; 
             
-            /* 커스텀 커서 적용을 위해 브라우저 기본 포인터를 무조건 숨김 */
             cursor: none !important;
         }
 
@@ -225,7 +215,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-3. PREMIUM CUSTOM CURSOR - CHILD SAFE OPTIMIZED]
+           [4-3. PREMIUM CUSTOM CURSOR - ZERO LATENCY GPU ACCELERATED]
         ---------------------------------------------------------------------- */
         .cursor-dot {
             position: fixed;
@@ -245,11 +235,12 @@
             pointer-events: none;
             z-index: 99999;
             
-            transform: translate(-50%, -50%);
-            
+            /* [P0 Fix] 위치 트랜지션을 삭제하여 즉각적인 마우스 반응(Zero-Latency) 확보 */
             transition-property: width, height, opacity, background-color;
-            transition-duration: 0.16s;
+            transition-duration: 0.1s;
             transition-timing-function: ease;
+            
+            will-change: transform;
         }
 
         .cursor-ring {
@@ -283,11 +274,12 @@
             pointer-events: none;
             z-index: 99998;
             
-            transform: translate(-50%, -50%);
-            
+            /* [P0 Fix] 위치 렉(Lag) 현상 제거를 위해 transform을 transition 속성에서 도려냄 */
             transition-property: width, height, opacity, border-color, background-color;
-            transition-duration: 0.22s;
-            transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+            transition-duration: 0.15s;
+            transition-timing-function: ease;
+            
+            will-change: transform;
         }
 
         .cursor-dot.hovered {
@@ -319,7 +311,6 @@
             visibility: hidden;
         }
 
-        /* 드로잉 영역에서는 정밀 십자선 커서 강제 적용 */
         .stage-wrapper {
             cursor: crosshair !important;
         }
@@ -332,7 +323,6 @@
             cursor: crosshair !important;
         }
 
-        /* 터치/펜 환경(모바일/태블릿) 커스텀 커서 비활성화 */
         @media (pointer: coarse) {
             .cursor-dot { 
                 display: none !important; 
@@ -373,7 +363,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [4-4. GLOBAL APP CONTAINER]
+           [4-4. APP CONTAINER]
         ---------------------------------------------------------------------- */
         .app-container { 
             display: flex; 
@@ -388,7 +378,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [4-5. SIDEBAR NAVIGATION COMPONENT]
+           [4-5. SIDEBAR]
         ---------------------------------------------------------------------- */
         .sidebar { 
             width: var(--sidebar-width); 
@@ -474,7 +464,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [4-6. STUDENT PROFILE LAYOUT WIDGET]
+           [4-6. STUDENT PROFILE]
         ---------------------------------------------------------------------- */
         .student-profile { 
             padding-top: 25px;
@@ -622,7 +612,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-7. CURRICULUM NAVIGATION LIST]
+           [4-7. NAVIGATION LIST]
         ---------------------------------------------------------------------- */
         .nav-list { 
             flex: 1; 
@@ -751,7 +741,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-8. WORKSPACE STAGE & TOP BAR CONTROLS]
+           [4-8. WORKSPACE & TOP CONTEXT BAR]
         ---------------------------------------------------------------------- */
         .workspace { 
             flex: 1; 
@@ -950,7 +940,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [4-9. MAIN DRAWING BOARD RENDERING]
+           [4-9. STAGE & DRAWING BOARD]
         ---------------------------------------------------------------------- */
         .stage-wrapper { 
             flex: 1; 
@@ -1080,7 +1070,7 @@
         }
 
         /* ----------------------------------------------------------------------
-           [4-10. BOTTOM DOCK & TOOL PALETTES]
+           [4-10. BOTTOM CONTROLS]
         ---------------------------------------------------------------------- */
         .bottom-dock { 
             height: var(--dock-height); 
@@ -2116,7 +2106,6 @@
             color: var(--br-charcoal); 
         }
 
-        /* 수료증 배경 차단 오버레이 가드 정밀 세팅 */
         .cert-modal-overlay { 
             position: fixed; 
             top: 0px; 
@@ -3048,7 +3037,7 @@
 
     <script>
         /**
-         * [5-1. PLATFORM BOOT CONFIGURATION]
+         * [5-1. 플랫폼 부트셋 환경설정]
          */
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
@@ -3068,40 +3057,29 @@
         const db = firebase.firestore();
 
         /**
-         * [5-2. SYSTEM LOGGER UTILITY]
+         * [5-2. 시스템 로거 유틸리티]
          */
         const Logger = {
             log(msg, data = "") { 
                 console.log(`[BRIDGE OK] ${msg}`, data); 
             },
-            
             warn(msg, data = "") { 
                 console.warn(`[BRIDGE WARN] ${msg}`, data); 
             },
-            
             error(msg, err) { 
                 console.error(`[BRIDGE FATAL] ${msg}`, err); 
-                
                 const toast = document.getElementById('error-toast');
-                
                 if (toast) {
                     const toastMsg = document.getElementById('error-toast-msg');
-                    
-                    if (toastMsg) {
-                        toastMsg.innerText = msg;
-                    }
-                    
+                    if (toastMsg) toastMsg.innerText = msg;
                     toast.classList.add('show');
-                    
-                    setTimeout(() => {
-                        toast.classList.remove('show');
-                    }, 5000);
+                    setTimeout(() => toast.classList.remove('show'), 5000);
                 }
             }
         };
 
         /**
-         * [5-3. PREMIUM CUSTOM MODAL ENGINE]
+         * [5-3. 프리미엄 커스텀 모달 다이얼로그 엔진]
          */
         const CustomModalEngine = {
             overlay: null,
@@ -3119,107 +3097,70 @@
             },
 
             alert(title, message) {
-                if (!this.overlay) {
-                    this.init();
-                }
-                
+                if (!this.overlay) this.init();
                 this.titleEl.innerText = title;
                 this.textEl.innerText = message;
                 this.iconEl.className = "fa-solid fa-circle-exclamation bridge-modal-icon warning";
-                
                 this.actionsEl.innerHTML = ''; 
                 
                 const btnOk = document.createElement('button');
                 btnOk.className = "bridge-modal-btn bridge-modal-confirm neutral interactive-hover";
                 btnOk.innerText = "OK";
-                
-                btnOk.onclick = () => {
-                    this.close();
-                };
+                btnOk.onclick = () => this.close();
                 
                 this.actionsEl.appendChild(btnOk);
                 this.overlay.classList.add('active');
             },
 
             confirm(title, message, onConfirm) {
-                if (!this.overlay) {
-                    this.init();
-                }
-
+                if (!this.overlay) this.init();
                 this.titleEl.innerText = title;
                 this.textEl.innerText = message;
                 this.iconEl.className = "fa-solid fa-trash-can bridge-modal-icon warning";
-
                 this.actionsEl.innerHTML = '';
                 
                 const btnCancel = document.createElement('button');
                 btnCancel.className = "bridge-modal-btn bridge-modal-cancel interactive-hover";
                 btnCancel.innerText = "Keep It";
-                
-                btnCancel.onclick = () => {
-                    this.close();
-                };
+                btnCancel.onclick = () => this.close();
                 
                 const btnConfirm = document.createElement('button');
                 btnConfirm.className = "bridge-modal-btn bridge-modal-confirm interactive-hover";
                 btnConfirm.innerText = "Yes, Clear";
-                
                 btnConfirm.onclick = () => {
                     this.close();
-                    if (typeof onConfirm === 'function') {
-                        onConfirm();
-                    }
+                    if (typeof onConfirm === 'function') onConfirm();
                 };
                 
                 this.actionsEl.appendChild(btnCancel);
                 this.actionsEl.appendChild(btnConfirm);
-                
                 this.overlay.classList.add('active');
             },
 
             close() {
-                if (this.overlay) {
-                    this.overlay.classList.remove('active');
-                }
+                if (this.overlay) this.overlay.classList.remove('active');
             }
         };
 
         /**
-         * [5-4. ZERO-LATENCY DYNAMIC CURSOR TRACKER]
+         * [5-4. 제로 레이턴시 다이나믹 커서 트래커]
          */
         const CursorEngine = {
             dot: null,
             ring: null,
-            posX: 0,
-            posY: 0,
-            mouseX: 0,
-            mouseY: 0,
-            initialized: false,
 
             init() {
-                if (window.matchMedia("(pointer: coarse)").matches) {
-                    return;
-                }
+                if (window.matchMedia("(pointer: coarse)").matches) return;
 
                 this.dot = document.getElementById('cursor-dot');
                 this.ring = document.getElementById('cursor-ring');
 
-                if (!this.dot) {
-                    return;
-                }
-                
-                if (!this.ring) {
-                    return;
-                }
-
-                this.initialized = true;
+                if (!this.dot || !this.ring) return;
 
                 document.addEventListener('mousemove', (e) => {
-                    this.mouseX = e.clientX;
-                    this.mouseY = e.clientY;
-
-                    this.dot.style.left = `${this.mouseX}px`;
-                    this.dot.style.top = `${this.mouseY}px`;
+                    // GPU 가속을 활용한 즉각적인(Zero-Latency) 마우스 위치 동기화
+                    this.dot.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
+                    this.ring.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
 
                     const isDrawingSurface = Boolean(e.target.closest('.stage-wrapper, .drawing-board, #draw-layer'));
 
@@ -3233,10 +3174,7 @@
                 });
 
                 document.addEventListener('mouseover', (e) => {
-                    if (e.target.closest('.stage-wrapper, .drawing-board, #draw-layer')) {
-                        return;
-                    }
-
+                    if (e.target.closest('.stage-wrapper, .drawing-board, #draw-layer')) return;
                     if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
                         this.dot.classList.add('hovered');
                         this.ring.classList.add('hovered');
@@ -3249,29 +3187,11 @@
                         this.ring.classList.remove('hovered');
                     }
                 });
-
-                this.render();
-            },
-
-            render() {
-                if (!this.initialized) {
-                    return;
-                }
-
-                this.posX = this.posX + (this.mouseX - this.posX) * 0.18;
-                this.posY = this.posY + (this.mouseY - this.posY) * 0.18;
-
-                this.ring.style.left = `${this.posX}px`;
-                this.ring.style.top = `${this.posY}px`;
-
-                requestAnimationFrame(() => {
-                    this.render();
-                });
             }
         };
 
         /**
-         * [5-5. GLOBAL STATE CONTEXT]
+         * [5-5. 글로벌 상태 객체 컨텍스트]
          */
         const STATE = {
             uid: null, 
@@ -3292,173 +3212,41 @@
 
         const PAGE_INTELLIGENCE = {
             "A-1": {
-                1: { 
-                    navTitle: "[W1] Name", 
-                    goal: "Name Registration", 
-                    question: "What is your name?" 
-                },
-                2: { 
-                    navTitle: "[W1] Mind", 
-                    goal: "Self-Esteem & I like myself", 
-                    question: "Do you like yourself?" 
-                },
-                3: { 
-                    navTitle: "[W1] Face", 
-                    goal: "Face Features Vocabulary", 
-                    question: "Where is your nose?" 
-                },
-                4: { 
-                    navTitle: "[W1] Portrait", 
-                    goal: "Drawing Face Features", 
-                    question: "Can you draw your face?" 
-                },
-                5: { 
-                    navTitle: "[W2] Senses", 
-                    goal: "Action Verbs for Senses", 
-                    question: "What do you smell?" 
-                },
-                6: { 
-                    navTitle: "[W2] Sentences", 
-                    goal: "Sentence Completion", 
-                    question: "What else do you like?" 
-                },
-                7: { 
-                    navTitle: "[W2] Matching", 
-                    goal: "Sensory Association", 
-                    question: "How do you hear music?" 
-                },
-                8: { 
-                    navTitle: "[W2] Emotion", 
-                    goal: "Drawing Emotions", 
-                    question: "Are you smiling?" 
-                },
-                9: { 
-                    navTitle: "[W3] Animals", 
-                    goal: "Book Introduction", 
-                    question: "Ready for the gorilla?" 
-                },
-                10: { 
-                    navTitle: "[W3] Gorilla", 
-                    goal: "Gorilla Body Parts", 
-                    question: "Show me strong arms!" 
-                },
-                11: { 
-                    navTitle: "[W3] Labels", 
-                    goal: "Labeling Body Parts", 
-                    question: "Where is the shoulder?" 
-                },
-                12: { 
-                    navTitle: "[W3] Giraffe", 
-                    goal: "Coloring a Giraffe", 
-                    question: "Why is the neck long?" 
-                },
-                13: { 
-                    navTitle: "[W4] Creative", 
-                    goal: "Creative Imagination", 
-                    question: "Spaghetti arms?" 
-                },
-                14: { 
-                    navTitle: "[W4] Math", 
-                    goal: "Body Math & Counting", 
-                    question: "How many fingers?" 
-                },
-                15: { 
-                    navTitle: "[W4] Review", 
-                    goal: "Reviewing the Story", 
-                    question: "Did you enjoy it?" 
-                },
-                16: { 
-                    navTitle: "[W4] Tools", 
-                    goal: "Selecting Tools", 
-                    question: "Which tool did you use?" 
-                },
-                17: { 
-                    navTitle: "[W4] Eval", 
-                    goal: "Self Evaluation", 
-                    question: "Are you proud?" 
-                }
+                1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?" },
+                2: { navTitle: "[W1] Mind", goal: "Self-Esteem & I like myself", question: "Do you like yourself?" },
+                3: { navTitle: "[W1] Face", goal: "Face Features Vocabulary", question: "Where is your nose?" },
+                4: { navTitle: "[W1] Portrait", goal: "Drawing Face Features", question: "Can you draw your face?" },
+                5: { navTitle: "[W2] Senses", goal: "Action Verbs for Senses", question: "What do you smell?" },
+                6: { navTitle: "[W2] Sentences", goal: "Sentence Completion", question: "What else do you like?" },
+                7: { navTitle: "[W2] Matching", goal: "Sensory Association", question: "How do you hear music?" },
+                8: { navTitle: "[W2] Emotion", goal: "Drawing Emotions", question: "Are you smiling?" },
+                9: { navTitle: "[W3] Animals", goal: "Book Introduction", question: "Ready for the gorilla?" },
+                10: { navTitle: "[W3] Gorilla", goal: "Gorilla Body Parts", question: "Show me strong arms!" },
+                11: { navTitle: "[W3] Labels", goal: "Labeling Body Parts", question: "Where is the shoulder?" },
+                12: { navTitle: "[W3] Giraffe", goal: "Coloring a Giraffe", question: "Why is the neck long?" },
+                13: { navTitle: "[W4] Creative", goal: "Creative Imagination", question: "Spaghetti arms?" },
+                14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?" },
+                15: { navTitle: "[W4] Review", goal: "Reviewing the Story", question: "Did you enjoy it?" },
+                16: { navTitle: "[W4] Tools", goal: "Selecting Tools", question: "Which tool did you use?" },
+                17: { navTitle: "[W4] Eval", goal: "Self Evaluation", question: "Are you proud?" }
             },
             "A-2": {
-                18: { 
-                    navTitle: "[W1] Intro", 
-                    goal: "Meeting Crawlers", 
-                    question: "Ready for bugs?" 
-                },
-                19: { 
-                    navTitle: "[W1] Hungry", 
-                    goal: "Food Recognition", 
-                    question: "What is it eating?" 
-                },
-                20: { 
-                    navTitle: "[W1] Fruits", 
-                    goal: "Reading Fruit Words", 
-                    question: "Apples or plums?" 
-                },
-                21: { 
-                    navTitle: "[W1] Favorite", 
-                    goal: "Favorite Fruit Drawing", 
-                    question: "Why is it your favorite?" 
-                },
-                22: { 
-                    navTitle: "[W2] I Eat", 
-                    goal: "Sentence Practice", 
-                    question: "Crunchy or soft?" 
-                },
-                23: { 
-                    navTitle: "[W2] Magic 1", 
-                    goal: "Compound Words", 
-                    question: "Butter meets Fly?" 
-                },
-                24: { 
-                    navTitle: "[W2] Magic 2", 
-                    goal: "Compound Words", 
-                    question: "Straw meets Berry?" 
-                },
-                25: { 
-                    navTitle: "[W2] Book 2", 
-                    goal: "Caterpillar Story", 
-                    question: "What should he eat?" 
-                },
-                26: { 
-                    navTitle: "[W3] Cycle", 
-                    goal: "Life Cycle Stages", 
-                    question: "Inside the cocoon?" 
-                },
-                27: { 
-                    navTitle: "[W3] Symmetry", 
-                    goal: "Butterfly Wings", 
-                    question: "Can it fly high?" 
-                },
-                28: { 
-                    navTitle: "[W3] Math 1", 
-                    goal: "Counting Fruits", 
-                    question: "How many strawberries?" 
-                },
-                29: { 
-                    navTitle: "[W3] Math 2", 
-                    goal: "Counting Leaves", 
-                    question: "More leaves or apples?" 
-                },
-                30: { 
-                    navTitle: "[W4] Search", 
-                    goal: "Identifying Insects", 
-                    question: "Can you find the Ant?" 
-                },
-                31: { 
-                    navTitle: "[W4] Review", 
-                    goal: "Reviewing Bugs", 
-                    question: "Favorite bug today?" 
-                },
-                32: { 
-                    navTitle: "[W4] Garden", 
-                    goal: "Drawing a Garden", 
-                    question: "Who lives here?" 
-                },
-                33: { 
-                    navTitle: "[W4] Eval", 
-                    goal: "Self Evaluation", 
-                    question: "See you next time!" 
-                }
+                18: { navTitle: "[W1] Intro", goal: "Meeting Crawlers", question: "Ready for bugs?" },
+                19: { navTitle: "[W1] Hungry", goal: "Food Recognition", question: "What is it eating?" },
+                20: { navTitle: "[W1] Fruits", goal: "Reading Fruit Words", question: "Apples or plums?" },
+                21: { navTitle: "[W1] Favorite", goal: "Favorite Fruit Drawing", question: "Why is it your favorite?" },
+                22: { navTitle: "[W2] I Eat", goal: "Sentence Practice", question: "Crunchy or soft?" },
+                23: { navTitle: "[W2] Magic 1", goal: "Compound Words", question: "Butter meets Fly?" },
+                24: { navTitle: "[W2] Magic 2", goal: "Compound Words", question: "Straw meets Berry?" },
+                25: { navTitle: "[W2] Book 2", goal: "Caterpillar Story", question: "What should he eat?" },
+                26: { navTitle: "[W3] Cycle", goal: "Life Cycle Stages", question: "Inside the cocoon?" },
+                27: { navTitle: "[W3] Symmetry", goal: "Butterfly Wings", question: "Can it fly high?" },
+                28: { navTitle: "[W3] Math 1", goal: "Counting Fruits", question: "How many strawberries?" },
+                29: { navTitle: "[W3] Math 2", goal: "Counting Leaves", question: "More leaves or apples?" },
+                30: { navTitle: "[W4] Search", goal: "Identifying Insects", question: "Can you find the Ant?" },
+                31: { navTitle: "[W4] Review", goal: "Reviewing Bugs", question: "Favorite bug today?" },
+                32: { navTitle: "[W4] Garden", goal: "Drawing a Garden", question: "Who lives here?" },
+                33: { navTitle: "[W4] Eval", goal: "Self Evaluation", question: "See you next time!" }
             }
         };
 
@@ -3466,97 +3254,44 @@
             pages(unitId) {
                 const data = PAGE_INTELLIGENCE[unitId];
                 if (data) {
-                    const keys = Object.keys(data);
-                    const numKeys = keys.map(Number);
-                    
-                    return numKeys.sort((a, b) => {
-                        return a - b;
-                    });
-                } else {
-                    return [];
+                    const keys = Object.keys(data).map(Number);
+                    return keys.sort((a, b) => a - b);
                 }
+                return [];
             },
-            
             first(unitId) {
                 const pageArray = this.pages(unitId);
-                
-                if (pageArray.length > 0) {
-                    return pageArray[0];
-                } else {
-                    return 1;
-                }
+                return pageArray.length > 0 ? pageArray[0] : 1;
             },
-            
             last(unitId) {
                 const pageArray = this.pages(unitId);
-                
-                if (pageArray.length > 0) {
-                    return pageArray[pageArray.length - 1];
-                } else {
-                    return 1;
-                }
+                return pageArray.length > 0 ? pageArray[pageArray.length - 1] : 1;
             },
-            
             clamp(unitId, page) {
                 const pageArray = this.pages(unitId);
-                
-                if (pageArray.includes(page)) {
-                    return page;
-                } else {
-                    if (pageArray.length > 0) {
-                        return pageArray[0];
-                    } else {
-                        return 1;
-                    }
-                }
+                if (pageArray.includes(page)) return page;
+                return pageArray.length > 0 ? pageArray[0] : 1;
             },
-            
             next(unitId, page, dir) {
                 const pageArray = this.pages(unitId);
                 let idx = pageArray.indexOf(page);
-                let safeIdx = 0;
-                
-                if (idx === -1) {
-                    safeIdx = 0;
-                } else {
-                    safeIdx = idx;
-                }
-                
-                let calcIdx = Math.min(Math.max(safeIdx + dir, 0), pageArray.length - 1);
-                
-                if (pageArray[calcIdx]) {
-                    return pageArray[calcIdx];
-                } else {
-                    return page;
-                }
+                if (idx === -1) idx = 0;
+                let calcIdx = Math.min(Math.max(idx + dir, 0), pageArray.length - 1);
+                return pageArray[calcIdx] || page;
             },
-
             weekIndex(unitId, page) {
                 const pages = this.pages(unitId);
                 const idx = pages.indexOf(page);
-                
-                if (idx === -1) {
-                    return 1;
-                } else {
-                    return Math.floor(idx / 4) + 1;
-                }
+                if (idx === -1) return 1;
+                return Math.floor(idx / 4) + 1;
             },
-
             isWeekEnd(unitId, page) {
                 const pages = this.pages(unitId);
                 const idx = pages.indexOf(page);
-                
                 if (idx !== -1) {
-                    if ((idx + 1) % 4 === 0) {
-                        return true;
-                    } else if (idx === pages.length - 1) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
+                    if ((idx + 1) % 4 === 0 || idx === pages.length - 1) return true;
                 }
+                return false;
             }
         };
 
@@ -3569,55 +3304,31 @@
         if (rawPageParam) {
             STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, Number(rawPageParam));
         } else {
-            STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, CurriculumEngine.first(STATE.unitId));
+            STATE.currentPage = CurriculumEngine.first(STATE.unitId);
         }
 
         const BadgeEngine = {
             add(label) {
-                if (STATE.badges.includes(label)) {
-                    return;
-                }
-                
+                if (STATE.badges.includes(label)) return;
                 STATE.badges.push(label);
-
-                const box = document.getElementById('badge-container');
-                
-                if (!box) {
-                    return;
-                }
-
-                const badge = document.createElement('div');
-                badge.className = 'badge';
-                badge.textContent = label;
-                box.appendChild(badge);
-
                 StorageEngine.save();
                 
+                const box = document.getElementById('badge-container');
+                if (box) {
+                    const badge = document.createElement('div');
+                    badge.className = 'badge';
+                    badge.textContent = label;
+                    box.appendChild(badge);
+                }
+                
                 if (window.confetti) {
-                    confetti({ 
-                        particleCount: 80, 
-                        spread: 70, 
-                        origin: { 
-                            y: 0.8 
-                        }, 
-                        colors: [
-                            '#CBAE75', 
-                            '#89BFA0', 
-                            '#7CA6C1'
-                        ] 
-                    });
+                    confetti({ particleCount: 80, spread: 70, origin: { y: 0.8 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
                 }
             },
-            
             renderAll() {
                 const box = document.getElementById('badge-container');
-                
-                if (!box) {
-                    return;
-                }
-                
+                if (!box) return;
                 box.innerHTML = '';
-                
                 STATE.badges.forEach((label) => {
                     const badge = document.createElement('div');
                     badge.className = 'badge';
@@ -3631,54 +3342,32 @@
             container: null,
             icon: null,
             text: null,
-
             init() {
                 this.container = document.getElementById('sync-indicator');
                 this.icon = document.getElementById('sync-icon');
                 this.text = document.getElementById('sync-text');
             },
-
             resetInlineStyle() {
-                if (!this.container) {
-                    return;
-                }
-                
+                if (!this.container) return;
                 this.container.style.color = "";
                 this.container.style.backgroundColor = "";
                 this.container.style.borderColor = "";
             },
-
             setSaving() {
-                if (!this.container) {
-                    this.init();
-                }
-                
-                if (!this.container) {
-                    return;
-                }
-                
+                if (!this.container) this.init();
+                if (!this.container) return;
                 this.resetInlineStyle();
-
                 this.container.className = "sync-indicator-container saving";
                 this.icon.className = "fa-solid fa-spinner sync-icon spin";
                 this.text.innerText = "Saving...";
             },
-
             setSaved() {
-                if (!this.container) {
-                    this.init();
-                }
-                
-                if (!this.container) {
-                    return;
-                }
-
+                if (!this.container) this.init();
+                if (!this.container) return;
                 this.resetInlineStyle();
-
                 this.container.className = "sync-indicator-container saved";
                 this.icon.className = "fa-solid fa-cloud-check sync-icon";
                 this.text.innerText = "Saved";
-
                 setTimeout(() => {
                     if (this.container.classList.contains('saved')) {
                         this.container.className = "sync-indicator-container";
@@ -3687,16 +3376,9 @@
                     }
                 }, 3000);
             },
-            
             setError() {
-                if (!this.container) {
-                    this.init();
-                }
-                
-                if (!this.container) {
-                    return;
-                }
-
+                if (!this.container) this.init();
+                if (!this.container) return;
                 this.container.className = "sync-indicator-container";
                 this.container.style.color = "var(--br-error)";
                 this.container.style.backgroundColor = "var(--br-error-light)";
@@ -3707,8 +3389,7 @@
         };
 
         /**
-         * [5-6. SMART IMAGE LOADER ENGINE]
-         * (P0 Fix: CORS 락을 완벽히 해결한 100% 무결점 이미지 탐색 엔진)
+         * [5-6. SMART IMAGE LOADER ENGINE (P0 CORS & 404 방어 알고리즘 탑재)]
          */
         const SmartImageLoader = {
             requestToken: 0,
@@ -3723,7 +3404,7 @@
                 const seriesChar = unitId.charAt(0);
                 const t = Date.now(); 
 
-                /* 타겟 라우팅: 불필요한 탐색을 줄여 404 에러와 지연 시간을 최소화합니다. */
+                /* 깃허브 절대 경로 매칭 알고리즘 (패딩 포맷 제외, 정확한 타겟팅만 수행) */
                 const basePaths = [
                     `${seriesChar}/${unitId}/${unitId}-${pageNum}`,
                     `${unitId}/${unitId}-${pageNum}`,
@@ -3732,7 +3413,6 @@
                 ];
 
                 const possiblePaths = [];
-                
                 basePaths.forEach((base) => {
                     possiblePaths.push(`${CONFIG.STORAGE_URL}${base}.png`);
                     possiblePaths.push(`${CONFIG.STORAGE_URL}${base}.jpg`);
@@ -3740,75 +3420,49 @@
                 });
 
                 const tryLoad = (index) => {
-                    if (token !== this.requestToken) {
-                        return;
-                    }
+                    if (token !== this.requestToken) return;
 
                     if (index >= possiblePaths.length) {
                         Logger.error(`Worksheet missing. 404 on ${unitId} Page ${pageNum}`);
-                        
-                        if (imgElement) {
-                            imgElement.style.opacity = '1';
-                        }
-                        if (boardElement) {
-                            boardElement.classList.add('error-state');
-                        }
+                        if (imgElement) imgElement.style.opacity = '1';
+                        if (boardElement) boardElement.classList.add('error-state');
                         
                         setTimeout(() => {
-                            if (token !== this.requestToken) {
-                                return;
-                            }
+                            if (token !== this.requestToken) return;
                             CanvasEngine.resizeCanvas();
                             StorageEngine.loadCanvasLocal();
                         }, 50);
-                        
                         return;
                     }
 
                     const testUrl = `${possiblePaths[index]}?t=${t}`;
                     const tempImg = new Image();
                     
-                    /* [P0 Fix 완료] 깃허브 CORS 허용 정책을 안전하게 받아내기 위한 속성 */
+                    // [P0] 캔버스 오염(Tainted)을 막기 위해 서버 측 CORS 설정을 존중하도록 강제 지정
                     tempImg.crossOrigin = "anonymous";
 
                     tempImg.onload = () => {
-                        if (token !== this.requestToken) {
-                            return;
-                        }
-                        
+                        if (token !== this.requestToken) return;
                         Logger.log("Mounted:", testUrl);
-                        
-                        if (boardElement) {
-                            boardElement.classList.remove('error-state');
-                        }
+                        if (boardElement) boardElement.classList.remove('error-state');
                         
                         if (imgElement) {
-                            /* 이미지 로드 완료 시점 감지 및 DOM Reflow 대기 */
-                            imgElement.onload = () => {
-                                if (token !== this.requestToken) {
-                                    return;
-                                }
-                                
-                                imgElement.style.opacity = '1';
-                                
-                                setTimeout(() => {
-                                    if (token !== this.requestToken) {
-                                        return;
-                                    }
-                                    CanvasEngine.resizeCanvas();
-                                    StorageEngine.loadCanvasLocal();
-                                }, 50);
-                            };
+                            // 실제 도화지 이미지에도 crossorigin 속성을 동적으로 주입
+                            imgElement.crossOrigin = "anonymous";
                             
+                            imgElement.onload = () => {
+                                if (token !== this.requestToken) return;
+                                imgElement.style.opacity = '1';
+                                // DOM Reflow를 충분히 기다린 후 캔버스를 덮습니다.
+                                requestAnimationFrame(() => {
+                                    requestAnimationFrame(() => {
+                                        if (token !== this.requestToken) return;
+                                        CanvasEngine.resizeCanvas();
+                                        StorageEngine.loadCanvasLocal();
+                                    });
+                                });
+                            };
                             imgElement.src = testUrl;
-                        } else {
-                            setTimeout(() => {
-                                if (token !== this.requestToken) {
-                                    return;
-                                }
-                                CanvasEngine.resizeCanvas();
-                                StorageEngine.loadCanvasLocal();
-                            }, 50);
                         }
                     };
 
@@ -3823,40 +3477,28 @@
             }
         };
 
+        /**
+         * [5-7. CLOUD FIREBASE STORAGE ENGINE]
+         */
         const StorageEngine = {
             cloudSaveTimer: null,
 
             load() {
-                if (!STATE.uid) {
-                    return;
-                }
-                
+                if (!STATE.uid) return;
                 try {
                     const rawStorage = localStorage.getItem(`br_data_${STATE.uid}_${STATE.unitId}`);
                     let s = {};
-                    
-                    if (rawStorage) {
-                        s = JSON.parse(rawStorage);
-                    }
-                    
-                    if (s.name) {
-                        STATE.studentName = s.name; 
-                    }
-                    
-                    if (s.badges) {
-                        STATE.badges = s.badges;
-                    }
+                    if (rawStorage) s = JSON.parse(rawStorage);
+                    if (s.name) STATE.studentName = s.name; 
+                    if (s.badges) STATE.badges = s.badges;
                     
                     const urlPage = Number(new URLSearchParams(window.location.search).get('page'));
-                    
                     if (urlPage) {
                         if (CurriculumEngine.pages(STATE.unitId).includes(urlPage)) {
                             STATE.currentPage = urlPage;
                         }
-                    } else {
-                        if (s.page) {
-                            STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, s.page);
-                        }
+                    } else if (s.page) {
+                        STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, s.page);
                     }
                 } catch (e) { 
                     Logger.warn("Metadata local cache failure", e); 
@@ -3864,71 +3506,38 @@
             },
             
             async save() {
-                if (!STATE.uid) {
-                    return;
-                }
-                
+                if (!STATE.uid) return;
                 try {
-                    const data = { 
-                        name: STATE.studentName, 
-                        page: STATE.currentPage, 
-                        badges: STATE.badges || [] 
-                    };
-                    
+                    const data = { name: STATE.studentName, page: STATE.currentPage, badges: STATE.badges || [] };
                     localStorage.setItem(`br_data_${STATE.uid}_${STATE.unitId}`, JSON.stringify(data));
-                    
                     await db.collection("students").doc(STATE.uid).set({ 
-                        name: data.name, 
-                        page: data.page, 
-                        badges: data.badges, 
-                        email: STATE.studentEmail, 
-                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
-                    }, { 
-                        merge: true 
-                    });
+                        name: data.name, page: data.page, badges: data.badges, 
+                        email: STATE.studentEmail, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
+                    }, { merge: true });
                 } catch (error) { 
                     Logger.error("Core transaction metadata sync failed.", error); 
                 }
             },
             
             createCanvasSnapshot(compressForDatabase = false) {
-                if (!CanvasEngine.cvs) {
-                    return null;
-                }
-                
-                if (!STATE.uid) {
-                    return null;
-                }
-                
+                if (!CanvasEngine.cvs || !STATE.uid) return null;
                 let canvasData = null;
                 
+                // [P0] 502 에러 방지를 위한 해상도 제한 압축 로직
                 if (compressForDatabase) {
-                    /* 전송 용량을 드라마틱하게 낮춰 502를 방지하는 어댑티브 압축 (800px 강제 제한) */
                     canvasData = CanvasEngine.captureWorksheetWithDrawing(true, 800); 
                 } else {
                     canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6); 
                 }
                 
-                const key = `br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`;
-                
                 if (!compressForDatabase) {
-                    try { 
-                        localStorage.setItem(key, canvasData); 
-                    } catch(e) {
-                        
-                    }
+                    try { localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, canvasData); } catch(e) {}
                 }
                 
-                const returnObject = { 
-                    uid: STATE.uid, 
-                    studentEmail: STATE.studentEmail, 
-                    unitId: STATE.unitId, 
-                    page: STATE.currentPage, 
-                    transcript: STATE.lastTranscript, 
-                    canvasData: canvasData 
+                return { 
+                    uid: STATE.uid, studentEmail: STATE.studentEmail, unitId: STATE.unitId, 
+                    page: STATE.currentPage, transcript: STATE.lastTranscript, canvasData: canvasData 
                 };
-                
-                return returnObject;
             },
             
             saveCanvasLocal() { 
@@ -3938,44 +3547,20 @@
             scheduleCloudSave() {
                 SyncIndicatorEngine.setSaving();
                 const snapshot = this.createCanvasSnapshot(true);
-                
-                if (this.cloudSaveTimer) {
-                    clearTimeout(this.cloudSaveTimer);
-                }
-                
-                this.cloudSaveTimer = setTimeout(() => { 
-                    this.executeCloudSave(snapshot); 
-                }, 1500); 
+                if (this.cloudSaveTimer) clearTimeout(this.cloudSaveTimer);
+                this.cloudSaveTimer = setTimeout(() => { this.executeCloudSave(snapshot); }, 1500); 
             },
             
             async executeCloudSave(snapshot = null) {
-                let payload = null;
-                
-                if (snapshot) {
-                    payload = snapshot;
-                } else {
-                    payload = this.createCanvasSnapshot(true);
-                }
-                
-                if (!payload) {
-                    return;
-                }
-                
+                let payload = snapshot ? snapshot : this.createCanvasSnapshot(true);
+                if (!payload) return;
                 try {
                     const firestoreDocId = `${payload.uid}_${payload.unitId}_P${payload.page}`;
-                    
                     await db.collection("student_drawings").doc(firestoreDocId).set({ 
-                        uid: payload.uid, 
-                        studentID: payload.studentEmail, 
-                        unitId: payload.unitId, 
-                        page: payload.page, 
-                        imageUrl: payload.canvasData, 
-                        transcript: payload.transcript, 
+                        uid: payload.uid, studentID: payload.studentEmail, unitId: payload.unitId, 
+                        page: payload.page, imageUrl: payload.canvasData, transcript: payload.transcript, 
                         timestamp: firebase.firestore.FieldValue.serverTimestamp() 
-                    }, { 
-                        merge: true 
-                    });
-                    
+                    }, { merge: true });
                     SyncIndicatorEngine.setSaved();
                 } catch (error) { 
                     Logger.warn("Cloud infrastructure save fault.", error); 
@@ -3987,17 +3572,10 @@
                 try {
                     const cacheKey = `br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`;
                     const localData = localStorage.getItem(cacheKey);
-                    
                     if (localData) {
                         const img = new Image();
                         img.onload = () => { 
-                            CanvasEngine.ctx.drawImage(
-                                img, 
-                                0, 
-                                0, 
-                                CanvasEngine.cvs.width / CanvasEngine.dpr, 
-                                CanvasEngine.cvs.height / CanvasEngine.dpr
-                            ); 
+                            CanvasEngine.ctx.drawImage(img, 0, 0, CanvasEngine.cvs.width / CanvasEngine.dpr, CanvasEngine.cvs.height / CanvasEngine.dpr); 
                             CanvasEngine.saveHistory(); 
                         };
                         img.src = localData;
@@ -4010,21 +3588,16 @@
             }
         };
 
+        /**
+         * [5-8. INTERACTIVE CANVAS & DRAWING ENGINE]
+         */
         const CanvasEngine = {
-            isDrawing: false, 
-            hasMoved: false, 
-            isErasing: false, 
-            lastColor: "#363431", 
-            dpr: window.devicePixelRatio || 1, 
-            historyStack: [], 
-            historyIndex: -1,
+            isDrawing: false, hasMoved: false, isErasing: false, lastColor: "#363431", 
+            dpr: window.devicePixelRatio || 1, historyStack: [], historyIndex: -1,
             
             init() {
                 this.cvs = document.getElementById('draw-layer'); 
-                if (!this.cvs) {
-                    return;
-                }
-                
+                if (!this.cvs) return;
                 this.ctx = this.cvs.getContext('2d'); 
                 this.board = document.getElementById('drawing-board');
                 
@@ -4034,124 +3607,74 @@
                 this.updateBrushPreview();
                 
                 const slider = document.getElementById('brush-size');
-                
-                if (slider) {
-                    slider.addEventListener('input', () => {
-                        this.updateBrushPreview();
-                    });
-                }
-                
-                if (window.ResizeObserver) {
-                    if (this.board) { 
-                        const observer = new ResizeObserver(() => {
-                            this.resizeCanvas();
-                        });
-                        observer.observe(this.board); 
-                    }
+                if (slider) slider.addEventListener('input', () => this.updateBrushPreview());
+                if (window.ResizeObserver && this.board) { 
+                    new ResizeObserver(() => this.resizeCanvas()).observe(this.board); 
                 }
             },
             
             updateBrushPreview() {
                 const slider = document.getElementById('brush-size'); 
                 const dot = document.getElementById('brush-preview-dot');
-                
-                if (!slider) {
-                    return;
-                }
-                
-                if (!dot) {
-                    return;
-                }
+                if (!slider || !dot) return;
                 
                 const val = parseInt(slider.value); 
                 dot.style.width = `${val}px`; 
                 dot.style.height = `${val}px`;
-                
-                if (this.isErasing) {
-                    dot.style.backgroundColor = "var(--br-muted)";
-                } else {
-                    dot.style.backgroundColor = this.lastColor;
-                }
+                dot.style.backgroundColor = this.isErasing ? "var(--br-muted)" : this.lastColor;
             },
             
             isCanvasBlank() {
-                if (!this.cvs) {
-                    return true;
-                }
-                
-                if (!this.ctx) {
-                    return true;
-                }
-                
+                if (!this.cvs || !this.ctx) return true;
                 try {
                     const probe = document.createElement('canvas'); 
-                    probe.width = 64; 
-                    probe.height = 64;
-                    
+                    probe.width = 64; probe.height = 64;
                     const pctx = probe.getContext('2d'); 
                     pctx.drawImage(this.cvs, 0, 0, 64, 64);
-                    
                     const pixels = pctx.getImageData(0, 0, 64, 64).data;
-                    
-                    for (let i = 3; i < pixels.length; i = i + 4) { 
-                        if (pixels[i] !== 0) {
-                            return false; 
-                        }
+                    for (let i = 3; i < pixels.length; i += 4) { 
+                        if (pixels[i] !== 0) return false; 
                     }
-                    
                     return true;
-                } catch(e) { 
-                    return true; 
-                }
+                } catch(e) { return true; }
             },
             
-            captureWorksheetWithDrawing(compressForDatabase = false, maxWidth = 1024) {
+            /**
+             * [P0 Tainted Canvas & 502 Error 방어 Survival Engine]
+             */
+            captureWorksheetWithDrawing(compressForDatabase = false, initialMaxWidth = 800) {
                 const worksheet = document.getElementById('worksheet-img'); 
                 const draw = this.cvs;
-                
-                if (!draw) {
-                    return null;
-                }
+                if (!draw) return null;
                 
                 const merged = document.createElement('canvas');
                 let scaleRatio = 1.0;
                 
                 if (compressForDatabase === true) {
-                    if (draw.width > maxWidth) {
-                        scaleRatio = maxWidth / draw.width;
-                    }
+                    if (draw.width > initialMaxWidth) scaleRatio = initialMaxWidth / draw.width;
                 }
                 
                 merged.width = Math.floor(draw.width * scaleRatio); 
                 merged.height = Math.floor(draw.height * scaleRatio);
-                
                 const ctx = merged.getContext('2d'); 
                 ctx.fillStyle = '#FFFFFF'; 
                 ctx.fillRect(0, 0, merged.width, merged.height);
                 
                 try {
-                    if (worksheet) {
-                        if (worksheet.complete) {
-                            if (worksheet.naturalWidth > 0) {
-                                ctx.drawImage(worksheet, 0, 0, merged.width, merged.height); 
-                            }
-                        }
+                    if (worksheet && worksheet.complete && worksheet.naturalWidth > 0) {
+                        ctx.drawImage(worksheet, 0, 0, merged.width, merged.height); 
                     }
                     ctx.drawImage(draw, 0, 0, merged.width, merged.height);
                 } catch(e) { 
-                    /* [P0 Fix] Tainted Canvas 보안 락 생존 로직 가동
-                       보안 에러로 교재 합성이 거부되면, 아이가 그린 그림 레이어만 
-                       흰색 폴백 캔버스에 얹어서 무조건 시스템 중단을 방어합니다.
-                    */
+                    /* 캔버스가 오염되어 병합에 실패한 경우, 아이가 그린 '드로잉 영역'만 안전하게 추출하여 전송합니다. */
+                    Logger.warn("Security Canvas Taint Detected. Engaging fallback extraction.");
                     const fallbackCanvas = document.createElement('canvas');
-                    fallbackCanvas.width = merged.width;
-                    fallbackCanvas.height = merged.height;
+                    fallbackCanvas.width = Math.floor(draw.width * scaleRatio);
+                    fallbackCanvas.height = Math.floor(draw.height * scaleRatio);
                     const fCtx = fallbackCanvas.getContext('2d');
-                    
                     fCtx.fillStyle = '#FFFFFF';
                     fCtx.fillRect(0, 0, fallbackCanvas.width, fallbackCanvas.height);
                     fCtx.drawImage(draw, 0, 0, fallbackCanvas.width, fallbackCanvas.height);
-                    
                     ctx.drawImage(fallbackCanvas, 0, 0);
                 }
 
@@ -4159,26 +3682,21 @@
                     let qualityLevel = 0.7;
                     let encodedString = merged.toDataURL('image/jpeg', qualityLevel);
                     
-                    /* 용량이 클 경우 최대 0.1까지 화질을 점진적으로 깎아내는 While 루프 도입 */
+                    // 502 에러 방지를 위한 강력한 While 압축 루프
                     while (encodedString.length > 400000) {
-                        if (qualityLevel <= 0.1) {
-                            break;
-                        }
+                        if (qualityLevel <= 0.1) break;
                         qualityLevel = qualityLevel - 0.15;
                         encodedString = merged.toDataURL('image/jpeg', qualityLevel);
                     }
 
-                    /* 깎았음에도 용량이 400KB를 넘으면 마이크로 사이즈로 한 번 더 줄여 502 에러를 원천 파괴 */
                     if (encodedString.length > 400000) {
                         const microCanvas = document.createElement('canvas');
                         microCanvas.width = Math.floor(merged.width / 2);
                         microCanvas.height = Math.floor(merged.height / 2);
                         const microCtx = microCanvas.getContext('2d');
-                        
                         microCtx.fillStyle = '#FFFFFF';
                         microCtx.fillRect(0, 0, microCanvas.width, microCanvas.height);
                         microCtx.drawImage(merged, 0, 0, microCanvas.width, microCanvas.height);
-                        
                         encodedString = microCanvas.toDataURL('image/jpeg', 0.5);
                     }
                     return encodedString;
@@ -4188,109 +3706,44 @@
             },
             
             setupCanvas() {
-                if (!this.board) {
-                    return;
-                }
-                if (!this.cvs) {
-                    return;
-                }
-                
+                if (!this.board || !this.cvs) return;
                 const rect = this.board.getBoundingClientRect(); 
-                if (rect.width === 0) {
-                    return;
-                }
-                
+                if (rect.width === 0) return;
                 this.cvs.style.width = rect.width + "px"; 
                 this.cvs.style.height = rect.height + "px";
-                
                 this.cvs.width = rect.width * this.dpr; 
                 this.cvs.height = rect.height * this.dpr;
-                
                 this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); 
                 this.ctx.lineCap = 'round'; 
                 this.ctx.lineJoin = 'round';
             },
             
             resizeCanvas() {
-                if (!this.cvs) {
-                    return;
-                }
-                if (!this.ctx) {
-                    return;
-                }
-                if (!this.board) {
-                    return;
-                }
-                
+                if (!this.cvs || !this.ctx || !this.board) return;
                 const rect = this.board.getBoundingClientRect(); 
-                if (rect.width === 0) {
-                    return;
-                }
-                if (rect.height === 0) {
-                    return;
-                }
+                if (rect.width === 0 || rect.height === 0) return;
                 
                 const temp = document.createElement('canvas'); 
                 temp.width = this.cvs.width; 
                 temp.height = this.cvs.height;
                 
-                if (this.cvs.width > 0) {
-                    if (this.cvs.height > 0) {
-                        temp.getContext('2d').drawImage(this.cvs, 0, 0);
-                    }
+                if (this.cvs.width > 0 && this.cvs.height > 0) {
+                    temp.getContext('2d').drawImage(this.cvs, 0, 0);
                 }
                 
                 this.setupCanvas();
                 
-                if (temp.width > 0) {
-                    if (temp.height > 0) {
-                        this.ctx.drawImage(
-                            temp, 
-                            0, 
-                            0, 
-                            temp.width, 
-                            temp.height, 
-                            0, 
-                            0, 
-                            rect.width, 
-                            rect.height
-                        );
-                    }
+                if (temp.width > 0 && temp.height > 0) {
+                    this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, rect.width, rect.height);
                 }
             },
             
             bind() {
                 const getP = (e) => { 
                     const r = this.cvs.getBoundingClientRect(); 
-                    let cx = 0;
-                    let cy = 0;
-                    
-                    if (e.clientX) {
-                        cx = e.clientX;
-                    } else {
-                        if (e.touches) {
-                            if (e.touches[0]) {
-                                cx = e.touches[0].clientX;
-                            }
-                        }
-                    }
-                    
-                    if (e.clientY) {
-                        cy = e.clientY;
-                    } else {
-                        if (e.touches) {
-                            if (e.touches[0]) {
-                                cy = e.touches[0].clientY;
-                            }
-                        }
-                    }
-                    
-                    const returnObj = {
-                        x: cx - r.left,
-                        y: cy - r.top
-                    };
-                    
-                    return returnObj; 
+                    let cx = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0); 
+                    let cy = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0); 
+                    return { x: cx - r.left, y: cy - r.top }; 
                 };
                 
                 const start = (e) => { 
@@ -4303,54 +3756,27 @@
                 };
                 
                 const move = (e) => {
-                    if (!this.isDrawing) {
-                        return;
-                    }
-                    
+                    if (!this.isDrawing) return;
                     e.preventDefault(); 
                     this.hasMoved = true; 
                     const p = getP(e);
                     
-                    if (this.isErasing) {
-                        this.ctx.globalCompositeOperation = "destination-out";
-                    } else {
-                        this.ctx.globalCompositeOperation = "source-over";
-                    }
-                    
+                    this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over";
                     const sliderVal = document.getElementById('brush-size').value; 
+                    this.ctx.lineWidth = this.isErasing ? sliderVal * 3 : sliderVal; 
+                    this.ctx.strokeStyle = this.isErasing ? "#FFFFFF" : this.lastColor; 
                     
-                    if (this.isErasing) {
-                        this.ctx.lineWidth = sliderVal * 3;
-                    } else {
-                        this.ctx.lineWidth = sliderVal;
-                    }
-                    
-                    if (this.isErasing) {
-                        this.ctx.strokeStyle = "#FFFFFF";
-                    } else {
-                        this.ctx.strokeStyle = this.lastColor;
-                    }
-                    
-                    if (STATE.brushType === 'rainbow') {
-                        if (!this.isErasing) { 
-                            const timeVal = Date.now() / 10;
-                            const hueVal = timeVal % 360;
-                            this.ctx.strokeStyle = `hsl(${hueVal}, 100%, 50%)`; 
-                        } 
-                    } else {
-                        if (STATE.brushType === 'neon') {
-                            if (!this.isErasing) { 
-                                this.ctx.shadowBlur = parseInt(sliderVal) + 10; 
-                                this.ctx.shadowColor = this.lastColor; 
-                            }
-                        } else { 
-                            this.ctx.shadowBlur = 0; 
-                        }
+                    if (STATE.brushType === 'rainbow' && !this.isErasing) {
+                        this.ctx.strokeStyle = `hsl(${(Date.now() / 10) % 360}, 100%, 50%)`; 
+                    } else if (STATE.brushType === 'neon' && !this.isErasing) { 
+                        this.ctx.shadowBlur = parseInt(sliderVal) + 10; 
+                        this.ctx.shadowColor = this.lastColor; 
+                    } else { 
+                        this.ctx.shadowBlur = 0; 
                     }
                     
                     this.ctx.lineTo(p.x, p.y); 
                     this.ctx.stroke(); 
-                    
                     this.ctx.beginPath(); 
                     this.ctx.moveTo(p.x, p.y);
                 };
@@ -4372,19 +3798,18 @@
             },
             
             saveHistory() { 
-                this.historyIndex = this.historyIndex + 1; 
+                this.historyIndex++; 
                 this.historyStack.length = this.historyIndex; 
                 this.historyStack.push(this.cvs.toDataURL()); 
-                
                 if (this.historyStack.length > 20) { 
                     this.historyStack.shift(); 
-                    this.historyIndex = this.historyIndex - 1; 
+                    this.historyIndex--; 
                 } 
             },
             
             undo() { 
                 if (this.historyIndex > 0) { 
-                    this.historyIndex = this.historyIndex - 1; 
+                    this.historyIndex--; 
                     this.restore(); 
                     StorageEngine.saveCanvasLocal(); 
                     StorageEngine.scheduleCloudSave(); 
@@ -4392,28 +3817,14 @@
             },
             
             restore() { 
-                if (!this.ctx) {
-                    return;
-                }
-                if (!this.cvs) {
-                    return;
-                }
-                
+                if (!this.ctx || !this.cvs) return;
                 const img = new Image(); 
                 img.onload = () => { 
                     this.ctx.save(); 
-                    
                     this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
                     this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
-                    this.ctx.drawImage(
-                        img, 
-                        0, 
-                        0, 
-                        this.cvs.width, 
-                        this.cvs.height
-                    ); 
+                    this.ctx.drawImage(img, 0, 0, this.cvs.width, this.cvs.height); 
                     this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
-                    
                     this.ctx.restore(); 
                 }; 
                 img.src = this.historyStack[this.historyIndex]; 
@@ -4421,66 +3832,34 @@
             
             setBrush(t) { 
                 STATE.brushType = t; 
-                
-                const magicBtns = document.querySelectorAll('.btn-magic');
-                magicBtns.forEach((el) => {
-                    el.classList.remove('active');
-                });
-                
+                document.querySelectorAll('.btn-magic').forEach((el) => el.classList.remove('active'));
                 const activeBtn = document.getElementById(`btn-brush-${t}`); 
-                if (activeBtn) {
-                    activeBtn.classList.add('active'); 
-                }
-                
-                if (this.isErasing) {
-                    this.toggleEraser(); 
-                }
+                if (activeBtn) activeBtn.classList.add('active'); 
+                if (this.isErasing) this.toggleEraser(); 
             },
             
             toggleEraser() { 
-                if (this.isErasing) {
-                    this.isErasing = false;
-                } else {
-                    this.isErasing = true;
-                }
-                
+                this.isErasing = !this.isErasing;
                 const btn = document.getElementById('btn-eraser'); 
-                if (btn) {
-                    btn.classList.toggle('active'); 
-                }
-                
+                if (btn) btn.classList.toggle('active'); 
                 this.updateBrushPreview(); 
             },
             
             setColor(color) { 
                 this.lastColor = color; 
                 const preview = document.getElementById('btn-color'); 
-                if (preview) {
-                    preview.style.background = color; 
-                }
-                
-                if (this.isErasing) {
-                    this.toggleEraser(); 
-                }
-                
+                if (preview) preview.style.background = color; 
+                if (this.isErasing) this.toggleEraser(); 
                 this.updateBrushPreview(); 
             },
             
             setupUI() { 
                 const preview = document.getElementById('btn-color'); 
-                if (preview) {
-                    preview.style.background = this.lastColor; 
-                }
+                if (preview) preview.style.background = this.lastColor; 
             },
             
             hardReset() { 
-                if (!this.ctx) {
-                    return;
-                }
-                if (!this.cvs) {
-                    return;
-                }
-                
+                if (!this.ctx || !this.cvs) return;
                 try { 
                     this.ctx.save(); 
                     this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
@@ -4488,216 +3867,119 @@
                     this.ctx.restore(); 
                     this.historyStack = []; 
                     this.historyIndex = -1; 
-                } catch(e) { 
-                    Logger.error("Canvas clear error", e); 
-                } 
+                } catch(e) { Logger.error("Canvas clear error", e); } 
             },
             
             promptHardReset() { 
-                CustomModalEngine.confirm(
-                    "Clear Canvas", 
-                    "Are you absolutely sure you want to wipe this clean?", 
-                    () => { 
-                        this.hardReset(); 
-                        this.saveHistory(); 
-                        StorageEngine.saveCanvasLocal(); 
-                        StorageEngine.scheduleCloudSave(); 
-                    }
-                ); 
+                CustomModalEngine.confirm("Clear Canvas", "Are you absolutely sure you want to wipe this clean?", () => { 
+                    this.hardReset(); 
+                    this.saveHistory(); 
+                    StorageEngine.saveCanvasLocal(); 
+                    StorageEngine.scheduleCloudSave(); 
+                }); 
             }
         };
 
         const RGBRingEngine = {
             init() {
                 const c = document.getElementById('color-wheel'); 
-                if (!c) {
-                    return; 
-                }
+                if (!c) return;
+                const ctx = c.getContext('2d', { willReadFrequently: true }); 
                 
-                const ctx = c.getContext('2d', { 
-                    willReadFrequently: true 
-                });
-                
-                for (let a = 0; a < 360; a = a + 1) { 
+                for (let a = 0; a < 360; a++) { 
                     ctx.beginPath(); 
                     ctx.moveTo(75, 75); 
-                    
-                    const startAngle = a * Math.PI / 180;
-                    const endAngle = (a + 2) * Math.PI / 180;
-                    
-                    ctx.arc(75, 75, 75, startAngle, endAngle); 
+                    ctx.arc(75, 75, 75, a * Math.PI / 180, (a + 2) * Math.PI / 180); 
                     ctx.fillStyle = `hsl(${a}, 100%, 50%)`; 
                     ctx.fill(); 
                 }
                 
                 c.onclick = (e) => { 
                     const rect = c.getBoundingClientRect(); 
-                    
                     const pX = e.clientX - rect.left;
                     const pY = e.clientY - rect.top;
-                    
                     const imgData = ctx.getImageData(pX, pY, 1, 1);
-                    const data = imgData.data; 
-                    
-                    const rgbStr = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
+                    const rgbStr = `rgb(${imgData.data[0]}, ${imgData.data[1]}, ${imgData.data[2]})`;
                     CanvasEngine.setColor(rgbStr); 
-                    
                     this.toggle(); 
                 };
             },
-            
             toggle() { 
                 const modal = document.getElementById('rgb-modal');
-                if (modal) {
-                    modal.classList.toggle('active'); 
-                }
+                if (modal) modal.classList.toggle('active'); 
             }
         };
 
         const CertificateEngine = {
             open(weekNum) {
                 const modal = document.getElementById('cert-modal');
-                if (!modal) {
-                    return;
-                }
+                if (!modal) return;
                 
                 const weekLabel = document.getElementById('cert-week');
-                if (weekLabel) {
-                    weekLabel.innerText = `WEEK ${weekNum} COMPLETED`;
-                }
+                if (weekLabel) weekLabel.innerText = `WEEK ${weekNum} COMPLETED`;
                 
                 const nameLabel = document.getElementById('cert-student-name');
-                if (nameLabel) {
-                    if (STATE.studentName) {
-                        nameLabel.innerText = STATE.studentName;
-                    } else {
-                        nameLabel.innerText = "Global Explorer";
-                    }
-                }
+                if (nameLabel) nameLabel.innerText = STATE.studentName || "Global Explorer";
                 
                 const imgEl = document.getElementById('cert-canvas-img');
                 const mergedImg = CanvasEngine.captureWorksheetWithDrawing(false);
-                
-                if (imgEl) {
-                    if (mergedImg) {
-                        imgEl.src = mergedImg;
-                    } else {
-                        imgEl.src = CanvasEngine.cvs.toDataURL();
-                    }
-                }
+                if (imgEl) imgEl.src = mergedImg || CanvasEngine.cvs.toDataURL();
                 
                 const msgEl = document.getElementById('cert-ai-msg');
                 const hasArt = STATE.badges.includes("🎨 Colorful Artist"); 
                 const hasVoice = STATE.badges.includes("🗣️ Great Speaker");
                 
                 let msg = "For showing amazing curiosity and completing your inquiry journey.";
-                if (hasArt) {
-                    if (hasVoice) {
-                        msg = "For your brilliant colorful art and speaking English so confidently!";
-                    } else {
-                        msg = "For expressing your wonderful imagination through colorful art!";
-                    }
-                } else {
-                    if (hasVoice) {
-                        msg = "For speaking English with a clear, brave voice!";
-                    }
-                }
+                if (hasArt && hasVoice) msg = "For your brilliant colorful art and speaking English so confidently!";
+                else if (hasArt) msg = "For expressing your wonderful imagination through colorful art!";
+                else if (hasVoice) msg = "For speaking English with a clear, brave voice!";
                 
-                if (msgEl) {
-                    msgEl.innerText = `"${msg}"`; 
-                }
-                
+                if (msgEl) msgEl.innerText = `"${msg}"`; 
                 modal.classList.add('active');
                 
                 if (window.confetti) {
-                    confetti({ 
-                        particleCount: 200, 
-                        spread: 120, 
-                        origin: { 
-                            y: 0.5 
-                        }, 
-                        colors: [
-                            '#CBAE75', 
-                            '#89BFA0', 
-                            '#7CA6C1'
-                        ] 
-                    });
+                    confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
                 }
             },
-            
             close() { 
                 const modal = document.getElementById('cert-modal');
-                if (modal) {
-                    modal.classList.remove('active'); 
-                }
+                if (modal) modal.classList.remove('active'); 
                 
-                const lastPage = CurriculumEngine.last(STATE.unitId);
-                
-                if (STATE.currentPage === lastPage) { 
+                if (STATE.currentPage === CurriculumEngine.last(STATE.unitId)) {
                     location.href = 'dashboard.html'; 
-                } else { 
+                } else {
                     AppEngine.smoothMove(1); 
-                } 
+                }
             },
-            
             print() {
                 const card = document.getElementById('cert-card-content');
                 const closeBtn = document.querySelector('.cert-close');
                 const printBtn = document.querySelector('.btn-print');
                 
-                if (closeBtn) {
-                    closeBtn.style.display = 'none'; 
-                }
+                if (closeBtn) closeBtn.style.display = 'none'; 
+                if (printBtn) printBtn.style.display = 'none';
                 
-                if (printBtn) {
-                    printBtn.style.display = 'none';
-                }
-                
-                if (window.html2canvas) {
-                    if (card) {
-                        html2canvas(card, { 
-                            backgroundColor: '#FFFFFF', 
-                            scale: 2 
-                        }).then((canvas) => {
-                            if (closeBtn) {
-                                closeBtn.style.display = 'block'; 
-                            }
-                            if (printBtn) {
-                                printBtn.style.display = 'inline-flex';
-                            }
-                            
-                            const link = document.createElement('a'); 
-                            link.download = `Certificate_${STATE.studentName}.png`; 
-                            link.href = canvas.toDataURL('image/png'); 
-                            link.click();
-                        });
-                    }
+                if (window.html2canvas && card) {
+                    html2canvas(card, { backgroundColor: '#FFFFFF', scale: 2 }).then((canvas) => {
+                        if (closeBtn) closeBtn.style.display = 'block'; 
+                        if (printBtn) printBtn.style.display = 'inline-flex';
+                        const link = document.createElement('a'); 
+                        link.download = `Certificate_${STATE.studentName}.png`; 
+                        link.href = canvas.toDataURL('image/png'); 
+                        link.click();
+                    });
                 } else { 
                     window.print(); 
-                    
-                    if (closeBtn) {
-                        closeBtn.style.display = 'block'; 
-                    }
-                    if (printBtn) {
-                        printBtn.style.display = 'inline-flex'; 
-                    }
+                    if (closeBtn) closeBtn.style.display = 'block'; 
+                    if (printBtn) printBtn.style.display = 'inline-flex'; 
                 }
             }
         };
 
         const AudioEngine = {
             recordingMode: 'main',
-            
             init() {
-                let SR = null;
-                if (window.SpeechRecognition) {
-                    SR = window.SpeechRecognition;
-                } else {
-                    if (window.webkitSpeechRecognition) {
-                        SR = window.webkitSpeechRecognition;
-                    }
-                }
-                
+                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
                 if (SR) {
                     this.rec = new SR(); 
                     this.rec.lang = 'en-US'; 
@@ -4705,17 +3987,12 @@
                     this.rec.interimResults = false;
                     
                     this.rec.onresult = (e) => { 
-                        const resultList = e.results[0];
-                        const alternative = resultList[0];
-                        STATE.lastTranscript = alternative.transcript; 
-                        STATE.sttConfidence = Math.round(alternative.confidence * 100); 
+                        STATE.lastTranscript = e.results[0][0].transcript; 
+                        STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); 
                     };
                     
                     this.rec.onend = () => { 
-                        if (!STATE.isRecording) {
-                            return;
-                        }
-                        
+                        if (!STATE.isRecording) return;
                         STATE.isRecording = false;
                         
                         if (this.recordingMode === 'chat') {
@@ -4724,55 +4001,34 @@
                                 chatBtn.classList.remove('recording');
                                 chatBtn.innerText = "🎤 Speak to Teacher";
                             }
-                            setTimeout(() => { 
-                                AITutor.processReply(); 
-                            }, 800);
+                            setTimeout(() => AITutor.processReply(), 800);
                         } else {
                             const recBtn = document.getElementById('btn-record');
                             const recText = document.getElementById('record-text');
-                            if (recBtn) {
-                                recBtn.classList.remove('recording');
-                            }
-                            if (recText) {
-                                recText.innerText = "Voice Log";
-                            }
-                            setTimeout(() => { 
-                                AITutor.submit(); 
-                            }, 800);
+                            if (recBtn) recBtn.classList.remove('recording');
+                            if (recText) recText.innerText = "Voice Log";
+                            setTimeout(() => AITutor.submit(), 800);
                         }
                     };
                     
                     this.rec.onerror = () => { 
                         if (STATE.isRecording) { 
                             STATE.isRecording = false; 
-                            
                             const recBtn = document.getElementById('btn-record');
-                            if (recBtn) {
-                                recBtn.classList.remove('recording'); 
-                            }
-                            
                             const recText = document.getElementById('record-text');
-                            if (recText) {
-                                recText.innerText = "Voice Log"; 
-                            }
+                            if (recBtn) recBtn.classList.remove('recording'); 
+                            if (recText) recText.innerText = "Voice Log"; 
                         } 
                     };
                 } else { 
-                    const ids = ['btn-record', 'btn-chat-record'];
-                    ids.forEach((id) => { 
+                    ['btn-record', 'btn-chat-record'].forEach((id) => { 
                         const btn = document.getElementById(id);
-                        if (btn) {
-                            btn.disabled = true; 
-                        }
+                        if (btn) btn.disabled = true; 
                     }); 
                 }
             },
-            
             toggle() {
-                if (!this.rec) {
-                    return; 
-                }
-                
+                if (!this.rec) return; 
                 this.recordingMode = 'main';
                 
                 const recBtn = document.getElementById('btn-record');
@@ -4780,57 +4036,35 @@
                 
                 if (!STATE.isRecording) { 
                     STATE.isRecording = true; 
-                    
-                    if (recBtn) {
-                        recBtn.classList.add('recording'); 
-                    }
-                    
-                    if (recText) {
-                        recText.innerText = "Listening..."; 
-                    }
-                    
+                    if (recBtn) recBtn.classList.add('recording'); 
+                    if (recText) recText.innerText = "Listening..."; 
                     this.rec.start(); 
                 } else { 
                     STATE.isRecording = false; 
-                    
-                    if (recBtn) {
-                        recBtn.classList.remove('recording'); 
-                    }
-                    
-                    if (recText) {
-                        recText.innerText = "Voice Log"; 
-                    }
-                    
+                    if (recBtn) recBtn.classList.remove('recording'); 
+                    if (recText) recText.innerText = "Voice Log"; 
                     this.rec.stop(); 
                 }
             },
-            
             toggleChat() {
-                if (!this.rec) {
-                    return; 
-                }
-                
+                if (!this.rec) return; 
                 this.recordingMode = 'chat';
                 
                 const chatBtn = document.getElementById('btn-chat-record');
                 
                 if (!STATE.isRecording) { 
                     STATE.isRecording = true; 
-                    
                     if (chatBtn) {
                         chatBtn.classList.add('recording'); 
                         chatBtn.innerText = "Listening...";
                     }
-                    
                     this.rec.start(); 
                 } else { 
                     STATE.isRecording = false; 
-                    
                     if (chatBtn) {
                         chatBtn.classList.remove('recording'); 
                         chatBtn.innerText = "🎤 Speak to Teacher";
                     }
-                    
                     this.rec.stop(); 
                 }
             }
@@ -4838,23 +4072,16 @@
 
         const AITutor = {
             isBusy: false,
-            
             async callBackendTutor(promptText, base64Img = null) {
                 try {
                     const user = auth.currentUser; 
-                    
-                    if (!user) {
-                        throw new Error("Unauthorized");
-                    }
+                    if (!user) throw new Error("Unauthorized");
                     
                     const token = await user.getIdToken();
-                    
                     let imageVal = null;
                     if (base64Img) {
                         const splitArr = base64Img.split(',');
-                        if (splitArr.length > 1) {
-                            imageVal = splitArr[1];
-                        }
+                        if (splitArr.length > 1) imageVal = splitArr[1];
                     }
                     
                     const reqObj = {
@@ -4874,27 +4101,15 @@
                     });
                     
                     const data = await response.json(); 
-                    
-                    if (data.reply) {
-                        return data.reply;
-                    } else {
-                        return "앗, 선생님이 지금 답변을 주기 어려워요.";
-                    }
+                    if (data.reply) return data.reply;
+                    return "앗, 선생님이 지금 답변을 주기 어려워요.";
                 } catch (e) { 
                     return "앗, 네트워크 문제로 AI 선생님이 대답하지 못했어요. 다시 제출해주세요!"; 
                 }
             },
-            
             async submit() {
-                if (STATE.isRecording) { 
-                    AudioEngine.toggle(); 
-                    return; 
-                } 
-                
-                if (this.isBusy) {
-                    return; 
-                }
-                
+                if (STATE.isRecording) { AudioEngine.toggle(); return; } 
+                if (this.isBusy) return; 
                 this.isBusy = true;
                 
                 const requestPage = STATE.currentPage;
@@ -4903,10 +4118,7 @@
                 const content = document.getElementById('ai-content'); 
                 const panel = document.getElementById('ai-panel');
                 
-                if (panel) {
-                    panel.classList.add('open');
-                }
-                
+                if (panel) panel.classList.add('open');
                 if (content) {
                     content.innerHTML = `
                         <div class="ai-loading-container">
@@ -4921,66 +4133,36 @@
                     StorageEngine.executeCloudSave();
                     
                     const canvasImg = CanvasEngine.captureWorksheetWithDrawing(true);
-                    let unitData = { 
-                        goal: "Free Exploration", 
-                        question: "Tell me more about it." 
-                    };
+                    let unitData = { goal: "Free Exploration", question: "Tell me more about it." };
                     
-                    if (PAGE_INTELLIGENCE[STATE.unitId]) {
-                        if (PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]) {
-                            unitData = PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage];
-                        }
+                    if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]) {
+                        unitData = PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage];
                     }
                     
-                    let saidText = "Look at my art!";
-                    if (STATE.lastTranscript) {
-                        saidText = STATE.lastTranscript;
-                    }
+                    let saidText = STATE.lastTranscript || "Look at my art!";
                     
                     const prompt = `You are Teacher Bridge. Name: ${STATE.studentName}, Goal: ${unitData.goal}, Question: ${unitData.question}, Student Said: "${saidText}". Praise explicitly, max 3 short sentences, mix easy Korean contextually. Plain text only.`;
                     
                     const reply = await this.callBackendTutor(prompt, canvasImg);
                     
-                    if (STATE.currentPage !== requestPage) {
-                        return;
-                    }
-                    
-                    if (STATE.unitId !== requestUnit) {
-                        return;
-                    }
+                    if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
                     
                     const aiFailed = reply.includes("앗,");
-                    
                     if (!aiFailed) {
-                        const isBlank = CanvasEngine.isCanvasBlank();
-                        if (!isBlank) {
-                            BadgeEngine.add("🎨 Colorful Artist");
-                        }
-                        
-                        if (STATE.sttConfidence >= 80) {
-                            if (STATE.lastTranscript.length > 0) {
-                                BadgeEngine.add("🗣️ Great Speaker");
-                            }
-                        }
+                        if (!CanvasEngine.isCanvasBlank()) BadgeEngine.add("🎨 Colorful Artist");
+                        if (STATE.sttConfidence >= 80 && STATE.lastTranscript.length > 0) BadgeEngine.add("🗣️ Great Speaker");
                     }
                     
                     if (content) {
-                        const htmlStr = `
+                        content.innerHTML = `
                             <div class="analytics-card">
                                 <div class="analytics-title">Mission: ${unitData.goal}</div>
                                 <div class="stat-row">
-                                    <div class="stat-label">
-                                        <span>Voice Confidence</span>
-                                        <span>${STATE.sttConfidence}%</span>
-                                    </div>
-                                    <div class="bar-bg">
-                                        <div class="bar-fill" style="width:${STATE.sttConfidence}%; background-color:var(--br-blue)"></div>
-                                    </div>
+                                    <div class="stat-label"><span>Voice Confidence</span><span>${STATE.sttConfidence}%</span></div>
+                                    <div class="bar-bg"><div class="bar-fill" style="width:${STATE.sttConfidence}%; background-color:var(--br-blue)"></div></div>
                                 </div>
                             </div>
                         `;
-                        content.innerHTML = htmlStr;
-                        
                         const bbl = document.createElement('div'); 
                         bbl.className = 'chat-bubble ai mt-4'; 
                         bbl.textContent = reply; 
@@ -4988,25 +4170,15 @@
                     }
                     
                     const footer = document.getElementById('chat-footer');
-                    if (footer) {
-                        footer.style.display = "block"; 
-                    }
+                    if (footer) footer.style.display = "block"; 
                     
                     this.speak(reply);
                 } finally { 
                     this.isBusy = false; 
                 }
             },
-            
             async processReply() {
-                if (!STATE.lastTranscript) {
-                    return;
-                }
-                
-                if (this.isBusy) {
-                    return; 
-                }
-                
+                if (!STATE.lastTranscript || this.isBusy) return; 
                 this.isBusy = true;
                 
                 const requestPage = STATE.currentPage;
@@ -5023,27 +4195,17 @@
                     aBbl.className = "chat-bubble ai mt-4"; 
                     aBbl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 생각 중...`; 
                     content.appendChild(aBbl); 
-                    
                     content.scrollTop = content.scrollHeight;
                     
                     try {
                         const reply = await this.callBackendTutor(`Respond to student's remark: "${STATE.lastTranscript}". 1-2 short sentences, friendly, plain text.`);
-                        
-                        if (STATE.currentPage !== requestPage) {
-                            return;
-                        }
-                        
-                        if (STATE.unitId !== requestUnit) {
-                            return;
-                        }
+                        if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
                         
                         aBbl.innerHTML = ''; 
-                        
                         const b = document.createElement('b'); 
                         b.style.color = 'var(--br-green)'; 
                         b.textContent = reply; 
                         aBbl.appendChild(b);
-                        
                         content.scrollTop = content.scrollHeight; 
                         
                         this.speak(reply);
@@ -5054,67 +4216,45 @@
                     this.isBusy = false;
                 }
             },
-            
             speak(text) { 
                 if (window.speechSynthesis) { 
                     window.speechSynthesis.cancel(); 
-                    
                     const u = new SpeechSynthesisUtterance(text); 
                     u.lang = 'en-US'; 
                     u.rate = 0.95; 
-                    
                     window.speechSynthesis.speak(u); 
                 } 
             },
-            
             close() { 
                 const panel = document.getElementById('ai-panel');
-                if (panel) {
-                    panel.classList.remove('open'); 
-                }
-                
-                if (window.speechSynthesis) {
-                    window.speechSynthesis.cancel(); 
-                }
+                if (panel) panel.classList.remove('open'); 
+                if (window.speechSynthesis) window.speechSynthesis.cancel(); 
             }
         };
 
         const AppEngine = {
             smoothMove(dir) {
                 const nextPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir); 
-                if (nextPage === STATE.currentPage) {
-                    return;
-                }
+                if (nextPage === STATE.currentPage) return;
                 
                 StorageEngine.saveCanvasLocal(); 
-                
-                const snapshot = StorageEngine.createCanvasSnapshot(true); 
-                StorageEngine.executeCloudSave(snapshot);
+                StorageEngine.executeCloudSave(StorageEngine.createCanvasSnapshot(true));
                 
                 const board = document.getElementById('drawing-board');
-                if (board) {
-                    board.classList.add('fade-out');
-                }
+                if (board) board.classList.add('fade-out');
                 
                 setTimeout(() => { 
                     STATE.currentPage = nextPage; 
                     PageEngine.load(STATE.currentPage); 
-                    
                     setTimeout(() => { 
-                        if (board) {
-                            board.classList.remove('fade-out'); 
-                        }
+                        if (board) board.classList.remove('fade-out'); 
                     }, 150); 
                 }, 400);
             },
-            
             handleNextAdventure() { 
                 AITutor.close(); 
-                
-                const isEnd = CurriculumEngine.isWeekEnd(STATE.unitId, STATE.currentPage);
-                if (isEnd) {
-                    const weekNum = CurriculumEngine.weekIndex(STATE.unitId, STATE.currentPage);
-                    CertificateEngine.open(weekNum); 
+                if (CurriculumEngine.isWeekEnd(STATE.unitId, STATE.currentPage)) {
+                    CertificateEngine.open(CurriculumEngine.weekIndex(STATE.unitId, STATE.currentPage)); 
                 } else {
                     this.smoothMove(1); 
                 }
@@ -5124,18 +4264,12 @@
         const PageEngine = {
             init() {
                 const list = document.getElementById('nav-list'); 
-                if (!list) {
-                    return; 
-                }
-                
+                if (!list) return; 
                 list.innerHTML = '';
                 
                 const unitData = PAGE_INTELLIGENCE[STATE.unitId];
-                
                 if (unitData) {
-                    const keys = Object.keys(unitData);
-                    
-                    keys.forEach((key) => {
+                    Object.keys(unitData).forEach((key) => {
                         const item = document.createElement('div'); 
                         item.className = 'nav-item interactive-hover'; 
                         item.id = `nav-${key}`;
@@ -5145,52 +4279,34 @@
                         const weekIdx = CurriculumEngine.weekIndex(STATE.unitId, numKey);
                         
                         item.innerHTML = `<span class="nav-title">${titleText}</span><span class="nav-badge">W${weekIdx}-P.${key}</span>`;
-                        
                         item.onclick = () => { 
-                            const offset = parseInt(key) - STATE.currentPage;
-                            AppEngine.smoothMove(offset); 
+                            AppEngine.smoothMove(numKey - STATE.currentPage); 
                             UIEngine.closeSidebar(); 
                         }; 
-                        
                         list.appendChild(item);
                     });
                 }
-                
                 this.load(STATE.currentPage);
             },
-            
             load(n) {
                 STATE.currentPage = n; 
                 STATE.lastTranscript = ""; 
                 STATE.sttConfidence = 0;
                 
                 const unitInfo = document.getElementById('unit-info');
-                if (unitInfo) {
-                    unitInfo.innerText = `MASTER LAB: ${STATE.unitId}`; 
-                }
+                if (unitInfo) unitInfo.innerText = `MASTER LAB: ${STATE.unitId}`; 
                 
                 const pageInfo = document.getElementById('page-info');
-                if (pageInfo) {
-                    const padN = String(n).padStart(2, '0');
-                    pageInfo.innerText = `Inquiry P.${padN}`;
-                }
+                if (pageInfo) pageInfo.innerText = `Inquiry P.${String(n).padStart(2, '0')}`;
                 
-                const navItems = document.querySelectorAll('.nav-item');
-                navItems.forEach((el) => {
-                    el.classList.remove('active');
-                });
-                
+                document.querySelectorAll('.nav-item').forEach((el) => el.classList.remove('active'));
                 const activeNav = document.getElementById(`nav-${n}`);
                 const navList = document.getElementById('nav-list');
                 
                 if (activeNav) {
                     activeNav.classList.add('active');
                     if (navList) {
-                        const t = activeNav.offsetTop - navList.offsetTop - 50;
-                        navList.scrollTo({ 
-                            top: t, 
-                            behavior: 'smooth' 
-                        });
+                        navList.scrollTo({ top: activeNav.offsetTop - navList.offsetTop - 50, behavior: 'smooth' });
                     }
                 }
                 
@@ -5198,9 +4314,7 @@
                 AITutor.close(); 
                 
                 const worksheetImg = document.getElementById('worksheet-img');
-                if (worksheetImg) {
-                    worksheetImg.style.opacity = '0';
-                }
+                if (worksheetImg) worksheetImg.style.opacity = '0';
                 
                 SmartImageLoader.findValidWorksheet(STATE.unitId, STATE.currentPage); 
                 StorageEngine.save();
@@ -5209,47 +4323,28 @@
 
         const UIEngine = {
             toggleSidebar() { 
-                const w = window.innerWidth;
-                if (w > 1180) {
-                    return; 
-                }
-                
+                if (window.innerWidth > 1180) return; 
                 const sb = document.getElementById('sidebar');
-                if (sb) {
-                    sb.classList.toggle('open'); 
-                }
-                
+                if (sb) sb.classList.toggle('open'); 
                 const bd = document.getElementById('sidebar-backdrop');
-                if (bd) {
-                    bd.classList.toggle('active'); 
-                }
+                if (bd) bd.classList.toggle('active'); 
             },
-            
             closeSidebar() { 
                 const sb = document.getElementById('sidebar');
-                if (sb) {
-                    sb.classList.remove('open'); 
-                }
-                
+                if (sb) sb.classList.remove('open'); 
                 const bd = document.getElementById('sidebar-backdrop');
-                if (bd) {
-                    bd.classList.remove('active'); 
-                }
+                if (bd) bd.classList.remove('active'); 
             }
         };
 
         /**
          * [5-20. FINAL BOOTSTRAP]
+         * 로그인 세션 확인 직후 단 한 번만 실행되는 무결점 시스템 부트
          */
         let systemBooted = false;
-        
         function SystemBoot() {
-            if (systemBooted) {
-                return; 
-            }
-            
+            if (systemBooted) return; 
             systemBooted = true;
-            
             try {
                 StorageEngine.load(); 
                 CustomModalEngine.init(); 
@@ -5260,50 +4355,29 @@
                 BadgeEngine.renderAll(); 
                 PageEngine.init(); 
                 SyncIndicatorEngine.init();
-                
                 Logger.log("V100.56 Enterprise Master System Boot Complete.");
             } catch(error) { 
                 Logger.error("Framework initialization error:", error); 
             }
         }
 
+        // [최하단 보안 검증: 이메일 확보 후 부팅 진행]
         auth.onAuthStateChanged((user) => {
             if (!user) { 
-                CustomModalEngine.alert(
-                    "Session Expired", 
-                    "안전한 진행을 위해 다시 로그인해 주세요."
-                );
-                
-                setTimeout(() => {
-                    window.location.replace('login.html'); 
-                }, 2000);
+                CustomModalEngine.alert("Session Expired", "안전한 진행을 위해 다시 로그인해 주세요.");
+                setTimeout(() => { window.location.replace('login.html'); }, 2000);
             } else {
                 Logger.log("Secured Session Authenticated:", user.email);
-                
                 STATE.uid = user.uid; 
                 STATE.studentEmail = user.email;
-                
-                const splitEmail = user.email.split('@');
-                if (splitEmail.length > 0) {
-                    STATE.studentName = splitEmail[0].toUpperCase();
-                } else {
-                    STATE.studentName = "EXPLORER";
-                }
+                STATE.studentName = user.email.split('@')[0].toUpperCase() || "EXPLORER";
                 
                 const profileBox = document.getElementById('profile-box');
-                if (profileBox) {
-                    profileBox.classList.add('registered');
-                }
-                
+                if (profileBox) profileBox.classList.add('registered');
                 const displayNameEl = document.getElementById('display-name');
-                if (displayNameEl) {
-                    displayNameEl.innerText = STATE.studentName;
-                }
-                
+                if (displayNameEl) displayNameEl.innerText = STATE.studentName;
                 const avatarEl = document.getElementById('avatar-char');
-                if (avatarEl) {
-                    avatarEl.innerText = STATE.studentName.charAt(0);
-                }
+                if (avatarEl) avatarEl.innerText = STATE.studentName.charAt(0);
                 
                 SystemBoot(); 
             }

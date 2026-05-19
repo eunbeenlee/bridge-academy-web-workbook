@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#FCFBF9">
     
-    <title>Bridge Academy | Premium AI Lab V100.85</title>
+    <title>Bridge Academy | Premium AI Lab V100.90</title>
 
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     
@@ -108,23 +108,14 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        a, button, input, select, textarea { 
-            font-family: inherit; 
-            cursor: none !important; 
-        }
-
-        button { 
-            border-top-width: 0px;
-            border-right-width: 0px;
-            border-bottom-width: 0px;
-            border-left-width: 0px;
-            background-color: transparent; 
-            outline-width: 0px; 
-        }
-
-        ul, ol, li { 
-            list-style-type: none; 
-        }
+        a { cursor: none !important; }
+        button { border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; background-color: transparent; font-family: inherit; outline-width: 0px; cursor: none !important; }
+        input { cursor: none !important; font-family: inherit; }
+        select { cursor: none !important; font-family: inherit; }
+        textarea { cursor: none !important; font-family: inherit; }
+        ul { list-style-type: none; }
+        ol { list-style-type: none; }
+        li { list-style-type: none; }
 
         @supports not (height: 100dvh) {
             html { height: 100vh; }
@@ -595,6 +586,7 @@
             text-transform: uppercase; 
         }
 
+        /* [P0] 페이지 정보 및 학습 목표(Goal) 고급 타이포그래피 */
         .page-info { 
             font-family: 'Nunito', sans-serif; 
             font-size: 24px; 
@@ -604,19 +596,19 @@
             margin-top: 2px; 
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         
         .page-goal {
             font-family: 'Pretendard', sans-serif;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: var(--br-muted);
             background-color: #F8F9FA;
             padding-top: 4px;
-            padding-right: 12px;
+            padding-right: 14px;
             padding-bottom: 4px;
-            padding-left: 12px;
+            padding-left: 14px;
             border-top-left-radius: 50px;
             border-top-right-radius: 50px;
             border-bottom-right-radius: 50px;
@@ -633,6 +625,7 @@
             border-right-color: var(--br-border);
             border-bottom-color: var(--br-border);
             border-left-color: var(--br-border);
+            letter-spacing: 0px;
         }
 
         .sync-indicator-container {
@@ -737,7 +730,7 @@
         }
         
         /* ----------------------------------------------------------------------
-           [4-9. STAGE & DRAWING BOARD (Shrink-Wrap Flex Layout)]
+           [4-9. STAGE & DRAWING BOARD (Shrink-Wrap Flex)]
         ---------------------------------------------------------------------- */
         .stage-wrapper { 
             flex: 1; 
@@ -761,9 +754,6 @@
             border-top-right-radius: 20px; 
             border-bottom-right-radius: 20px; 
             border-bottom-left-radius: 20px; 
-            /* 빈 화면 방어선: 이미지가 없어도 최소한의 크기를 확보하여 캔버스가 죽지 않도록 설정 */
-            min-width: 300px;
-            min-height: 200px;
             box-shadow: var(--shadow-premium); 
             background-color: #FFFFFF; 
             transition-property: opacity, transform; 
@@ -2300,43 +2290,26 @@
             brushType: 'normal'
         };
 
+        // [P0] PAGE_INTELLIGENCE 대폭 상향: AI가 문맥을 100% 인지하고 꼬리 질문을 던지도록 컨텍스트(context) 추가
         const PAGE_INTELLIGENCE = {
             "A-1": {
-                1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?" },
-                2: { navTitle: "[W1] Mind", goal: "Self-Esteem & I like myself", question: "Do you like yourself?" },
-                3: { navTitle: "[W1] Face", goal: "Face Features Vocabulary", question: "Where is your nose?" },
-                4: { navTitle: "[W1] Portrait", goal: "Drawing Face Features", question: "Can you draw your face?" },
-                5: { navTitle: "[W2] Senses", goal: "Action Verbs for Senses", question: "What do you smell?" },
-                6: { navTitle: "[W2] Sentences", goal: "Sentence Completion", question: "What else do you like?" },
-                7: { navTitle: "[W2] Matching", goal: "Sensory Association", question: "How do you hear music?" },
-                8: { navTitle: "[W2] Emotion", goal: "Drawing Emotions", question: "Are you smiling?" },
-                9: { navTitle: "[W3] Animals", goal: "Book Introduction", question: "Ready for the gorilla?" },
-                10: { navTitle: "[W3] Gorilla", goal: "Gorilla Body Parts", question: "Show me strong arms!" },
-                11: { navTitle: "[W3] Labels", goal: "Labeling Body Parts", question: "Where is the shoulder?" },
-                12: { navTitle: "[W3] Giraffe", goal: "Coloring a Giraffe", question: "Why is the neck long?" },
-                13: { navTitle: "[W4] Creative", goal: "Creative Imagination", question: "Spaghetti arms?" },
-                14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?" },
-                15: { navTitle: "[W4] Review", goal: "Reviewing the Story", question: "Did you enjoy it?" },
-                16: { navTitle: "[W4] Tools", goal: "Selecting Tools", question: "Which tool did you use?" },
-                17: { navTitle: "[W4] Eval", goal: "Self Evaluation", question: "Are you proud?" }
-            },
-            "A-2": {
-                18: { navTitle: "[W1] Intro", goal: "Meeting Crawlers", question: "Ready for bugs?" },
-                19: { navTitle: "[W1] Hungry", goal: "Food Recognition", question: "What is it eating?" },
-                20: { navTitle: "[W1] Fruits", goal: "Reading Fruit Words", question: "Apples or plums?" },
-                21: { navTitle: "[W1] Favorite", goal: "Favorite Fruit Drawing", question: "Why is it your favorite?" },
-                22: { navTitle: "[W2] I Eat", goal: "Sentence Practice", question: "Crunchy or soft?" },
-                23: { navTitle: "[W2] Magic 1", goal: "Compound Words", question: "Butter meets Fly?" },
-                24: { navTitle: "[W2] Magic 2", goal: "Compound Words", question: "Straw meets Berry?" },
-                25: { navTitle: "[W2] Book 2", goal: "Caterpillar Story", question: "What should he eat?" },
-                26: { navTitle: "[W3] Cycle", goal: "Life Cycle Stages", question: "Inside the cocoon?" },
-                27: { navTitle: "[W3] Symmetry", goal: "Butterfly Wings", question: "Can it fly high?" },
-                28: { navTitle: "[W3] Math 1", goal: "Counting Fruits", question: "How many strawberries?" },
-                29: { navTitle: "[W3] Math 2", goal: "Counting Leaves", question: "More leaves or apples?" },
-                30: { navTitle: "[W4] Search", goal: "Identifying Insects", question: "Can you find the Ant?" },
-                31: { navTitle: "[W4] Review", goal: "Reviewing Bugs", question: "Favorite bug today?" },
-                32: { navTitle: "[W4] Garden", goal: "Drawing a Garden", question: "Who lives here?" },
-                33: { navTitle: "[W4] Eval", goal: "Self Evaluation", question: "See you next time!" }
+                1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?", context: "The student is writing their name." },
+                2: { navTitle: "[W1] Mind", goal: "Self-Esteem & I like myself", question: "Do you like yourself?", context: "The student is drawing something they like about themselves." },
+                3: { navTitle: "[W1] Face", goal: "Face Features Vocabulary", question: "Where is your nose?", context: "The student is learning facial features." },
+                4: { navTitle: "[W1] Portrait", goal: "Drawing Face Features", question: "Can you draw your face?", context: "The student is drawing a portrait." },
+                5: { navTitle: "[W2] Senses", goal: "Action Verbs for Senses", question: "What do you smell?", context: "The student is connecting senses to actions." },
+                6: { navTitle: "[W2] Sentences", goal: "Sentence Completion", question: "What else do you like?", context: "The student is writing full sentences." },
+                7: { navTitle: "[W2] Matching", goal: "Sensory Association", question: "How do you hear music?", context: "The student is matching senses to objects." },
+                8: { navTitle: "[W2] Emotion", goal: "Drawing Emotions", question: "Are you smiling?", context: "The student is drawing an emotional face." },
+                9: { navTitle: "[W3] Animals", goal: "Book Introduction", question: "Ready for the gorilla?", context: "The student is learning about animals." },
+                10: { navTitle: "[W3] Gorilla", goal: "Gorilla Body Parts", question: "Show me strong arms!", context: "The student is identifying gorilla body parts." },
+                11: { navTitle: "[W3] Labels", goal: "Labeling Body Parts", question: "Where is the shoulder?", context: "The student is labeling body parts." },
+                12: { navTitle: "[W3] Giraffe", goal: "Coloring a Giraffe", question: "Why is the neck long?", context: "The student is coloring a giraffe." },
+                13: { navTitle: "[W4] Creative", goal: "Creative Imagination", question: "Spaghetti arms?", context: "The student is using their imagination to draw." },
+                14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?", context: "The student is counting body parts." },
+                15: { navTitle: "[W4] Review", goal: "Reviewing the Story", question: "Did you enjoy it?", context: "The student is reviewing what they learned." },
+                16: { navTitle: "[W3] Board Design", goal: "Selecting Tools for the Board", question: "Which tools do you need?", context: "The student is picking tools like clay, paint, scissors, or markers to make a board design. Ask them what they want to build." },
+                17: { navTitle: "[W4] Presentation Star", goal: "Self-Evaluation", question: "Did you speak loudly, use English, and have fun?", context: "The student is reflecting on their presentation performance. Ask them how they felt." }
             }
         };
 
@@ -2497,7 +2470,6 @@
                 this.container.className = "sync-indicator-container saved";
                 this.icon.className = "fa-solid fa-cloud-check sync-icon";
                 this.text.innerText = "Saved";
-                
                 setTimeout(() => {
                     if (this.container.classList.contains('saved')) {
                         this.container.className = "sync-indicator-container";
@@ -2523,7 +2495,7 @@
         };
 
         /**
-         * [5-6. SMART IMAGE LOADER ENGINE (P0 이미지 타임아웃 방어 로직 완벽 복구)]
+         * [5-6. SMART IMAGE LOADER ENGINE]
          */
         const SmartImageLoader = {
             requestToken: 0,
@@ -2578,17 +2550,15 @@
                     const testUrl = `${possiblePaths[index]}?t=${t}`;
                     const tempImg = new Image();
                     
-                    // [Defense 5] 이미지 로딩 8초 무한 대기 데드락 폭파 타이머
                     let loadTimeout = setTimeout(() => {
                         if (token !== this.requestToken) {
                             return;
                         }
-                        Logger.warn(`Image Load Timeout on ${testUrl}. Forcing next fallback.`);
+                        Logger.warn("Image Load Timeout. Forcing next fallback.");
                         tempImg.src = "";
                         tryLoad(index + 1);
                     }, 8000);
                     
-                    // CORS Taint 방어를 위한 익명 헤더 필수 탑재
                     tempImg.crossOrigin = "anonymous";
 
                     tempImg.onload = () => {
@@ -2741,7 +2711,6 @@
             scheduleCloudSave() {
                 SyncIndicatorEngine.setSaving();
                 const snapshot = this.createCanvasSnapshot(true);
-                
                 if (this.cloudSaveTimer) {
                     clearTimeout(this.cloudSaveTimer);
                 }
@@ -2783,7 +2752,6 @@
                 try {
                     const cacheKey = `br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`;
                     const localData = localStorage.getItem(cacheKey);
-                    
                     if (localData) {
                         const img = new Image();
                         img.onload = () => { 
@@ -3433,7 +3401,6 @@
             isBusy: false,
             
             async callBackendTutor(promptText, base64Img = null) {
-                // [Defense 1] AI 통신 지연 시 무한 로딩 방어선 (15초)
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 15000);
                 
@@ -3470,8 +3437,9 @@
                     });
                     
                     clearTimeout(timeoutId);
-                    const data = await response.json(); 
                     
+                    // [P0] 502 에러 등의 200 OK 래핑 결과물 안전 파싱
+                    const data = await response.json(); 
                     if (data.reply) {
                         return data.reply;
                     } else {
@@ -3480,7 +3448,7 @@
                 } catch (e) { 
                     clearTimeout(timeoutId);
                     if (e.name === 'AbortError') {
-                        return "앗, 선생님과 연결하는 시간이 너무 오래 걸렸어요. 다시 버튼을 눌러볼까요?";
+                        return "앗, 연결 시간이 너무 오래 걸렸어요. 다시 버튼을 눌러주세요!";
                     }
                     return "앗, 네트워크 문제로 AI 선생님이 대답하지 못했어요. 다시 제출해주세요!"; 
                 }
@@ -3520,19 +3488,23 @@
                     StorageEngine.executeCloudSave();
                     
                     const canvasImg = CanvasEngine.captureWorksheetWithDrawing(true);
-                    let unitData = { goal: "Free Exploration", question: "Tell me more about it." };
+                    let unitData = { goal: "Free Exploration", question: "Tell me more about it.", context: "The student is exploring and drawing freely." };
                     
                     if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]) {
                         unitData = PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage];
                     }
                     
-                    let saidText = STATE.lastTranscript || "Look at my art!";
+                    let saidText = STATE.lastTranscript || "Look at my work!";
                     
-                    const prompt = `Act as an enthusiastic, friendly teacher for a young student named ${STATE.studentName}.
-Task 1: Look carefully at the attached image. It shows the student's own drawing overlaid on top of their worksheet. Analyze what they drew.
+                    // [P0 핵심 고도화] AI가 절대 답변을 단절시키지 않도록 강력한 페르소나와 꼬리 질문(Follow-up) 강제 주입
+                    const prompt = `Act as an enthusiastic, friendly American teacher for a young kindergarten student named ${STATE.studentName}.
+Task 1: Look at the attached drawing/worksheet image. (Context: ${unitData.goal} - ${unitData.context || unitData.question}).
 Task 2: Read what the student just said out loud: "${saidText}".
-Context: The lesson goal is '${unitData.goal}' and the question asked was '${unitData.question}'.
-Output: Respond with a highly engaging, encouraging message in very simple, natural English suitable for young children. Praise specific details you see in BOTH their drawing and what they said. Maximum 3 to 4 short sentences. Plain text only, no emojis or markdown.`;
+Rules:
+1. Praise specific details you see in BOTH their drawing and what they said. Be very encouraging.
+2. Keep it to 2-3 short, simple English sentences suitable for a young child.
+3. ALWAYS end your response with a simple, fun follow-up question to keep the conversation going (e.g., "What colors did you use?", "Was it fun?", "What will you make with those tools?").
+4. Use plain text only, no markdown, no emojis.`;
                     
                     const reply = await this.callBackendTutor(prompt, canvasImg);
                     
@@ -3540,7 +3512,7 @@ Output: Respond with a highly engaging, encouraging message in very simple, natu
                         return;
                     }
                     
-                    const aiFailed = reply.includes("앗,");
+                    const aiFailed = (reply || "").includes("앗,");
                     if (!aiFailed) {
                         if (!CanvasEngine.isCanvasBlank()) {
                             BadgeEngine.add("🎨 Colorful Artist");
@@ -3600,7 +3572,14 @@ Output: Respond with a highly engaging, encouraging message in very simple, natu
                     content.scrollTop = content.scrollHeight;
                     
                     try {
-                        const prompt = `Act as an enthusiastic, friendly teacher for a young student named ${STATE.studentName}. Respond directly to what the student just said: "${STATE.lastTranscript}". Give a highly engaging, encouraging message in very simple, natural English suitable for young children. Maximum 3 to 4 short sentences. Plain text only, no emojis or markdown.`;
+                        const prompt = `Act as an enthusiastic, friendly American teacher for a young kindergarten student named ${STATE.studentName}. 
+Respond directly to what the student just answered: "${STATE.lastTranscript}". 
+Rules:
+1. Give a highly engaging, encouraging message in very simple, natural English.
+2. Maximum 2 to 3 short sentences.
+3. End with another simple question to keep the chat going.
+4. Plain text only, no emojis or markdown.`;
+
                         const reply = await this.callBackendTutor(prompt);
                         
                         if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) {
@@ -3628,9 +3607,11 @@ Output: Respond with a highly engaging, encouraging message in very simple, natu
                     window.speechSynthesis.cancel(); 
                     const u = new SpeechSynthesisUtterance(text); 
                     u.lang = 'en-US'; 
-                    u.rate = 0.85; 
-                    u.pitch = 1.1; 
+                    // [P0] 유아용 튜터 음성: 속도는 약간 느리게, 톤은 밝고 경쾌하게 세팅합니다.
+                    u.rate = 0.9; 
+                    u.pitch = 1.05; 
                     
+                    // 네이티브 음성 1순위 강제 매칭
                     const voices = window.speechSynthesis.getVoices();
                     const preferredVoices = voices.filter(v => v.lang.startsWith('en-') && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Siri') || v.name.includes('Alex')));
                     
@@ -3662,215 +3643,4 @@ Output: Respond with a highly engaging, encouraging message in very simple, natu
         const AppEngine = {
             smoothMove(dir) {
                 const nextPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir); 
-                if (nextPage === STATE.currentPage) {
-                    return;
-                }
-                
-                StorageEngine.saveCanvasLocal(); 
-                StorageEngine.executeCloudSave(StorageEngine.createCanvasSnapshot(true));
-                
-                const board = document.getElementById('drawing-board');
-                if (board) {
-                    board.classList.add('fade-out');
-                }
-                
-                setTimeout(() => { 
-                    STATE.currentPage = nextPage; 
-                    PageEngine.load(STATE.currentPage); 
-                    setTimeout(() => { 
-                        if (board) {
-                            board.classList.remove('fade-out'); 
-                        }
-                    }, 150); 
-                }, 400);
-            },
-            handleNextAdventure() { 
-                AITutor.close(); 
-                if (CurriculumEngine.isWeekEnd(STATE.unitId, STATE.currentPage)) {
-                    CertificateEngine.open(CurriculumEngine.weekIndex(STATE.unitId, STATE.currentPage)); 
-                } else {
-                    this.smoothMove(1); 
-                }
-            }
-        };
-
-        const PageEngine = {
-            init() {
-                const list = document.getElementById('nav-list'); 
-                if (!list) {
-                    return; 
-                }
-                list.innerHTML = '';
-                
-                const unitData = PAGE_INTELLIGENCE[STATE.unitId];
-                if (unitData) {
-                    Object.keys(unitData).forEach((key) => {
-                        const item = document.createElement('div'); 
-                        item.className = 'nav-item interactive-hover'; 
-                        item.id = `nav-${key}`;
-                        
-                        const titleText = unitData[key].navTitle;
-                        const numKey = Number(key);
-                        const weekIdx = CurriculumEngine.weekIndex(STATE.unitId, numKey);
-                        
-                        item.innerHTML = `<span class="nav-title">${titleText}</span><span class="nav-badge">W${weekIdx}-P.${key}</span>`;
-                        item.onclick = () => { 
-                            AppEngine.smoothMove(numKey - STATE.currentPage); 
-                            UIEngine.closeSidebar(); 
-                        }; 
-                        list.appendChild(item);
-                    });
-                }
-                this.load(STATE.currentPage);
-            },
-            load(n) {
-                STATE.currentPage = n; 
-                STATE.lastTranscript = ""; 
-                STATE.sttConfidence = 0;
-                
-                const unitInfo = document.getElementById('unit-info');
-                if (unitInfo) {
-                    unitInfo.innerText = `MASTER LAB: ${STATE.unitId}`; 
-                }
-                
-                const pageInfo = document.getElementById('page-info');
-                const pageGoal = document.getElementById('page-goal-text');
-                const padN = String(n).padStart(2, '0');
-                
-                if (document.getElementById('page-number-text')) {
-                    document.getElementById('page-number-text').innerText = `Inquiry P.${padN}`;
-                }
-                
-                let goalText = "Free Exploration";
-                if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][n]) {
-                    goalText = PAGE_INTELLIGENCE[STATE.unitId][n].goal;
-                }
-                
-                if (pageGoal) {
-                    pageGoal.innerText = goalText;
-                }
-                
-                document.querySelectorAll('.nav-item').forEach((el) => {
-                    el.classList.remove('active');
-                });
-                
-                const activeNav = document.getElementById(`nav-${n}`);
-                const navList = document.getElementById('nav-list');
-                
-                if (activeNav) {
-                    activeNav.classList.add('active');
-                    if (navList) {
-                        navList.scrollTo({ top: activeNav.offsetTop - navList.offsetTop - 50, behavior: 'smooth' });
-                    }
-                }
-                
-                CanvasEngine.hardReset(); 
-                AITutor.close(); 
-                
-                const worksheetImg = document.getElementById('worksheet-img');
-                if (worksheetImg) {
-                    worksheetImg.style.opacity = '0';
-                }
-                
-                SmartImageLoader.findValidWorksheet(STATE.unitId, STATE.currentPage); 
-                StorageEngine.save();
-            }
-        };
-
-        const UIEngine = {
-            toggleSidebar() { 
-                if (window.innerWidth > 1180) {
-                    return; 
-                }
-                const sb = document.getElementById('sidebar');
-                if (sb) {
-                    sb.classList.toggle('open'); 
-                }
-                const bd = document.getElementById('sidebar-backdrop');
-                if (bd) {
-                    bd.classList.toggle('active'); 
-                }
-            },
-            closeSidebar() { 
-                const sb = document.getElementById('sidebar');
-                if (sb) {
-                    sb.classList.remove('open'); 
-                }
-                const bd = document.getElementById('sidebar-backdrop');
-                if (bd) {
-                    bd.classList.remove('active'); 
-                }
-            }
-        };
-
-        /**
-         * [5-20. FINAL BOOTSTRAP - THE ULTIMATE FALLBACK ENGINE]
-         * 어떤 상황에서도 화면이 하얗게 멈추지 않도록 강제 기동하는 철통 방어선
-         */
-        let systemBooted = false;
-        function SystemBoot() {
-            if (systemBooted) {
-                return; 
-            }
-            systemBooted = true;
-            
-            try {
-                StorageEngine.load(); 
-                CustomModalEngine.init(); 
-                CanvasEngine.init(); 
-                RGBRingEngine.init(); 
-                AudioEngine.init(); 
-                CursorEngine.init(); 
-                BadgeEngine.renderAll(); 
-                PageEngine.init(); 
-                SyncIndicatorEngine.init();
-                Logger.log("V100.85 Enterprise Defense Layer Boot Complete.");
-            } catch(error) { 
-                Logger.error("Framework initialization error:", error); 
-            }
-        }
-
-        try {
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    Logger.log("Secured Session Authenticated:", user.email);
-                    STATE.uid = user.uid; 
-                    STATE.studentEmail = user.email;
-                    STATE.studentName = user.email.split('@')[0].toUpperCase() || "EXPLORER";
-                    
-                    const profileBox = document.getElementById('profile-box');
-                    if (profileBox) {
-                        profileBox.classList.add('registered');
-                    }
-                    const displayNameEl = document.getElementById('display-name');
-                    if (displayNameEl) {
-                        displayNameEl.innerText = STATE.studentName;
-                    }
-                    const avatarEl = document.getElementById('avatar-char');
-                    if (avatarEl) {
-                        avatarEl.innerText = STATE.studentName.charAt(0);
-                    }
-                } else {
-                    Logger.warn("No active session. Launching in Guest Fallback Mode to prevent blackout.");
-                    STATE.studentName = "GUEST";
-                }
-                // 인증 결과와 상관없이 무조건 렌더링 부트
-                SystemBoot(); 
-            });
-        } catch (authException) {
-            Logger.error("Firebase Auth Module Failed. Engaging fallback boot.", authException);
-            SystemBoot();
-        }
-
-        // [최후의 보루] 만약 위의 모든 과정이 3.5초 이상 지연되면, 무조건 강제로 화면을 켭니다.
-        setTimeout(() => {
-            if (!systemBooted) {
-                Logger.warn("Absolute Timeout Triggered. Force booting the system.");
-                STATE.studentName = "GUEST";
-                SystemBoot();
-            }
-        }, 3500);
-
-    </script>
-</body>
-</html>
+                if (

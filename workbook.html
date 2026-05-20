@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#FCFBF9">
     
-    <title>Bridge Academy | Premium AI Lab V100.100</title>
+    <title>Bridge Academy | Premium AI Lab V100.100 Master</title>
 
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     
@@ -52,15 +52,8 @@
             
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --safe-top: env(safe-area-inset-top, 0px);
-            --safe-left: env(safe-area-inset-left, 0px);
-            --safe-right: env(safe-area-inset-right, 0px);
             
             --transition-smooth: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-            --transition-fast: all 0.2s ease-in-out;
-            --transition-elastic: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            
-            --shadow-float: 0px 25px 70px rgba(0, 0, 0, 0.07);
-            --shadow-button: 0px 10px 20px rgba(0, 0, 0, 0.05);
             --shadow-premium: 0px 30px 60px rgba(54, 52, 49, 0.15);
         }
 
@@ -68,8 +61,8 @@
            [2] BASE RESET & GLOBAL TYPOGRAPHY
            ====================================================================== */
         * { 
-            margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; 
-            padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; 
+            margin: 0; 
+            padding: 0; 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
             cursor: none !important;
@@ -78,14 +71,12 @@
         html, body {
             width: 100%; 
             height: 100dvh; 
-            overflow-x: hidden; 
-            overflow-y: hidden; 
+            overflow: hidden; 
             background-color: var(--br-bg); 
             color: var(--br-text); 
             font-family: 'Nunito', 'Pretendard', sans-serif; 
             pointer-events: auto !important; 
             -webkit-font-smoothing: antialiased; 
-            -moz-osx-font-smoothing: grayscale;
         }
 
         a, button, input, select, textarea { 
@@ -96,7 +87,9 @@
             background: transparent;
         }
 
-        ul, ol, li { list-style-type: none; }
+        ul, ol, li { 
+            list-style: none; 
+        }
 
         @supports not (height: 100dvh) {
             html, body, .app-container { height: 100vh; }
@@ -106,20 +99,32 @@
            [3] ZERO-LATENCY CUSTOM CURSOR
            ====================================================================== */
         .cursor-dot {
-            position: fixed; top: 0px; left: 0px; width: 4px; height: 4px;
-            background-color: rgba(54, 52, 49, 0.75); border-radius: 50%;
-            pointer-events: none; z-index: 99999; transform: translate(-50%, -50%);
-            transition-property: width, height, opacity, background-color;
-            transition-duration: 0.1s; transition-timing-function: ease;
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 4px; 
+            height: 4px;
+            background-color: rgba(54, 52, 49, 0.75); 
+            border-radius: 50%;
+            pointer-events: none; 
+            z-index: 99999; 
+            transform: translate(-50%, -50%);
+            transition: width 0.1s ease, height 0.1s ease, opacity 0.1s ease, background-color 0.1s ease;
             will-change: transform;
         }
 
         .cursor-ring {
-            position: fixed; top: 0px; left: 0px; width: 22px; height: 22px;
-            border: 1px solid rgba(54, 52, 49, 0.28); border-radius: 50%;
-            pointer-events: none; z-index: 99998; transform: translate(-50%, -50%);
-            transition-property: width, height, opacity, border-color, background-color;
-            transition-duration: 0.15s; transition-timing-function: ease;
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 22px; 
+            height: 22px;
+            border: 1px solid rgba(54, 52, 49, 0.28); 
+            border-radius: 50%;
+            pointer-events: none; 
+            z-index: 99998; 
+            transform: translate(-50%, -50%);
+            transition: width 0.15s ease, height 0.15s ease, opacity 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
             will-change: transform;
         }
 
@@ -138,31 +143,45 @@
            [4] APP CONTAINER & SIDEBAR
            ====================================================================== */
         .app-container { 
-            display: flex; flex-direction: row; width: 100vw; height: 100dvh; position: relative; pointer-events: auto !important; 
+            display: flex; 
+            width: 100vw; 
+            height: 100dvh; 
+            position: relative; 
         }
         
         .sidebar { 
-            width: var(--sidebar-width); height: 100%; background-color: var(--br-paper); border-right: 1px solid var(--br-border); 
-            display: flex; flex-direction: column; z-index: 2000; flex-shrink: 0; 
-            transition-property: transform; transition-duration: 0.4s; transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1); 
-            box-shadow: 5px 0px 15px rgba(0, 0, 0, 0.02);
+            width: var(--sidebar-width); 
+            height: 100%; 
+            background-color: var(--br-paper); 
+            border-right: 1px solid var(--br-border); 
+            display: flex; 
+            flex-direction: column; 
+            z-index: 2000; 
+            flex-shrink: 0; 
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); 
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.02);
         }
 
         .sidebar-backdrop {
-            position: fixed; inset: 0px; background-color: rgba(0, 0, 0, 0.18);
-            z-index: 1500; opacity: 0; pointer-events: none;
-            transition-property: opacity; transition-duration: 0.3s; transition-timing-function: ease;
+            position: fixed; 
+            inset: 0; 
+            background-color: rgba(0, 0, 0, 0.18);
+            z-index: 1500; 
+            opacity: 0; 
+            pointer-events: none;
+            transition: opacity 0.3s ease;
             backdrop-filter: blur(3px); 
         }
         .sidebar-backdrop.active { opacity: 1; pointer-events: auto; }
 
         .sidebar-header { 
-            padding: 35px 30px; text-align: center; border-bottom: 1px solid var(--br-border); 
-            transition-property: background-color; transition-duration: 0.4s; transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+            padding: 35px 30px; 
+            text-align: center; 
+            border-bottom: 1px solid var(--br-border); 
+            transition: background-color 0.4s ease;
         }
         .sidebar-header:hover { background-color: var(--br-bg); }
 
-        /* [P0 Fix] 로고 CSS 완벽 교정 */
         .brand-logo { 
             font-family: 'Playfair Display', serif; 
             font-size: 32px; 
@@ -181,30 +200,52 @@
         }
         
         .student-profile { 
-            padding: 25px 30px; border-bottom: 1px solid var(--br-border); 
-            display: flex; flex-direction: column; gap: 15px; background-color: #FAFAFA; 
-            transition-property: background-color; transition-duration: 0.3s; transition-timing-function: ease; 
+            padding: 25px 30px; 
+            border-bottom: 1px solid var(--br-border); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            background-color: #FAFAFA; 
+            transition: background-color 0.3s ease; 
         }
         .student-profile.registered { background-color: var(--br-ai-soft); }
 
         .profile-top { display: flex; align-items: center; gap: 15px; }
         .profile-avatar { 
-            width: 52px; height: 52px; border-radius: 50%; background-color: var(--br-border); color: #FFFFFF; 
-            display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 22px; font-family: 'Nunito', sans-serif; 
-            transition-property: background-color, box-shadow, color; transition-duration: 0.4s; transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-            box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.05);
+            width: 52px; 
+            height: 52px; 
+            border-radius: 50%; 
+            background-color: var(--br-border); 
+            color: #FFFFFF; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-weight: 900; 
+            font-size: 22px; 
+            font-family: 'Nunito', sans-serif; 
+            transition: all 0.4s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
         }
-        .student-profile.registered .profile-avatar { background-color: var(--br-gold); box-shadow: 0px 8px 20px rgba(203, 174, 117, 0.3); }
+        .student-profile.registered .profile-avatar { background-color: var(--br-gold); box-shadow: 0 8px 20px rgba(203, 174, 117, 0.3); }
 
-        .profile-info { display: flex; flex-direction: column; overflow-x: hidden; overflow-y: hidden; }
-        .profile-name { font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; color: var(--br-charcoal); text-transform: uppercase; white-space: nowrap; overflow-x: hidden; overflow-y: hidden; text-overflow: ellipsis; }
+        .profile-info { display: flex; flex-direction: column; overflow: hidden; }
+        .profile-name { font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; color: var(--br-charcoal); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .profile-role { font-size: 11px; font-weight: 700; color: var(--br-muted); letter-spacing: 1.5px; text-transform: uppercase; }
 
         .badge-container { display: flex; flex-wrap: wrap; gap: 6px; min-height: 24px; }
         .badge { 
-            font-size: 11px; padding: 4px 10px; border-radius: 12px; background-color: #FFFFFF; border: 1px solid var(--br-border); 
-            color: var(--br-charcoal); font-weight: 800; display: flex; align-items: center; gap: 4px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.02); 
-            animation-name: popIn; animation-duration: 0.4s; animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            font-size: 11px; 
+            padding: 4px 10px; 
+            border-radius: 12px; 
+            background-color: #FFFFFF; 
+            border: 1px solid var(--br-border); 
+            color: var(--br-charcoal); 
+            font-weight: 800; 
+            display: flex; 
+            align-items: center; 
+            gap: 4px; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02); 
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
 
         .nav-list { flex: 1; overflow-y: auto; padding: 15px; scroll-behavior: smooth; }
@@ -214,14 +255,20 @@
         .nav-list::-webkit-scrollbar-thumb:hover { background-color: #D5D3CE; }
 
         .nav-item { 
-            padding: 18px 20px; margin-bottom: 10px; border-radius: 15px; background-color: #FAFAFA; display: flex; justify-content: space-between; align-items: center; 
-            transition-property: transform, background-color, border-color, box-shadow; transition-duration: 0.4s; transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+            padding: 18px 20px; 
+            margin-bottom: 10px; 
+            border-radius: 15px; 
+            background-color: #FAFAFA; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
             border: 1px solid transparent; 
         }
-        .nav-item:hover { background-color: #FFFFFF; border-color: var(--br-border); transform: translateY(-2px); box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.02); }
-        .nav-item.active { background-color: var(--br-ai-soft); border-left: 6px solid var(--br-green); border-top-color: transparent; border-right-color: transparent; border-bottom-color: transparent; box-shadow: 0px 10px 25px rgba(145, 211, 180, 0.12); }
+        .nav-item:hover { background-color: #FFFFFF; border-color: var(--br-border); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02); }
+        .nav-item.active { background-color: var(--br-ai-soft); border-left: 6px solid var(--br-green); border-color: transparent; box-shadow: 0 10px 25px rgba(145, 211, 180, 0.12); }
 
-        .nav-title { font-size: 14px; font-weight: 700; color: var(--br-charcoal); white-space: nowrap; overflow-x: hidden; overflow-y: hidden; text-overflow: ellipsis; max-width: 170px; }
+        .nav-title { font-size: 14px; font-weight: 700; color: var(--br-charcoal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
         .nav-item.active .nav-title { font-weight: 900; color: var(--br-green); }
         .nav-badge { font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 900; color: var(--br-muted); }
         .nav-item.active .nav-badge { color: var(--br-green); opacity: 1; }
@@ -229,51 +276,63 @@
         /* ======================================================================
            [5] WORKSPACE & TOP BAR
            ====================================================================== */
-        .workspace { flex: 1; display: flex; flex-direction: column; min-width: 0px; height: 100%; position: relative; overflow-x: hidden; overflow-y: hidden; pointer-events: auto !important; }
-        .top-bar { height: var(--topbar-height); padding: 0px 45px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); background-color: #FFFFFF; z-index: 10; }
+        .workspace { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100%; position: relative; overflow: hidden; }
+        .top-bar { height: var(--topbar-height); padding: 0 45px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); background-color: #FFFFFF; z-index: 10; }
         .top-bar-left { display: flex; align-items: center; gap: 20px; }
         .mobile-menu-btn { display: none; font-size: 28px; padding: 10px; color: var(--br-charcoal); z-index: 1500; }
 
         .unit-info { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 3px; text-transform: uppercase; }
         
         .page-info { 
-            font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 900; color: var(--br-charcoal); letter-spacing: -0.5px; margin-top: 2px; 
-            display: flex; align-items: center; gap: 12px;
+            font-family: 'Nunito', sans-serif; 
+            font-size: 24px; 
+            font-weight: 900; 
+            color: var(--br-charcoal); 
+            letter-spacing: -0.5px; 
+            margin-top: 2px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
         }
         
         .page-goal {
-            font-family: 'Pretendard', sans-serif; font-size: 15px; font-weight: 600; color: var(--br-muted); background-color: #F8F9FA; 
-            padding: 4px 14px; border-radius: 50px; border: 1px solid var(--br-border); letter-spacing: 0px;
+            font-family: 'Pretendard', sans-serif; 
+            font-size: 15px; 
+            font-weight: 600; 
+            color: var(--br-muted); 
+            background-color: #F8F9FA; 
+            padding: 4px 14px; 
+            border-radius: 50px; 
+            border: 1px solid var(--br-border); 
         }
 
         .sync-indicator-container {
             display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 50px; background-color: var(--br-bg); border: 1px solid var(--br-border); 
-            font-size: 12px; font-weight: 700; color: var(--br-muted); transition-property: background-color, color, border-color; transition-duration: 0.4s; transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+            font-size: 12px; font-weight: 700; color: var(--br-muted); transition: all 0.4s ease;
         }
         .sync-indicator-container.saving { color: var(--br-blue); background-color: #F0F4F8; border-color: #D9E4EC; }
         .sync-indicator-container.saved { color: var(--br-success); background-color: #F0FDF4; border-color: #DCFCE7; }
-        .sync-icon.spin { animation-name: spin; animation-duration: 1s; animation-timing-function: linear; animation-iteration-count: infinite; }
+        .sync-icon.spin { animation: spin 1s linear infinite; }
 
         .toast-error { 
             display: none; align-items: center; justify-content: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--br-error); 
             background-color: var(--br-error-light); padding: 8px 16px; border-radius: 50px; border: 1px solid var(--br-error-border); 
-            animation-name: popIn; animation-duration: 0.3s; animation-timing-function: ease-out; z-index: 5000; position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+            animation: popIn 0.3s ease-out; z-index: 5000; position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
         }
         .toast-error.show { display: flex; }
         
         /* ======================================================================
            [6] STAGE & DRAWING BOARD
            ====================================================================== */
-        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px; background-color: var(--br-bg); perspective: 1200px; overflow-x: hidden; overflow-y: hidden; }
+        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px; background-color: var(--br-bg); perspective: 1200px; overflow: hidden; }
 
         .drawing-board { 
             position: relative; display: inline-flex; border-radius: 20px; box-shadow: var(--shadow-premium); background-color: #FFFFFF; 
-            transition-property: opacity, transform; transition-duration: 0.4s; transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-            transform-origin: center; pointer-events: auto !important; max-width: 100%; max-height: 100%; overflow-x: hidden; overflow-y: hidden;
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); transform-origin: center; max-width: 100%; max-height: 100%; overflow: hidden;
         }
 
         .drawing-board::after {
-            content: ''; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
             pointer-events: none; z-index: 10000; mix-blend-mode: multiply;
         }
@@ -283,29 +342,29 @@
 
         #worksheet-img { 
             display: block; max-width: 100%; max-height: calc(100dvh - 250px); width: auto; height: auto; border-radius: 20px; 
-            pointer-events: none !important; opacity: 0; transition-property: opacity; transition-duration: 0.5s; transition-timing-function: ease; 
-            user-select: none; object-fit: contain; background-color: transparent;
+            pointer-events: none; opacity: 0; transition: opacity 0.5s ease; user-select: none; object-fit: contain; background-color: transparent;
         }
 
-        #draw-layer { position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 9999 !important; touch-action: none; border-radius: 20px; }
+        #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; touch-action: none; border-radius: 20px; }
 
         /* ======================================================================
            [7] BOTTOM CONTROLS
            ====================================================================== */
-        .bottom-dock { height: var(--dock-height); background-color: rgba(255, 255, 255, 0.98); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0px 50px var(--safe-bottom) 50px; z-index: 500; }
+        .bottom-dock { height: var(--dock-height); background-color: rgba(255, 255, 255, 0.98); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 50px var(--safe-bottom) 50px; z-index: 500; }
         .tool-group { display: flex; align-items: center; gap: 15px; background-color: #F8F9FA; padding: 12px 30px; border-radius: 100px; border: 1px solid var(--br-border); }
-        .color-preview { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #FFFFFF; box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1); transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+        
+        .color-preview { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #FFFFFF; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
         .color-preview:active { transform: scale(0.85); }
         
-        .btn-magic { font-size: 24px; padding: 5px; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); filter: grayscale(100%); opacity: 0.6; }
+        .btn-magic { font-size: 24px; padding: 5px; transition: all 0.3s ease; filter: grayscale(100%); opacity: 0.6; }
         .btn-magic:active { transform: scale(0.8); }
         .btn-magic.active { filter: grayscale(0%); opacity: 1; transform: scale(1.3); }
 
-        .brush-slider-wrapper { display: flex; align-items: center; gap: 10px; margin: 0px 10px; }
+        .brush-slider-wrapper { display: flex; align-items: center; gap: 10px; margin: 0 10px; }
         .brush-slider { width: 90px; accent-color: var(--br-green); height: 6px; border-radius: 10px; }
         .brush-preview-dot { width: 6px; height: 6px; background-color: var(--br-charcoal); border-radius: 50%; transition: all 0.2s ease; display: inline-block; }
 
-        .btn-tool { font-size: 18px; font-weight: 900; padding: 10px 14px; color: var(--br-charcoal); transition: all 0.4s ease; background-color: #FFFFFF; border: 1px solid var(--br-border); border-radius: 12px; }
+        .btn-tool { font-size: 18px; font-weight: 900; padding: 10px 14px; color: var(--br-charcoal); transition: all 0.2s ease; background-color: #FFFFFF; border: 1px solid var(--br-border); border-radius: 12px; }
         .btn-tool:active { transform: scale(0.85); }
 
         .btn-erase { font-size: 14px; font-weight: 900; padding: 12px 18px; border-radius: 14px; background-color: #FFFFFF; border: 1px solid var(--br-border); transition: all 0.2s ease; color: var(--br-charcoal); }
@@ -317,40 +376,40 @@
         .btn-reset-all:active { transform: scale(0.9); }
 
         .action-group { display: flex; gap: 15px; align-items: center; }
-        .btn-nav { width: 60px; height: 60px; border-radius: 18px; border: 1px solid var(--br-border); background-color: #FFFFFF; font-size: 24px; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); color: var(--br-charcoal); display: flex; justify-content: center; align-items: center; box-shadow: var(--shadow-button); }
+        .btn-nav { width: 60px; height: 60px; border-radius: 18px; border: 1px solid var(--br-border); background-color: #FFFFFF; font-size: 24px; transition: all 0.3s ease; color: var(--br-charcoal); display: flex; justify-content: center; align-items: center; box-shadow: var(--shadow-button); }
         .btn-nav:hover { background-color: #FAFAFA; border-color: var(--br-charcoal); }
         .btn-nav:active { transform: scale(0.85); }
 
-        .btn-main { height: 60px; padding: 0px 35px; border-radius: 18px; font-weight: 900; font-size: 15px; letter-spacing: 1px; display: flex; align-items: center; gap: 12px; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); text-transform: uppercase; font-family: 'Nunito', sans-serif; }
+        .btn-main { height: 60px; padding: 0 35px; border-radius: 18px; font-weight: 900; font-size: 15px; letter-spacing: 1px; display: flex; align-items: center; gap: 12px; transition: all 0.3s ease; text-transform: uppercase; }
         .btn-record { background-color: #FFFFFF; border: 1px solid var(--br-border); color: var(--br-charcoal); }
         .btn-record:hover { border-color: var(--br-error); color: var(--br-error); }
         .btn-record:active { transform: scale(0.95); }
-        .btn-record.recording { background-color: #FFF0F0; color: var(--br-error); border-color: var(--br-error); box-shadow: inset 0px 0px 0px 2px var(--br-error); }
+        .btn-record.recording { background-color: #FFF0F0; color: var(--br-error); border-color: var(--br-error); box-shadow: inset 0 0 0 2px var(--br-error); }
         .btn-record .dot { width: 12px; height: 12px; background-color: var(--br-error); border-radius: 50%; opacity: 0; transition: opacity 0.3s ease; }
         .btn-record.recording .dot { opacity: 1; animation: blink 1s infinite; }
 
-        .btn-submit { background-color: var(--br-charcoal); color: #FFFFFF; box-shadow: 0px 10px 30px rgba(54, 52, 49, 0.2); }
-        .btn-submit:hover { background-color: var(--br-gold); transform: translateY(-3px); box-shadow: 0px 15px 35px rgba(203, 174, 117, 0.4); }
-        .btn-submit:active { transform: scale(0.9) translateY(0px); }
+        .btn-submit { background-color: var(--br-charcoal); color: #FFFFFF; box-shadow: 0 10px 30px rgba(54, 52, 49, 0.2); }
+        .btn-submit:hover { background-color: var(--br-gold); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(203, 174, 117, 0.4); }
+        .btn-submit:active { transform: scale(0.9) translateY(0); }
 
         /* ======================================================================
            [8] AI RESPONSIVE SIDE PANEL
            ====================================================================== */
-        .ai-panel { position: absolute; top: 0px; right: -480px; width: 480px; height: 100%; background-color: #FFFFFF; box-shadow: -25px 0px 60px rgba(0, 0, 0, 0.12); z-index: 10001; transition: right 0.6s cubic-bezier(0.19, 1, 0.22, 1); display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
-        .ai-panel.open { right: 0px; }
+        .ai-panel { position: absolute; top: 0; right: -480px; width: 480px; height: 100%; background-color: #FFFFFF; box-shadow: -25px 0 60px rgba(0,0,0,0.12); z-index: 10001; transition: right 0.6s cubic-bezier(0.19, 1, 0.22, 1); display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
+        .ai-panel.open { right: 0; }
         .ai-header { padding: 30px 35px; background-color: var(--br-ai-soft); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); }
         .ai-title { font-family: 'Jua', sans-serif; font-size: 24px; color: var(--br-green); display: flex; align-items: center; gap: 12px; }
         .btn-close-ai { font-size: 34px; color: var(--br-muted); line-height: 1; transition: all 0.2s ease; }
         .btn-close-ai:hover { color: var(--br-error); transform: rotate(90deg); }
         
         .ai-content { padding: 30px 35px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; }
-        .chat-bubble { max-width: 90%; padding: 20px 25px; border-radius: 22px; font-size: 16px; line-height: 1.7; font-weight: 500; word-break: keep-all; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .chat-bubble { max-width: 90%; padding: 20px 25px; border-radius: 22px; font-size: 16px; line-height: 1.7; font-weight: 500; word-break: keep-all; animation: popIn 0.5s ease; }
         .chat-bubble.ai { align-self: flex-start; background-color: #F8F9FA; border-bottom-left-radius: 4px; border: 1px solid var(--br-border); color: var(--br-text); }
-        .chat-bubble.user { align-self: flex-end; background-color: var(--br-green); color: #FFFFFF; border-bottom-right-radius: 4px; box-shadow: 0px 8px 20px rgba(145, 211, 180, 0.3); }
+        .chat-bubble.user { align-self: flex-end; background-color: var(--br-green); color: #FFFFFF; border-bottom-right-radius: 4px; box-shadow: 0 8px 20px rgba(145, 211, 180, 0.3); }
         
-        .ai-loading-container { text-align: center; padding: 50px 0px; }
+        .ai-loading-container { text-align: center; padding: 50px 0; }
         .ai-loading-icon { font-size: 36px; color: var(--br-green); margin-bottom: 15px; }
-        .ai-loading-text { font-weight: 900; color: var(--br-muted); font-family: 'Nunito', sans-serif; font-size: 14px; }
+        .ai-loading-text { font-weight: 900; color: var(--br-muted); font-size: 14px; }
 
         .analytics-card { background-color: #FAFAFA; border: 1px solid var(--br-border); border-radius: 24px; padding: 25px; align-self: stretch; margin-bottom: 10px; }
         .analytics-title { color: var(--br-gold); font-size: 14px; margin-bottom: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px dashed var(--br-border); padding-bottom: 12px; }
@@ -360,7 +419,7 @@
         .bar-fill { height: 100%; transition: width 1.2s ease; border-radius: 12px; }
 
         .chat-footer { padding: 25px 35px; border-top: 1px solid var(--br-border); display: flex; flex-direction: column; gap: 15px; background-color: #FFFFFF; }
-        .btn-chat-action { width: 100%; height: 60px; background-color: var(--br-charcoal); color: #FFFFFF; border-radius: 18px; font-weight: 900; transition: all 0.3s ease; font-size: 16px; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px; font-family: 'Nunito', sans-serif; box-shadow: 0px 10px 20px rgba(54, 52, 49, 0.2); }
+        .btn-chat-action { width: 100%; height: 60px; background-color: var(--br-charcoal); color: #FFFFFF; border-radius: 18px; font-weight: 900; transition: all 0.3s ease; font-size: 16px; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 10px 20px rgba(54, 52, 49, 0.2); }
         .btn-chat-action:hover { background-color: var(--br-gold); transform: translateY(-2px); }
         .btn-chat-action:active { transform: scale(0.95); }
         .btn-chat-next { width: 100%; text-align: center; font-size: 14px; font-weight: bold; color: var(--br-blue); margin-top: 15px; transition: color 0.3s ease; }
@@ -369,52 +428,52 @@
         /* ======================================================================
            [9] DIALOG MODALS & CERTIFICATES
            ====================================================================== */
-        .bridge-modal-overlay { position: fixed; top: 0px; left: 0px; width: 100vw; height: 100dvh; background-color: rgba(42, 40, 37, 0.6); z-index: 40000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(8px); }
+        .bridge-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background-color: rgba(42, 40, 37, 0.6); z-index: 40000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(8px); }
         .bridge-modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .bridge-modal-box { background-color: var(--br-paper); width: 420px; max-width: 90%; border-radius: 24px; padding: 40px 35px 35px 35px; text-align: center; box-shadow: var(--shadow-premium); transform: scale(0.9) translateY(20px); transition: transform 0.4s ease; }
-        .bridge-modal-overlay.active .bridge-modal-box { transform: scale(1) translateY(0px); }
+        .bridge-modal-box { background-color: var(--br-paper); width: 420px; max-width: 90%; border-radius: 24px; padding: 40px 35px 35px; text-align: center; box-shadow: var(--shadow-premium); transform: scale(0.9) translateY(20px); transition: transform 0.4s ease; }
+        .bridge-modal-overlay.active .bridge-modal-box { transform: scale(1) translateY(0); }
         .bridge-modal-icon { font-size: 45px; color: var(--br-gold); margin-bottom: 20px; display: block; }
         .bridge-modal-icon.warning { color: var(--br-error); }
         .bridge-modal-title { font-size: 26px; font-weight: 900; color: var(--br-charcoal); margin-bottom: 12px; }
         .bridge-modal-text { font-size: 15px; color: var(--br-muted); line-height: 1.6; margin-bottom: 30px; word-break: keep-all; }
         .bridge-modal-actions { display: flex; gap: 12px; justify-content: center; }
-        .bridge-modal-btn { flex: 1; padding: 15px 0px; border-radius: 14px; font-weight: 900; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; }
+        .bridge-modal-btn { flex: 1; padding: 15px 0; border-radius: 14px; font-weight: 900; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; }
         .bridge-modal-btn:active { transform: scale(0.9); }
         .bridge-modal-cancel { background-color: #F0EFEB; color: var(--br-charcoal); border: 1px solid transparent; }
         .bridge-modal-cancel:hover { background-color: #E5E4E0; }
-        .bridge-modal-confirm { background-color: var(--br-error); color: #FFFFFF; border: 1px solid transparent; box-shadow: 0px 8px 15px rgba(231, 76, 60, 0.2); }
+        .bridge-modal-confirm { background-color: var(--br-error); color: #FFFFFF; border: 1px solid transparent; box-shadow: 0 8px 15px rgba(231,76,60,0.2); }
         .bridge-modal-confirm:hover { background-color: #C0392B; }
-        .bridge-modal-confirm.neutral { background-color: var(--br-charcoal); box-shadow: 0px 8px 15px rgba(54, 52, 49, 0.2); }
+        .bridge-modal-confirm.neutral { background-color: var(--br-charcoal); box-shadow: 0 8px 15px rgba(54,52,49,0.2); }
         .bridge-modal-confirm.neutral:hover { background-color: var(--br-gold); }
 
-        .rgb-modal { position: absolute; bottom: 130px; left: 50px; background-color: #FFFFFF; border-radius: 25px; padding: 25px; box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.15); z-index: 5000; opacity: 0; pointer-events: none; transform: translateY(20px); transition: all 0.3s ease; }
-        .rgb-modal.active { opacity: 1; pointer-events: auto; transform: translateY(0px); }
+        .rgb-modal { position: absolute; bottom: 130px; left: 50px; background-color: #FFFFFF; border-radius: 25px; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); z-index: 5000; opacity: 0; pointer-events: none; transform: translateY(20px); transition: all 0.3s ease; }
+        .rgb-modal.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
         .rgb-modal-close { text-align: center; font-size: 10px; margin-top: 12px; font-weight: 900; color: var(--br-muted); transition: color 0.2s ease; }
         .rgb-modal-close:hover { color: var(--br-charcoal); }
 
-        .cert-modal-overlay { position: fixed; top: 0px; right: 0px; bottom: 0px; left: 0px; width: 100vw; height: 100dvh; background-color: rgba(0, 0, 0, 0.85); z-index: 30000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(15px); }
+        .cert-modal-overlay { position: fixed; top: 0; right: 0; bottom: 0; left: 0; width: 100vw; height: 100dvh; background-color: rgba(0,0,0,0.85); z-index: 30000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(15px); }
         .cert-modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .cert-card { background-color: #FFFFFF; width: 850px; max-width: 90%; border-radius: 35px; padding: 60px; text-align: center; position: relative; box-shadow: 0px 40px 80px rgba(0, 0, 0, 0.4); transform: scale(0.85); transition: transform 0.5s ease; }
+        .cert-card { background-color: #FFFFFF; width: 850px; max-width: 90%; border-radius: 35px; padding: 60px; text-align: center; position: relative; box-shadow: 0 40px 80px rgba(0,0,0,0.4); transform: scale(0.85); transition: transform 0.5s ease; }
         .cert-modal-overlay.active .cert-card { transform: scale(1); }
         .cert-border { border: 10px solid var(--br-gold); border-radius: 25px; padding: 50px; position: relative; }
         .cert-title { font-size: 50px; color: var(--br-charcoal); font-weight: 900; margin-bottom: 15px; }
         .cert-subtitle { font-size: 18px; color: var(--br-muted); font-weight: 900; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 35px; }
         .cert-name { font-size: 40px; color: var(--br-green); font-weight: 900; margin-bottom: 25px; text-decoration: underline; text-decoration-color: var(--br-gold); }
-        .cert-img-container { width: 100%; max-width: 450px; height: 280px; margin: 0px auto 35px auto; border-radius: 18px; border: 3px dashed var(--br-border); overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: var(--br-bg); }
+        .cert-img-container { width: 100%; max-width: 450px; height: 280px; margin: 0 auto 35px auto; border-radius: 18px; border: 3px dashed var(--br-border); overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: var(--br-bg); }
         .cert-img-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .cert-msg { font-size: 18px; color: var(--br-text); line-height: 1.6; font-weight: 600; margin-bottom: 35px; font-style: italic; }
-        .btn-print { background-color: var(--br-charcoal); color: #FFFFFF; padding: 18px 45px; font-size: 18px; font-weight: 900; border-radius: 100px; display: inline-flex; align-items: center; gap: 12px; box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.15); transition: all 0.5s ease; }
-        .btn-print:hover { transform: translateY(-4px); box-shadow: 0px 20px 35px rgba(203, 174, 117, 0.3); background-color: var(--br-gold); }
+        .btn-print { background-color: var(--br-charcoal); color: #FFFFFF; padding: 18px 45px; font-size: 18px; font-weight: 900; border-radius: 100px; display: inline-flex; align-items: center; gap: 12px; box-shadow: 0 12px 25px rgba(0,0,0,0.15); transition: all 0.3s ease; }
+        .btn-print:hover { transform: translateY(-4px); box-shadow: 0 20px 35px rgba(203,174,117,0.3); background-color: var(--br-gold); }
         .btn-print:active { transform: scale(0.95); }
         .cert-close { position: absolute; top: 25px; right: 35px; font-size: 35px; color: var(--br-muted); font-weight: 900; transition: all 0.2s ease; }
         .cert-close:hover { color: var(--br-error); transform: rotate(90deg); }
 
-        @keyframes popIn { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0px); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* ======================================================================
-           [10] MOBILE DEVICE RESPONSIVE CONSTRAINTS
+           [10] MOBILE RESPONSIVE
            ====================================================================== */
         @media (pointer: coarse) {
             .btn-nav, .btn-main, .btn-tool, .btn-erase, .btn-magic, .color-preview, .btn-reset-all { min-width: 44px; min-height: 44px; }
@@ -422,30 +481,30 @@
 
         @media (min-width: 801px) and (max-width: 1180px) {
             .mobile-menu-btn { display: block; }
-            .sidebar { position: fixed; top: 0px; left: 0px; transform: translateX(-100%); box-shadow: none; }
-            .sidebar.open { transform: translateX(0px); box-shadow: 20px 0px 50px rgba(0, 0, 0, 0.18); }
+            .sidebar { position: fixed; inset: 0 auto 0 0; transform: translateX(-100%); box-shadow: none; }
+            .sidebar.open { transform: translateX(0); box-shadow: 20px 0 50px rgba(0,0,0,0.18); }
             .workspace { width: 100%; }
-            .top-bar { height: 76px; padding: 0px 24px; }
+            .top-bar { height: 76px; padding: 0 24px; }
             .stage-wrapper { padding: 20px; }
             .bottom-dock { height: 128px; padding: 14px 24px; gap: 14px; }
             .tool-group, .action-group { flex-wrap: wrap; justify-content: center; }
-            .btn-main { padding: 0px 22px; }
+            .btn-main { padding: 0 22px; }
         }
 
         @media (max-width: 800px) {
             .mobile-menu-btn { display: block; }
-            .sidebar { position: fixed; top: 0px; left: 0px; transform: translateX(-100%); box-shadow: none; }
-            .sidebar.open { transform: translateX(0px); box-shadow: 20px 0px 50px rgba(0, 0, 0, 0.2); }
+            .sidebar { position: fixed; inset: 0 auto 0 0; transform: translateX(-100%); box-shadow: none; }
+            .sidebar.open { transform: translateX(0); box-shadow: 20px 0 50px rgba(0,0,0,0.2); }
             .workspace { width: 100%; }
             .stage-wrapper { padding: 12px; }
-            #worksheet-img { min-width: 0px; width: 100%; max-width: 100%; max-height: calc(100dvh - 240px); }
-            .bottom-dock { height: calc(140px + var(--safe-bottom)); flex-direction: column; justify-content: center; padding: 10px 20px calc(10px + var(--safe-bottom)) 20px; gap: 12px; border-radius: 25px 25px 0px 0px; }
+            #worksheet-img { min-width: 0; width: 100%; max-height: calc(100dvh - 240px); }
+            .bottom-dock { height: calc(140px + var(--safe-bottom)); flex-direction: column; justify-content: center; padding: 10px 20px calc(10px + var(--safe-bottom)) 20px; gap: 12px; border-radius: 25px 25px 0 0; }
             .tool-group { width: 100%; justify-content: center; padding: 8px 20px; }
             .action-group { width: 100%; justify-content: space-between; }
             .btn-nav, .btn-main { height: 50px; font-size: 13px; }
-            .ai-panel { width: 100%; right: -100%; border-left: none; }
+            .ai-panel { width: 100%; right: -100%; border-left: 0; }
             .rgb-modal { left: 50%; transform: translateX(-50%) translateY(20px); bottom: calc(160px + var(--safe-bottom)); }
-            .rgb-modal.active { transform: translateX(-50%) translateY(0px); }
+            .rgb-modal.active { transform: translateX(-50%) translateY(0); }
             .cert-card { padding: 30px 20px; }
             .cert-border { padding: 20px; }
             .cert-title { font-size: 30px; }
@@ -453,11 +512,11 @@
         }
 
         @media (max-width: 560px) {
-            .top-bar { height: 68px; padding: 0px 14px; }
+            .top-bar { height: 68px; padding: 0 14px; }
             .unit-info { font-size: 10px; letter-spacing: 1.8px; }
             .page-info { font-size: 18px; flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 4px; }
             .page-goal { font-size: 12px; padding: 2px 8px; }
-            .ai-header, .ai-content, .chat-footer { padding: 0px 20px; }
+            .ai-header, .ai-content, .chat-footer { padding: 0 20px; }
             .chat-bubble { max-width: 96%; font-size: 15px; }
         }
 
@@ -467,7 +526,7 @@
             .btn-magic { font-size: 20px; }
             .brush-slider { width: 72px; }
             #worksheet-img { max-height: calc(100dvh - 220px); }
-            .btn-main { height: 48px; padding: 0px 14px; flex: 1; justify-content: center; }
+            .btn-main { height: 48px; padding: 0 14px; flex: 1; justify-content: center; }
             .btn-nav { width: 48px; height: 48px; }
         }
     </style>
@@ -481,7 +540,7 @@
         
         <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="UIEngine.closeSidebar()"></div>
 
-        <nav class="sidebar" id="sidebar">
+        <nav class="sidebar" id="sidebar" aria-label="Curriculum Navigation">
             <header class="sidebar-header" onclick="location.href='dashboard.html'">
                 <div class="brand-logo">Bridge<span>Academy</span></div>
             </header>
@@ -531,7 +590,7 @@
             </main>
 
             <footer class="bottom-dock">
-                <div class="tool-group" role="group">
+                <div class="tool-group" role="group" aria-label="Drawing Tools">
                     <div class="color-preview interactive-hover" id="btn-color" onclick="RGBRingEngine.toggle()"></div>
                     <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;" aria-hidden="true" tabindex="-1">
                     
@@ -627,21 +686,142 @@
             }
         };
 
+        firebase.initializeApp(CONFIG.FIREBASE_CONFIG);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const Logger = {
+            log(msg, data = "") { 
+                console.log(`[BRIDGE OK] ${msg}`, data); 
+            },
+            warn(msg, data = "") { 
+                console.warn(`[BRIDGE WARN] ${msg}`, data); 
+            },
+            error(msg, err) { 
+                console.error(`[BRIDGE FATAL] ${msg}`, err); 
+                const toast = document.getElementById('error-toast');
+                if (toast) {
+                    const toastMsg = document.getElementById('error-toast-msg');
+                    if (toastMsg) {
+                        toastMsg.innerText = msg;
+                    }
+                    toast.classList.add('show');
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                    }, 5000);
+                }
+            }
+        };
+
+        const CustomModalEngine = {
+            overlay: null, titleEl: null, textEl: null, iconEl: null, actionsEl: null,
+            init() {
+                this.overlay = document.getElementById('custom-modal-overlay');
+                this.titleEl = document.getElementById('custom-modal-title');
+                this.textEl = document.getElementById('custom-modal-text');
+                this.iconEl = document.getElementById('custom-modal-icon');
+                this.actionsEl = document.getElementById('custom-modal-actions');
+            },
+            alert(title, message) {
+                if (!this.overlay) {
+                    this.init();
+                }
+                this.titleEl.innerText = title;
+                this.textEl.innerText = message;
+                this.iconEl.className = "fa-solid fa-circle-exclamation bridge-modal-icon warning";
+                this.actionsEl.innerHTML = ''; 
+                const btnOk = document.createElement('button');
+                btnOk.className = "bridge-modal-btn bridge-modal-confirm neutral interactive-hover";
+                btnOk.innerText = "OK";
+                btnOk.onclick = () => { this.close(); };
+                this.actionsEl.appendChild(btnOk);
+                this.overlay.classList.add('active');
+            },
+            confirm(title, message, onConfirm) {
+                if (!this.overlay) {
+                    this.init();
+                }
+                this.titleEl.innerText = title;
+                this.textEl.innerText = message;
+                this.iconEl.className = "fa-solid fa-trash-can bridge-modal-icon warning";
+                this.actionsEl.innerHTML = '';
+                const btnCancel = document.createElement('button');
+                btnCancel.className = "bridge-modal-btn bridge-modal-cancel interactive-hover";
+                btnCancel.innerText = "Keep It";
+                btnCancel.onclick = () => { this.close(); };
+                const btnConfirm = document.createElement('button');
+                btnConfirm.className = "bridge-modal-btn bridge-modal-confirm interactive-hover";
+                btnConfirm.innerText = "Yes, Clear";
+                btnConfirm.onclick = () => { 
+                    this.close(); 
+                    if (typeof onConfirm === 'function') {
+                        onConfirm();
+                    } 
+                };
+                this.actionsEl.appendChild(btnCancel);
+                this.actionsEl.appendChild(btnConfirm);
+                this.overlay.classList.add('active');
+            },
+            close() {
+                if (this.overlay) {
+                    this.overlay.classList.remove('active');
+                }
+            }
+        };
+
+        const CursorEngine = {
+            dot: null, ring: null, posX: 0, posY: 0, mouseX: 0, mouseY: 0, initialized: false,
+            init() {
+                if (window.matchMedia("(pointer: coarse)").matches) {
+                    return;
+                }
+                this.dot = document.getElementById('cursor-dot');
+                this.ring = document.getElementById('cursor-ring');
+                if (!this.dot || !this.ring) {
+                    return;
+                }
+                this.initialized = true;
+
+                document.addEventListener('mousemove', (e) => {
+                    this.mouseX = e.clientX;
+                    this.mouseY = e.clientY;
+                    this.dot.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
+                    this.ring.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
+
+                    const isDrawingSurface = Boolean(e.target.closest('.stage-wrapper, .drawing-board, #draw-layer'));
+                    if (isDrawingSurface) {
+                        this.dot.classList.add('hidden');
+                        this.ring.classList.add('hidden');
+                    } else {
+                        this.dot.classList.remove('hidden');
+                        this.ring.classList.remove('hidden');
+                    }
+                });
+
+                document.addEventListener('mouseover', (e) => {
+                    if (e.target.closest('.stage-wrapper, .drawing-board, #draw-layer')) {
+                        return;
+                    }
+                    if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
+                        this.dot.classList.add('hovered');
+                        this.ring.classList.add('hovered');
+                    }
+                });
+
+                document.addEventListener('mouseout', (e) => {
+                    if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
+                        this.dot.classList.remove('hovered');
+                        this.ring.classList.remove('hovered');
+                    }
+                });
+            }
+        };
+
         const STATE = {
-            uid: null, 
-            studentEmail: "", 
-            studentName: "", 
-            isNameRegistered: false,
+            uid: null, studentEmail: "", studentName: "", isNameRegistered: false,
             unitId: new URLSearchParams(window.location.search).get('id') || "A-1",
-            currentPage: 1, 
-            isRecording: false, 
-            lastTranscript: "", 
-            sttConfidence: 0,
-            historyStack: [], 
-            historyIndex: -1, 
-            chatHistory: [], 
-            badges: [], 
-            brushType: 'normal'
+            currentPage: 1, isRecording: false, lastTranscript: "", sttConfidence: 0,
+            historyStack: [], historyIndex: -1, chatHistory: [], badges: [], brushType: 'normal'
         };
 
         const PAGE_INTELLIGENCE = {
@@ -749,121 +929,26 @@
             }
         };
 
-        const Logger = {
-            log(msg, data = "") { 
-                console.log(`[BRIDGE OK] ${msg}`, data); 
-            },
-            warn(msg, data = "") { 
-                console.warn(`[BRIDGE WARN] ${msg}`, data); 
-            },
-            error(msg, err) { 
-                console.error(`[BRIDGE FATAL] ${msg}`, err); 
-                const toast = document.getElementById('error-toast');
-                if (toast) {
-                    const toastMsg = document.getElementById('error-toast-msg');
-                    if (toastMsg) {
-                        toastMsg.innerText = msg;
-                    }
-                    toast.classList.add('show');
-                    setTimeout(() => {
-                        toast.classList.remove('show');
-                    }, 5000);
-                }
-            }
-        };
-
-        const CustomModalEngine = {
-            overlay: null, titleEl: null, textEl: null, iconEl: null, actionsEl: null,
-            init() {
-                this.overlay = document.getElementById('custom-modal-overlay');
-                this.titleEl = document.getElementById('custom-modal-title');
-                this.textEl = document.getElementById('custom-modal-text');
-                this.iconEl = document.getElementById('custom-modal-icon');
-                this.actionsEl = document.getElementById('custom-modal-actions');
-            },
-            alert(title, message) {
-                if (!this.overlay) this.init();
-                this.titleEl.innerText = title;
-                this.textEl.innerText = message;
-                this.iconEl.className = "fa-solid fa-circle-exclamation bridge-modal-icon warning";
-                this.actionsEl.innerHTML = ''; 
-                const btnOk = document.createElement('button');
-                btnOk.className = "bridge-modal-btn bridge-modal-confirm neutral interactive-hover";
-                btnOk.innerText = "OK";
-                btnOk.onclick = () => { this.close(); };
-                this.actionsEl.appendChild(btnOk);
-                this.overlay.classList.add('active');
-            },
-            confirm(title, message, onConfirm) {
-                if (!this.overlay) this.init();
-                this.titleEl.innerText = title;
-                this.textEl.innerText = message;
-                this.iconEl.className = "fa-solid fa-trash-can bridge-modal-icon warning";
-                this.actionsEl.innerHTML = '';
-                const btnCancel = document.createElement('button');
-                btnCancel.className = "bridge-modal-btn bridge-modal-cancel interactive-hover";
-                btnCancel.innerText = "Keep It";
-                btnCancel.onclick = () => { this.close(); };
-                const btnConfirm = document.createElement('button');
-                btnConfirm.className = "bridge-modal-btn bridge-modal-confirm interactive-hover";
-                btnConfirm.innerText = "Yes, Clear";
-                btnConfirm.onclick = () => { this.close(); if (typeof onConfirm === 'function') onConfirm(); };
-                this.actionsEl.appendChild(btnCancel);
-                this.actionsEl.appendChild(btnConfirm);
-                this.overlay.classList.add('active');
-            },
-            close() {
-                if (this.overlay) this.overlay.classList.remove('active');
-            }
-        };
-
-        const CursorEngine = {
-            dot: null, ring: null, posX: 0, posY: 0, mouseX: 0, mouseY: 0, initialized: false,
-            init() {
-                if (window.matchMedia("(pointer: coarse)").matches) return;
-                this.dot = document.getElementById('cursor-dot');
-                this.ring = document.getElementById('cursor-ring');
-                if (!this.dot || !this.ring) return;
-                this.initialized = true;
-
-                document.addEventListener('mousemove', (e) => {
-                    this.mouseX = e.clientX;
-                    this.mouseY = e.clientY;
-                    this.dot.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
-                    this.ring.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
-
-                    const isDrawingSurface = Boolean(e.target.closest('.stage-wrapper, .drawing-board, #draw-layer'));
-                    if (isDrawingSurface) {
-                        this.dot.classList.add('hidden');
-                        this.ring.classList.add('hidden');
-                    } else {
-                        this.dot.classList.remove('hidden');
-                        this.ring.classList.remove('hidden');
-                    }
-                });
-
-                document.addEventListener('mouseover', (e) => {
-                    if (e.target.closest('.stage-wrapper, .drawing-board, #draw-layer')) return;
-                    if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
-                        this.dot.classList.add('hovered');
-                        this.ring.classList.add('hovered');
-                    }
-                });
-
-                document.addEventListener('mouseout', (e) => {
-                    if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
-                        this.dot.classList.remove('hovered');
-                        this.ring.classList.remove('hovered');
-                    }
-                });
-            }
-        };
+        if (!PAGE_INTELLIGENCE[STATE.unitId]) {
+            Logger.warn(`Invalid Unit ID constraint detected: ${STATE.unitId}. Forcing fallback to A-1.`);
+            STATE.unitId = "A-1";
+        }
+        
+        const rawPageParam = new URLSearchParams(window.location.search).get('page');
+        if (rawPageParam) {
+            STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, Number(rawPageParam));
+        } else {
+            STATE.currentPage = CurriculumEngine.first(STATE.unitId);
+        }
 
         const BadgeEngine = {
             add(label) {
-                if (STATE.badges.includes(label)) return;
+                if (STATE.badges.includes(label)) {
+                    return;
+                }
                 STATE.badges.push(label);
                 StorageEngine.save();
+                
                 const box = document.getElementById('badge-container');
                 if (box) {
                     const badge = document.createElement('div');
@@ -871,11 +956,16 @@
                     badge.textContent = label;
                     box.appendChild(badge);
                 }
-                if (window.confetti) confetti({ particleCount: 80, spread: 70, origin: { y: 0.8 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
+                
+                if (window.confetti) {
+                    confetti({ particleCount: 80, spread: 70, origin: { y: 0.8 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
+                }
             },
             renderAll() {
                 const box = document.getElementById('badge-container');
-                if (!box) return;
+                if (!box) {
+                    return;
+                }
                 box.innerHTML = '';
                 STATE.badges.forEach((label) => {
                     const badge = document.createElement('div');
@@ -894,22 +984,32 @@
                 this.text = document.getElementById('sync-text');
             },
             resetInlineStyle() {
-                if (!this.container) return;
+                if (!this.container) {
+                    return;
+                }
                 this.container.style.color = "";
                 this.container.style.backgroundColor = "";
                 this.container.style.borderColor = "";
             },
             setSaving() {
-                if (!this.container) this.init();
-                if (!this.container) return;
+                if (!this.container) {
+                    this.init();
+                }
+                if (!this.container) {
+                    return;
+                }
                 this.resetInlineStyle();
                 this.container.className = "sync-indicator-container saving";
                 this.icon.className = "fa-solid fa-spinner sync-icon spin";
                 this.text.innerText = "Saving...";
             },
             setSaved() {
-                if (!this.container) this.init();
-                if (!this.container) return;
+                if (!this.container) {
+                    this.init();
+                }
+                if (!this.container) {
+                    return;
+                }
                 this.resetInlineStyle();
                 this.container.className = "sync-indicator-container saved";
                 this.icon.className = "fa-solid fa-cloud-check sync-icon";
@@ -923,8 +1023,12 @@
                 }, 3000);
             },
             setError() {
-                if (!this.container) this.init();
-                if (!this.container) return;
+                if (!this.container) {
+                    this.init();
+                }
+                if (!this.container) {
+                    return;
+                }
                 this.container.className = "sync-indicator-container";
                 this.container.style.color = "var(--br-error)";
                 this.container.style.backgroundColor = "var(--br-error-light)";
@@ -961,14 +1065,22 @@
                 });
 
                 const tryLoad = (index) => {
-                    if (token !== this.requestToken) return;
+                    if (token !== this.requestToken) {
+                        return;
+                    }
 
                     if (index >= possiblePaths.length) {
                         Logger.error(`Worksheet missing. 404 on ${unitId} Page ${pageNum}`);
-                        if (imgElement) imgElement.style.opacity = '1';
-                        if (boardElement) boardElement.classList.add('error-state');
+                        if (imgElement) {
+                            imgElement.style.opacity = '1';
+                        }
+                        if (boardElement) {
+                            boardElement.classList.add('error-state');
+                        }
                         setTimeout(() => {
-                            if (token !== this.requestToken) return;
+                            if (token !== this.requestToken) {
+                                return;
+                            }
                             CanvasEngine.resizeCanvas();
                             StorageEngine.loadCanvasLocal();
                         }, 50);
@@ -979,7 +1091,9 @@
                     const tempImg = new Image();
                     
                     let loadTimeout = setTimeout(() => {
-                        if (token !== this.requestToken) return;
+                        if (token !== this.requestToken) {
+                            return;
+                        }
                         Logger.warn("Image Load Timeout. Forcing fallback.");
                         tempImg.src = "";
                         tryLoad(index + 1);
@@ -988,18 +1102,26 @@
                     tempImg.crossOrigin = "anonymous";
                     tempImg.onload = () => {
                         clearTimeout(loadTimeout);
-                        if (token !== this.requestToken) return;
+                        if (token !== this.requestToken) {
+                            return;
+                        }
                         Logger.log("Mounted:", testUrl);
-                        if (boardElement) boardElement.classList.remove('error-state');
+                        if (boardElement) {
+                            boardElement.classList.remove('error-state');
+                        }
                         
                         if (imgElement) {
                             imgElement.crossOrigin = "anonymous";
                             imgElement.onload = () => {
-                                if (token !== this.requestToken) return;
+                                if (token !== this.requestToken) {
+                                    return;
+                                }
                                 imgElement.style.opacity = '1';
                                 requestAnimationFrame(() => {
                                     requestAnimationFrame(() => {
-                                        if (token !== this.requestToken) return;
+                                        if (token !== this.requestToken) {
+                                            return;
+                                        }
                                         CanvasEngine.resizeCanvas();
                                         StorageEngine.loadCanvasLocal();
                                     });
@@ -1022,15 +1144,23 @@
         const StorageEngine = {
             cloudSaveTimer: null,
             load() {
-                if (!STATE.uid) return;
+                if (!STATE.uid) {
+                    return;
+                }
                 try {
                     const rawStorage = localStorage.getItem(`br_data_${STATE.uid}_${STATE.unitId}`);
                     let s = {};
-                    if (rawStorage) s = JSON.parse(rawStorage);
-                    if (s.name) STATE.studentName = s.name; 
-                    if (s.badges) STATE.badges = s.badges;
+                    if (rawStorage) {
+                        s = JSON.parse(rawStorage);
+                    }
+                    if (s.name) {
+                        STATE.studentName = s.name; 
+                    }
+                    if (s.badges) {
+                        STATE.badges = s.badges;
+                    }
                     
-                    const urlPage = Number(new URLSearchParams(window.location.search).get('page'));
+                    const urlPage = Number(newSearchParams(window.location.search).get('page'));
                     if (urlPage) {
                         if (CurriculumEngine.pages(STATE.unitId).includes(urlPage)) {
                             STATE.currentPage = urlPage;
@@ -1038,10 +1168,14 @@
                     } else if (s.page) {
                         STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, s.page);
                     }
-                } catch (e) { Logger.warn("Metadata local cache failure", e); }
+                } catch (e) { 
+                    Logger.warn("Metadata local cache failure", e); 
+                }
             },
             async save() {
-                if (!STATE.uid) return;
+                if (!STATE.uid) {
+                    return;
+                }
                 try {
                     const data = { name: STATE.studentName, page: STATE.currentPage, badges: STATE.badges || [] };
                     localStorage.setItem(`br_data_${STATE.uid}_${STATE.unitId}`, JSON.stringify(data));
@@ -1052,10 +1186,14 @@
                             email: STATE.studentEmail, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
                         }, { merge: true });
                     }
-                } catch (error) { Logger.error("Core transaction metadata sync failed.", error); }
+                } catch (error) { 
+                    Logger.error("Core transaction metadata sync failed.", error); 
+                }
             },
             createCanvasSnapshot(compressForDatabase = false) {
-                if (!CanvasEngine.cvs || !STATE.uid) return null;
+                if (!CanvasEngine.cvs || !STATE.uid) {
+                    return null;
+                }
                 let canvasData = null;
                 
                 if (compressForDatabase) {
@@ -1087,12 +1225,18 @@
             scheduleCloudSave() {
                 SyncIndicatorEngine.setSaving();
                 const snapshot = this.createCanvasSnapshot(true);
-                if (this.cloudSaveTimer) clearTimeout(this.cloudSaveTimer);
-                this.cloudSaveTimer = setTimeout(() => { this.executeCloudSave(snapshot); }, 1500); 
+                if (this.cloudSaveTimer) {
+                    clearTimeout(this.cloudSaveTimer);
+                }
+                this.cloudSaveTimer = setTimeout(() => { 
+                    this.executeCloudSave(snapshot); 
+                }, 1500); 
             },
             async executeCloudSave(snapshot = null) {
                 let payload = snapshot ? snapshot : this.createCanvasSnapshot(true);
-                if (!payload) return;
+                if (!payload) {
+                    return;
+                }
                 
                 if (!navigator.onLine) {
                     SyncIndicatorEngine.setError();
@@ -1123,8 +1267,12 @@
                             CanvasEngine.saveHistory(); 
                         };
                         img.src = localData;
-                    } else { CanvasEngine.saveHistory(); }
-                } catch (error) { CanvasEngine.saveHistory(); }
+                    } else { 
+                        CanvasEngine.saveHistory(); 
+                    }
+                } catch (error) { 
+                    CanvasEngine.saveHistory(); 
+                }
             }
         };
 
@@ -1134,46 +1282,75 @@
             
             init() {
                 this.cvs = document.getElementById('draw-layer'); 
-                if (!this.cvs) return;
+                if (!this.cvs) {
+                    return;
+                }
                 this.ctx = this.cvs.getContext('2d'); 
                 this.board = document.getElementById('drawing-board');
                 
-                this.setupUI(); this.setupCanvas(); this.bind(); this.updateBrushPreview();
+                this.setupUI(); 
+                this.setupCanvas(); 
+                this.bind(); 
+                this.updateBrushPreview();
                 
                 const slider = document.getElementById('brush-size');
-                if (slider) slider.addEventListener('input', () => { this.updateBrushPreview(); });
-                if (window.ResizeObserver && this.board) { new ResizeObserver(() => { this.resizeCanvas(); }).observe(this.board); }
+                if (slider) {
+                    slider.addEventListener('input', () => {
+                        this.updateBrushPreview();
+                    });
+                }
+                
+                if (window.ResizeObserver && this.board) { 
+                    new ResizeObserver(() => {
+                        this.resizeCanvas();
+                    }).observe(this.board); 
+                }
             },
             updateBrushPreview() {
                 const slider = document.getElementById('brush-size'); 
                 const dot = document.getElementById('brush-preview-dot');
-                if (!slider || !dot) return;
+                if (!slider || !dot) {
+                    return;
+                }
                 const val = parseInt(slider.value); 
-                dot.style.width = `${val}px`; dot.style.height = `${val}px`;
+                dot.style.width = `${val}px`; 
+                dot.style.height = `${val}px`;
                 dot.style.backgroundColor = this.isErasing ? "var(--br-muted)" : this.lastColor;
             },
             isCanvasBlank() {
-                if (!this.cvs || !this.ctx) return true;
+                if (!this.cvs || !this.ctx) {
+                    return true;
+                }
                 try {
                     const probe = document.createElement('canvas'); 
-                    probe.width = 64; probe.height = 64;
+                    probe.width = 64; 
+                    probe.height = 64;
                     const pctx = probe.getContext('2d'); 
                     pctx.drawImage(this.cvs, 0, 0, 64, 64);
                     const pixels = pctx.getImageData(0, 0, 64, 64).data;
-                    for (let i = 3; i < pixels.length; i += 4) { if (pixels[i] !== 0) return false; }
+                    for (let i = 3; i < pixels.length; i += 4) { 
+                        if (pixels[i] !== 0) {
+                            return false; 
+                        }
+                    }
                     return true;
-                } catch(e) { return true; }
+                } catch(e) { 
+                    return true; 
+                }
             },
             captureWorksheetWithDrawing(compressForDatabase = false, initialMaxWidth = 600) {
                 const worksheet = document.getElementById('worksheet-img'); 
                 const draw = this.cvs;
-                if (!draw) return null;
+                if (!draw) {
+                    return null;
+                }
                 
                 const merged = document.createElement('canvas');
                 let scaleRatio = 1.0;
-                
                 if (compressForDatabase === true) {
-                    if (draw.width > initialMaxWidth) scaleRatio = initialMaxWidth / draw.width;
+                    if (draw.width > initialMaxWidth) {
+                        scaleRatio = initialMaxWidth / draw.width;
+                    }
                 }
                 
                 merged.width = Math.floor(draw.width * scaleRatio); 
@@ -1193,6 +1370,7 @@
                     fallbackCanvas.width = Math.floor(draw.width * scaleRatio);
                     fallbackCanvas.height = Math.floor(draw.height * scaleRatio);
                     const fCtx = fallbackCanvas.getContext('2d');
+                    
                     fCtx.fillStyle = '#FFFFFF';
                     fCtx.fillRect(0, 0, fallbackCanvas.width, fallbackCanvas.height);
                     fCtx.drawImage(draw, 0, 0, fallbackCanvas.width, fallbackCanvas.height);
@@ -1204,7 +1382,9 @@
                     let encodedString = merged.toDataURL('image/jpeg', qualityLevel);
                     
                     while (encodedString.length > 400000) {
-                        if (qualityLevel <= 0.1) break;
+                        if (qualityLevel <= 0.1) {
+                            break;
+                        }
                         qualityLevel = qualityLevel - 0.15;
                         encodedString = merged.toDataURL('image/jpeg', qualityLevel);
                     }
@@ -1214,6 +1394,7 @@
                         microCanvas.width = Math.floor(merged.width / 2);
                         microCanvas.height = Math.floor(merged.height / 2);
                         const microCtx = microCanvas.getContext('2d');
+                        
                         microCtx.fillStyle = '#FFFFFF';
                         microCtx.fillRect(0, 0, microCanvas.width, microCanvas.height);
                         microCtx.drawImage(merged, 0, 0, microCanvas.width, microCanvas.height);
@@ -1225,10 +1406,13 @@
                 }
             },
             setupCanvas() {
-                if (!this.board || !this.cvs) return;
+                if (!this.board || !this.cvs) {
+                    return;
+                }
                 const rect = this.board.getBoundingClientRect(); 
-                if (rect.width === 0) return;
-                
+                if (rect.width === 0) {
+                    return;
+                }
                 this.cvs.style.width = rect.width + "px"; 
                 this.cvs.style.height = rect.height + "px";
                 this.cvs.width = rect.width * this.dpr; 
@@ -1238,16 +1422,25 @@
                 this.ctx.lineJoin = 'round';
             },
             resizeCanvas() {
-                if (!this.cvs || !this.ctx || !this.board) return;
+                if (!this.cvs || !this.ctx || !this.board) {
+                    return;
+                }
                 const rect = this.board.getBoundingClientRect(); 
-                if (rect.width === 0 || rect.height === 0) return;
+                if (rect.width === 0 || rect.height === 0) {
+                    return;
+                }
                 
                 const temp = document.createElement('canvas'); 
-                temp.width = this.cvs.width; temp.height = this.cvs.height;
-                if (this.cvs.width > 0 && this.cvs.height > 0) temp.getContext('2d').drawImage(this.cvs, 0, 0);
+                temp.width = this.cvs.width; 
+                temp.height = this.cvs.height;
+                if (this.cvs.width > 0 && this.cvs.height > 0) {
+                    temp.getContext('2d').drawImage(this.cvs, 0, 0);
+                }
                 
                 this.setupCanvas();
-                if (temp.width > 0 && temp.height > 0) this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, rect.width, rect.height);
+                if (temp.width > 0 && temp.height > 0) {
+                    this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, rect.width, rect.height);
+                }
             },
             bind() {
                 const getP = (e) => { 
@@ -1256,15 +1449,20 @@
                     let cy = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0); 
                     return { x: cx - r.left, y: cy - r.top }; 
                 };
-                
                 const start = (e) => { 
-                    e.preventDefault(); this.isDrawing = true; this.hasMoved = false; 
-                    const p = getP(e); this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y); 
+                    e.preventDefault(); 
+                    this.isDrawing = true; 
+                    this.hasMoved = false; 
+                    const p = getP(e); 
+                    this.ctx.beginPath(); 
+                    this.ctx.moveTo(p.x, p.y); 
                 };
-                
                 const move = (e) => {
-                    if (!this.isDrawing) return;
-                    e.preventDefault(); this.hasMoved = true; 
+                    if (!this.isDrawing) {
+                        return;
+                    }
+                    e.preventDefault(); 
+                    this.hasMoved = true; 
                     const p = getP(e);
                     
                     this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over";
@@ -1275,76 +1473,122 @@
                     if (STATE.brushType === 'rainbow' && !this.isErasing) {
                         this.ctx.strokeStyle = `hsl(${(Date.now() / 10) % 360}, 100%, 50%)`; 
                     } else if (STATE.brushType === 'neon' && !this.isErasing) { 
-                        this.ctx.shadowBlur = parseInt(sliderVal) + 10; this.ctx.shadowColor = this.lastColor; 
-                    } else { this.ctx.shadowBlur = 0; }
+                        this.ctx.shadowBlur = parseInt(sliderVal) + 10; 
+                        this.ctx.shadowColor = this.lastColor; 
+                    } else { 
+                        this.ctx.shadowBlur = 0; 
+                    }
                     
-                    this.ctx.lineTo(p.x, p.y); this.ctx.stroke(); this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y);
+                    this.ctx.lineTo(p.x, p.y); 
+                    this.ctx.stroke(); 
+                    this.ctx.beginPath(); 
+                    this.ctx.moveTo(p.x, p.y);
                 };
-                
                 const end = () => { 
-                    this.isDrawing = false; this.ctx.shadowBlur = 0; 
+                    this.isDrawing = false; 
+                    this.ctx.shadowBlur = 0; 
                     if (this.hasMoved) { 
-                        this.saveHistory(); StorageEngine.saveCanvasLocal(); StorageEngine.scheduleCloudSave(); 
+                        this.saveHistory(); 
+                        StorageEngine.saveCanvasLocal(); 
+                        StorageEngine.scheduleCloudSave(); 
                     } 
                 };
-                
-                this.cvs.addEventListener('pointerdown', start); this.cvs.addEventListener('pointermove', move); 
-                this.cvs.addEventListener('pointerup', end); this.cvs.addEventListener('pointerleave', end);
+                this.cvs.addEventListener('pointerdown', start); 
+                this.cvs.addEventListener('pointermove', move); 
+                this.cvs.addEventListener('pointerup', end); 
+                this.cvs.addEventListener('pointerleave', end);
             },
             saveHistory() { 
-                this.historyIndex++; this.historyStack.length = this.historyIndex; 
+                this.historyIndex++; 
+                this.historyStack.length = this.historyIndex; 
                 this.historyStack.push(this.cvs.toDataURL()); 
-                if (this.historyStack.length > 20) { this.historyStack.shift(); this.historyIndex--; } 
+                if (this.historyStack.length > 20) { 
+                    this.historyStack.shift(); 
+                    this.historyIndex--; 
+                } 
             },
             undo() { 
                 if (this.historyIndex > 0) { 
-                    this.historyIndex--; this.restore(); StorageEngine.saveCanvasLocal(); StorageEngine.scheduleCloudSave(); 
+                    this.historyIndex--; 
+                    this.restore(); 
+                    StorageEngine.saveCanvasLocal(); 
+                    StorageEngine.scheduleCloudSave(); 
                 } 
             },
             restore() { 
-                if (!this.ctx || !this.cvs) return;
+                if (!this.ctx || !this.cvs) {
+                    return;
+                }
                 const img = new Image(); 
                 img.onload = () => { 
-                    this.ctx.save(); this.ctx.setTransform(1, 0, 0, 1, 0, 0); this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
-                    this.ctx.drawImage(img, 0, 0, this.cvs.width, this.cvs.height); this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+                    this.ctx.save(); 
+                    this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
+                    this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
+                    this.ctx.drawImage(img, 0, 0, this.cvs.width, this.cvs.height); 
+                    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
                     this.ctx.restore(); 
                 }; 
                 img.src = this.historyStack[this.historyIndex]; 
             },
             setBrush(t) { 
                 STATE.brushType = t; 
-                document.querySelectorAll('.btn-magic').forEach((el) => { el.classList.remove('active'); });
+                document.querySelectorAll('.btn-magic').forEach((el) => {
+                    el.classList.remove('active');
+                });
                 const activeBtn = document.getElementById(`btn-brush-${t}`); 
-                if (activeBtn) activeBtn.classList.add('active'); 
-                if (this.isErasing) this.toggleEraser(); 
+                if (activeBtn) {
+                    activeBtn.classList.add('active'); 
+                }
+                if (this.isErasing) {
+                    this.toggleEraser(); 
+                }
             },
             toggleEraser() { 
                 this.isErasing = !this.isErasing;
                 const btn = document.getElementById('btn-eraser'); 
-                if (btn) btn.classList.toggle('active'); 
+                if (btn) {
+                    btn.classList.toggle('active'); 
+                }
                 this.updateBrushPreview(); 
             },
             setColor(color) { 
                 this.lastColor = color; 
                 const preview = document.getElementById('btn-color'); 
-                if (preview) preview.style.background = color; 
-                if (this.isErasing) this.toggleEraser(); 
+                if (preview) {
+                    preview.style.background = color; 
+                }
+                if (this.isErasing) {
+                    this.toggleEraser(); 
+                }
                 this.updateBrushPreview(); 
             },
             setupUI() { 
                 const preview = document.getElementById('btn-color'); 
-                if (preview) preview.style.background = this.lastColor; 
+                if (preview) {
+                    preview.style.background = this.lastColor; 
+                }
             },
             hardReset() { 
-                if (!this.ctx || !this.cvs) return;
+                if (!this.ctx || !this.cvs) {
+                    return;
+                }
                 try { 
-                    this.ctx.save(); this.ctx.setTransform(1, 0, 0, 1, 0, 0); this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
-                    this.ctx.restore(); this.historyStack = []; this.historyIndex = -1; 
-                } catch(e) { Logger.error("Canvas clear error", e); } 
+                    this.ctx.save(); 
+                    this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
+                    this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
+                    this.ctx.restore(); 
+                    this.historyStack = []; 
+                    this.historyIndex = -1; 
+                } catch(e) { 
+                    Logger.error("Canvas clear error", e); 
+                } 
             },
             promptHardReset() { 
                 CustomModalEngine.confirm("Clear Canvas", "Are you absolutely sure you want to wipe this clean?", () => { 
-                    this.hardReset(); this.saveHistory(); StorageEngine.saveCanvasLocal(); StorageEngine.scheduleCloudSave(); 
+                    this.hardReset(); 
+                    this.saveHistory(); 
+                    StorageEngine.saveCanvasLocal(); 
+                    StorageEngine.scheduleCloudSave(); 
                 }); 
             }
         };
@@ -1352,93 +1596,126 @@
         const RGBRingEngine = {
             init() {
                 const c = document.getElementById('color-wheel'); 
-                if (!c) return;
+                if (!c) {
+                    return;
+                }
                 const ctx = c.getContext('2d', { willReadFrequently: true }); 
                 for (let a = 0; a < 360; a++) { 
-                    ctx.beginPath(); ctx.moveTo(75, 75); ctx.arc(75, 75, 75, a * Math.PI / 180, (a + 2) * Math.PI / 180); 
-                    ctx.fillStyle = `hsl(${a}, 100%, 50%)`; ctx.fill(); 
+                    ctx.beginPath(); 
+                    ctx.moveTo(75, 75); 
+                    ctx.arc(75, 75, 75, a * Math.PI / 180, (a + 2) * Math.PI / 180); 
+                    ctx.fillStyle = `hsl(${a}, 100%, 50%)`; 
+                    ctx.fill(); 
                 }
                 c.onclick = (e) => { 
-                    const rect = c.getBoundingClientRect(); const pX = e.clientX - rect.left; const pY = e.clientY - rect.top;
+                    const rect = c.getBoundingClientRect(); 
+                    const pX = e.clientX - rect.left;
+                    const pY = e.clientY - rect.top;
                     const imgData = ctx.getImageData(pX, pY, 1, 1);
                     const rgbStr = `rgb(${imgData.data[0]}, ${imgData.data[1]}, ${imgData.data[2]})`;
-                    CanvasEngine.setColor(rgbStr); this.toggle(); 
+                    CanvasEngine.setColor(rgbStr); 
+                    this.toggle(); 
                 };
             },
-            toggle() { const modal = document.getElementById('rgb-modal'); if (modal) modal.classList.toggle('active'); }
+            toggle() { 
+                const modal = document.getElementById('rgb-modal');
+                if (modal) {
+                    modal.classList.toggle('active'); 
+                }
+            }
         };
 
         const CertificateEngine = {
             open(weekNum) {
-                const modal = document.getElementById('cert-modal'); if (!modal) return;
-                const weekLabel = document.getElementById('cert-week'); if (weekLabel) weekLabel.innerText = `WEEK ${weekNum} COMPLETED`;
-                const nameLabel = document.getElementById('cert-student-name'); if (nameLabel) nameLabel.innerText = STATE.studentName || "Global Explorer";
-                const imgEl = document.getElementById('cert-canvas-img'); const mergedImg = CanvasEngine.captureWorksheetWithDrawing(false);
-                if (imgEl) imgEl.src = mergedImg || CanvasEngine.cvs.toDataURL();
-                
+                const modal = document.getElementById('cert-modal');
+                if (!modal) {
+                    return;
+                }
+                const weekLabel = document.getElementById('cert-week');
+                if (weekLabel) {
+                    weekLabel.innerText = `WEEK ${weekNum} COMPLETED`;
+                }
+                const nameLabel = document.getElementById('cert-student-name');
+                if (nameLabel) {
+                    nameLabel.innerText = STATE.studentName || "Global Explorer";
+                }
+                const imgEl = document.getElementById('cert-canvas-img');
+                const mergedImg = CanvasEngine.captureWorksheetWithDrawing(false);
+                if (imgEl) {
+                    imgEl.src = mergedImg || CanvasEngine.cvs.toDataURL();
+                }
                 const msgEl = document.getElementById('cert-ai-msg');
-                const hasArt = STATE.badges.includes("🎨 Colorful Artist"); const hasVoice = STATE.badges.includes("🗣️ Great Speaker");
+                const hasArt = STATE.badges.includes("🎨 Colorful Artist"); 
+                const hasVoice = STATE.badges.includes("🗣️ Great Speaker");
+                
                 let msg = "For showing amazing curiosity and completing your inquiry journey.";
-                if (hasArt && hasVoice) msg = "For your brilliant colorful art and speaking English so confidently!";
-                else if (hasArt) msg = "For expressing your wonderful imagination through colorful art!";
-                else if (hasVoice) msg = "For speaking English with a clear, brave voice!";
-                if (msgEl) msgEl.innerText = `"${msg}"`; 
+                if (hasArt && hasVoice) {
+                    msg = "For your brilliant colorful art and speaking English so confidently!";
+                } else if (hasArt) {
+                    msg = "For expressing your wonderful imagination through colorful art!";
+                } else if (hasVoice) {
+                    msg = "For speaking English with a clear, brave voice!";
+                }
+                
+                if (msgEl) {
+                    msgEl.innerText = `"${msg}"`; 
+                }
                 
                 modal.classList.add('active');
-                if (window.confetti) confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
+                if (window.confetti) {
+                    confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
+                }
             },
             close() { 
-                const modal = document.getElementById('cert-modal'); if (modal) modal.classList.remove('active'); 
-                if (STATE.currentPage === CurriculumEngine.last(STATE.unitId)) location.href = 'dashboard.html'; else AppEngine.smoothMove(1); 
+                const modal = document.getElementById('cert-modal');
+                if (modal) {
+                    modal.classList.remove('active'); 
+                }
+                if (STATE.currentPage === CurriculumEngine.last(STATE.unitId)) {
+                    location.href = 'dashboard.html'; 
+                } else {
+                    AppEngine.smoothMove(1); 
+                }
             },
             print() {
-                const card = document.getElementById('cert-card-content'); const closeBtn = document.querySelector('.cert-close'); const printBtn = document.querySelector('.btn-print');
-                if (closeBtn) closeBtn.style.display = 'none'; if (printBtn) printBtn.style.display = 'none';
+                const card = document.getElementById('cert-card-content');
+                const closeBtn = document.querySelector('.cert-close');
+                const printBtn = document.querySelector('.btn-print');
+                
+                if (closeBtn) {
+                    closeBtn.style.display = 'none'; 
+                }
+                if (printBtn) {
+                    printBtn.style.display = 'none';
+                }
+                
                 if (window.html2canvas && card) {
                     html2canvas(card, { backgroundColor: '#FFFFFF', scale: 2 }).then((canvas) => {
-                        if (closeBtn) closeBtn.style.display = 'block'; if (printBtn) printBtn.style.display = 'inline-flex';
-                        const link = document.createElement('a'); link.download = `Certificate_${STATE.studentName}.png`; link.href = canvas.toDataURL('image/png'); link.click();
+                        if (closeBtn) {
+                            closeBtn.style.display = 'block'; 
+                        }
+                        if (printBtn) {
+                            printBtn.style.display = 'inline-flex';
+                        }
+                        const link = document.createElement('a'); 
+                        link.download = `Certificate_${STATE.studentName}.png`; 
+                        link.href = canvas.toDataURL('image/png'); 
+                        link.click();
                     });
                 } else { 
                     window.print(); 
-                    if (closeBtn) closeBtn.style.display = 'block'; if (printBtn) printBtn.style.display = 'inline-flex'; 
+                    if (closeBtn) {
+                        closeBtn.style.display = 'block'; 
+                    }
+                    if (printBtn) {
+                        printBtn.style.display = 'inline-flex'; 
+                    }
                 }
             }
         };
 
         const AudioEngine = {
             recordingMode: 'main',
-            init() {
-                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-                if (SR) {
-                    this.rec = new SR(); this.rec.lang = 'en-US'; this.rec.continuous = false; this.rec.interimResults = false;
-                    this.rec.onresult = (e) => { 
-                        STATE.lastTranscript = e.results[0][0].transcript; STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); 
-                    };
-                    this.rec.onend = () => { 
-                        if (!STATE.isRecording) return;
-                        STATE.isRecording = false;
-                        if (this.recordingMode === 'chat') {
-                            const chatBtn = document.getElementById('btn-chat-record');
-                            if (chatBtn) { chatBtn.classList.remove('recording'); chatBtn.innerText = "🎤 Speak to Teacher"; }
-                            setTimeout(() => AITutor.processReply(), 800);
-                        } else {
-                            const recBtn = document.getElementById('btn-record'); const recText = document.getElementById('record-text');
-                            if (recBtn) recBtn.classList.remove('recording'); if (recText) recText.innerText = "Voice Log";
-                            setTimeout(() => AITutor.submit(), 800);
-                        }
-                    };
-                    this.rec.onerror = () => { 
-                        if (STATE.isRecording) { 
-                            STATE.isRecording = false; 
-                            const recBtn = document.getElementById('btn-record'); const recText = document.getElementById('record-text');
-                            if (recBtn) recBtn.classList.remove('recording'); if (recText) recText.innerText = "Voice Log"; 
-                        } 
-                    };
-                } else { 
-                    ['btn-record', 'btn-chat-record'].forEach((id) => { const btn = document.getElementById(id); if (btn) btn.disabled = true; }); 
-                }
-            },
             async ensurePermission() {
                 try {
                     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -1451,33 +1728,129 @@
                     return false;
                 }
             },
+            init() {
+                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (SR) {
+                    this.rec = new SR(); 
+                    this.rec.lang = 'en-US'; 
+                    this.rec.continuous = false; 
+                    this.rec.interimResults = false;
+                    
+                    this.rec.onresult = (e) => { 
+                        STATE.lastTranscript = e.results[0][0].transcript; 
+                        STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); 
+                    };
+                    
+                    this.rec.onend = () => { 
+                        if (!STATE.isRecording) {
+                            return;
+                        }
+                        STATE.isRecording = false;
+                        
+                        if (this.recordingMode === 'chat') {
+                            const chatBtn = document.getElementById('btn-chat-record');
+                            if (chatBtn) {
+                                chatBtn.classList.remove('recording');
+                                chatBtn.innerText = "🎤 Speak to Teacher";
+                            }
+                            setTimeout(() => {
+                                AITutor.processReply();
+                            }, 800);
+                        } else {
+                            const recBtn = document.getElementById('btn-record');
+                            const recText = document.getElementById('record-text');
+                            if (recBtn) {
+                                recBtn.classList.remove('recording');
+                            }
+                            if (recText) {
+                                recText.innerText = "Voice Log";
+                            }
+                            setTimeout(() => {
+                                AITutor.submit();
+                            }, 800);
+                        }
+                    };
+                    
+                    this.rec.onerror = () => { 
+                        if (STATE.isRecording) { 
+                            STATE.isRecording = false; 
+                            const recBtn = document.getElementById('btn-record');
+                            const recText = document.getElementById('record-text');
+                            if (recBtn) {
+                                recBtn.classList.remove('recording'); 
+                            }
+                            if (recText) {
+                                recText.innerText = "Voice Log"; 
+                            }
+                        } 
+                    };
+                } else { 
+                    ['btn-record', 'btn-chat-record'].forEach((id) => { 
+                        const btn = document.getElementById(id);
+                        if (btn) {
+                            btn.disabled = true; 
+                        }
+                    }); 
+                }
+            },
             async toggle() {
-                if (!this.rec) return; 
+                if (!this.rec) {
+                    return; 
+                }
                 const hasPermission = await this.ensurePermission();
-                if (!hasPermission) return;
+                if (!hasPermission) {
+                    return;
+                }
                 
                 this.recordingMode = 'main';
-                const recBtn = document.getElementById('btn-record'); const recText = document.getElementById('record-text');
+                const recBtn = document.getElementById('btn-record');
+                const recText = document.getElementById('record-text');
+                
                 if (!STATE.isRecording) { 
-                    STATE.isRecording = true; if (recBtn) recBtn.classList.add('recording'); if (recText) recText.innerText = "Listening..."; 
+                    STATE.isRecording = true; 
+                    if (recBtn) {
+                        recBtn.classList.add('recording'); 
+                    }
+                    if (recText) {
+                        recText.innerText = "Listening..."; 
+                    }
                     this.rec.start(); 
                 } else { 
-                    STATE.isRecording = false; if (recBtn) recBtn.classList.remove('recording'); if (recText) recText.innerText = "Voice Log"; 
+                    STATE.isRecording = false; 
+                    if (recBtn) {
+                        recBtn.classList.remove('recording'); 
+                    }
+                    if (recText) {
+                        recText.innerText = "Voice Log"; 
+                    }
                     this.rec.stop(); 
                 }
             },
             async toggleChat() {
-                if (!this.rec) return; 
+                if (!this.rec) {
+                    return; 
+                }
                 const hasPermission = await this.ensurePermission();
-                if (!hasPermission) return;
+                if (!hasPermission) {
+                    return;
+                }
                 
                 this.recordingMode = 'chat';
                 const chatBtn = document.getElementById('btn-chat-record');
+                
                 if (!STATE.isRecording) { 
-                    STATE.isRecording = true; if (chatBtn) { chatBtn.classList.add('recording'); chatBtn.innerText = "Listening..."; }
+                    STATE.isRecording = true; 
+                    if (chatBtn) {
+                        chatBtn.classList.add('recording'); 
+                        chatBtn.innerText = "Listening...";
+                    }
                     this.rec.start(); 
                 } else { 
-                    STATE.isRecording = false; if (chatBtn) { chatBtn.classList.remove('recording'); chatBtn.innerText = "🎤 Speak to Teacher"; }
+                    STATE.isRecording = false; 
+                    if (chatBtn) {
+                        chatBtn.classList.remove('recording'); 
+                        chatBtn.innerText = "🎤 Speak to Teacher";
+                    }
                     this.rec.stop(); 
                 }
             }
@@ -1487,54 +1860,91 @@
             isBusy: false,
             async callBackendTutor(promptText, base64Img = null) {
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 15000); // 15초 백엔드 타임아웃
+                const timeoutId = setTimeout(() => controller.abort(), 15000);
                 try {
-                    // 구글 파이어베이스에서 인증 키 획득
-                    const user = auth.currentUser; if (!user) throw new Error("Unauthorized");
-                    const token = await user.getIdToken();
+                    const user = auth.currentUser; 
+                    if (!user) {
+                        throw new Error("Unauthorized");
+                    }
                     
+                    const token = await user.getIdToken();
                     let imageVal = null;
                     if (base64Img) {
                         const splitArr = base64Img.split(',');
-                        if (splitArr.length > 1) imageVal = splitArr[1];
+                        if (splitArr.length > 1) {
+                            imageVal = splitArr[1];
+                        }
                     }
                     
-                    const reqObj = { prompt: promptText, image: imageVal, unitId: STATE.unitId, page: STATE.currentPage };
+                    const reqObj = {
+                        prompt: promptText, 
+                        image: imageVal, 
+                        unitId: STATE.unitId, 
+                        page: STATE.currentPage
+                    };
                     
                     const response = await fetch(CONFIG.API_TUTOR_ENDPOINT, {
                         method: 'POST', 
-                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        headers: { 
+                            'Content-Type': 'application/json', 
+                            'Authorization': `Bearer ${token}` 
+                        },
                         body: JSON.stringify(reqObj),
                         signal: controller.signal
                     });
                     
                     clearTimeout(timeoutId);
-                    const data = await response.json(); 
                     
-                    // 빈 값이 올 경우를 대비한 안전망 로직
-                    if (data && data.reply) return data.reply;
-                    return "앗, 선생님이 지금 답변을 주기 어려워요.";
+                    const data = await response.json(); 
+                    if (data.reply) {
+                        return data.reply;
+                    } else {
+                        return "앗, 선생님이 지금 답변을 주기 어려워요.";
+                    }
                 } catch (e) { 
                     clearTimeout(timeoutId);
-                    if (e.name === 'AbortError') return "앗, 선생님과 연결하는 시간이 너무 오래 걸렸어요. 다시 버튼을 눌러볼까요?";
-                    return "앗, 네트워크 문제로 선생님이 대답하지 못했어요. 잠시 후 다시 시도해주세요!"; 
+                    if (e.name === 'AbortError') {
+                        return "앗, 연결 시간이 너무 오래 걸렸어요. 다시 버튼을 눌러주세요!";
+                    }
+                    return "앗, 네트워크 문제로 AI 선생님이 대답하지 못했어요. 다시 제출해주세요!"; 
                 }
             },
             async submit() {
-                if (STATE.isRecording) { AudioEngine.toggle(); return; } 
-                if (this.isBusy) return; this.isBusy = true;
+                if (STATE.isRecording) { 
+                    AudioEngine.toggle(); 
+                    return; 
+                } 
+                if (this.isBusy) {
+                    return; 
+                }
+                this.isBusy = true;
                 
-                const requestPage = STATE.currentPage; const requestUnit = STATE.unitId;
-                const content = document.getElementById('ai-content'); const panel = document.getElementById('ai-panel');
+                const requestPage = STATE.currentPage;
+                const requestUnit = STATE.unitId;
                 
-                if (panel) panel.classList.add('open');
-                if (content) content.innerHTML = `<div class="ai-loading-container"><i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i><p>Teacher is looking at your work...</p></div>`;
+                const content = document.getElementById('ai-content'); 
+                const panel = document.getElementById('ai-panel');
+                
+                if (panel) {
+                    panel.classList.add('open');
+                }
+                
+                if (content) {
+                    content.innerHTML = `
+                        <div class="ai-loading-container">
+                            <i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i>
+                            <p>Teacher is reviewing your sketch...</p>
+                        </div>
+                    `;
+                }
                 
                 try {
-                    StorageEngine.saveCanvasLocal(); StorageEngine.executeCloudSave();
-                    const canvasImg = CanvasEngine.captureWorksheetWithDrawing(true);
+                    StorageEngine.saveCanvasLocal(); 
+                    StorageEngine.executeCloudSave();
                     
-                    let unitData = { goal: "Free Exploration", question: "Tell me more about it." };
+                    const canvasImg = CanvasEngine.captureWorksheetWithDrawing(true);
+                    let unitData = { goal: "Free Exploration", question: "Tell me more about it.", context: "The student is exploring and drawing freely." };
+                    
                     if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]) {
                         unitData = PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage];
                     }
@@ -1542,6 +1952,7 @@
                     let saidText = STATE.lastTranscript || "Look at my work!";
                     let confidenceLog = STATE.sttConfidence > 0 ? `(Confidence: ${STATE.sttConfidence}%)` : "";
                     
+                    // [P0] 꼬리질문을 100% 강제하는 프롬프트 적용
                     const prompt = `Act as an enthusiastic, friendly American teacher for a young kindergarten student named ${STATE.studentName}.
 Task 1: Look at the attached drawing/worksheet image. (Context: ${unitData.goal} - ${unitData.context || unitData.question}).
 Task 2: Read what the student just said out loud: "${saidText}" ${confidenceLog}.
@@ -1554,13 +1965,18 @@ Rules:
                     
                     const reply = await this.callBackendTutor(prompt, canvasImg);
                     
-                    if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
+                    if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) {
+                        return;
+                    }
                     
-                    // .includes() undefined 에러 방어를 위해 래핑
                     const aiFailed = (reply || "").includes("앗,");
                     if (!aiFailed) {
-                        if (!CanvasEngine.isCanvasBlank()) BadgeEngine.add("🎨 Colorful Artist");
-                        if (STATE.sttConfidence >= 80 && STATE.lastTranscript.length > 0) BadgeEngine.add("🗣️ Great Speaker");
+                        if (!CanvasEngine.isCanvasBlank()) {
+                            BadgeEngine.add("🎨 Colorful Artist");
+                        }
+                        if (STATE.sttConfidence >= 80 && STATE.lastTranscript.length > 0) {
+                            BadgeEngine.add("🗣️ Great Speaker");
+                        }
                     }
                     
                     if (content) {
@@ -1573,26 +1989,44 @@ Rules:
                                 </div>
                             </div>
                         `;
-                        const bbl = document.createElement('div'); bbl.className = 'chat-bubble ai mt-4'; 
+                        const bbl = document.createElement('div'); 
+                        bbl.className = 'chat-bubble ai mt-4'; 
                         bbl.textContent = reply || "I see what you did! Great job!"; 
                         content.appendChild(bbl);
                     }
                     
                     const footer = document.getElementById('chat-footer');
-                    if (footer) footer.style.display = "block"; 
+                    if (footer) {
+                        footer.style.display = "block"; 
+                    }
                     
-                    if(reply) this.speak(reply);
+                    if (reply) {
+                        this.speak(reply);
+                    }
                 } finally { 
                     this.isBusy = false; 
                 }
             },
             async processReply() {
-                if (!STATE.lastTranscript || this.isBusy) return; this.isBusy = true;
-                const requestPage = STATE.currentPage; const requestUnit = STATE.unitId; const content = document.getElementById('ai-content');
+                if (!STATE.lastTranscript || this.isBusy) {
+                    return; 
+                }
+                this.isBusy = true;
+                
+                const requestPage = STATE.currentPage;
+                const requestUnit = STATE.unitId;
+                const content = document.getElementById('ai-content');
                 
                 if (content) {
-                    const uBbl = document.createElement('div'); uBbl.className = "chat-bubble user mt-4"; uBbl.textContent = STATE.lastTranscript; content.appendChild(uBbl);
-                    const aBbl = document.createElement('div'); aBbl.className = "chat-bubble ai mt-4"; aBbl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 생각 중...`; content.appendChild(aBbl); 
+                    const uBbl = document.createElement('div'); 
+                    uBbl.className = "chat-bubble user mt-4"; 
+                    uBbl.textContent = STATE.lastTranscript; 
+                    content.appendChild(uBbl);
+                    
+                    const aBbl = document.createElement('div'); 
+                    aBbl.className = "chat-bubble ai mt-4"; 
+                    aBbl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 생각 중...`; 
+                    content.appendChild(aBbl); 
                     content.scrollTop = content.scrollHeight;
                     
                     try {
@@ -1605,14 +2039,24 @@ Rules:
 4. Plain text only, no emojis or markdown.`;
 
                         const reply = await this.callBackendTutor(prompt);
-                        if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
+                        
+                        if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) {
+                            return;
+                        }
                         
                         aBbl.innerHTML = ''; 
-                        const b = document.createElement('b'); b.style.color = 'var(--br-green)'; b.textContent = reply || "That's wonderful!"; aBbl.appendChild(b);
+                        const b = document.createElement('b'); 
+                        b.style.color = 'var(--br-green)'; 
+                        b.textContent = reply || "That's wonderful!"; 
+                        aBbl.appendChild(b);
                         content.scrollTop = content.scrollHeight; 
                         
-                        if(reply) this.speak(reply);
-                    } finally { this.isBusy = false; }
+                        if (reply) {
+                            this.speak(reply);
+                        }
+                    } finally { 
+                        this.isBusy = false; 
+                    }
                 } else {
                     this.isBusy = false;
                 }
@@ -1621,39 +2065,59 @@ Rules:
                 if (window.speechSynthesis) { 
                     window.speechSynthesis.cancel(); 
                     const u = new SpeechSynthesisUtterance(text); 
-                    u.lang = 'en-US'; u.rate = 0.9; u.pitch = 1.05; 
+                    u.lang = 'en-US'; 
+                    u.rate = 0.9; 
+                    u.pitch = 1.05; 
                     
                     const voices = window.speechSynthesis.getVoices();
                     const preferredVoices = voices.filter(v => v.lang.startsWith('en-') && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Siri') || v.name.includes('Alex')));
-                    if (preferredVoices.length > 0) u.voice = preferredVoices[0];
+                    if (preferredVoices.length > 0) {
+                        u.voice = preferredVoices[0];
+                    }
                     
                     window.speechSynthesis.speak(u); 
                 } 
             },
             close() { 
-                const panel = document.getElementById('ai-panel'); if (panel) panel.classList.remove('open'); 
-                if (window.speechSynthesis) window.speechSynthesis.cancel(); 
+                const panel = document.getElementById('ai-panel');
+                if (panel) {
+                    panel.classList.remove('open'); 
+                }
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.cancel(); 
+                }
             }
         };
 
         if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
-            window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+            window.speechSynthesis.onvoiceschanged = () => { 
+                window.speechSynthesis.getVoices(); 
+            };
         }
 
         const AppEngine = {
             smoothMove(dir) {
                 const nextPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir); 
-                if (nextPage === STATE.currentPage) return;
+                if (nextPage === STATE.currentPage) {
+                    return;
+                }
                 
                 StorageEngine.saveCanvasLocal(); 
                 StorageEngine.executeCloudSave(StorageEngine.createCanvasSnapshot(true));
                 
                 const board = document.getElementById('drawing-board');
-                if (board) board.classList.add('fade-out');
+                if (board) {
+                    board.classList.add('fade-out');
+                }
                 
                 setTimeout(() => { 
-                    STATE.currentPage = nextPage; PageEngine.load(STATE.currentPage); 
-                    setTimeout(() => { if (board) board.classList.remove('fade-out'); }, 150); 
+                    STATE.currentPage = nextPage; 
+                    PageEngine.load(STATE.currentPage); 
+                    setTimeout(() => { 
+                        if (board) {
+                            board.classList.remove('fade-out'); 
+                        }
+                    }, 150); 
                 }, 400);
             },
             handleNextAdventure() { 
@@ -1669,53 +2133,79 @@ Rules:
         const PageEngine = {
             init() {
                 const list = document.getElementById('nav-list'); 
-                if (!list) return; 
+                if (!list) {
+                    return; 
+                }
                 list.innerHTML = '';
                 
                 const unitData = PAGE_INTELLIGENCE[STATE.unitId];
                 if (unitData) {
                     Object.keys(unitData).forEach((key) => {
-                        const item = document.createElement('div'); item.className = 'nav-item interactive-hover'; item.id = `nav-${key}`;
-                        const titleText = unitData[key].navTitle; const numKey = Number(key); const weekIdx = CurriculumEngine.weekIndex(STATE.unitId, numKey);
+                        const item = document.createElement('div'); 
+                        item.className = 'nav-item interactive-hover'; 
+                        item.id = `nav-${key}`;
+                        
+                        const titleText = unitData[key].navTitle;
+                        const numKey = Number(key);
+                        const weekIdx = CurriculumEngine.weekIndex(STATE.unitId, numKey);
+                        
                         item.innerHTML = `<span class="nav-title">${titleText}</span><span class="nav-badge">W${weekIdx}-P.${key}</span>`;
-                        item.onclick = () => { AppEngine.smoothMove(numKey - STATE.currentPage); UIEngine.closeSidebar(); }; 
+                        item.onclick = () => { 
+                            AppEngine.smoothMove(numKey - STATE.currentPage); 
+                            UIEngine.closeSidebar(); 
+                        }; 
                         list.appendChild(item);
                     });
                 }
                 this.load(STATE.currentPage);
             },
             load(n) {
-                STATE.currentPage = n; STATE.lastTranscript = ""; STATE.sttConfidence = 0;
+                STATE.currentPage = n; 
+                STATE.lastTranscript = ""; 
+                STATE.sttConfidence = 0;
                 
                 const unitInfo = document.getElementById('unit-info');
-                if (unitInfo) unitInfo.innerText = `MASTER LAB: ${STATE.unitId}`; 
+                if (unitInfo) {
+                    unitInfo.innerText = `MASTER LAB: ${STATE.unitId}`; 
+                }
                 
                 const pageInfo = document.getElementById('page-info');
                 const pageGoal = document.getElementById('page-goal-text');
                 const padN = String(n).padStart(2, '0');
                 
-                if (document.getElementById('page-number-text')) document.getElementById('page-number-text').innerText = `Inquiry P.${padN}`;
+                if (document.getElementById('page-number-text')) {
+                    document.getElementById('page-number-text').innerText = `Inquiry P.${padN}`;
+                }
                 
                 let goalText = "Free Exploration";
                 if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][n]) {
                     goalText = PAGE_INTELLIGENCE[STATE.unitId][n].goal;
                 }
-                if (pageGoal) pageGoal.innerText = goalText;
+                if (pageGoal) {
+                    pageGoal.innerText = goalText;
+                }
                 
-                document.querySelectorAll('.nav-item').forEach((el) => { el.classList.remove('active'); });
+                document.querySelectorAll('.nav-item').forEach((el) => {
+                    el.classList.remove('active');
+                });
+                
                 const activeNav = document.getElementById(`nav-${n}`);
                 const navList = document.getElementById('nav-list');
                 
                 if (activeNav) {
                     activeNav.classList.add('active');
-                    if (navList) navList.scrollTo({ top: activeNav.offsetTop - navList.offsetTop - 50, behavior: 'smooth' });
+                    if (navList) {
+                        navList.scrollTo({ top: activeNav.offsetTop - navList.offsetTop - 50, behavior: 'smooth' });
+                    }
                 }
                 
                 CanvasEngine.hardReset(); 
                 AITutor.close(); 
                 
                 const worksheetImg = document.getElementById('worksheet-img');
-                if (worksheetImg) worksheetImg.style.opacity = '0';
+                if (worksheetImg) {
+                    worksheetImg.style.opacity = '0';
+                }
                 
                 SmartImageLoader.findValidWorksheet(STATE.unitId, STATE.currentPage); 
                 StorageEngine.save();
@@ -1724,23 +2214,39 @@ Rules:
 
         const UIEngine = {
             toggleSidebar() { 
-                if (window.innerWidth > 1180) return; 
-                const sb = document.getElementById('sidebar'); if (sb) sb.classList.toggle('open'); 
-                const bd = document.getElementById('sidebar-backdrop'); if (bd) bd.classList.toggle('active'); 
+                if (window.innerWidth > 1180) {
+                    return; 
+                }
+                const sb = document.getElementById('sidebar');
+                if (sb) {
+                    sb.classList.toggle('open'); 
+                }
+                const bd = document.getElementById('sidebar-backdrop');
+                if (bd) {
+                    bd.classList.toggle('active'); 
+                }
             },
             closeSidebar() { 
-                const sb = document.getElementById('sidebar'); if (sb) sb.classList.remove('open'); 
-                const bd = document.getElementById('sidebar-backdrop'); if (bd) bd.classList.remove('active'); 
+                const sb = document.getElementById('sidebar');
+                if (sb) {
+                    sb.classList.remove('open'); 
+                }
+                const bd = document.getElementById('sidebar-backdrop');
+                if (bd) {
+                    bd.classList.remove('active'); 
+                }
             }
         };
 
         /**
-         * [5-20. FINAL BOOTSTRAP: THE FAIL-SAFE BOOTLOADER]
-         * 모든 스크립트 파싱이 끝난 뒤에만 시스템이 기동하도록 완벽 통제합니다.
+         * [5-20. FINAL BOOTSTRAP]
+         * 모든 엔진이 완벽하게 적재된 후 호출되는 무결점 부팅 시퀀스
          */
         let systemBooted = false;
         function SystemBoot() {
-            if (systemBooted) return; 
+            if (systemBooted) {
+                return; 
+            }
             systemBooted = true;
             
             try {
@@ -1753,13 +2259,13 @@ Rules:
                 BadgeEngine.renderAll(); 
                 PageEngine.init(); 
                 SyncIndicatorEngine.init();
-                Logger.log("V100.100 Ultimate Master System Boot Complete.");
+                Logger.log("V100.99 Enterprise Master System Boot Complete.");
             } catch(error) { 
                 Logger.error("Framework initialization error:", error); 
             }
         }
 
-        // 브라우저의 DOM 트리가 모두 렌더링된 것을 확인한 후 안전하게 실행
+        // [최하단 보안 검증: 페이지의 모든 요소가 렌더링된 것을 확인한 뒤 부팅]
         document.addEventListener("DOMContentLoaded", () => {
             try {
                 auth.onAuthStateChanged((user) => {
@@ -1770,11 +2276,17 @@ Rules:
                         STATE.studentName = user.email.split('@')[0].toUpperCase() || "EXPLORER";
                         
                         const profileBox = document.getElementById('profile-box');
-                        if (profileBox) profileBox.classList.add('registered');
+                        if (profileBox) {
+                            profileBox.classList.add('registered');
+                        }
                         const displayNameEl = document.getElementById('display-name');
-                        if (displayNameEl) displayNameEl.innerText = STATE.studentName;
+                        if (displayNameEl) {
+                            displayNameEl.innerText = STATE.studentName;
+                        }
                         const avatarEl = document.getElementById('avatar-char');
-                        if (avatarEl) avatarEl.innerText = STATE.studentName.charAt(0);
+                        if (avatarEl) {
+                            avatarEl.innerText = STATE.studentName.charAt(0);
+                        }
                     } else {
                         Logger.warn("No active session. Launching in Guest Fallback Mode.");
                         STATE.studentName = "GUEST";
@@ -1787,7 +2299,7 @@ Rules:
                 SystemBoot();
             }
 
-            // [최후의 방어선] 어떠한 이유로든 3초 내에 켜지지 않으면 무조건 강제 기동합니다.
+            // 어떠한 이유로든 3초 내에 시스템이 켜지지 않으면 무조건 강제 기동합니다.
             setTimeout(() => {
                 if (!systemBooted) {
                     Logger.warn("Absolute Timeout Triggered. Force booting the system.");

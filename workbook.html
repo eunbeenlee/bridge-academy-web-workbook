@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#FCFBF9">
     
-    <title>Bridge Academy | Premium AI Lab V100.600</title>
+    <title>Bridge Academy | Premium AI Lab V100.700</title>
 
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     
@@ -183,7 +183,6 @@
         }
         .sidebar-header:hover { background-color: var(--br-bg); }
 
-        /* [P0 Fix] 브랜드 로고 일체감 및 프리미엄 타이포그래피 정렬 */
         .brand-logo { 
             font-family: 'Playfair Display', serif; 
             font-size: 32px; 
@@ -434,7 +433,7 @@
            ====================================================================== */
         .bridge-modal-overlay { position: fixed; inset: 0; background-color: rgba(42, 40, 37, 0.6); z-index: 40000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(8px); }
         .bridge-modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .bridge-modal-box { background-color: #FFFFFF; width: 420px; max-width: 90%; border-radius: 24px; padding: 40px 35px 35px; text-align: center; transform: scale(0.9) translateY(20px); transition: transform 0.4s ease; box-shadow: var(--shadow-premium); }
+        .bridge-modal-box { background-color: #FFFFFF; width: 420px; max-width: 90%; border-radius: 24px; padding: 40px 35px 35px 35px; text-align: center; transform: scale(0.9) translateY(20px); transition: transform 0.4s ease; box-shadow: var(--shadow-premium); }
         .bridge-modal-overlay.active .bridge-modal-box { transform: scale(1) translateY(0); }
         .bridge-modal-icon { font-size: 45px; color: var(--br-gold); margin-bottom: 20px; display: block; }
         .bridge-modal-icon.warning { color: var(--br-error); }
@@ -468,6 +467,7 @@
         .cert-msg { font-size: 18px; font-style: italic; margin-bottom: 35px; }
         .btn-print { background-color: var(--br-charcoal); color: #FFFFFF; padding: 18px 45px; font-size: 18px; font-weight: 900; border-radius: 100px; display: inline-flex; align-items: center; gap: 12px; transition: all 0.3s ease; box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
         .btn-print:hover { transform: translateY(-4px); background-color: var(--br-gold); box-shadow: 0 20px 35px rgba(203,174,117,0.3); }
+        .btn-print:active { transform: scale(0.95); }
         .cert-close { position: absolute; top: 25px; right: 35px; font-size: 35px; color: var(--br-muted); font-weight: 900; transition: all 0.2s ease; }
         .cert-close:hover { color: var(--br-error); transform: rotate(90deg); }
 
@@ -498,6 +498,7 @@
             .page-info { font-size: 18px; flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 4px; }
             .page-goal { font-size: 12px; padding: 2px 8px; }
             .ai-header, .ai-content, .chat-footer { padding: 0 20px; }
+            .chat-bubble { max-width: 96%; font-size: 15px; }
         }
         @media (max-width: 480px) {
             .btn-nav, .btn-main { height: 45px; font-size: 13px; }
@@ -567,7 +568,7 @@
             </main>
 
             <footer class="bottom-dock">
-                <div class="tool-group" role="group" aria-label="Drawing Tools">
+                <div class="tool-group" role="group">
                     <div class="color-preview interactive-hover" id="btn-color" onclick="RGBRingEngine.toggle()"></div>
                     <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;" tabindex="-1">
                     
@@ -650,7 +651,6 @@
     </div>
 
     <script>
-        // 전역 설정
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
             API_TUTOR_ENDPOINT: "https://sparkling-sky-6699.ebin22725.workers.dev", 
@@ -664,7 +664,6 @@
             }
         };
 
-        // 앱 상태 저장소
         const STATE = {
             uid: null, studentEmail: "", studentName: "GUEST", isNameRegistered: false,
             unitId: new URLSearchParams(window.location.search).get('id') || "A-1",
@@ -673,7 +672,6 @@
             strokeCount: 0, usedColors: new Set()
         };
 
-        // Firebase 모듈 포인터
         let auth = null;
         let db = null;
 
@@ -762,50 +760,50 @@
             }
         };
 
-        // [P0] 테마(Theme)와 필기체(OCR) 인지를 결합하기 위한 글로벌 주제 맵핑
+        // [P0] 챕터 테마(Macro Context) 매핑
         const UNIT_THEMES = {
             "A-1": "All About Me & My Senses",
             "A-2": "Nature & Crawling Bugs"
         };
 
-        // [P0] 페이지별 문맥 초정밀화
+        // [P0] 따라 쓰기(Tracing) 및 모방(Mimicking) 분석을 위한 Expected Action 부여
         const PAGE_INTELLIGENCE = {
             "A-1": {
-                1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?", context: "The student is writing their name." },
-                2: { navTitle: "[W1] Mind", goal: "Self-Esteem & I like myself", question: "Do you like yourself?", context: "The student is drawing something they like about themselves." },
-                3: { navTitle: "[W1] Face", goal: "Face Vocabulary", question: "Where is your nose?", context: "The student is pointing out facial features on a face." },
-                4: { navTitle: "[W1] Portrait", goal: "Drawing Face Features", question: "Can you draw your face?", context: "The student is drawing their own portrait." },
-                5: { navTitle: "[W2] Senses", goal: "Action Verbs for Senses", question: "What do you smell?", context: "The student is learning about human senses." },
-                6: { navTitle: "[W2] Sentences", goal: "Sentence Completion", question: "What else do you like?", context: "The student is writing an English sentence." },
-                7: { navTitle: "[W2] Matching", goal: "Sensory Association", question: "How do you hear music?", context: "The student is matching objects to their senses." },
-                8: { navTitle: "[W2] Emotion", goal: "Drawing Emotions", question: "Are you smiling?", context: "The student is drawing an emotional face expression." },
-                9: { navTitle: "[W3] Animals", goal: "Book Introduction", question: "Ready for the gorilla?", context: "The student is looking at a gorilla and animals." },
-                10: { navTitle: "[W3] Gorilla", goal: "Gorilla Body Parts", question: "Show me strong arms!", context: "The student is identifying body parts of a strong gorilla." },
-                11: { navTitle: "[W3] Labels", goal: "Labeling Body Parts", question: "Where is the shoulder?", context: "The student is drawing lines to label body parts." },
-                12: { navTitle: "[W3] Giraffe", goal: "Coloring a Giraffe", question: "Why is the neck long?", context: "The student is coloring a tall giraffe." },
-                13: { navTitle: "[W4] Creative", goal: "Creative Imagination", question: "Spaghetti arms?", context: "The student is using their imagination to draw funny arms." },
-                14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?", context: "The student is counting body parts mathematically." },
-                15: { navTitle: "[W4] Review", goal: "Reviewing the Story", question: "Did you enjoy it?", context: "The student is reviewing the lesson." },
-                16: { navTitle: "[W3] Board Design", goal: "Selecting Tools", question: "Which tools do you need?", context: "The student is checking a checklist of tools to make a board design (Clay, Paint, Scissors & Glue, Pompoms, Stickers, Glitter, Marker)." },
-                17: { navTitle: "[W4] Presentation", goal: "Self-Evaluation", question: "How was your presentation?", context: "The student is doing a self-evaluation checklist with smiley faces for 'I spoke LOUDLY!', 'I used ENGLISH!', 'I had FUN!'." }
+                1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?", expectedAction: "Write or trace their name using the pen." },
+                2: { navTitle: "[W1] Mind", goal: "Self-Esteem & I like myself", question: "Do you like yourself?", expectedAction: "Draw something they like about themselves." },
+                3: { navTitle: "[W1] Face", goal: "Face Vocabulary", question: "Where is your nose?", expectedAction: "Point out or circle facial features on a face." },
+                4: { navTitle: "[W1] Portrait", goal: "Drawing Face Features", question: "Can you draw your face?", expectedAction: "Draw their own portrait, adding eyes, nose, mouth." },
+                5: { navTitle: "[W2] Senses", goal: "Action Verbs for Senses", question: "What do you smell?", expectedAction: "Draw a line matching senses to actions." },
+                6: { navTitle: "[W2] Sentences", goal: "Sentence Completion", question: "What else do you like?", expectedAction: "Write or trace English words to complete the sentence." },
+                7: { navTitle: "[W2] Matching", goal: "Sensory Association", question: "How do you hear music?", expectedAction: "Match objects to their senses by drawing lines." },
+                8: { navTitle: "[W2] Emotion", goal: "Drawing Emotions", question: "Are you smiling?", expectedAction: "Draw an emotional face expression." },
+                9: { navTitle: "[W3] Animals", goal: "Book Introduction", question: "Ready for the gorilla?", expectedAction: "Look at a gorilla and animals." },
+                10: { navTitle: "[W3] Gorilla", goal: "Gorilla Body Parts", question: "Show me strong arms!", expectedAction: "Identify body parts of a strong gorilla. Trace the word if there is gray text." },
+                11: { navTitle: "[W3] Labels", goal: "Labeling Body Parts", question: "Where is the shoulder?", expectedAction: "Draw lines to label body parts." },
+                12: { navTitle: "[W3] Giraffe", goal: "Coloring a Giraffe", question: "Why is the neck long?", expectedAction: "Color the tall giraffe." },
+                13: { navTitle: "[W4] Creative", goal: "Creative Imagination", question: "Spaghetti arms?", expectedAction: "Use their imagination to draw funny arms." },
+                14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?", expectedAction: "Count body parts and trace the numbers." },
+                15: { navTitle: "[W4] Review", goal: "Reviewing the Story", question: "Did you enjoy it?", expectedAction: "Review the lesson." },
+                16: { navTitle: "[W3] Board Design", goal: "Selecting Tools", question: "Which tools do you need?", expectedAction: "Check the boxes for the tools they need (Clay, Paint, Scissors & Glue, Pompoms, Stickers, Glitter, Marker)." },
+                17: { navTitle: "[W4] Presentation", goal: "Self-Evaluation", question: "How was your presentation?", expectedAction: "Circle or check smiley faces for the self-evaluation checklist: 'I spoke LOUDLY!', 'I used ENGLISH!', 'I had FUN!'." }
             },
             "A-2": {
-                18: { navTitle: "[W1] Intro", goal: "Meeting Crawlers", question: "Ready for bugs?", context: "The student is looking at various insects." },
-                19: { navTitle: "[W1] Hungry", goal: "Food Recognition", question: "What is it eating?", context: "The student is learning about food." },
-                20: { navTitle: "[W1] Fruits", goal: "Reading Fruit Words", question: "Apples or plums?", context: "The student is learning fruit names." },
-                21: { navTitle: "[W1] Favorite", goal: "Favorite Fruit Drawing", question: "Why is it your favorite?", context: "The student drew their favorite fruit." },
-                22: { navTitle: "[W2] I Eat", goal: "Sentence Practice", question: "Crunchy or soft?", context: "The student is describing food texture." },
-                23: { navTitle: "[W2] Magic 1", goal: "Compound Words", question: "Butter meets Fly?", context: "The student is learning compound words." },
-                24: { navTitle: "[W2] Magic 2", goal: "Compound Words", question: "Straw meets Berry?", context: "The student is learning the word 'strawberry'." },
-                25: { navTitle: "[W2] Book 2", goal: "Caterpillar Story", question: "What should he eat?", context: "The student is talking about a caterpillar." },
-                26: { navTitle: "[W3] Cycle", goal: "Life Cycle Stages", question: "Inside the cocoon?", context: "The student is learning life cycle stages." },
-                27: { navTitle: "[W3] Symmetry", goal: "Butterfly Wings", question: "Can it fly high?", context: "The student is drawing symmetrical butterfly wings." },
-                28: { navTitle: "[W3] Math 1", goal: "Counting Fruits", question: "How many strawberries?", context: "The student is counting strawberries." },
-                29: { navTitle: "[W3] Math 2", goal: "Counting Leaves", question: "More leaves or apples?", context: "The student is comparing numbers." },
-                30: { navTitle: "[W4] Search", goal: "Identifying Insects", question: "Can you find the Ant?", context: "The student is searching for insects." },
-                31: { navTitle: "[W4] Review", goal: "Reviewing Bugs", question: "Favorite bug today?", context: "The student is reviewing bugs." },
-                32: { navTitle: "[W4] Garden", goal: "Drawing a Garden", question: "Who lives here?", context: "The student is drawing a garden scene." },
-                33: { navTitle: "[W4] Eval", goal: "Self Evaluation", question: "See you next time!", context: "The student is finishing the unit." }
+                18: { navTitle: "[W1] Intro", goal: "Meeting Crawlers", question: "Ready for bugs?", expectedAction: "Look at various insects." },
+                19: { navTitle: "[W1] Hungry", goal: "Food Recognition", question: "What is it eating?", expectedAction: "Identify food." },
+                20: { navTitle: "[W1] Fruits", goal: "Reading Fruit Words", question: "Apples or plums?", expectedAction: "Trace the gray letters of fruit names." },
+                21: { navTitle: "[W1] Favorite", goal: "Favorite Fruit Drawing", question: "Why is it your favorite?", expectedAction: "Draw their favorite fruit, copying shapes if needed." },
+                22: { navTitle: "[W2] I Eat", goal: "Sentence Practice", question: "Crunchy or soft?", expectedAction: "Describe food texture." },
+                23: { navTitle: "[W2] Magic 1", goal: "Compound Words", question: "Butter meets Fly?", expectedAction: "Learn compound words." },
+                24: { navTitle: "[W2] Magic 2", goal: "Compound Words", question: "Straw meets Berry?", expectedAction: "Learn the word 'strawberry'." },
+                25: { navTitle: "[W2] Book 2", goal: "Caterpillar Story", question: "What should he eat?", expectedAction: "Talk about a caterpillar." },
+                26: { navTitle: "[W3] Cycle", goal: "Life Cycle Stages", question: "Inside the cocoon?", expectedAction: "Learn life cycle stages." },
+                27: { navTitle: "[W3] Symmetry", goal: "Butterfly Wings", question: "Can it fly high?", expectedAction: "Draw symmetrical butterfly wings mimicking the other half." },
+                28: { navTitle: "[W3] Math 1", goal: "Counting Fruits", question: "How many strawberries?", expectedAction: "Count strawberries and trace the numbers." },
+                29: { navTitle: "[W3] Math 2", goal: "Counting Leaves", question: "More leaves or apples?", expectedAction: "Compare numbers." },
+                30: { navTitle: "[W4] Search", goal: "Identifying Insects", question: "Can you find the Ant?", expectedAction: "Search for insects and circle them." },
+                31: { navTitle: "[W4] Review", goal: "Reviewing Bugs", question: "Favorite bug today?", expectedAction: "Review bugs." },
+                32: { navTitle: "[W4] Garden", goal: "Drawing a Garden", question: "Who lives here?", expectedAction: "Draw a garden scene." },
+                33: { navTitle: "[W4] Eval", goal: "Self Evaluation", question: "See you next time!", expectedAction: "Finish the unit." }
             }
         };
 
@@ -1142,11 +1140,15 @@
                     if (!auth) throw new Error("Auth not fully initialized"); const user = auth.currentUser; if (!user) { throw new Error("Unauthorized"); }
                     const token = await user.getIdToken();
                     
+                    // [P0] 챕터 테마 + 기대 행동(expectedAction)을 백엔드로 전송
+                    let expectedAction = PAGE_INTELLIGENCE[STATE.unitId]?.[STATE.currentPage]?.expectedAction || "Free exploration";
+                    let theme = UNIT_THEMES[STATE.unitId] || "General Learning";
+
                     const reqObj = { 
                         prompt: promptText, 
                         image: base64Img, 
-                        // [P0] 챕터 테마를 워커로 전송
-                        theme: UNIT_THEMES[STATE.unitId] || "General Learning",
+                        theme: theme,
+                        expectedAction: expectedAction,
                         metrics: { strokes: STATE.strokeCount, colors: STATE.usedColors.size }, 
                         history: this.getMemory(),
                         studentName: STATE.studentName,
@@ -1167,21 +1169,21 @@
                 const requestPage = STATE.currentPage; const requestUnit = STATE.unitId;
                 const content = document.getElementById('ai-content'); const panel = document.getElementById('ai-panel');
                 if (panel) panel.classList.add('open');
-                if (content) content.innerHTML = `<div class="ai-loading-container"><i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i><p>Teacher is looking at your art and reading your words...</p></div>`;
+                if (content) content.innerHTML = `<div class="ai-loading-container"><i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i><p>Teacher is looking at your work...</p></div>`;
                 
                 try {
                     StorageEngine.saveCanvasLocal(); StorageEngine.executeCloudSave();
                     const canvasImg = CanvasEngine.captureWorksheetWithDrawing(true);
-                    let unitData = { goal: "Free Exploration", question: "Tell me more about it.", context: "The student is exploring and drawing freely." };
+                    let unitData = { goal: "Free Exploration", question: "Tell me more about it." };
                     if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]) { unitData = PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]; }
                     
-                    // 프롬프트는 워커에서 통합 처리하므로 여기서는 목표만 전달
-                    const prompt = `Goal: ${unitData.goal}. Context: ${unitData.context || unitData.question}. Please analyze.`;
+                    // 프롬프트는 워커에서 통합 처리하므로 간결하게 목표만 전달
+                    const prompt = `Goal: ${unitData.goal}. Question context: ${unitData.question}. Please analyze.`;
                     
                     const reply = await this.callBackendTutor(prompt, canvasImg);
                     if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
 
-                    STATE.chatHistory.push({ role: "Student", text: STATE.lastTranscript || "Look at my work!" }); 
+                    STATE.chatHistory.push({ role: "Student", text: STATE.lastTranscript || "Look!" }); 
                     STATE.chatHistory.push({ role: "Teacher", text: reply });
                     
                     const aiFailed = (reply || "").includes("앗,");
@@ -1211,7 +1213,7 @@
                     const aBbl = document.createElement('div'); aBbl.className = "chat-bubble ai mt-4"; aBbl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 생각 중...`; content.appendChild(aBbl); content.scrollTop = content.scrollHeight;
                     
                     try {
-                        const prompt = `Student just answered. Analyze their response.`;
+                        const prompt = `Student just answered. Respond enthusiastically in 2-3 short sentences.`;
                         const reply = await this.callBackendTutor(prompt);
                         if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
                         
@@ -1230,9 +1232,7 @@
                     if (preferredVoices.length > 0) u.voice = preferredVoices[0];
                     window.speechSynthesis.speak(u); 
                 } 
-            },
-            
-            close() { const panel = document.getElementById('ai-panel'); if (panel) panel.classList.remove('open'); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+            }
         };
 
         if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
@@ -1289,7 +1289,7 @@
             if (systemBooted) return; systemBooted = true;
             try {
                 StorageEngine.load(); CustomModalEngine.init(); CanvasEngine.init(); RGBRingEngine.init(); AudioEngine.init(); CursorEngine.init(); BadgeEngine.renderAll(); PageEngine.init(); SyncIndicatorEngine.init();
-                Logger.log("V100.600 Enterprise Master System Boot Complete.");
+                Logger.log("V100.700 Vision-Pro Master Boot Complete.");
             } catch(error) { Logger.error("Framework initialization error:", error); }
         }
 
@@ -1306,12 +1306,10 @@
                             const profileBox = document.getElementById('profile-box'); if (profileBox) profileBox.classList.add('registered');
                             const displayNameEl = document.getElementById('display-name'); if (displayNameEl) displayNameEl.innerText = STATE.studentName;
                             const avatarEl = document.getElementById('avatar-char'); if (avatarEl) avatarEl.innerText = STATE.studentName.charAt(0);
-                        } else {
-                            Logger.warn("No active session. Launching in Guest Fallback Mode."); STATE.studentName = "GUEST";
-                        }
+                        } else { STATE.studentName = "GUEST"; }
                         SystemBoot(); 
                     });
-                } catch (e) { Logger.error("Firebase init caught error", e); SystemBoot(); }
+                } catch (e) { SystemBoot(); }
             } else { setTimeout(safeFirebaseBoot, 100); }
         }
 

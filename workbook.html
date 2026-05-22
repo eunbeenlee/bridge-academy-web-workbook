@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#FCFBF9">
     
-    <title>Bridge Academy | Premium AI Lab V100.700</title>
+    <title>Bridge Academy | Premium AI Lab V100.800</title>
 
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     
@@ -18,6 +18,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> 
+    
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -58,197 +59,49 @@
         }
 
         /* ======================================================================
-           [2] BASE RESET & GLOBAL TYPOGRAPHY ENFORCEMENT
+           [2] BASE RESET & GLOBAL TYPOGRAPHY
            ====================================================================== */
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            cursor: none !important;
-        }
-
-        html, body {
-            width: 100%; 
-            height: 100dvh; 
-            overflow: hidden; 
-            background-color: var(--br-bg); 
-            color: var(--br-charcoal); 
-            font-family: 'Nunito', 'Pretendard', sans-serif; 
-            pointer-events: auto !important; 
-            -webkit-font-smoothing: antialiased; 
-        }
-
-        a, button, input, select, textarea { 
-            font-family: inherit; 
-            outline: none;
-            border: none;
-            background: transparent;
-            cursor: none !important;
-        }
-
-        ul, ol, li { 
-            list-style: none; 
-        }
-
-        @supports not (height: 100dvh) {
-            html, body, .app-container { height: 100vh; }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; cursor: none !important; }
+        html, body { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-charcoal); font-family: 'Nunito', 'Pretendard', sans-serif; pointer-events: auto !important; -webkit-font-smoothing: antialiased; }
+        a, button, input, select, textarea { font-family: inherit; outline: none; border: none; background: transparent; cursor: none !important; }
+        ul, ol, li { list-style: none; }
+        @supports not (height: 100dvh) { html, body, .app-container { height: 100vh; } }
 
         /* ======================================================================
            [3] ZERO-LATENCY CUSTOM CURSOR
            ====================================================================== */
-        .cursor-dot {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 4px; 
-            height: 4px;
-            background-color: rgba(54, 52, 49, 0.75); 
-            border-radius: 50%;
-            pointer-events: none; 
-            z-index: 99999; 
-            transform: translate(-50%, -50%);
-            transition: width 0.1s ease, height 0.1s ease, opacity 0.1s ease, background-color 0.1s ease;
-            will-change: transform;
-        }
-
-        .cursor-ring {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 22px; 
-            height: 22px;
-            border: 1px solid rgba(54, 52, 49, 0.28); 
-            border-radius: 50%;
-            pointer-events: none; 
-            z-index: 99998; 
-            transform: translate(-50%, -50%);
-            transition: width 0.15s ease, height 0.15s ease, opacity 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
-            will-change: transform;
-        }
-
+        .cursor-dot { position: fixed; top: 0; left: 0; width: 4px; height: 4px; background-color: rgba(54, 52, 49, 0.75); border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); transition: width 0.1s ease, height 0.1s ease, opacity 0.1s ease, background-color 0.1s ease; will-change: transform; }
+        .cursor-ring { position: fixed; top: 0; left: 0; width: 22px; height: 22px; border: 1px solid rgba(54, 52, 49, 0.28); border-radius: 50%; pointer-events: none; z-index: 99998; transform: translate(-50%, -50%); transition: width 0.15s ease, height 0.15s ease, opacity 0.15s ease, border-color 0.15s ease, background-color 0.15s ease; will-change: transform; }
         .cursor-dot.hovered { width: 3px; height: 3px; background-color: rgba(145, 211, 180, 0.8); }
         .cursor-ring.hovered { width: 28px; height: 28px; background-color: rgba(145, 211, 180, 0.05); border-color: rgba(145, 211, 180, 0.5); }
         .cursor-dot.hidden, .cursor-ring.hidden { opacity: 0; visibility: hidden; }
-
         .stage-wrapper, .drawing-board, #draw-layer { cursor: crosshair !important; }
-
-        @media (pointer: coarse) {
-            .cursor-dot, .cursor-ring { display: none !important; }
-            html, body, a, button, input, select, textarea, .stage-wrapper, .drawing-board, #draw-layer { cursor: auto !important; }
-        }
+        @media (pointer: coarse) { .cursor-dot, .cursor-ring { display: none !important; } html, body, a, button, input, select, textarea, .stage-wrapper, .drawing-board, #draw-layer { cursor: auto !important; } }
         
         /* ======================================================================
            [4] APP CONTAINER & SIDEBAR
            ====================================================================== */
-        .app-container { 
-            display: flex; 
-            flex-direction: row; 
-            width: 100vw; 
-            height: 100dvh; 
-            position: relative; 
-        }
-        
-        .sidebar { 
-            width: var(--sidebar-width); 
-            height: 100%; 
-            background-color: var(--br-paper); 
-            border-right: 1px solid var(--br-border); 
-            display: flex; 
-            flex-direction: column; 
-            z-index: 2000; 
-            flex-shrink: 0; 
-            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); 
-            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.02);
-        }
-
-        .sidebar-backdrop {
-            position: fixed; 
-            inset: 0; 
-            background-color: rgba(0, 0, 0, 0.18);
-            z-index: 1500; 
-            opacity: 0; 
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            backdrop-filter: blur(3px); 
-        }
+        .app-container { display: flex; flex-direction: row; width: 100vw; height: 100dvh; position: relative; }
+        .sidebar { width: var(--sidebar-width); height: 100%; background-color: var(--br-paper); border-right: 1px solid var(--br-border); display: flex; flex-direction: column; z-index: 2000; flex-shrink: 0; transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); box-shadow: 5px 0 15px rgba(0, 0, 0, 0.02); }
+        .sidebar-backdrop { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.18); z-index: 1500; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
         .sidebar-backdrop.active { opacity: 1; pointer-events: auto; }
-
-        .sidebar-header { 
-            padding: 35px 30px; 
-            text-align: center; 
-            border-bottom: 1px solid var(--br-border); 
-            transition: background-color 0.4s ease;
-        }
+        .sidebar-header { padding: 35px 30px; text-align: center; border-bottom: 1px solid var(--br-border); transition: background-color 0.4s ease; }
         .sidebar-header:hover { background-color: var(--br-bg); }
 
-        .brand-logo { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 32px; 
-            font-weight: 900; 
-            color: var(--br-charcoal); 
-            letter-spacing: -0.5px; 
-            line-height: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
-        .brand-logo span { 
-            color: var(--br-green); 
-            font-style: italic; 
-            font-weight: 700;
-        }
+        .brand-logo { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: var(--br-charcoal); letter-spacing: -0.5px; line-height: 1; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .brand-logo span { color: var(--br-green); font-style: italic; font-weight: 700; }
         
-        .student-profile { 
-            padding: 25px 30px; 
-            border-bottom: 1px solid var(--br-border); 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-            background-color: #FAFAFA; 
-            transition: background-color 0.3s ease; 
-        }
+        .student-profile { padding: 25px 30px; border-bottom: 1px solid var(--br-border); display: flex; flex-direction: column; gap: 15px; background-color: #FAFAFA; transition: background-color 0.3s ease; }
         .student-profile.registered { background-color: var(--br-ai-soft); }
-
         .profile-top { display: flex; align-items: center; gap: 15px; }
-        .profile-avatar { 
-            width: 52px; 
-            height: 52px; 
-            border-radius: 50%; 
-            background-color: var(--br-border); 
-            color: #FFFFFF; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            font-weight: 900; 
-            font-size: 22px; 
-            font-family: 'Nunito', sans-serif; 
-            transition: all 0.4s ease;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
+        .profile-avatar { width: 52px; height: 52px; border-radius: 50%; background-color: var(--br-border); color: #FFFFFF; display: flex; justify-content: center; align-items: center; font-weight: 900; font-size: 22px; font-family: 'Nunito', sans-serif; transition: all 0.4s ease; box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); }
         .student-profile.registered .profile-avatar { background-color: var(--br-gold); box-shadow: 0 8px 20px rgba(203, 174, 117, 0.3); }
-
         .profile-info { display: flex; flex-direction: column; overflow: hidden; }
         .profile-name { font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; color: var(--br-charcoal); text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .profile-role { font-size: 11px; font-weight: 700; color: var(--br-muted); letter-spacing: 1.5px; text-transform: uppercase; }
 
         .badge-container { display: flex; flex-wrap: wrap; gap: 6px; min-height: 24px; }
-        .badge { 
-            font-size: 11px; 
-            padding: 4px 10px; 
-            border-radius: 12px; 
-            background-color: #FFFFFF; 
-            border: 1px solid var(--br-border); 
-            color: var(--br-charcoal); 
-            font-weight: 800; 
-            display: flex; 
-            align-items: center; 
-            gap: 4px; 
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02); 
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        }
+        .badge { font-size: 11px; padding: 4px 10px; border-radius: 12px; background-color: #FFFFFF; border: 1px solid var(--br-border); color: var(--br-charcoal); font-weight: 800; display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02); animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
         .nav-list { flex: 1; overflow-y: auto; padding: 15px; scroll-behavior: smooth; }
         .nav-list::-webkit-scrollbar { width: 5px; }
@@ -256,20 +109,9 @@
         .nav-list::-webkit-scrollbar-thumb { background-color: #E8E6E1; border-radius: 10px; }
         .nav-list::-webkit-scrollbar-thumb:hover { background-color: #D5D3CE; }
 
-        .nav-item { 
-            padding: 18px 20px; 
-            margin-bottom: 10px; 
-            border-radius: 15px; 
-            background-color: #FAFAFA; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-            border: 1px solid transparent; 
-        }
+        .nav-item { padding: 18px 20px; margin-bottom: 10px; border-radius: 15px; background-color: #FAFAFA; display: flex; justify-content: space-between; align-items: center; transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1); border: 1px solid transparent; }
         .nav-item:hover { background-color: #FFFFFF; border-color: var(--br-border); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02); }
         .nav-item.active { background-color: var(--br-ai-soft); border-left: 6px solid var(--br-green); border-color: transparent; box-shadow: 0 10px 25px rgba(145, 211, 180, 0.12); }
-
         .nav-title { font-size: 14px; font-weight: 700; color: var(--br-charcoal); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 170px; }
         .nav-item.active .nav-title { font-weight: 900; color: var(--br-green); }
         .nav-badge { font-family: 'Nunito', sans-serif; font-size: 10px; font-weight: 900; color: var(--br-muted); }
@@ -284,69 +126,27 @@
         .mobile-menu-btn { display: none; font-size: 28px; padding: 10px; color: var(--br-charcoal); z-index: 1500; }
 
         .unit-info { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 3px; text-transform: uppercase; }
-        
-        .page-info { 
-            font-family: 'Nunito', sans-serif; 
-            font-size: 24px; 
-            font-weight: 900; 
-            color: var(--br-charcoal); 
-            letter-spacing: -0.5px; 
-            margin-top: 2px; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px;
-        }
-        
-        .page-goal {
-            font-family: 'Pretendard', sans-serif; 
-            font-size: 15px; 
-            font-weight: 600; 
-            color: var(--br-muted); 
-            background-color: #F8F9FA; 
-            padding: 4px 14px; 
-            border-radius: 50px; 
-            border: 1px solid var(--br-border); 
-        }
+        .page-info { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 900; color: var(--br-charcoal); letter-spacing: -0.5px; margin-top: 2px; display: flex; align-items: center; gap: 12px; }
+        .page-goal { font-family: 'Pretendard', sans-serif; font-size: 15px; font-weight: 600; color: var(--br-muted); background-color: #F8F9FA; padding: 4px 14px; border-radius: 50px; border: 1px solid var(--br-border); }
 
-        .sync-indicator-container {
-            display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 50px; background-color: var(--br-bg); border: 1px solid var(--br-border); 
-            font-size: 12px; font-weight: 700; color: var(--br-muted); transition: all 0.4s ease;
-        }
+        .sync-indicator-container { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 50px; background-color: var(--br-bg); border: 1px solid var(--br-border); font-size: 12px; font-weight: 700; color: var(--br-muted); transition: all 0.4s ease; }
         .sync-indicator-container.saving { color: var(--br-blue); background-color: #F0F4F8; border-color: #D9E4EC; }
         .sync-indicator-container.saved { color: var(--br-success); background-color: #F0FDF4; border-color: #DCFCE7; }
         .sync-icon.spin { animation: spin 1s linear infinite; }
 
-        .toast-error { 
-            display: none; align-items: center; justify-content: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--br-error); 
-            background-color: var(--br-error-light); padding: 8px 16px; border-radius: 50px; border: 1px solid var(--br-error-border); 
-            animation: popIn 0.3s ease-out; z-index: 5000; position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
-        }
+        .toast-error { display: none; align-items: center; justify-content: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--br-error); background-color: var(--br-error-light); padding: 8px 16px; border-radius: 50px; border: 1px solid var(--br-error-border); animation: popIn 0.3s ease-out; z-index: 5000; position: absolute; top: 20px; left: 50%; transform: translateX(-50%); }
         .toast-error.show { display: flex; }
         
         /* ======================================================================
            [6] STAGE & DRAWING BOARD
            ====================================================================== */
         .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px; background-color: var(--br-bg); perspective: 1200px; overflow: hidden; }
-
-        .drawing-board { 
-            position: relative; display: inline-flex; border-radius: 20px; box-shadow: var(--shadow-premium); background-color: #FFFFFF; 
-            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); transform-origin: center; max-width: 100%; max-height: 100%; overflow: hidden;
-        }
-
-        .drawing-board::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none; z-index: 10000; mix-blend-mode: multiply;
-        }
-
+        .drawing-board { position: relative; display: inline-flex; border-radius: 20px; box-shadow: var(--shadow-premium); background-color: #FFFFFF; transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); transform-origin: center; max-width: 100%; max-height: 100%; overflow: hidden; }
+        .drawing-board::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 10000; mix-blend-mode: multiply; }
         .drawing-board.fade-out { opacity: 0; transform: scale(0.95) translateY(20px); }
         .drawing-board.error-state { border: 2px dashed var(--br-error); background-color: #FFF0F0; }
 
-        #worksheet-img { 
-            display: block; max-width: 100%; max-height: calc(100dvh - 250px); width: auto; height: auto; border-radius: 20px; 
-            pointer-events: none; opacity: 0; transition: opacity 0.5s ease; user-select: none; object-fit: contain; background-color: transparent;
-        }
-
+        #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 250px); width: auto; height: auto; border-radius: 20px; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; user-select: none; object-fit: contain; background-color: transparent; }
         #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; touch-action: none; border-radius: 20px; }
 
         /* ======================================================================
@@ -354,10 +154,8 @@
            ====================================================================== */
         .bottom-dock { height: var(--dock-height); background-color: rgba(255, 255, 255, 0.98); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 50px var(--safe-bottom) 50px; z-index: 500; }
         .tool-group { display: flex; align-items: center; gap: 15px; background-color: #F8F9FA; padding: 12px 30px; border-radius: 100px; border: 1px solid var(--br-border); }
-        
-        .color-preview { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #FFFFFF; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+        .color-preview { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #FFFFFF; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
         .color-preview:active { transform: scale(0.85); }
-        
         .btn-magic { font-size: 24px; padding: 5px; transition: all 0.3s ease; filter: grayscale(100%); opacity: 0.6; }
         .btn-magic:active { transform: scale(0.8); }
         .btn-magic.active { filter: grayscale(0%); opacity: 1; transform: scale(1.3); }
@@ -368,17 +166,14 @@
 
         .btn-tool { font-size: 18px; font-weight: 900; padding: 10px 14px; color: var(--br-charcoal); transition: all 0.2s ease; background-color: #FFFFFF; border: 1px solid var(--br-border); border-radius: 12px; }
         .btn-tool:active { transform: scale(0.85); }
-
         .btn-erase { font-size: 14px; font-weight: 900; padding: 12px 18px; border-radius: 14px; background-color: #FFFFFF; border: 1px solid var(--br-border); transition: all 0.2s ease; color: var(--br-charcoal); }
         .btn-erase:active { transform: scale(0.9); }
         .btn-erase.active { background-color: var(--br-error); color: #FFFFFF; border-color: var(--br-error); }
-        
         .btn-reset-all { font-size: 14px; font-weight: 900; padding: 12px 18px; border-radius: 14px; background-color: #FFF5F5; border: 1px solid #FFEBEB; transition: all 0.2s ease; color: var(--br-error); display: flex; align-items: center; gap: 6px; }
         .btn-reset-all:hover { background-color: var(--br-error-light); border-color: var(--br-error-border); }
         .btn-reset-all:active { transform: scale(0.9); }
 
         .action-group { display: flex; gap: 15px; align-items: center; }
-        
         .btn-nav { width: 60px; height: 60px; border-radius: 18px; border: 1px solid var(--br-border); background-color: #FFFFFF; font-size: 24px; transition: all 0.3s ease; color: var(--br-charcoal); display: flex; justify-content: center; align-items: center; box-shadow: var(--shadow-button); }
         .btn-nav:hover { background-color: #FAFAFA; border-color: var(--br-charcoal); }
         .btn-nav:active { transform: scale(0.85); }
@@ -407,25 +202,25 @@
         
         .ai-content { padding: 30px 35px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; }
         .chat-bubble { max-width: 90%; padding: 20px 25px; border-radius: 22px; font-size: 16px; line-height: 1.7; font-weight: 500; word-break: keep-all; animation: popIn 0.5s ease; }
-        .chat-bubble.ai { align-self: flex-start; background-color: #F8F9FA; border-bottom-left-radius: 4px; border: 1px solid var(--br-border); color: var(--br-text); }
+        .chat-bubble.ai { align-self: flex-start; background-color: #F8F9FA; border-bottom-left-radius: 4px; border: 1px solid var(--br-border); }
         .chat-bubble.user { align-self: flex-end; background-color: var(--br-green); color: #FFFFFF; border-bottom-right-radius: 4px; box-shadow: 0 8px 20px rgba(145, 211, 180, 0.3); }
         
         .ai-loading-container { text-align: center; padding: 50px 0; }
         .ai-loading-icon { font-size: 36px; color: var(--br-green); margin-bottom: 15px; }
         .ai-loading-text { font-weight: 900; color: var(--br-muted); font-size: 14px; }
 
-        .analytics-card { background-color: #FAFAFA; border: 1px solid var(--br-border); border-radius: 24px; padding: 25px; align-self: stretch; margin-bottom: 10px; }
+        .analytics-card { background-color: #FAFAFA; border: 1px solid var(--br-border); border-radius: 24px; padding: 25px; margin-bottom: 10px; }
         .analytics-title { color: var(--br-gold); font-size: 14px; margin-bottom: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px dashed var(--br-border); padding-bottom: 12px; }
         .stat-row { margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; }
-        .stat-label { font-size: 13px; font-weight: 800; display: flex; justify-content: space-between; color: var(--br-charcoal); }
+        .stat-label { font-size: 13px; font-weight: 800; display: flex; justify-content: space-between; }
         .bar-bg { width: 100%; height: 10px; background-color: #E8E6E1; border-radius: 12px; overflow: hidden; }
         .bar-fill { height: 100%; background-color: var(--br-blue); border-radius: 12px; transition: width 1.2s ease; }
 
         .chat-footer { padding: 25px 35px; border-top: 1px solid var(--br-border); display: flex; flex-direction: column; gap: 15px; background-color: #FFFFFF; }
-        .btn-chat-action { width: 100%; height: 60px; background-color: var(--br-charcoal); color: #FFFFFF; border-radius: 18px; font-weight: 900; transition: all 0.3s ease; font-size: 16px; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px; font-family: 'Nunito', sans-serif; box-shadow: 0 10px 20px rgba(54, 52, 49, 0.2); }
+        .btn-chat-action { width: 100%; height: 60px; background-color: var(--br-charcoal); color: #FFFFFF; border-radius: 18px; font-weight: 900; font-size: 16px; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 10px 20px rgba(54, 52, 49, 0.2); transition: all 0.3s ease; }
         .btn-chat-action:hover { background-color: var(--br-gold); transform: translateY(-2px); }
         .btn-chat-action:active { transform: scale(0.95); }
-        .btn-chat-next { width: 100%; text-align: center; font-size: 14px; font-weight: bold; color: var(--br-blue); margin-top: 15px; transition: color 0.3s ease; }
+        .btn-chat-next { text-align: center; font-size: 14px; font-weight: bold; color: var(--br-blue); margin-top: 15px; transition: color 0.3s ease; }
         .btn-chat-next:hover { color: var(--br-gold); }
 
         /* ======================================================================
@@ -433,21 +228,19 @@
            ====================================================================== */
         .bridge-modal-overlay { position: fixed; inset: 0; background-color: rgba(42, 40, 37, 0.6); z-index: 40000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(8px); }
         .bridge-modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .bridge-modal-box { background-color: #FFFFFF; width: 420px; max-width: 90%; border-radius: 24px; padding: 40px 35px 35px 35px; text-align: center; transform: scale(0.9) translateY(20px); transition: transform 0.4s ease; box-shadow: var(--shadow-premium); }
+        .bridge-modal-box { background-color: #FFFFFF; width: 420px; max-width: 90%; border-radius: 24px; padding: 40px 35px 35px; text-align: center; transform: scale(0.9) translateY(20px); transition: transform 0.4s ease; box-shadow: var(--shadow-premium); }
         .bridge-modal-overlay.active .bridge-modal-box { transform: scale(1) translateY(0); }
-        .bridge-modal-icon { font-size: 45px; color: var(--br-gold); margin-bottom: 20px; display: block; }
+        .bridge-modal-icon { font-size: 45px; color: var(--br-gold); margin-bottom: 20px; }
         .bridge-modal-icon.warning { color: var(--br-error); }
         .bridge-modal-title { font-size: 26px; font-weight: 900; margin-bottom: 12px; }
         .bridge-modal-text { font-size: 15px; color: var(--br-muted); line-height: 1.6; margin-bottom: 30px; word-break: keep-all; }
-        .bridge-modal-actions { display: flex; gap: 12px; justify-content: center; }
+        .bridge-modal-actions { display: flex; gap: 12px; }
         .bridge-modal-btn { flex: 1; padding: 15px 0; border-radius: 14px; font-weight: 900; font-size: 15px; text-transform: uppercase; transition: all 0.3s ease; }
         .bridge-modal-btn:active { transform: scale(0.9); }
         .bridge-modal-cancel { background-color: #F0EFEB; color: var(--br-charcoal); border: 1px solid transparent; }
         .bridge-modal-cancel:hover { background-color: #E5E4E0; }
         .bridge-modal-confirm { background-color: var(--br-error); color: #FFFFFF; border: 1px solid transparent; box-shadow: 0 8px 15px rgba(231, 76, 60, 0.2); }
         .bridge-modal-confirm:hover { background-color: #C0392B; }
-        .bridge-modal-confirm.neutral { background-color: var(--br-charcoal); box-shadow: 0 8px 15px rgba(54, 52, 49, 0.2); }
-        .bridge-modal-confirm.neutral:hover { background-color: var(--br-gold); }
 
         .rgb-modal { position: absolute; bottom: 130px; left: 50px; background-color: #FFFFFF; border-radius: 25px; padding: 25px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); z-index: 5000; opacity: 0; pointer-events: none; transform: translateY(20px); transition: all 0.3s ease; }
         .rgb-modal.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
@@ -467,7 +260,6 @@
         .cert-msg { font-size: 18px; font-style: italic; margin-bottom: 35px; }
         .btn-print { background-color: var(--br-charcoal); color: #FFFFFF; padding: 18px 45px; font-size: 18px; font-weight: 900; border-radius: 100px; display: inline-flex; align-items: center; gap: 12px; transition: all 0.3s ease; box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
         .btn-print:hover { transform: translateY(-4px); background-color: var(--br-gold); box-shadow: 0 20px 35px rgba(203,174,117,0.3); }
-        .btn-print:active { transform: scale(0.95); }
         .cert-close { position: absolute; top: 25px; right: 35px; font-size: 35px; color: var(--br-muted); font-weight: 900; transition: all 0.2s ease; }
         .cert-close:hover { color: var(--br-error); transform: rotate(90deg); }
 
@@ -498,7 +290,6 @@
             .page-info { font-size: 18px; flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 4px; }
             .page-goal { font-size: 12px; padding: 2px 8px; }
             .ai-header, .ai-content, .chat-footer { padding: 0 20px; }
-            .chat-bubble { max-width: 96%; font-size: 15px; }
         }
         @media (max-width: 480px) {
             .btn-nav, .btn-main { height: 45px; font-size: 13px; }
@@ -654,14 +445,7 @@
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
             API_TUTOR_ENDPOINT: "https://sparkling-sky-6699.ebin22725.workers.dev", 
-            FIREBASE_CONFIG: {
-                apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk",
-                authDomain: "bridge-academy-6d6a9.firebaseapp.com",
-                projectId: "bridge-academy-6d6a9",
-                storageBucket: "bridge-academy-6d6a9.appspot.com", 
-                messagingSenderId: "581314243350",
-                appId: "1:581314243350:web:57897ed73d787eb02efe37"
-            }
+            FIREBASE_CONFIG: { apiKey: "AIzaSyACTwFv5V9eXKKaQODzZokBkwGk8mB8AAk", authDomain: "bridge-academy-6d6a9.firebaseapp.com", projectId: "bridge-academy-6d6a9", storageBucket: "bridge-academy-6d6a9.appspot.com", messagingSenderId: "581314243350", appId: "1:581314243350:web:57897ed73d787eb02efe37" }
         };
 
         const STATE = {
@@ -670,6 +454,11 @@
             currentPage: 1, isRecording: false, lastTranscript: "", sttConfidence: 0,
             historyStack: [], historyIndex: -1, chatHistory: [], badges: [], brushType: 'normal',
             strokeCount: 0, usedColors: new Set()
+        };
+
+        const UNIT_THEMES = {
+            "A-1": "All About Me & My Senses",
+            "A-2": "Nature & Crawling Bugs"
         };
 
         let auth = null;
@@ -682,8 +471,8 @@
                 console.error(`[BRIDGE FATAL] ${msg}`, err); 
                 const toast = document.getElementById('error-toast');
                 if (toast) {
-                    const toastMsg = document.getElementById('error-toast-msg');
-                    if (toastMsg) toastMsg.innerText = msg;
+                    const tm = document.getElementById('error-toast-msg');
+                    if (tm) tm.innerText = msg;
                     toast.classList.add('show');
                     setTimeout(() => toast.classList.remove('show'), 5000);
                 }
@@ -760,50 +549,44 @@
             }
         };
 
-        // [P0] 챕터 테마(Macro Context) 매핑
-        const UNIT_THEMES = {
-            "A-1": "All About Me & My Senses",
-            "A-2": "Nature & Crawling Bugs"
-        };
-
-        // [P0] 따라 쓰기(Tracing) 및 모방(Mimicking) 분석을 위한 Expected Action 부여
+        // [P0] AI 멀티모달 분석을 위한 정밀 지시어(expectedAction) 탑재
         const PAGE_INTELLIGENCE = {
             "A-1": {
-                1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?", expectedAction: "Write or trace their name using the pen." },
+                1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?", expectedAction: "Trace or write their name. Check handwriting." },
                 2: { navTitle: "[W1] Mind", goal: "Self-Esteem & I like myself", question: "Do you like yourself?", expectedAction: "Draw something they like about themselves." },
-                3: { navTitle: "[W1] Face", goal: "Face Vocabulary", question: "Where is your nose?", expectedAction: "Point out or circle facial features on a face." },
-                4: { navTitle: "[W1] Portrait", goal: "Drawing Face Features", question: "Can you draw your face?", expectedAction: "Draw their own portrait, adding eyes, nose, mouth." },
-                5: { navTitle: "[W2] Senses", goal: "Action Verbs for Senses", question: "What do you smell?", expectedAction: "Draw a line matching senses to actions." },
-                6: { navTitle: "[W2] Sentences", goal: "Sentence Completion", question: "What else do you like?", expectedAction: "Write or trace English words to complete the sentence." },
-                7: { navTitle: "[W2] Matching", goal: "Sensory Association", question: "How do you hear music?", expectedAction: "Match objects to their senses by drawing lines." },
-                8: { navTitle: "[W2] Emotion", goal: "Drawing Emotions", question: "Are you smiling?", expectedAction: "Draw an emotional face expression." },
-                9: { navTitle: "[W3] Animals", goal: "Book Introduction", question: "Ready for the gorilla?", expectedAction: "Look at a gorilla and animals." },
-                10: { navTitle: "[W3] Gorilla", goal: "Gorilla Body Parts", question: "Show me strong arms!", expectedAction: "Identify body parts of a strong gorilla. Trace the word if there is gray text." },
-                11: { navTitle: "[W3] Labels", goal: "Labeling Body Parts", question: "Where is the shoulder?", expectedAction: "Draw lines to label body parts." },
-                12: { navTitle: "[W3] Giraffe", goal: "Coloring a Giraffe", question: "Why is the neck long?", expectedAction: "Color the tall giraffe." },
-                13: { navTitle: "[W4] Creative", goal: "Creative Imagination", question: "Spaghetti arms?", expectedAction: "Use their imagination to draw funny arms." },
-                14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?", expectedAction: "Count body parts and trace the numbers." },
-                15: { navTitle: "[W4] Review", goal: "Reviewing the Story", question: "Did you enjoy it?", expectedAction: "Review the lesson." },
-                16: { navTitle: "[W3] Board Design", goal: "Selecting Tools", question: "Which tools do you need?", expectedAction: "Check the boxes for the tools they need (Clay, Paint, Scissors & Glue, Pompoms, Stickers, Glitter, Marker)." },
-                17: { navTitle: "[W4] Presentation", goal: "Self-Evaluation", question: "How was your presentation?", expectedAction: "Circle or check smiley faces for the self-evaluation checklist: 'I spoke LOUDLY!', 'I used ENGLISH!', 'I had FUN!'." }
+                3: { navTitle: "[W1] Face", goal: "Face Vocabulary", question: "Where is your nose?", expectedAction: "Circle or trace facial features on the given face." },
+                4: { navTitle: "[W1] Portrait", goal: "Drawing Face Features", question: "Can you draw your face?", expectedAction: "Draw a full portrait including eyes, nose, and mouth." },
+                5: { navTitle: "[W2] Senses", goal: "Action Verbs for Senses", question: "What do you smell?", expectedAction: "Draw lines to match senses to actions." },
+                6: { navTitle: "[W2] Sentences", goal: "Sentence Completion", question: "What else do you like?", expectedAction: "Trace or write words to complete the English sentence. Check their tracing." },
+                7: { navTitle: "[W2] Matching", goal: "Sensory Association", question: "How do you hear music?", expectedAction: "Match objects to their correct senses." },
+                8: { navTitle: "[W2] Emotion", goal: "Drawing Emotions", question: "Are you smiling?", expectedAction: "Draw an emotional expression." },
+                9: { navTitle: "[W3] Animals", goal: "Book Introduction", question: "Ready for the gorilla?", expectedAction: "Observe animals and draw what they see." },
+                10: { navTitle: "[W3] Gorilla", goal: "Gorilla Body Parts", question: "Show me strong arms!", expectedAction: "Identify gorilla body parts. Trace any gray letters." },
+                11: { navTitle: "[W3] Labels", goal: "Labeling Body Parts", question: "Where is the shoulder?", expectedAction: "Draw lines to label body parts correctly." },
+                12: { navTitle: "[W3] Giraffe", goal: "Coloring a Giraffe", question: "Why is the neck long?", expectedAction: "Color the giraffe. Check their color choices." },
+                13: { navTitle: "[W4] Creative", goal: "Creative Imagination", question: "Spaghetti arms?", expectedAction: "Use imagination to draw funny arms." },
+                14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?", expectedAction: "Count the fingers and trace the numbers." },
+                15: { navTitle: "[W4] Review", goal: "Reviewing the Story", question: "Did you enjoy it?", expectedAction: "Review the lesson concepts." },
+                16: { navTitle: "[W3] Board Design", goal: "Selecting Tools", question: "Which tools do you need?", expectedAction: "Checklist analysis: Look at the boxes (Clay, Paint, Scissors & Glue, Pompoms, Stickers, Glitter, Marker) and explicitly state which ones the student checked or scribbled on." },
+                17: { navTitle: "[W4] Presentation", goal: "Self-Evaluation", question: "How was your presentation?", expectedAction: "Evaluation analysis: Check which smiley faces the student circled or marked for 'I spoke LOUDLY!', 'I used ENGLISH!', and 'I had FUN!'." }
             },
             "A-2": {
-                18: { navTitle: "[W1] Intro", goal: "Meeting Crawlers", question: "Ready for bugs?", expectedAction: "Look at various insects." },
-                19: { navTitle: "[W1] Hungry", goal: "Food Recognition", question: "What is it eating?", expectedAction: "Identify food." },
-                20: { navTitle: "[W1] Fruits", goal: "Reading Fruit Words", question: "Apples or plums?", expectedAction: "Trace the gray letters of fruit names." },
-                21: { navTitle: "[W1] Favorite", goal: "Favorite Fruit Drawing", question: "Why is it your favorite?", expectedAction: "Draw their favorite fruit, copying shapes if needed." },
-                22: { navTitle: "[W2] I Eat", goal: "Sentence Practice", question: "Crunchy or soft?", expectedAction: "Describe food texture." },
-                23: { navTitle: "[W2] Magic 1", goal: "Compound Words", question: "Butter meets Fly?", expectedAction: "Learn compound words." },
-                24: { navTitle: "[W2] Magic 2", goal: "Compound Words", question: "Straw meets Berry?", expectedAction: "Learn the word 'strawberry'." },
-                25: { navTitle: "[W2] Book 2", goal: "Caterpillar Story", question: "What should he eat?", expectedAction: "Talk about a caterpillar." },
-                26: { navTitle: "[W3] Cycle", goal: "Life Cycle Stages", question: "Inside the cocoon?", expectedAction: "Learn life cycle stages." },
-                27: { navTitle: "[W3] Symmetry", goal: "Butterfly Wings", question: "Can it fly high?", expectedAction: "Draw symmetrical butterfly wings mimicking the other half." },
-                28: { navTitle: "[W3] Math 1", goal: "Counting Fruits", question: "How many strawberries?", expectedAction: "Count strawberries and trace the numbers." },
-                29: { navTitle: "[W3] Math 2", goal: "Counting Leaves", question: "More leaves or apples?", expectedAction: "Compare numbers." },
-                30: { navTitle: "[W4] Search", goal: "Identifying Insects", question: "Can you find the Ant?", expectedAction: "Search for insects and circle them." },
+                18: { navTitle: "[W1] Intro", goal: "Meeting Crawlers", question: "Ready for bugs?", expectedAction: "Draw or circle insects." },
+                19: { navTitle: "[W1] Hungry", goal: "Food Recognition", question: "What is it eating?", expectedAction: "Identify and trace the food." },
+                20: { navTitle: "[W1] Fruits", goal: "Reading Fruit Words", question: "Apples or plums?", expectedAction: "Trace the fruit names. Check OCR." },
+                21: { navTitle: "[W1] Favorite", goal: "Favorite Fruit Drawing", question: "Why is it your favorite?", expectedAction: "Draw their favorite fruit." },
+                22: { navTitle: "[W2] I Eat", goal: "Sentence Practice", question: "Crunchy or soft?", expectedAction: "Describe food texture and trace." },
+                23: { navTitle: "[W2] Magic 1", goal: "Compound Words", question: "Butter meets Fly?", expectedAction: "Trace the compound words." },
+                24: { navTitle: "[W2] Magic 2", goal: "Compound Words", question: "Straw meets Berry?", expectedAction: "Trace the word 'strawberry'." },
+                25: { navTitle: "[W2] Book 2", goal: "Caterpillar Story", question: "What should he eat?", expectedAction: "Draw food for the caterpillar." },
+                26: { navTitle: "[W3] Cycle", goal: "Life Cycle Stages", question: "Inside the cocoon?", expectedAction: "Trace the life cycle words." },
+                27: { navTitle: "[W3] Symmetry", goal: "Butterfly Wings", question: "Can it fly high?", expectedAction: "Draw the missing half of the symmetrical butterfly wing. Analyze their mimicking skill." },
+                28: { navTitle: "[W3] Math 1", goal: "Counting Fruits", question: "How many strawberries?", expectedAction: "Count the strawberries and trace the number." },
+                29: { navTitle: "[W3] Math 2", goal: "Counting Leaves", question: "More leaves or apples?", expectedAction: "Compare and circle." },
+                30: { navTitle: "[W4] Search", goal: "Identifying Insects", question: "Can you find the Ant?", expectedAction: "Search and circle specific insects." },
                 31: { navTitle: "[W4] Review", goal: "Reviewing Bugs", question: "Favorite bug today?", expectedAction: "Review bugs." },
-                32: { navTitle: "[W4] Garden", goal: "Drawing a Garden", question: "Who lives here?", expectedAction: "Draw a garden scene." },
-                33: { navTitle: "[W4] Eval", goal: "Self Evaluation", question: "See you next time!", expectedAction: "Finish the unit." }
+                32: { navTitle: "[W4] Garden", goal: "Drawing a Garden", question: "Who lives here?", expectedAction: "Draw a full garden scene." },
+                33: { navTitle: "[W4] Eval", goal: "Self Evaluation", question: "See you next time!", expectedAction: "Complete the self-evaluation smiley faces." }
             }
         };
 
@@ -874,7 +657,7 @@
                     }
 
                     const testUrl = `${possiblePaths[index]}?t=${t}`; const tempImg = new Image();
-                    let loadTimeout = setTimeout(() => { if (token !== this.requestToken) return; Logger.warn("Image Load Timeout. Forcing fallback."); tempImg.src = ""; tryLoad(index + 1); }, 8000);
+                    let loadTimeout = setTimeout(() => { if (token !== this.requestToken) return; Logger.warn("Image Load Timeout."); tempImg.src = ""; tryLoad(index + 1); }, 8000);
                     
                     tempImg.crossOrigin = "anonymous";
                     tempImg.onload = () => {
@@ -1140,7 +923,6 @@
                     if (!auth) throw new Error("Auth not fully initialized"); const user = auth.currentUser; if (!user) { throw new Error("Unauthorized"); }
                     const token = await user.getIdToken();
                     
-                    // [P0] 챕터 테마 + 기대 행동(expectedAction)을 백엔드로 전송
                     let expectedAction = PAGE_INTELLIGENCE[STATE.unitId]?.[STATE.currentPage]?.expectedAction || "Free exploration";
                     let theme = UNIT_THEMES[STATE.unitId] || "General Learning";
 
@@ -1169,21 +951,19 @@
                 const requestPage = STATE.currentPage; const requestUnit = STATE.unitId;
                 const content = document.getElementById('ai-content'); const panel = document.getElementById('ai-panel');
                 if (panel) panel.classList.add('open');
-                if (content) content.innerHTML = `<div class="ai-loading-container"><i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i><p>Teacher is looking at your work...</p></div>`;
+                if (content) content.innerHTML = `<div class="ai-loading-container"><i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i><p>Teacher is reading your work...</p></div>`;
                 
                 try {
                     StorageEngine.saveCanvasLocal(); StorageEngine.executeCloudSave();
                     const canvasImg = CanvasEngine.captureWorksheetWithDrawing(true);
-                    let unitData = { goal: "Free Exploration", question: "Tell me more about it." };
+                    let unitData = { goal: "Free Exploration", question: "Tell me more about it.", expectedAction: "Drawing." };
                     if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]) { unitData = PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]; }
                     
-                    // 프롬프트는 워커에서 통합 처리하므로 간결하게 목표만 전달
                     const prompt = `Goal: ${unitData.goal}. Question context: ${unitData.question}. Please analyze.`;
-                    
                     const reply = await this.callBackendTutor(prompt, canvasImg);
                     if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
 
-                    STATE.chatHistory.push({ role: "Student", text: STATE.lastTranscript || "Look!" }); 
+                    STATE.chatHistory.push({ role: "Student", text: STATE.lastTranscript || "Look at my work!" }); 
                     STATE.chatHistory.push({ role: "Teacher", text: reply });
                     
                     const aiFailed = (reply || "").includes("앗,");
@@ -1213,7 +993,7 @@
                     const aBbl = document.createElement('div'); aBbl.className = "chat-bubble ai mt-4"; aBbl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 생각 중...`; content.appendChild(aBbl); content.scrollTop = content.scrollHeight;
                     
                     try {
-                        const prompt = `Student just answered. Respond enthusiastically in 2-3 short sentences.`;
+                        const prompt = `Student answered: "${STATE.lastTranscript}".`;
                         const reply = await this.callBackendTutor(prompt);
                         if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
                         
@@ -1232,7 +1012,9 @@
                     if (preferredVoices.length > 0) u.voice = preferredVoices[0];
                     window.speechSynthesis.speak(u); 
                 } 
-            }
+            },
+            
+            close() { const panel = document.getElementById('ai-panel'); if (panel) panel.classList.remove('open'); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
         };
 
         if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
@@ -1284,12 +1066,13 @@
             closeSidebar() { const sb = document.getElementById('sidebar'); if (sb) sb.classList.remove('open'); const bd = document.getElementById('sidebar-backdrop'); if (bd) bd.classList.remove('active'); }
         };
 
+        // [P0] 완전 무결점 비동기 부팅 가드 (모든 객체가 확보된 후 단 한 번만 실행)
         let systemBooted = false;
         function SystemBoot() {
             if (systemBooted) return; systemBooted = true;
             try {
                 StorageEngine.load(); CustomModalEngine.init(); CanvasEngine.init(); RGBRingEngine.init(); AudioEngine.init(); CursorEngine.init(); BadgeEngine.renderAll(); PageEngine.init(); SyncIndicatorEngine.init();
-                Logger.log("V100.700 Vision-Pro Master Boot Complete.");
+                Logger.log("V100.800 Ultimate Vision Master System Boot Complete.");
             } catch(error) { Logger.error("Framework initialization error:", error); }
         }
 
@@ -1306,10 +1089,12 @@
                             const profileBox = document.getElementById('profile-box'); if (profileBox) profileBox.classList.add('registered');
                             const displayNameEl = document.getElementById('display-name'); if (displayNameEl) displayNameEl.innerText = STATE.studentName;
                             const avatarEl = document.getElementById('avatar-char'); if (avatarEl) avatarEl.innerText = STATE.studentName.charAt(0);
-                        } else { STATE.studentName = "GUEST"; }
+                        } else {
+                            Logger.warn("No active session. Launching in Guest Fallback Mode."); STATE.studentName = "GUEST";
+                        }
                         SystemBoot(); 
                     });
-                } catch (e) { SystemBoot(); }
+                } catch (e) { Logger.error("Firebase init caught error", e); SystemBoot(); }
             } else { setTimeout(safeFirebaseBoot, 100); }
         }
 

@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#FCFBF9">
     
-    <title>Bridge Academy | Premium AI Lab V100.Final</title>
+    <title>Bridge Academy | Premium AI Lab V100.600</title>
 
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     
@@ -183,7 +183,7 @@
         }
         .sidebar-header:hover { background-color: var(--br-bg); }
 
-        /* 브랜드 로고 규격 완벽 통일 */
+        /* [P0 Fix] 브랜드 로고 일체감 및 프리미엄 타이포그래피 정렬 */
         .brand-logo { 
             font-family: 'Playfair Display', serif; 
             font-size: 32px; 
@@ -434,7 +434,7 @@
            ====================================================================== */
         .bridge-modal-overlay { position: fixed; inset: 0; background-color: rgba(42, 40, 37, 0.6); z-index: 40000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(8px); }
         .bridge-modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .bridge-modal-box { background-color: #FFFFFF; width: 420px; max-width: 90%; border-radius: 24px; padding: 40px 35px 35px 35px; text-align: center; transform: scale(0.9) translateY(20px); transition: transform 0.4s ease; box-shadow: var(--shadow-premium); }
+        .bridge-modal-box { background-color: #FFFFFF; width: 420px; max-width: 90%; border-radius: 24px; padding: 40px 35px 35px; text-align: center; transform: scale(0.9) translateY(20px); transition: transform 0.4s ease; box-shadow: var(--shadow-premium); }
         .bridge-modal-overlay.active .bridge-modal-box { transform: scale(1) translateY(0); }
         .bridge-modal-icon { font-size: 45px; color: var(--br-gold); margin-bottom: 20px; display: block; }
         .bridge-modal-icon.warning { color: var(--br-error); }
@@ -567,7 +567,7 @@
             </main>
 
             <footer class="bottom-dock">
-                <div class="tool-group" role="group">
+                <div class="tool-group" role="group" aria-label="Drawing Tools">
                     <div class="color-preview interactive-hover" id="btn-color" onclick="RGBRingEngine.toggle()"></div>
                     <input type="color" id="native-color-picker" style="opacity:0; position:absolute; width:1px; height:1px;" tabindex="-1">
                     
@@ -650,6 +650,7 @@
     </div>
 
     <script>
+        // 전역 설정
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
             API_TUTOR_ENDPOINT: "https://sparkling-sky-6699.ebin22725.workers.dev", 
@@ -663,6 +664,7 @@
             }
         };
 
+        // 앱 상태 저장소
         const STATE = {
             uid: null, studentEmail: "", studentName: "GUEST", isNameRegistered: false,
             unitId: new URLSearchParams(window.location.search).get('id') || "A-1",
@@ -671,6 +673,7 @@
             strokeCount: 0, usedColors: new Set()
         };
 
+        // Firebase 모듈 포인터
         let auth = null;
         let db = null;
 
@@ -759,6 +762,13 @@
             }
         };
 
+        // [P0] 테마(Theme)와 필기체(OCR) 인지를 결합하기 위한 글로벌 주제 맵핑
+        const UNIT_THEMES = {
+            "A-1": "All About Me & My Senses",
+            "A-2": "Nature & Crawling Bugs"
+        };
+
+        // [P0] 페이지별 문맥 초정밀화
         const PAGE_INTELLIGENCE = {
             "A-1": {
                 1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?", context: "The student is writing their name." },
@@ -766,7 +776,7 @@
                 3: { navTitle: "[W1] Face", goal: "Face Vocabulary", question: "Where is your nose?", context: "The student is pointing out facial features on a face." },
                 4: { navTitle: "[W1] Portrait", goal: "Drawing Face Features", question: "Can you draw your face?", context: "The student is drawing their own portrait." },
                 5: { navTitle: "[W2] Senses", goal: "Action Verbs for Senses", question: "What do you smell?", context: "The student is learning about human senses." },
-                6: { navTitle: "[W2] Sentences", goal: "Sentence Completion", question: "What else do you like?", context: "The student is completing an English sentence." },
+                6: { navTitle: "[W2] Sentences", goal: "Sentence Completion", question: "What else do you like?", context: "The student is writing an English sentence." },
                 7: { navTitle: "[W2] Matching", goal: "Sensory Association", question: "How do you hear music?", context: "The student is matching objects to their senses." },
                 8: { navTitle: "[W2] Emotion", goal: "Drawing Emotions", question: "Are you smiling?", context: "The student is drawing an emotional face expression." },
                 9: { navTitle: "[W3] Animals", goal: "Book Introduction", question: "Ready for the gorilla?", context: "The student is looking at a gorilla and animals." },
@@ -801,10 +811,10 @@
 
         const CurriculumEngine = {
             pages(unitId) { const data = PAGE_INTELLIGENCE[unitId]; if (data) return Object.keys(data).map(Number).sort((a, b) => a - b); return []; },
-            first(unitId) { const pageArray = this.pages(unitId); return pageArray.length > 0 ? pageArray[0] : 1; },
-            last(unitId) { const pageArray = this.pages(unitId); return pageArray.length > 0 ? pageArray[pageArray.length - 1] : 1; },
-            clamp(unitId, page) { const pageArray = this.pages(unitId); if (pageArray.includes(page)) return page; return pageArray.length > 0 ? pageArray[0] : 1; },
-            next(unitId, page, dir) { const pageArray = this.pages(unitId); let idx = pageArray.indexOf(page); if (idx === -1) idx = 0; let calcIdx = Math.min(Math.max(idx + dir, 0), pageArray.length - 1); return pageArray[calcIdx] || page; },
+            first(unitId) { const pArray = this.pages(unitId); return pArray.length > 0 ? pArray[0] : 1; },
+            last(unitId) { const pArray = this.pages(unitId); return pArray.length > 0 ? pArray[pArray.length - 1] : 1; },
+            clamp(unitId, page) { const pArray = this.pages(unitId); if (pArray.includes(page)) return page; return pArray.length > 0 ? pArray[0] : 1; },
+            next(unitId, page, dir) { const pArray = this.pages(unitId); let idx = pArray.indexOf(page); if (idx === -1) idx = 0; let calcIdx = Math.min(Math.max(idx + dir, 0), pArray.length - 1); return pArray[calcIdx] || page; },
             weekIndex(unitId, page) { const pages = this.pages(unitId); const idx = pages.indexOf(page); if (idx === -1) return 1; return Math.floor(idx / 4) + 1; },
             isWeekEnd(unitId, page) { const pages = this.pages(unitId); const idx = pages.indexOf(page); if (idx !== -1) { if ((idx + 1) % 4 === 0 || idx === pages.length - 1) return true; } return false; }
         };
@@ -866,7 +876,7 @@
                     }
 
                     const testUrl = `${possiblePaths[index]}?t=${t}`; const tempImg = new Image();
-                    let loadTimeout = setTimeout(() => { if (token !== this.requestToken) return; Logger.warn("Image Load Timeout."); tempImg.src = ""; tryLoad(index + 1); }, 8000);
+                    let loadTimeout = setTimeout(() => { if (token !== this.requestToken) return; Logger.warn("Image Load Timeout. Forcing fallback."); tempImg.src = ""; tryLoad(index + 1); }, 8000);
                     
                     tempImg.crossOrigin = "anonymous";
                     tempImg.onload = () => {
@@ -1125,13 +1135,24 @@
         const AITutor = {
             isBusy: false,
             getMemory() { return STATE.chatHistory.slice(-4).map(h => `${h.role}: ${h.text}`).join("\n"); },
+            
             async callBackendTutor(promptText, base64Img = null) {
                 const controller = new AbortController(); const timeoutId = setTimeout(() => controller.abort(), 15000);
                 try {
                     if (!auth) throw new Error("Auth not fully initialized"); const user = auth.currentUser; if (!user) { throw new Error("Unauthorized"); }
                     const token = await user.getIdToken();
                     
-                    const reqObj = { prompt: promptText, image: base64Img, metrics: { strokes: STATE.strokeCount, colors: STATE.usedColors.size }, history: this.getMemory() };
+                    const reqObj = { 
+                        prompt: promptText, 
+                        image: base64Img, 
+                        // [P0] 챕터 테마를 워커로 전송
+                        theme: UNIT_THEMES[STATE.unitId] || "General Learning",
+                        metrics: { strokes: STATE.strokeCount, colors: STATE.usedColors.size }, 
+                        history: this.getMemory(),
+                        studentName: STATE.studentName,
+                        sttConfidence: STATE.sttConfidence,
+                        saidText: STATE.lastTranscript
+                    };
                     
                     const response = await fetch(CONFIG.API_TUTOR_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(reqObj), signal: controller.signal });
                     clearTimeout(timeoutId);
@@ -1146,7 +1167,7 @@
                 const requestPage = STATE.currentPage; const requestUnit = STATE.unitId;
                 const content = document.getElementById('ai-content'); const panel = document.getElementById('ai-panel');
                 if (panel) panel.classList.add('open');
-                if (content) content.innerHTML = `<div class="ai-loading-container"><i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i><p>Teacher is looking at your art...</p></div>`;
+                if (content) content.innerHTML = `<div class="ai-loading-container"><i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i><p>Teacher is looking at your art and reading your words...</p></div>`;
                 
                 try {
                     StorageEngine.saveCanvasLocal(); StorageEngine.executeCloudSave();
@@ -1154,14 +1175,14 @@
                     let unitData = { goal: "Free Exploration", question: "Tell me more about it.", context: "The student is exploring and drawing freely." };
                     if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]) { unitData = PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]; }
                     
-                    let saidText = STATE.lastTranscript || "Look at my work!";
-                    
-                    const prompt = `Goal: ${unitData.goal}. Context: ${unitData.context}. Student said: "${saidText}".`;
+                    // 프롬프트는 워커에서 통합 처리하므로 여기서는 목표만 전달
+                    const prompt = `Goal: ${unitData.goal}. Context: ${unitData.context || unitData.question}. Please analyze.`;
                     
                     const reply = await this.callBackendTutor(prompt, canvasImg);
                     if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
 
-                    STATE.chatHistory.push({ role: "Student", text: saidText }); STATE.chatHistory.push({ role: "Teacher", text: reply });
+                    STATE.chatHistory.push({ role: "Student", text: STATE.lastTranscript || "Look at my work!" }); 
+                    STATE.chatHistory.push({ role: "Teacher", text: reply });
                     
                     const aiFailed = (reply || "").includes("앗,");
                     if (!aiFailed) {
@@ -1186,13 +1207,16 @@
                 if (content) {
                     const uBbl = document.createElement('div'); uBbl.className = "chat-bubble user mt-4"; uBbl.textContent = STATE.lastTranscript; content.appendChild(uBbl);
                     STATE.chatHistory.push({ role: "Student", text: STATE.lastTranscript });
+                    
                     const aBbl = document.createElement('div'); aBbl.className = "chat-bubble ai mt-4"; aBbl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 생각 중...`; content.appendChild(aBbl); content.scrollTop = content.scrollHeight;
                     
                     try {
-                        const prompt = `Student just answered: "${STATE.lastTranscript}".`;
+                        const prompt = `Student just answered. Analyze their response.`;
                         const reply = await this.callBackendTutor(prompt);
                         if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
+                        
                         STATE.chatHistory.push({ role: "Teacher", text: reply });
+
                         aBbl.innerHTML = ''; const b = document.createElement('b'); b.style.color = 'var(--br-green)'; b.textContent = reply || "That's wonderful!"; aBbl.appendChild(b); content.scrollTop = content.scrollHeight; 
                         if (reply) this.speak(reply);
                     } finally { this.isBusy = false; }
@@ -1260,13 +1284,12 @@
             closeSidebar() { const sb = document.getElementById('sidebar'); if (sb) sb.classList.remove('open'); const bd = document.getElementById('sidebar-backdrop'); if (bd) bd.classList.remove('active'); }
         };
 
-        // [P0] 완벽한 비동기 안전 부팅
         let systemBooted = false;
         function SystemBoot() {
             if (systemBooted) return; systemBooted = true;
             try {
                 StorageEngine.load(); CustomModalEngine.init(); CanvasEngine.init(); RGBRingEngine.init(); AudioEngine.init(); CursorEngine.init(); BadgeEngine.renderAll(); PageEngine.init(); SyncIndicatorEngine.init();
-                Logger.log("V100.Final Enterprise Master Boot Complete.");
+                Logger.log("V100.600 Enterprise Master System Boot Complete.");
             } catch(error) { Logger.error("Framework initialization error:", error); }
         }
 
@@ -1278,20 +1301,23 @@
 
                     auth.onAuthStateChanged((user) => {
                         if (user) {
+                            Logger.log("Secured Session Authenticated:", user.email);
                             STATE.uid = user.uid; STATE.studentEmail = user.email; STATE.studentName = user.email.split('@')[0].toUpperCase() || "EXPLORER";
                             const profileBox = document.getElementById('profile-box'); if (profileBox) profileBox.classList.add('registered');
                             const displayNameEl = document.getElementById('display-name'); if (displayNameEl) displayNameEl.innerText = STATE.studentName;
                             const avatarEl = document.getElementById('avatar-char'); if (avatarEl) avatarEl.innerText = STATE.studentName.charAt(0);
-                        } else { STATE.studentName = "GUEST"; }
+                        } else {
+                            Logger.warn("No active session. Launching in Guest Fallback Mode."); STATE.studentName = "GUEST";
+                        }
                         SystemBoot(); 
                     });
-                } catch (e) { SystemBoot(); }
+                } catch (e) { Logger.error("Firebase init caught error", e); SystemBoot(); }
             } else { setTimeout(safeFirebaseBoot, 100); }
         }
 
         document.addEventListener("DOMContentLoaded", () => {
             safeFirebaseBoot();
-            setTimeout(() => { if (!systemBooted) { STATE.studentName = "GUEST"; SystemBoot(); } }, 4000);
+            setTimeout(() => { if (!systemBooted) { Logger.warn("Absolute Timeout. Booting Guest Mode."); STATE.studentName = "GUEST"; SystemBoot(); } }, 4000);
         });
 
     </script>

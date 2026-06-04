@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#FCFBF9">
     
-    <title>Bridge Academy | Premium AI Lab V100.FINAL</title>
+    <title>Bridge Academy | Premium AI Lab V100.1600</title>
 
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     
@@ -48,10 +48,14 @@
             
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --safe-top: env(safe-area-inset-top, 0px);
+            
+            --transition-smooth: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            --shadow-premium: 0px 30px 60px rgba(54, 52, 49, 0.15);
+            --shadow-button: 0px 10px 20px rgba(0, 0, 0, 0.05);
         }
 
         /* ======================================================================
-           [2] BASE RESET & GLOBAL TYPOGRAPHY
+           [2] BASE RESET & GLOBAL TYPOGRAPHY ENFORCEMENT
            ====================================================================== */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; cursor: none !important; }
         html, body { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-charcoal); font-family: 'Nunito', 'Pretendard', sans-serif; pointer-events: auto !important; -webkit-font-smoothing: antialiased; }
@@ -80,7 +84,7 @@
         .sidebar-header { padding: 35px 30px; text-align: center; border-bottom: 1px solid var(--br-border); transition: background-color 0.4s ease; }
         .sidebar-header:hover { background-color: var(--br-bg); }
 
-        /* [P1] 로고 폰트 통일 및 일체화 */
+        /* [로고 통일 유지보수] Nunito 900 */
         .brand-logo { font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; color: var(--br-charcoal); letter-spacing: -0.5px; line-height: 1; display: flex; align-items: center; justify-content: center; gap: 4px; text-transform: uppercase; }
         .brand-logo span { color: var(--br-green); font-weight: 900; }
         
@@ -120,7 +124,7 @@
 
         .unit-info { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 900; color: var(--br-gold); letter-spacing: 3px; text-transform: uppercase; }
         .page-info { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 900; color: var(--br-charcoal); letter-spacing: -0.5px; margin-top: 2px; display: flex; align-items: center; gap: 12px; }
-        .page-goal { font-family: 'Pretendard', sans-serif; font-size: 15px; font-weight: 600; color: var(--br-muted); background-color: #F8F9FA; padding: 4px 14px; border-radius: 50px; border: 1px solid var(--br-border); letter-spacing: 0px; }
+        .page-goal { font-family: 'Pretendard', sans-serif; font-size: 15px; font-weight: 600; color: var(--br-muted); background-color: #F8F9FA; padding: 4px 14px; border-radius: 50px; border: 1px solid var(--br-border); }
 
         .sync-indicator-container { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 50px; background-color: var(--br-bg); border: 1px solid var(--br-border); font-size: 12px; font-weight: 700; color: var(--br-muted); transition: all 0.4s ease; }
         .sync-indicator-container.saving { color: var(--br-blue); background-color: #F0F4F8; border-color: #D9E4EC; }
@@ -172,20 +176,18 @@
         .btn-nav:hover { background-color: #FAFAFA; border-color: var(--br-charcoal); }
         .btn-nav:active { transform: scale(0.85); }
 
-        /* [P1] 연타 방어 디자인 (Mutex Lock) */
-        .locked-btn { opacity: 0.5; pointer-events: none !important; }
-
         .btn-main { height: 60px; padding: 0 35px; border-radius: 18px; font-weight: 900; font-size: 15px; letter-spacing: 1px; display: flex; align-items: center; gap: 12px; transition: all 0.3s ease; text-transform: uppercase; font-family: 'Nunito', sans-serif; }
+        .btn-main:disabled { opacity: 0.6; cursor: not-allowed !important; transform: none !important; }
         .btn-record { background-color: #FFFFFF; border: 1px solid var(--br-border); color: var(--br-charcoal); }
-        .btn-record:hover { border-color: var(--br-error); color: var(--br-error); }
-        .btn-record:active { transform: scale(0.95); }
+        .btn-record:hover:not(:disabled) { border-color: var(--br-error); color: var(--br-error); }
+        .btn-record:active:not(:disabled) { transform: scale(0.95); }
         .btn-record.recording { background-color: #FFF0F0; color: var(--br-error); border-color: var(--br-error); box-shadow: inset 0 0 0 2px var(--br-error); }
         .btn-record .dot { width: 12px; height: 12px; background-color: var(--br-error); border-radius: 50%; opacity: 0; transition: opacity 0.3s ease; }
         .btn-record.recording .dot { opacity: 1; animation: blink 1s infinite; }
 
         .btn-submit { background-color: var(--br-charcoal); color: #FFFFFF; box-shadow: 0 10px 30px rgba(54, 52, 49, 0.2); }
-        .btn-submit:hover { background-color: var(--br-gold); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(203, 174, 117, 0.4); }
-        .btn-submit:active { transform: scale(0.9) translateY(0); }
+        .btn-submit:hover:not(:disabled) { background-color: var(--br-gold); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(203, 174, 117, 0.4); }
+        .btn-submit:active:not(:disabled) { transform: scale(0.9) translateY(0); }
 
         /* ======================================================================
            [8] AI RESPONSIVE SIDE PANEL
@@ -215,8 +217,9 @@
 
         .chat-footer { padding: 25px 35px; border-top: 1px solid var(--br-border); display: flex; flex-direction: column; gap: 15px; background-color: #FFFFFF; }
         .btn-chat-action { width: 100%; height: 60px; background-color: var(--br-charcoal); color: #FFFFFF; border-radius: 18px; font-weight: 900; transition: all 0.3s ease; font-size: 16px; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 10px; font-family: 'Nunito', sans-serif; box-shadow: 0 10px 20px rgba(54, 52, 49, 0.2); }
-        .btn-chat-action:hover { background-color: var(--br-gold); transform: translateY(-2px); }
-        .btn-chat-action:active { transform: scale(0.95); }
+        .btn-chat-action:hover:not(:disabled) { background-color: var(--br-gold); transform: translateY(-2px); }
+        .btn-chat-action:active:not(:disabled) { transform: scale(0.95); }
+        .btn-chat-action:disabled { opacity: 0.6; cursor: not-allowed !important; }
         .btn-chat-next { width: 100%; text-align: center; font-size: 14px; font-weight: bold; color: var(--br-blue); margin-top: 15px; transition: color 0.3s ease; }
         .btn-chat-next:hover { color: var(--br-gold); }
 
@@ -443,9 +446,6 @@
     </div>
 
     <script>
-        // ----------------------------------------------------------------------
-        // 1. CONFIG & STATE (전역 상태)
-        // ----------------------------------------------------------------------
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
             API_TUTOR_ENDPOINT: "https://sparkling-sky-6699.ebin22725.workers.dev", 
@@ -460,23 +460,13 @@
         };
 
         const STATE = {
-            uid: null, 
-            studentEmail: "", 
-            studentName: "GUEST", 
-            isNameRegistered: false,
+            uid: null, studentEmail: "", studentName: "GUEST", isNameRegistered: false,
             unitId: new URLSearchParams(window.location.search).get('id') || "A-1",
-            currentPage: 1, 
-            isRecording: false, 
-            lastTranscript: "", 
-            sttConfidence: 0,
-            historyStack: [], 
-            historyIndex: -1, 
-            chatHistory: [], 
-            badges: [], 
-            brushType: 'normal',
-            strokeCount: 0, 
-            usedColors: new Set(),
-            isBlankCanvas: false
+            currentPage: 1, isRecording: false, lastTranscript: "", sttConfidence: 0,
+            historyStack: [], historyIndex: -1, chatHistory: [], badges: [], brushType: 'normal',
+            strokeCount: 0, usedColors: new Set(),
+            isBlankCanvas: false,
+            pageStartTime: Date.now()
         };
 
         const UNIT_THEMES = {
@@ -487,9 +477,6 @@
         let auth = null;
         let db = null;
 
-        // ----------------------------------------------------------------------
-        // 2. CORE UTILITIES (로깅 및 모달)
-        // ----------------------------------------------------------------------
         const Logger = {
             log(msg, data = "") { console.log(`[BRIDGE OK] ${msg}`, data); },
             warn(msg, data = "") { console.warn(`[BRIDGE WARN] ${msg}`, data); },
@@ -516,54 +503,38 @@
             },
             alert(title, message) {
                 if (!this.overlay) this.init();
-                this.titleEl.innerText = title; 
-                this.textEl.innerText = message;
+                this.titleEl.innerText = title; this.textEl.innerText = message;
                 this.iconEl.className = "fa-solid fa-circle-exclamation bridge-modal-icon warning";
                 this.actionsEl.innerHTML = ''; 
-                
                 const btnOk = document.createElement('button');
                 btnOk.className = "bridge-modal-btn bridge-modal-confirm neutral interactive-hover";
                 btnOk.innerText = "OK"; 
-                btnOk.onclick = () => this.close();
-                
-                this.actionsEl.appendChild(btnOk); 
-                this.overlay.classList.add('active');
+                btnOk.onclick = () => { this.close(); AudioEngine.unlockAudioContext(); };
+                this.actionsEl.appendChild(btnOk); this.overlay.classList.add('active');
             },
             confirm(title, message, onConfirm) {
                 if (!this.overlay) this.init();
-                this.titleEl.innerText = title; 
-                this.textEl.innerText = message;
+                this.titleEl.innerText = title; this.textEl.innerText = message;
                 this.iconEl.className = "fa-solid fa-trash-can bridge-modal-icon warning";
                 this.actionsEl.innerHTML = '';
-                
                 const btnCancel = document.createElement('button');
                 btnCancel.className = "bridge-modal-btn bridge-modal-cancel interactive-hover";
-                btnCancel.innerText = "Keep It"; 
-                btnCancel.onclick = () => this.close();
-                
+                btnCancel.innerText = "Keep It"; btnCancel.onclick = () => this.close();
                 const btnConfirm = document.createElement('button');
                 btnConfirm.className = "bridge-modal-btn bridge-modal-confirm interactive-hover";
                 btnConfirm.innerText = "Yes, Clear";
-                btnConfirm.onclick = () => { 
-                    this.close(); 
-                    if (typeof onConfirm === 'function') onConfirm(); 
-                };
-                
-                this.actionsEl.appendChild(btnCancel); 
-                this.actionsEl.appendChild(btnConfirm);
+                btnConfirm.onclick = () => { this.close(); if (typeof onConfirm === 'function') onConfirm(); };
+                this.actionsEl.appendChild(btnCancel); this.actionsEl.appendChild(btnConfirm);
                 this.overlay.classList.add('active');
             },
-            close() { 
-                if (this.overlay) this.overlay.classList.remove('active'); 
-            }
+            close() { if (this.overlay) this.overlay.classList.remove('active'); }
         };
 
         const CursorEngine = {
             dot: null, ring: null, initialized: false,
             init() {
                 if (window.matchMedia("(pointer: coarse)").matches) return;
-                this.dot = document.getElementById('cursor-dot'); 
-                this.ring = document.getElementById('cursor-ring');
+                this.dot = document.getElementById('cursor-dot'); this.ring = document.getElementById('cursor-ring');
                 if (!this.dot || !this.ring) return;
                 this.initialized = true;
 
@@ -571,53 +542,31 @@
                     this.dot.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
                     this.ring.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
                     if (e.target.closest('.stage-wrapper, .drawing-board, #draw-layer')) {
-                        this.dot.classList.add('hidden'); 
-                        this.ring.classList.add('hidden');
+                        this.dot.classList.add('hidden'); this.ring.classList.add('hidden');
                     } else {
-                        this.dot.classList.remove('hidden'); 
-                        this.ring.classList.remove('hidden');
+                        this.dot.classList.remove('hidden'); this.ring.classList.remove('hidden');
                     }
                 });
 
                 document.addEventListener('mouseover', (e) => {
                     if (e.target.closest('.stage-wrapper, .drawing-board, #draw-layer')) return;
                     if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
-                        this.dot.classList.add('hovered'); 
-                        this.ring.classList.add('hovered');
+                        this.dot.classList.add('hovered'); this.ring.classList.add('hovered');
                     }
                 });
 
                 document.addEventListener('mouseout', (e) => {
                     if (e.target.closest('.interactive-hover, a, button, input[type="range"]')) {
-                        this.dot.classList.remove('hovered'); 
-                        this.ring.classList.remove('hovered');
+                        this.dot.classList.remove('hovered'); this.ring.classList.remove('hovered');
                     }
                 });
             }
         };
 
-        const UIEngine = {
-            toggleSidebar() { 
-                if (window.innerWidth > 1180) return; 
-                const sb = document.getElementById('sidebar'); 
-                if (sb) sb.classList.toggle('open'); 
-                const bd = document.getElementById('sidebar-backdrop'); 
-                if (bd) bd.classList.toggle('active'); 
-            },
-            closeSidebar() { 
-                const sb = document.getElementById('sidebar'); 
-                if (sb) sb.classList.remove('open'); 
-                const bd = document.getElementById('sidebar-backdrop'); 
-                if (bd) bd.classList.remove('active'); 
-            }
-        };
-
-        // ----------------------------------------------------------------------
-        // 3. CURRICULUM & PAGE INTELLIGENCE
-        // ----------------------------------------------------------------------
+        // [P0] AI 프롬프트 분석 강제화를 위한 Expected Action 디테일업
         const PAGE_INTELLIGENCE = {
             "A-1": {
-                1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?", expectedAction: "Trace or write their name explicitly." },
+                1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?", expectedAction: "Trace or write their name explicitly. Read their handwriting." },
                 2: { navTitle: "[W1] Mind", goal: "Self-Esteem & I like myself", question: "Do you like yourself?", expectedAction: "Draw something they like about themselves." },
                 3: { navTitle: "[W1] Face", goal: "Face Vocabulary", question: "Where is your nose?", expectedAction: "Circle or trace facial features on the given face." },
                 4: { navTitle: "[W1] Face Words", goal: "Writing Face Features", question: "What parts of the face did you write?", expectedAction: "Write words like 'Nose' and 'Ears' in the blank boxes, and trace the gray words 'Hair' and 'Eyes'. Explicitly praise their spelling and tracing accuracy!" },
@@ -626,11 +575,11 @@
                 7: { navTitle: "[W2] Matching", goal: "Sensory Association", question: "How do you hear music?", expectedAction: "Match objects to their correct senses." },
                 8: { navTitle: "[W2] Emotion", goal: "Drawing Emotions", question: "Are you smiling?", expectedAction: "Draw an emotional expression." },
                 9: { navTitle: "[W3] Animals", goal: "Book Introduction", question: "Ready for the gorilla?", expectedAction: "Observe animals and draw what they see." },
-                10: { navTitle: "[W3] Gorilla", goal: "Gorilla Body Parts", question: "Show me strong arms!", expectedAction: "Identify gorilla body parts. Trace any gray letters." },
+                10: { navTitle: "[W3] Gorilla", goal: "Gorilla Body Parts", question: "Show me strong arms!", expectedAction: "Identify gorilla body parts. Trace any gray letters explicitly." },
                 11: { navTitle: "[W3] Labels", goal: "Labeling Body Parts", question: "Where is the shoulder?", expectedAction: "Draw lines to label body parts correctly." },
                 12: { navTitle: "[W3] Giraffe", goal: "Coloring a Giraffe", question: "Why is the neck long?", expectedAction: "Color the giraffe. Check their color choices." },
                 13: { navTitle: "[W4] Creative", goal: "Creative Imagination", question: "Spaghetti arms?", expectedAction: "Use imagination to draw funny arms." },
-                14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?", expectedAction: "Count the fingers and trace the numbers." },
+                14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?", expectedAction: "Count the fingers and trace the numbers explicitly." },
                 15: { navTitle: "[W4] Review", goal: "Reviewing the Story", question: "Did you enjoy it?", expectedAction: "Review the lesson concepts." },
                 16: { navTitle: "[W3] Board Design", goal: "Selecting Tools", question: "Which tools do you need?", expectedAction: "Checklist analysis: Look at the boxes (Clay, Paint, Scissors, Stickers, etc) and explicitly state which ones the student checked or scribbled on." },
                 17: { navTitle: "[W4] Presentation", goal: "Self-Evaluation", question: "How was your presentation?", expectedAction: "Evaluation analysis: Check which smiley faces the student circled or marked for 'I spoke LOUDLY!', 'I used ENGLISH!', and 'I had FUN!'." }
@@ -638,7 +587,7 @@
             "A-2": {
                 18: { navTitle: "[W1] Intro", goal: "Meeting Crawlers", question: "Ready for bugs?", expectedAction: "Draw or circle insects." },
                 19: { navTitle: "[W1] Hungry", goal: "Food Recognition", question: "What is it eating?", expectedAction: "Identify and trace the food." },
-                20: { navTitle: "[W1] Fruits", goal: "Reading Fruit Words", question: "Apples or plums?", expectedAction: "Trace the fruit names. Check OCR." },
+                20: { navTitle: "[W1] Fruits", goal: "Reading Fruit Words", question: "Apples or plums?", expectedAction: "Trace the fruit names explicitly." },
                 21: { navTitle: "[W1] Favorite", goal: "Favorite Fruit Drawing", question: "Why is it your favorite?", expectedAction: "Draw their favorite fruit." },
                 22: { navTitle: "[W2] I Eat", goal: "Sentence Practice", question: "Crunchy or soft?", expectedAction: "Describe food texture and trace." },
                 23: { navTitle: "[W2] Magic 1", goal: "Compound Words", question: "Butter meets Fly?", expectedAction: "Trace the compound words." },
@@ -656,173 +605,122 @@
         };
 
         const CurriculumEngine = {
-            pages(unitId) { 
-                const data = PAGE_INTELLIGENCE[unitId]; 
-                if (data) return Object.keys(data).map(Number).sort((a, b) => a - b); 
-                return []; 
-            },
-            first(unitId) { 
-                const pArray = this.pages(unitId); 
-                return pArray.length > 0 ? pArray[0] : 1; 
-            },
-            last(unitId) { 
-                const pArray = this.pages(unitId); 
-                return pArray.length > 0 ? pArray[pArray.length - 1] : 1; 
-            },
-            clamp(unitId, page) { 
-                const pArray = this.pages(unitId); 
-                if (pArray.includes(page)) return page; 
-                return pArray.length > 0 ? pArray[0] : 1; 
-            },
-            next(unitId, page, dir) { 
-                const pArray = this.pages(unitId); 
-                let idx = pArray.indexOf(page); 
-                if (idx === -1) idx = 0; 
-                let calcIdx = Math.min(Math.max(idx + dir, 0), pArray.length - 1); 
-                return pArray[calcIdx] || page; 
-            },
-            weekIndex(unitId, page) { 
-                const pages = this.pages(unitId); 
-                const idx = pages.indexOf(page); 
-                if (idx === -1) return 1; 
-                return Math.floor(idx / 4) + 1; 
-            },
-            isWeekEnd(unitId, page) { 
-                const pages = this.pages(unitId); 
-                const idx = pages.indexOf(page); 
-                if (idx !== -1) { 
-                    if ((idx + 1) % 4 === 0 || idx === pages.length - 1) return true; 
-                } 
-                return false; 
-            }
+            pages(unitId) { const data = PAGE_INTELLIGENCE[unitId]; if (data) return Object.keys(data).map(Number).sort((a, b) => a - b); return []; },
+            first(unitId) { const pArray = this.pages(unitId); return pArray.length > 0 ? pArray[0] : 1; },
+            last(unitId) { const pArray = this.pages(unitId); return pArray.length > 0 ? pArray[pArray.length - 1] : 1; },
+            clamp(unitId, page) { const pArray = this.pages(unitId); if (pArray.includes(page)) return page; return pArray.length > 0 ? pArray[0] : 1; },
+            next(unitId, page, dir) { const pArray = this.pages(unitId); let idx = pArray.indexOf(page); if (idx === -1) idx = 0; let calcIdx = Math.min(Math.max(idx + dir, 0), pArray.length - 1); return pArray[calcIdx] || page; },
+            weekIndex(unitId, page) { const pages = this.pages(unitId); const idx = pages.indexOf(page); if (idx === -1) return 1; return Math.floor(idx / 4) + 1; },
+            isWeekEnd(unitId, page) { const pages = this.pages(unitId); const idx = pages.indexOf(page); if (idx !== -1) { if ((idx + 1) % 4 === 0 || idx === pages.length - 1) return true; } return false; }
         };
 
-        // ----------------------------------------------------------------------
-        // 4. STORAGE, SYNC & IMAGE LOADER
-        // ----------------------------------------------------------------------
+        if (!PAGE_INTELLIGENCE[STATE.unitId]) {
+            Logger.warn(`Invalid Unit ID constraint detected: ${STATE.unitId}. Forcing fallback to A-1.`);
+            STATE.unitId = "A-1";
+        }
+        
+        const rawPageParam = new URLSearchParams(window.location.search).get('page');
+        if (rawPageParam) STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, Number(rawPageParam));
+        else STATE.currentPage = CurriculumEngine.first(STATE.unitId);
+
         const BadgeEngine = {
             add(label) {
                 if (STATE.badges.includes(label)) return;
-                STATE.badges.push(label); 
-                StorageEngine.save();
-                
+                STATE.badges.push(label); StorageEngine.save();
                 const box = document.getElementById('badge-container');
-                if (box) { 
-                    const badge = document.createElement('div'); 
-                    badge.className = 'badge'; 
-                    badge.textContent = label; 
-                    box.appendChild(badge); 
-                }
-                
-                if (window.confetti) {
-                    confetti({ 
-                        particleCount: 80, 
-                        spread: 70, 
-                        origin: { y: 0.8 }, 
-                        colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] 
-                    });
-                }
+                if (box) { const badge = document.createElement('div'); badge.className = 'badge'; badge.textContent = label; box.appendChild(badge); }
+                if (window.confetti) confetti({ particleCount: 80, spread: 70, origin: { y: 0.8 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
             },
             renderAll() {
-                const box = document.getElementById('badge-container'); 
-                if (!box) return;
+                const box = document.getElementById('badge-container'); if (!box) return;
                 box.innerHTML = '';
-                STATE.badges.forEach((label) => { 
-                    const badge = document.createElement('div'); 
-                    badge.className = 'badge'; 
-                    badge.textContent = label; 
-                    box.appendChild(badge); 
-                });
+                STATE.badges.forEach((label) => { const badge = document.createElement('div'); badge.className = 'badge'; badge.textContent = label; box.appendChild(badge); });
             }
         };
 
         const SyncIndicatorEngine = {
             container: null, icon: null, text: null,
-            init() { 
-                this.container = document.getElementById('sync-indicator'); 
-                this.icon = document.getElementById('sync-icon'); 
-                this.text = document.getElementById('sync-text'); 
-            },
-            resetInlineStyle() { 
-                if (!this.container) return; 
-                this.container.style.color = ""; 
-                this.container.style.backgroundColor = ""; 
-                this.container.style.borderColor = ""; 
-            },
-            setSaving() { 
-                if (!this.container) this.init(); 
-                if (!this.container) return; 
-                this.resetInlineStyle(); 
-                this.container.className = "sync-indicator-container saving"; 
-                this.icon.className = "fa-solid fa-spinner sync-icon spin"; 
-                this.text.innerText = "Saving..."; 
-            },
+            init() { this.container = document.getElementById('sync-indicator'); this.icon = document.getElementById('sync-icon'); this.text = document.getElementById('sync-text'); },
+            resetInlineStyle() { if (!this.container) return; this.container.style.color = ""; this.container.style.backgroundColor = ""; this.container.style.borderColor = ""; },
+            setSaving() { if (!this.container) this.init(); if (!this.container) return; this.resetInlineStyle(); this.container.className = "sync-indicator-container saving"; this.icon.className = "fa-solid fa-spinner sync-icon spin"; this.text.innerText = "Saving..."; },
             setSaved() {
-                if (!this.container) this.init(); 
-                if (!this.container) return; 
-                this.resetInlineStyle(); 
-                this.container.className = "sync-indicator-container saved"; 
-                this.icon.className = "fa-solid fa-cloud-check sync-icon"; 
-                this.text.innerText = "Saved";
-                
-                setTimeout(() => { 
-                    if (this.container.classList.contains('saved')) { 
-                        this.container.className = "sync-indicator-container"; 
-                        this.icon.className = "fa-solid fa-cloud sync-icon"; 
-                        this.text.innerText = "Synced"; 
-                    } 
-                }, 3000);
+                if (!this.container) this.init(); if (!this.container) return; this.resetInlineStyle(); this.container.className = "sync-indicator-container saved"; this.icon.className = "fa-solid fa-cloud-check sync-icon"; this.text.innerText = "Saved";
+                setTimeout(() => { if (this.container.classList.contains('saved')) { this.container.className = "sync-indicator-container"; this.icon.className = "fa-solid fa-cloud sync-icon"; this.text.innerText = "Synced"; } }, 3000);
             },
-            setError() { 
-                if (!this.container) this.init(); 
-                if (!this.container) return; 
-                this.container.className = "sync-indicator-container"; 
-                this.container.style.color = "var(--br-error)"; 
-                this.container.style.backgroundColor = "var(--br-error-light)"; 
-                this.container.style.borderColor = "var(--br-error-border)"; 
-                this.icon.className = "fa-solid fa-triangle-exclamation sync-icon"; 
-                this.text.innerText = "Offline"; 
-            }
+            setError() { if (!this.container) this.init(); if (!this.container) return; this.container.className = "sync-indicator-container"; this.container.style.color = "var(--br-error)"; this.container.style.backgroundColor = "var(--br-error-light)"; this.container.style.borderColor = "var(--br-error-border)"; this.icon.className = "fa-solid fa-triangle-exclamation sync-icon"; this.text.innerText = "Offline"; }
         };
 
-        // [P0] 극한으로 단순화 및 안정화된 이미지 로더 (무한 로딩 절대 방어)
-        const ImageEngine = {
-            loadWorksheet(unitId, pageNum) {
-                const img = document.getElementById('worksheet-img');
-                const board = document.getElementById('drawing-board');
-                if(!img || !board) return;
+        // [P0] Direct Memory Injection (중복 로딩으로 인한 백지화 100% 원천 차단)
+        const SmartImageLoader = {
+            requestToken: 0,
+            async findValidWorksheet(unitId, pageNum) {
+                this.requestToken++; const token = this.requestToken; 
+                const imgElement = document.getElementById('worksheet-img'); const boardElement = document.getElementById('drawing-board');
                 
-                img.style.opacity = '0';
-                board.classList.remove('error-state');
                 STATE.isBlankCanvas = false;
+                if (boardElement) boardElement.classList.remove('error-state');
+                if (imgElement) imgElement.style.opacity = '0';
+                
+                const seriesChar = unitId.charAt(0); 
+                const basePaths = [
+                    `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${pageNum}.png`,
+                    `${CONFIG.STORAGE_URL}${unitId}/${unitId}-${pageNum}.png`,
+                    `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${pageNum}.png`,
+                    `${CONFIG.STORAGE_URL}${unitId}/${pageNum}.png`
+                ].flatMap(p => [p, p.replace('.png', '.jpg')]);
 
-                const series = unitId.charAt(0);
-                const primaryUrl = `${CONFIG.STORAGE_URL}${series}/${unitId}/${unitId}-${pageNum}.png`;
-                const fallbackUrl = `${CONFIG.STORAGE_URL}${unitId}/${unitId}-${pageNum}.png`;
-                
-                img.onload = () => {
-                    img.style.opacity = '1';
-                    // 렌더링 스레드 안정화를 위해 100ms 지연 후 캔버스 결합
-                    setTimeout(() => { 
-                        CanvasEngine.resizeCanvas(); 
-                        StorageEngine.loadCanvasLocal(); 
-                    }, 100);
-                };
-                
-                // 에러 발생 시 즉시 백지(Grid) 모드로 전환. 딜레이 0초.
-                img.onerror = () => {
-                    if (img.src === primaryUrl) {
-                        img.src = fallbackUrl;
-                    } else {
-                        Logger.warn(`Worksheet ${pageNum} not found. Enabling Blank Canvas.`);
-                        STATE.isBlankCanvas = true;
-                        board.classList.add('error-state');
-                        img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3C/svg%3E";
+                const tryLoad = (index) => {
+                    if (token !== this.requestToken) return;
+                    
+                    if (index >= basePaths.length) {
+                        Logger.warn(`Worksheet missing. Enabling Blank Canvas.`);
+                        STATE.isBlankCanvas = true; 
+                        if (imgElement) {
+                            imgElement.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3C/svg%3E"; 
+                            imgElement.style.opacity = '1';
+                        }
+                        if (boardElement) boardElement.classList.add('error-state');
+                        setTimeout(() => { if (token === this.requestToken) { CanvasEngine.resizeCanvas(); StorageEngine.loadCanvasLocal(); } }, 50);
+                        return;
                     }
-                };
 
-                img.crossOrigin = "anonymous";
-                img.src = primaryUrl;
+                    const tempImg = new Image();
+                    tempImg.crossOrigin = "anonymous";
+                    
+                    let loadTimeout = setTimeout(() => { 
+                        if (token === this.requestToken) {
+                            tempImg.src = ""; 
+                            tryLoad(index + 1); 
+                        }
+                    }, 3000);
+                    
+                    tempImg.onload = () => {
+                        clearTimeout(loadTimeout); 
+                        if (token !== this.requestToken) return; 
+                        
+                        // [핵심] 메모리에서 바로 주입하여 레이스 컨디션 차단
+                        if (imgElement) {
+                            imgElement.src = tempImg.src;
+                            imgElement.style.opacity = '1';
+                        }
+                        if (boardElement) boardElement.classList.remove('error-state');
+                        
+                        setTimeout(() => { 
+                            if (token === this.requestToken) { 
+                                CanvasEngine.resizeCanvas(); 
+                                StorageEngine.loadCanvasLocal(); 
+                            } 
+                        }, 50);
+                    };
+                    
+                    tempImg.onerror = () => { 
+                        clearTimeout(loadTimeout); 
+                        tryLoad(index + 1); 
+                    };
+                    
+                    tempImg.src = basePaths[index];
+                };
+                tryLoad(0);
             }
         };
 
@@ -832,164 +730,76 @@
                 if (!STATE.uid) return;
                 try {
                     const rawStorage = localStorage.getItem(`br_data_${STATE.uid}_${STATE.unitId}`);
-                    let s = {}; 
-                    if (rawStorage) s = JSON.parse(rawStorage);
-                    
-                    if (s.name) STATE.studentName = s.name; 
-                    if (s.badges) STATE.badges = s.badges;
-                    
+                    let s = {}; if (rawStorage) s = JSON.parse(rawStorage);
+                    if (s.name) STATE.studentName = s.name; if (s.badges) STATE.badges = s.badges;
                     const urlPage = Number(new URLSearchParams(window.location.search).get('page'));
-                    if (urlPage) { 
-                        if (CurriculumEngine.pages(STATE.unitId).includes(urlPage)) {
-                            STATE.currentPage = urlPage; 
-                        }
-                    } else if (s.page) {
-                        STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, s.page);
-                    }
-                } catch (e) { 
-                    Logger.warn("Metadata local cache failure", e); 
-                }
+                    if (urlPage) { if (CurriculumEngine.pages(STATE.unitId).includes(urlPage)) STATE.currentPage = urlPage; } 
+                    else if (s.page) STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, s.page);
+                } catch (e) { Logger.warn("Metadata local cache failure", e); }
             },
             async save() {
                 if (!STATE.uid || !db) return;
                 try {
-                    const data = { 
-                        name: STATE.studentName, 
-                        page: STATE.currentPage, 
-                        badges: STATE.badges || [] 
-                    };
+                    const data = { name: STATE.studentName, page: STATE.currentPage, badges: STATE.badges || [] };
                     localStorage.setItem(`br_data_${STATE.uid}_${STATE.unitId}`, JSON.stringify(data));
-                    
-                    if (navigator.onLine) { 
-                        await db.collection("students").doc(STATE.uid).set({ 
-                            name: data.name, 
-                            page: data.page, 
-                            badges: data.badges, 
-                            email: STATE.studentEmail, 
-                            lastUpdated: firebase.firestore.FieldValue.serverTimestamp() 
-                        }, { merge: true }); 
-                    }
-                } catch (error) { 
-                    Logger.error("Core transaction metadata sync failed.", error); 
-                }
+                    if (navigator.onLine) { await db.collection("students").doc(STATE.uid).set({ name: data.name, page: data.page, badges: data.badges, email: STATE.studentEmail, lastUpdated: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }); }
+                } catch (error) { Logger.error("Core transaction metadata sync failed.", error); }
             },
             createCanvasSnapshot(compressForDatabase = false) {
                 if (!CanvasEngine.cvs || !STATE.uid) return null;
                 let canvasData = null;
                 
-                if (compressForDatabase) { 
-                    canvasData = CanvasEngine.captureWorksheetWithDrawing(true, 600); 
-                } else { 
-                    canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6); 
-                }
+                if (compressForDatabase) { canvasData = CanvasEngine.captureWorksheetWithDrawing(true, 600); } 
+                else { canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6); }
                 
                 if (!compressForDatabase) {
-                    try { 
-                        localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, canvasData); 
-                    } catch(e) {
+                    try { localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, canvasData); } 
+                    catch(e) {
                         if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
-                            Logger.warn("Local Storage Quota Exceeded. Engaging Emergency Flush."); 
-                            localStorage.clear();
-                            try { 
-                                localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, canvasData); 
-                            } catch (fallbackError) { 
-                                Logger.error("Emergency flush failed.", fallbackError); 
-                            }
+                            Logger.warn("Local Storage Quota Exceeded. Engaging Emergency Flush."); localStorage.clear();
+                            try { localStorage.setItem(`br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`, canvasData); } catch (fallbackError) { Logger.error("Emergency flush failed.", fallbackError); }
                         }
                     }
                 }
-                return { 
-                    uid: STATE.uid, 
-                    studentEmail: STATE.studentEmail, 
-                    unitId: STATE.unitId, 
-                    page: STATE.currentPage, 
-                    transcript: STATE.lastTranscript, 
-                    canvasData: canvasData 
-                };
+                return { uid: STATE.uid, studentEmail: STATE.studentEmail, unitId: STATE.unitId, page: STATE.currentPage, transcript: STATE.lastTranscript, canvasData: canvasData };
             },
-            saveCanvasLocal() { 
-                return this.createCanvasSnapshot(false); 
-            },
-            scheduleCloudSave() { 
-                SyncIndicatorEngine.setSaving(); 
-                const snapshot = this.createCanvasSnapshot(true); 
-                if (this.cloudSaveTimer) clearTimeout(this.cloudSaveTimer); 
-                this.cloudSaveTimer = setTimeout(() => { 
-                    this.executeCloudSave(snapshot); 
-                }, 1500); 
-            },
+            saveCanvasLocal() { return this.createCanvasSnapshot(false); },
+            scheduleCloudSave() { SyncIndicatorEngine.setSaving(); const snapshot = this.createCanvasSnapshot(true); if (this.cloudSaveTimer) clearTimeout(this.cloudSaveTimer); this.cloudSaveTimer = setTimeout(() => { this.executeCloudSave(snapshot); }, 1500); },
             async executeCloudSave(snapshot = null) {
-                let payload = snapshot ? snapshot : this.createCanvasSnapshot(true); 
-                if (!payload || !db) return;
-                
-                if (!navigator.onLine) { 
-                    SyncIndicatorEngine.setError(); 
-                    return; 
-                }
-                
+                let payload = snapshot ? snapshot : this.createCanvasSnapshot(true); if (!payload || !db) return;
+                if (!navigator.onLine) { SyncIndicatorEngine.setError(); return; }
                 try {
                     const firestoreDocId = `${payload.uid}_${payload.unitId}_P${payload.page}`;
-                    await db.collection("student_drawings").doc(firestoreDocId).set({ 
-                        uid: payload.uid, 
-                        studentID: payload.studentEmail, 
-                        unitId: payload.unitId, 
-                        page: payload.page, 
-                        imageUrl: payload.canvasData, 
-                        transcript: payload.transcript, 
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp() 
-                    }, { merge: true });
+                    await db.collection("student_drawings").doc(firestoreDocId).set({ uid: payload.uid, studentID: payload.studentEmail, unitId: payload.unitId, page: payload.page, imageUrl: payload.canvasData, transcript: payload.transcript, timestamp: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
                     SyncIndicatorEngine.setSaved();
-                } catch (error) { 
-                    Logger.warn("Cloud infrastructure save fault.", error); 
-                    SyncIndicatorEngine.setError(); 
-                }
+                } catch (error) { Logger.warn("Cloud infrastructure save fault.", error); SyncIndicatorEngine.setError(); }
             },
             loadCanvasLocal() {
                 try {
-                    const cacheKey = `br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`; 
-                    const localData = localStorage.getItem(cacheKey);
-                    
-                    if (localData) { 
-                        const img = new Image(); 
-                        img.onload = () => { 
-                            CanvasEngine.ctx.drawImage(img, 0, 0, CanvasEngine.cvs.width / CanvasEngine.dpr, CanvasEngine.cvs.height / CanvasEngine.dpr); 
-                            CanvasEngine.saveHistory(); 
-                        }; 
-                        img.src = localData; 
-                    } else { 
-                        CanvasEngine.saveHistory(); 
-                    }
-                } catch (error) { 
-                    CanvasEngine.saveHistory(); 
-                }
+                    const cacheKey = `br_cvs_${STATE.uid}_${STATE.unitId}_P${STATE.currentPage}`; const localData = localStorage.getItem(cacheKey);
+                    if (localData) { const img = new Image(); img.onload = () => { CanvasEngine.ctx.drawImage(img, 0, 0, CanvasEngine.cvs.width / CanvasEngine.dpr, CanvasEngine.cvs.height / CanvasEngine.dpr); CanvasEngine.saveHistory(); }; img.src = localData; } 
+                    else { CanvasEngine.saveHistory(); }
+                } catch (error) { CanvasEngine.saveHistory(); }
             }
         };
 
-        // ----------------------------------------------------------------------
-        // 5. DRAWING & PHYSICS
-        // ----------------------------------------------------------------------
+        // [P1] 이탈 방어 로직 (BeforeUnload Auto-Save)
+        window.addEventListener('beforeunload', () => {
+            StorageEngine.saveCanvasLocal();
+            StorageEngine.save();
+        });
+
         const CanvasEngine = {
             isDrawing: false, hasMoved: false, isErasing: false, lastColor: "#363431", 
             dpr: window.devicePixelRatio || 1, historyStack: [], historyIndex: -1, resizeTimer: null,
             
             init() {
-                this.cvs = document.getElementById('draw-layer'); 
-                if (!this.cvs) return;
+                this.cvs = document.getElementById('draw-layer'); if (!this.cvs) return;
+                this.ctx = this.cvs.getContext('2d'); this.board = document.getElementById('drawing-board');
                 
-                this.ctx = this.cvs.getContext('2d'); 
-                this.board = document.getElementById('drawing-board');
+                this.setupUI(); this.setupCanvas(); this.bind(); this.updateBrushPreview();
+                const slider = document.getElementById('brush-size'); if (slider) slider.addEventListener('input', () => this.updateBrushPreview());
                 
-                this.setupUI(); 
-                this.setupCanvas(); 
-                this.bind(); 
-                this.updateBrushPreview();
-                
-                const slider = document.getElementById('brush-size'); 
-                if (slider) {
-                    slider.addEventListener('input', () => this.updateBrushPreview());
-                }
-                
-                // [P0] 아이패드 회전 시 캔버스 날아가는 현상 방지 디바운스
                 if (window.ResizeObserver && this.board) {
                     new ResizeObserver(() => {
                         if(this.resizeTimer) clearTimeout(this.resizeTimer);
@@ -999,54 +809,30 @@
             },
             
             updateBrushPreview() {
-                const slider = document.getElementById('brush-size'); 
-                const dot = document.getElementById('brush-preview-dot');
+                const slider = document.getElementById('brush-size'); const dot = document.getElementById('brush-preview-dot');
                 if (!slider || !dot) return;
-                
-                const val = parseInt(slider.value); 
-                dot.style.width = `${val}px`; 
-                dot.style.height = `${val}px`; 
-                dot.style.backgroundColor = this.isErasing ? "var(--br-muted)" : this.lastColor;
+                const val = parseInt(slider.value); dot.style.width = `${val}px`; dot.style.height = `${val}px`; dot.style.backgroundColor = this.isErasing ? "var(--br-muted)" : this.lastColor;
             },
             
             isCanvasBlank() {
                 if (!this.cvs || !this.ctx) return true;
                 try {
-                    const probe = document.createElement('canvas'); 
-                    probe.width = 64; 
-                    probe.height = 64;
-                    const pctx = probe.getContext('2d'); 
-                    pctx.drawImage(this.cvs, 0, 0, 64, 64);
+                    const probe = document.createElement('canvas'); probe.width = 64; probe.height = 64;
+                    const pctx = probe.getContext('2d'); pctx.drawImage(this.cvs, 0, 0, 64, 64);
                     const pixels = pctx.getImageData(0, 0, 64, 64).data;
-                    
-                    for (let i = 3; i < pixels.length; i += 4) { 
-                        if (pixels[i] !== 0) return false; 
-                    }
+                    for (let i = 3; i < pixels.length; i += 4) { if (pixels[i] !== 0) return false; }
                     return true;
-                } catch(e) { 
-                    return true; 
-                }
+                } catch(e) { return true; }
             },
             
             captureWorksheetWithDrawing(compressForDatabase = false, initialMaxWidth = 600) {
-                const worksheet = document.getElementById('worksheet-img'); 
-                const draw = this.cvs; 
-                if (!draw) return null;
+                const worksheet = document.getElementById('worksheet-img'); const draw = this.cvs; if (!draw) return null;
+                const merged = document.createElement('canvas'); let scaleRatio = 1.0;
                 
-                const merged = document.createElement('canvas'); 
-                let scaleRatio = 1.0;
+                if (compressForDatabase) { if (draw.width > initialMaxWidth) scaleRatio = initialMaxWidth / draw.width; }
                 
-                if (compressForDatabase) { 
-                    if (draw.width > initialMaxWidth) {
-                        scaleRatio = initialMaxWidth / draw.width;
-                    }
-                }
-                
-                merged.width = Math.floor(draw.width * scaleRatio); 
-                merged.height = Math.floor(draw.height * scaleRatio);
-                const ctx = merged.getContext('2d'); 
-                ctx.fillStyle = '#FFFFFF'; 
-                ctx.fillRect(0, 0, merged.width, merged.height);
+                merged.width = Math.floor(draw.width * scaleRatio); merged.height = Math.floor(draw.height * scaleRatio);
+                const ctx = merged.getContext('2d'); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, merged.width, merged.height);
                 
                 try {
                     if (worksheet && worksheet.complete && worksheet.naturalWidth > 0 && worksheet.src.indexOf('data:image/svg+xml') === -1) {
@@ -1055,18 +841,27 @@
                     ctx.drawImage(draw, 0, 0, merged.width, merged.height);
                 } catch(e) { 
                     Logger.warn("Security Canvas Taint Detected. Engaging fallback extraction.");
-                    const fallbackCanvas = document.createElement('canvas'); 
-                    fallbackCanvas.width = Math.floor(draw.width * scaleRatio); 
-                    fallbackCanvas.height = Math.floor(draw.height * scaleRatio);
-                    const fCtx = fallbackCanvas.getContext('2d'); 
-                    fCtx.fillStyle = '#FFFFFF'; 
-                    fCtx.fillRect(0, 0, fallbackCanvas.width, fallbackCanvas.height); 
-                    fCtx.drawImage(draw, 0, 0, fallbackCanvas.width, fallbackCanvas.height);
+                    const fallbackCanvas = document.createElement('canvas'); fallbackCanvas.width = Math.floor(draw.width * scaleRatio); fallbackCanvas.height = Math.floor(draw.height * scaleRatio);
+                    const fCtx = fallbackCanvas.getContext('2d'); fCtx.fillStyle = '#FFFFFF'; fCtx.fillRect(0, 0, fallbackCanvas.width, fallbackCanvas.height); fCtx.drawImage(draw, 0, 0, fallbackCanvas.width, fallbackCanvas.height);
                     ctx.drawImage(fallbackCanvas, 0, 0);
                 }
 
                 if (compressForDatabase) {
-                    return merged.toDataURL('image/jpeg', 0.65);
+                    let qualityLevel = 0.7; let encodedString = merged.toDataURL('image/jpeg', qualityLevel);
+                    // [P0] Base64 헤더 오염 원천 차단
+                    encodedString = encodedString.replace(/^data:image\/\w+;base64,/, "");
+                    
+                    while (encodedString.length > 400000) {
+                        if (qualityLevel <= 0.1) break; qualityLevel -= 0.15;
+                        let rawString = merged.toDataURL('image/jpeg', qualityLevel); encodedString = rawString.replace(/^data:image\/\w+;base64,/, "");
+                    }
+
+                    if (encodedString.length > 400000) {
+                        const microCanvas = document.createElement('canvas'); microCanvas.width = Math.floor(merged.width / 2); microCanvas.height = Math.floor(merged.height / 2);
+                        const microCtx = microCanvas.getContext('2d'); microCtx.fillStyle = '#FFFFFF'; microCtx.fillRect(0, 0, microCanvas.width, microCanvas.height); microCtx.drawImage(merged, 0, 0, microCanvas.width, microCanvas.height);
+                        let rawString = microCanvas.toDataURL('image/jpeg', 0.5); encodedString = rawString.replace(/^data:image\/\w+;base64,/, "");
+                    }
+                    return encodedString;
                 } else {
                     return merged.toDataURL('image/jpeg', 0.8); 
                 }
@@ -1074,279 +869,150 @@
             
             setupCanvas() {
                 if (!this.board || !this.cvs) return;
-                const rect = this.board.getBoundingClientRect(); 
-                if (rect.width === 0) return;
-                
-                this.cvs.style.width = rect.width + "px"; 
-                this.cvs.style.height = rect.height + "px";
-                this.cvs.width = rect.width * this.dpr; 
-                this.cvs.height = rect.height * this.dpr;
-                
-                this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); 
-                this.ctx.lineCap = 'round'; 
-                this.ctx.lineJoin = 'round';
+                const rect = this.board.getBoundingClientRect(); if (rect.width === 0) return;
+                this.cvs.style.width = rect.width + "px"; this.cvs.style.height = rect.height + "px";
+                this.cvs.width = rect.width * this.dpr; this.cvs.height = rect.height * this.dpr;
+                this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); this.ctx.lineCap = 'round'; this.ctx.lineJoin = 'round';
             },
             
             resizeCanvas() {
                 if (!this.cvs || !this.ctx || !this.board) return;
-                const rect = this.board.getBoundingClientRect(); 
-                if (rect.width === 0 || rect.height === 0) return;
-                
-                const temp = document.createElement('canvas'); 
-                temp.width = this.cvs.width; 
-                temp.height = this.cvs.height;
-                if (this.cvs.width > 0 && this.cvs.height > 0) {
-                    temp.getContext('2d').drawImage(this.cvs, 0, 0);
-                }
-                
+                const rect = this.board.getBoundingClientRect(); if (rect.width === 0 || rect.height === 0) return;
+                const temp = document.createElement('canvas'); temp.width = this.cvs.width; temp.height = this.cvs.height;
+                if (this.cvs.width > 0 && this.cvs.height > 0) temp.getContext('2d').drawImage(this.cvs, 0, 0);
                 this.setupCanvas();
-                
-                if (temp.width > 0 && temp.height > 0) {
-                    this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, rect.width, rect.height);
-                }
+                if (temp.width > 0 && temp.height > 0) this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, rect.width, rect.height);
             },
             
             bind() {
                 const getCoords = (e) => { 
                     const rect = this.cvs.getBoundingClientRect(); 
-                    let clientX = e.clientX; 
-                    let clientY = e.clientY;
-                    
-                    if (e.touches && e.touches.length > 0) { 
-                        clientX = e.touches[0].clientX; 
-                        clientY = e.touches[0].clientY; 
-                    }
-                    
-                    return { 
-                        x: (clientX - rect.left) * (this.cvs.width / rect.width / this.dpr), 
-                        y: (clientY - rect.top) * (this.cvs.height / rect.height / this.dpr) 
-                    }; 
+                    let clientX = e.clientX; let clientY = e.clientY;
+                    if (e.touches && e.touches.length > 0) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+                    return { x: (clientX - rect.left) * (this.cvs.width / rect.width / this.dpr), y: (clientY - rect.top) * (this.cvs.height / rect.height / this.dpr) }; 
                 };
                 
                 const startDraw = (e) => { 
-                    e.preventDefault(); 
-                    this.isDrawing = true; 
-                    this.hasMoved = false; 
-                    const p = getCoords(e); 
-                    
-                    this.ctx.beginPath(); 
-                    this.ctx.moveTo(p.x, p.y); 
-                    
-                    STATE.strokeCount = STATE.strokeCount + 1; 
-                    if (!this.isErasing) {
-                        STATE.usedColors.add(this.lastColor);
-                    }
+                    e.preventDefault(); this.isDrawing = true; this.hasMoved = false; const p = getCoords(e); this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y); 
+                    STATE.strokeCount = STATE.strokeCount + 1; if (!this.isErasing) STATE.usedColors.add(this.lastColor);
                 };
                 
                 const moveDraw = (e) => {
-                    if (!this.isDrawing) return; 
-                    e.preventDefault(); 
-                    this.hasMoved = true; 
-                    const p = getCoords(e);
-                    
+                    if (!this.isDrawing) return; e.preventDefault(); this.hasMoved = true; const p = getCoords(e);
                     this.ctx.globalCompositeOperation = this.isErasing ? "destination-out" : "source-over";
-                    const sliderVal = document.getElementById('brush-size').value; 
-                    this.ctx.lineWidth = this.isErasing ? sliderVal * 3 : sliderVal; 
-                    this.ctx.strokeStyle = this.isErasing ? "#FFFFFF" : this.lastColor; 
-                    
-                    if (STATE.brushType === 'rainbow' && !this.isErasing) {
-                        this.ctx.strokeStyle = `hsl(${(Date.now() / 10) % 360}, 100%, 50%)`; 
-                    } else if (STATE.brushType === 'neon' && !this.isErasing) { 
-                        this.ctx.shadowBlur = parseInt(sliderVal) + 10; 
-                        this.ctx.shadowColor = this.lastColor; 
-                    } else {
-                        this.ctx.shadowBlur = 0; 
-                    }
-                    
-                    this.ctx.lineTo(p.x, p.y); 
-                    this.ctx.stroke(); 
-                    this.ctx.beginPath(); 
-                    this.ctx.moveTo(p.x, p.y);
+                    const sliderVal = document.getElementById('brush-size').value; this.ctx.lineWidth = this.isErasing ? sliderVal * 3 : sliderVal; this.ctx.strokeStyle = this.isErasing ? "#FFFFFF" : this.lastColor; 
+                    if (STATE.brushType === 'rainbow' && !this.isErasing) this.ctx.strokeStyle = `hsl(${(Date.now() / 10) % 360}, 100%, 50%)`; 
+                    else if (STATE.brushType === 'neon' && !this.isErasing) { this.ctx.shadowBlur = parseInt(sliderVal) + 10; this.ctx.shadowColor = this.lastColor; } 
+                    else this.ctx.shadowBlur = 0; 
+                    this.ctx.lineTo(p.x, p.y); this.ctx.stroke(); this.ctx.beginPath(); this.ctx.moveTo(p.x, p.y);
                 };
                 
                 const endDraw = () => { 
-                    this.isDrawing = false; 
-                    this.ctx.shadowBlur = 0; 
-                    if (this.hasMoved) { 
-                        this.saveHistory(); 
-                        StorageEngine.saveCanvasLocal(); 
-                        StorageEngine.scheduleCloudSave(); 
-                    } 
+                    this.isDrawing = false; this.ctx.shadowBlur = 0; 
+                    if (this.hasMoved) { this.saveHistory(); StorageEngine.saveCanvasLocal(); StorageEngine.scheduleCloudSave(); } 
                 };
                 
-                this.cvs.addEventListener('mousedown', startDraw); 
-                this.cvs.addEventListener('mousemove', moveDraw); 
-                this.cvs.addEventListener('mouseup', endDraw); 
-                this.cvs.addEventListener('mouseleave', endDraw);
-                
-                this.cvs.addEventListener('touchstart', startDraw, {passive: false}); 
-                this.cvs.addEventListener('touchmove', moveDraw, {passive: false}); 
-                this.cvs.addEventListener('touchend', endDraw); 
-                this.cvs.addEventListener('touchcancel', endDraw);
+                this.cvs.addEventListener('mousedown', startDraw); this.cvs.addEventListener('mousemove', moveDraw); this.cvs.addEventListener('mouseup', endDraw); this.cvs.addEventListener('mouseleave', endDraw);
+                this.cvs.addEventListener('touchstart', startDraw, {passive: false}); this.cvs.addEventListener('touchmove', moveDraw, {passive: false}); this.cvs.addEventListener('touchend', endDraw); this.cvs.addEventListener('touchcancel', endDraw);
             },
             
-            saveHistory() { 
-                this.historyIndex++; 
-                this.historyStack.length = this.historyIndex; 
-                this.historyStack.push(this.cvs.toDataURL()); 
-                if (this.historyStack.length > 20) { 
-                    this.historyStack.shift(); 
-                    this.historyIndex--; 
-                } 
-            },
-            
-            undo() { 
-                if (this.historyIndex > 0) { 
-                    this.historyIndex--; 
-                    this.restore(); 
-                    StorageEngine.saveCanvasLocal(); 
-                    StorageEngine.scheduleCloudSave(); 
-                } 
-            },
-            
-            restore() { 
-                if (!this.ctx || !this.cvs) return; 
-                const img = new Image(); 
-                img.onload = () => { 
-                    this.ctx.save(); 
-                    this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
-                    this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
-                    this.ctx.drawImage(img, 0, 0, this.cvs.width, this.cvs.height); 
-                    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); 
-                    this.ctx.restore(); 
-                }; 
-                img.src = this.historyStack[this.historyIndex]; 
-            },
-            
-            setBrush(t) { 
-                STATE.brushType = t; 
-                document.querySelectorAll('.btn-magic').forEach((el) => { 
-                    el.classList.remove('active'); 
-                }); 
-                const activeBtn = document.getElementById(`btn-brush-${t}`); 
-                if (activeBtn) activeBtn.classList.add('active'); 
-                if (this.isErasing) this.toggleEraser(); 
-            },
-            
-            toggleEraser() { 
-                this.isErasing = !this.isErasing; 
-                const btn = document.getElementById('btn-eraser'); 
-                if (btn) btn.classList.toggle('active'); 
-                this.updateBrushPreview(); 
-            },
-            
-            setColor(color) { 
-                this.lastColor = color; 
-                const preview = document.getElementById('btn-color'); 
-                if (preview) preview.style.background = color; 
-                if (this.isErasing) this.toggleEraser(); 
-                this.updateBrushPreview(); 
-            },
-            
-            setupUI() { 
-                const preview = document.getElementById('btn-color'); 
-                if (preview) preview.style.background = this.lastColor; 
-            },
-            
-            hardReset() { 
-                if (!this.ctx || !this.cvs) return; 
-                try { 
-                    this.ctx.save(); 
-                    this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
-                    this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
-                    this.ctx.restore(); 
-                    this.historyStack = []; 
-                    this.historyIndex = -1; 
-                    STATE.strokeCount = 0; 
-                    STATE.usedColors.clear(); 
-                } catch(e) { 
-                    Logger.error("Canvas clear error", e); 
-                } 
-            },
-            
-            promptHardReset() { 
-                CustomModalEngine.confirm("Clear Canvas", "Are you absolutely sure you want to wipe this clean?", () => { 
-                    this.hardReset(); 
-                    this.saveHistory(); 
-                    StorageEngine.saveCanvasLocal(); 
-                    StorageEngine.scheduleCloudSave(); 
-                }); 
-            }
+            saveHistory() { this.historyIndex++; this.historyStack.length = this.historyIndex; this.historyStack.push(this.cvs.toDataURL()); if (this.historyStack.length > 20) { this.historyStack.shift(); this.historyIndex--; } },
+            undo() { if (this.historyIndex > 0) { this.historyIndex--; this.restore(); StorageEngine.saveCanvasLocal(); StorageEngine.scheduleCloudSave(); } },
+            restore() { if (!this.ctx || !this.cvs) return; const img = new Image(); img.onload = () => { this.ctx.save(); this.ctx.setTransform(1, 0, 0, 1, 0, 0); this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); this.ctx.drawImage(img, 0, 0, this.cvs.width, this.cvs.height); this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); this.ctx.restore(); }; img.src = this.historyStack[this.historyIndex]; },
+            setBrush(t) { STATE.brushType = t; document.querySelectorAll('.btn-magic').forEach((el) => { el.classList.remove('active'); }); const activeBtn = document.getElementById(`btn-brush-${t}`); if (activeBtn) activeBtn.classList.add('active'); if (this.isErasing) this.toggleEraser(); },
+            toggleEraser() { this.isErasing = !this.isErasing; const btn = document.getElementById('btn-eraser'); if (btn) btn.classList.toggle('active'); this.updateBrushPreview(); },
+            setColor(color) { this.lastColor = color; const preview = document.getElementById('btn-color'); if (preview) preview.style.background = color; if (this.isErasing) this.toggleEraser(); this.updateBrushPreview(); },
+            setupUI() { const preview = document.getElementById('btn-color'); if (preview) preview.style.background = this.lastColor; },
+            hardReset() { if (!this.ctx || !this.cvs) return; try { this.ctx.save(); this.ctx.setTransform(1, 0, 0, 1, 0, 0); this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); this.ctx.restore(); this.historyStack = []; this.historyIndex = -1; STATE.strokeCount = 0; STATE.usedColors.clear(); } catch(e) { Logger.error("Canvas clear error", e); } },
+            promptHardReset() { CustomModalEngine.confirm("Clear Canvas", "Are you absolutely sure you want to wipe this clean?", () => { this.hardReset(); this.saveHistory(); StorageEngine.saveCanvasLocal(); StorageEngine.scheduleCloudSave(); }); }
         };
 
         const RGBRingEngine = {
             init() {
-                const c = document.getElementById('color-wheel'); 
-                if (!c) return;
-                
+                const c = document.getElementById('color-wheel'); if (!c) return;
                 const ctx = c.getContext('2d', { willReadFrequently: true }); 
-                for (let a = 0; a < 360; a++) { 
-                    ctx.beginPath(); 
-                    ctx.moveTo(75, 75); 
-                    ctx.arc(75, 75, 75, a * Math.PI / 180, (a + 2) * Math.PI / 180); 
-                    ctx.fillStyle = `hsl(${a}, 100%, 50%)`; 
-                    ctx.fill(); 
-                }
-                
-                c.onclick = (e) => { 
-                    const rect = c.getBoundingClientRect(); 
-                    const pX = e.clientX - rect.left; 
-                    const pY = e.clientY - rect.top; 
-                    const imgData = ctx.getImageData(pX, pY, 1, 1); 
-                    const rgbStr = `rgb(${imgData.data[0]}, ${imgData.data[1]}, ${imgData.data[2]})`; 
-                    CanvasEngine.setColor(rgbStr); 
-                    this.toggle(); 
-                };
+                for (let a = 0; a < 360; a++) { ctx.beginPath(); ctx.moveTo(75, 75); ctx.arc(75, 75, 75, a * Math.PI / 180, (a + 2) * Math.PI / 180); ctx.fillStyle = `hsl(${a}, 100%, 50%)`; ctx.fill(); }
+                c.onclick = (e) => { const rect = c.getBoundingClientRect(); const pX = e.clientX - rect.left; const pY = e.clientY - rect.top; const imgData = ctx.getImageData(pX, pY, 1, 1); const rgbStr = `rgb(${imgData.data[0]}, ${imgData.data[1]}, ${imgData.data[2]})`; CanvasEngine.setColor(rgbStr); this.toggle(); };
             },
-            toggle() { 
-                const modal = document.getElementById('rgb-modal'); 
-                if (modal) modal.classList.toggle('active'); 
+            toggle() { const modal = document.getElementById('rgb-modal'); if (modal) modal.classList.toggle('active'); }
+        };
+
+        const CertificateEngine = {
+            open(weekNum) {
+                const modal = document.getElementById('cert-modal'); if (!modal) return;
+                const weekLabel = document.getElementById('cert-week'); if (weekLabel) weekLabel.innerText = `WEEK ${weekNum} COMPLETED`;
+                const nameLabel = document.getElementById('cert-student-name'); if (nameLabel) nameLabel.innerText = STATE.studentName || "Global Explorer";
+                const imgEl = document.getElementById('cert-canvas-img'); const mergedImg = CanvasEngine.captureWorksheetWithDrawing(false); if (imgEl) imgEl.src = mergedImg || CanvasEngine.cvs.toDataURL();
+                const msgEl = document.getElementById('cert-ai-msg'); const hasArt = STATE.badges.includes("🎨 Colorful Artist"); const hasVoice = STATE.badges.includes("🗣️ Great Speaker");
+                let msg = "For showing amazing curiosity and completing your inquiry journey.";
+                if (hasArt && hasVoice) msg = "For your brilliant colorful art and speaking English so confidently!"; else if (hasArt) msg = "For expressing your wonderful imagination through colorful art!"; else if (hasVoice) msg = "For speaking English with a clear, brave voice!";
+                if (msgEl) msgEl.innerText = `"${msg}"`; 
+                modal.classList.add('active'); if (window.confetti) confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
+            },
+            close() { const modal = document.getElementById('cert-modal'); if (modal) modal.classList.remove('active'); if (STATE.currentPage === CurriculumEngine.last(STATE.unitId)) location.href = 'dashboard.html'; else AppEngine.smoothMove(1); },
+            print() {
+                const card = document.getElementById('cert-card-content'); const closeBtn = document.querySelector('.cert-close'); const printBtn = document.querySelector('.btn-print');
+                if (closeBtn) closeBtn.style.display = 'none'; if (printBtn) printBtn.style.display = 'none';
+                if (window.html2canvas && card) { html2canvas(card, { backgroundColor: '#FFFFFF', scale: 2 }).then((canvas) => { if (closeBtn) closeBtn.style.display = 'block'; if (printBtn) printBtn.style.display = 'inline-flex'; const link = document.createElement('a'); link.download = `Certificate_${STATE.studentName}.png`; link.href = canvas.toDataURL('image/png'); link.click(); }); } else { window.print(); if (closeBtn) closeBtn.style.display = 'block'; if (printBtn) printBtn.style.display = 'inline-flex'; }
             }
         };
 
-        // ----------------------------------------------------------------------
-        // 6. AUDIO & AI ENGINES (Clova-Level Intelligent NLP)
-        // ----------------------------------------------------------------------
+        const AudioEngine = {
+            recordingMode: 'main',
+            hasUnlockedTTS: false,
+            async ensurePermission() { try { if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) { await navigator.mediaDevices.getUserMedia({ audio: true }); return true; } return false; } catch (e) { CustomModalEngine.alert("Microphone Needed", "마이크 사용을 허용해주셔야 선생님과 이야기할 수 있어요!"); return false; } },
+            unlockAudioContext() {
+                if (this.hasUnlockedTTS) return;
+                if (window.speechSynthesis) {
+                    const u = new SpeechSynthesisUtterance(''); u.volume = 0; window.speechSynthesis.speak(u); this.hasUnlockedTTS = true; Logger.log("AudioContext unlocked for iOS.");
+                }
+            },
+            init() {
+                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (SR) {
+                    this.rec = new SR(); this.rec.lang = 'en-US'; this.rec.continuous = false; this.rec.interimResults = false;
+                    this.rec.onresult = (e) => { STATE.lastTranscript = e.results[0][0].transcript; STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); };
+                    this.rec.onend = () => { 
+                        if (!STATE.isRecording) return; STATE.isRecording = false;
+                        if (this.recordingMode === 'chat') { const chatBtn = document.getElementById('btn-chat-record'); if (chatBtn) { chatBtn.classList.remove('recording'); chatBtn.innerText = "🎤 Speak to Teacher"; } setTimeout(() => { AITutor.processReply(); }, 800); } else { const recBtn = document.getElementById('btn-record'); const recText = document.getElementById('record-text'); if (recBtn) { recBtn.classList.remove('recording'); } if (recText) { recText.innerText = "Voice Log"; } setTimeout(() => { AITutor.submit(); }, 800); }
+                    };
+                    this.rec.onerror = () => { if (STATE.isRecording) { STATE.isRecording = false; const recBtn = document.getElementById('btn-record'); const recText = document.getElementById('record-text'); if (recBtn) { recBtn.classList.remove('recording'); } if (recText) { recText.innerText = "Voice Log"; } } };
+                } else { ['btn-record', 'btn-chat-record'].forEach((id) => { const btn = document.getElementById(id); if (btn) { btn.disabled = true; } }); }
+            },
+            async toggle() { if (!this.rec) return; const hasPermission = await this.ensurePermission(); if (!hasPermission) return; this.recordingMode = 'main'; const recBtn = document.getElementById('btn-record'); const recText = document.getElementById('record-text'); if (!STATE.isRecording) { STATE.isRecording = true; if (recBtn) { recBtn.classList.add('recording'); } if (recText) { recText.innerText = "Listening..."; } this.rec.start(); } else { STATE.isRecording = false; if (recBtn) { recBtn.classList.remove('recording'); } if (recText) { recText.innerText = "Voice Log"; } this.rec.stop(); } },
+            async toggleChat() { if (!this.rec) return; const hasPermission = await this.ensurePermission(); if (!hasPermission) return; this.recordingMode = 'chat'; const chatBtn = document.getElementById('btn-chat-record'); if (!STATE.isRecording) { STATE.isRecording = true; if (chatBtn) { chatBtn.classList.add('recording'); chatBtn.innerText = "Listening..."; } this.rec.start(); } else { STATE.isRecording = false; if (chatBtn) { chatBtn.classList.remove('recording'); chatBtn.innerText = "🎤 Speak to Teacher"; } this.rec.stop(); } }
+        };
+
         const AITutor = {
             isBusy: false,
-            
-            // [P1] 연타 방어 시스템 (Mutex Lock)
             lockUI() {
                 this.isBusy = true;
                 const buttons = document.querySelectorAll('.btn-submit, .btn-record, .btn-nav');
                 buttons.forEach(b => b.classList.add('locked-btn'));
             },
-            
             unlockUI() {
                 this.isBusy = false;
                 const buttons = document.querySelectorAll('.btn-submit, .btn-record, .btn-nav');
                 buttons.forEach(b => b.classList.remove('locked-btn'));
             },
-            
-            getMemory() { 
-                return STATE.chatHistory.slice(-4).map(h => `${h.role}: ${h.text}`).join("\n"); 
-            },
+            getMemory() { return STATE.chatHistory.slice(-4).map(h => `${h.role}: ${h.text}`).join("\n"); },
             
             async callBackendTutor(promptText, base64Img = null) {
-                const controller = new AbortController(); 
-                const timeoutId = setTimeout(() => controller.abort(), 15000);
-                
+                const controller = new AbortController(); const timeoutId = setTimeout(() => controller.abort(), 15000);
                 try {
-                    if (!auth) throw new Error("Auth not fully initialized"); 
-                    const user = auth.currentUser; 
-                    if (!user) throw new Error("Unauthorized"); 
-                    
+                    if (!auth) throw new Error("Auth not fully initialized"); const user = auth.currentUser; if (!user) { throw new Error("Unauthorized"); }
                     const token = await user.getIdToken();
                     
                     let expectedAction = PAGE_INTELLIGENCE[STATE.unitId]?.[STATE.currentPage]?.expectedAction || "Free exploration";
                     let theme = UNIT_THEMES[STATE.unitId] || "General Learning";
+                    const durationSeconds = Math.floor((Date.now() - (STATE.pageStartTime || Date.now())) / 1000);
 
                     const reqObj = { 
                         prompt: promptText, 
                         image: base64Img, 
                         theme: theme,
                         expectedAction: expectedAction,
-                        metrics: { strokes: STATE.strokeCount, colors: STATE.usedColors.size }, 
+                        metrics: { strokes: STATE.strokeCount, colors: STATE.usedColors.size, duration: durationSeconds }, 
                         history: this.getMemory(),
                         studentName: STATE.studentName,
                         sttConfidence: STATE.sttConfidence,
@@ -1354,68 +1020,32 @@
                         isBlankCanvas: STATE.isBlankCanvas
                     };
                     
-                    const response = await fetch(CONFIG.API_TUTOR_ENDPOINT, { 
-                        method: 'POST', 
-                        headers: { 
-                            'Content-Type': 'application/json', 
-                            'Authorization': `Bearer ${token}` 
-                        }, 
-                        body: JSON.stringify(reqObj), 
-                        signal: controller.signal 
-                    });
-                    
+                    const response = await fetch(CONFIG.API_TUTOR_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, body: JSON.stringify(reqObj), signal: controller.signal });
                     clearTimeout(timeoutId);
                     
                     const data = await response.json(); 
-                    if (data.reply) return data.reply; 
-                    else return "앗, 선생님이 지금 답변을 주기 어려워요.";
-                    
-                } catch (e) { 
-                    clearTimeout(timeoutId); 
-                    if (e.name === 'AbortError') { 
-                        return "앗, 연결 시간이 너무 오래 걸렸어요. 다시 버튼을 눌러주세요!"; 
-                    } 
-                    return "앗, 네트워크 문제로 AI 선생님이 대답하지 못했어요. 다시 제출해주세요!"; 
-                }
+                    if (data.reply) return data.reply; else return "앗, 선생님이 지금 답변을 주기 어려워요.";
+                } catch (e) { clearTimeout(timeoutId); if (e.name === 'AbortError') { return "앗, 연결 시간이 너무 오래 걸렸어요. 다시 버튼을 눌러주세요!"; } return "앗, 네트워크 문제로 AI 선생님이 대답하지 못했어요. 다시 제출해주세요!"; }
             },
             
             async submit() {
-                if (STATE.isRecording) { 
-                    AudioEngine.toggle(); 
-                    return; 
-                } 
+                if (STATE.isRecording) { AudioEngine.toggle(); return; } 
                 if (this.isBusy) return; 
                 this.lockUI();
                 
-                const requestPage = STATE.currentPage; 
-                const requestUnit = STATE.unitId;
-                const content = document.getElementById('ai-content'); 
-                const panel = document.getElementById('ai-panel');
-                
+                const requestPage = STATE.currentPage; const requestUnit = STATE.unitId;
+                const content = document.getElementById('ai-content'); const panel = document.getElementById('ai-panel');
                 if (panel) panel.classList.add('open');
-                if (content) {
-                    content.innerHTML = `
-                        <div class="ai-loading-container">
-                            <i class="fa-solid fa-spinner fa-spin ai-loading-icon"></i>
-                            <p>Teacher is reading your work...</p>
-                        </div>
-                    `;
-                }
+                if (content) content.innerHTML = `<div class="ai-loading-container"><i class="fa-solid fa-sparkles fa-spin ai-loading-icon" style="color:var(--br-gold);"></i><p>Teacher is looking at your work...</p></div>`;
                 
                 try {
-                    StorageEngine.saveCanvasLocal(); 
-                    StorageEngine.executeCloudSave();
-                    
+                    StorageEngine.saveCanvasLocal(); StorageEngine.executeCloudSave();
                     const canvasImg = CanvasEngine.captureWorksheetWithDrawing(true);
                     let unitData = { goal: "Free Exploration", question: "Tell me more about it." };
+                    if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]) { unitData = PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]; }
                     
-                    if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]) { 
-                        unitData = PAGE_INTELLIGENCE[STATE.unitId][STATE.currentPage]; 
-                    }
-                    
-                    const prompt = `Goal: ${unitData.goal}. Question: ${unitData.question}. Please analyze.`;
+                    const prompt = `Goal: ${unitData.goal}. Question context: ${unitData.question}. Please analyze.`;
                     const reply = await this.callBackendTutor(prompt, canvasImg);
-                    
                     if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
 
                     STATE.chatHistory.push({ role: "Student", text: STATE.lastTranscript || "Look at my work!" }); 
@@ -1428,490 +1058,28 @@
                     }
                     
                     if (content) {
-                        content.innerHTML = `
-                            <div class="analytics-card">
-                                <div class="analytics-title">Mission: ${unitData.goal}</div>
-                                <div class="stat-row">
-                                    <div class="stat-label">
-                                        <span>Voice Confidence</span>
-                                        <span>${STATE.sttConfidence}%</span>
-                                    </div>
-                                    <div class="bar-bg">
-                                        <div class="bar-fill" style="width:${STATE.sttConfidence}%; background-color:var(--br-blue)"></div>
-                                    </div>
-                                </div>
-                                <div class="stat-row">
-                                    <div class="stat-label">
-                                        <span>Brush Strokes</span>
-                                        <span>${STATE.strokeCount}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                        const bbl = document.createElement('div'); 
-                        bbl.className = 'chat-bubble ai mt-4'; 
-                        bbl.textContent = reply || "I see what you did! Great job!"; 
-                        content.appendChild(bbl);
+                        content.innerHTML = `<div class="analytics-card"><div class="analytics-title">Mission: ${unitData.goal}</div><div class="stat-row"><div class="stat-label"><span>Voice Confidence</span><span>${STATE.sttConfidence}%</span></div><div class="bar-bg"><div class="bar-fill" style="width:${STATE.sttConfidence}%; background-color:var(--br-blue)"></div></div></div><div class="stat-row"><div class="stat-label"><span>Brush Strokes Count</span><span>${STATE.strokeCount}</span></div></div><div class="stat-row"><div class="stat-label"><span>Unique Colors Used</span><span>${STATE.usedColors.size}</span></div></div></div>`;
+                        const bbl = document.createElement('div'); bbl.className = 'chat-bubble ai mt-4'; bbl.textContent = reply || "I see what you did! Great job!"; content.appendChild(bbl);
                     }
                     
-                    const footer = document.getElementById('chat-footer'); 
-                    if (footer) footer.style.display = "block"; 
-                    
+                    const footer = document.getElementById('chat-footer'); if (footer) footer.style.display = "block"; 
                     if (reply) this.speak(reply);
-                    
-                } finally { 
-                    this.unlockUI(); 
-                }
+                } finally { this.unlockUI(); }
             },
             
             async processReply() {
                 if (!STATE.lastTranscript || this.isBusy) return; 
                 this.lockUI();
                 
-                const requestPage = STATE.currentPage; 
-                const requestUnit = STATE.unitId; 
-                const content = document.getElementById('ai-content');
+                const requestPage = STATE.currentPage; const requestUnit = STATE.unitId; const content = document.getElementById('ai-content');
                 
                 if (content) {
-                    const uBbl = document.createElement('div'); 
-                    uBbl.className = "chat-bubble user mt-4"; 
-                    uBbl.textContent = STATE.lastTranscript; 
-                    content.appendChild(uBbl);
-                    
+                    const uBbl = document.createElement('div'); uBbl.className = "chat-bubble user mt-4"; uBbl.textContent = STATE.lastTranscript; content.appendChild(uBbl);
                     STATE.chatHistory.push({ role: "Student", text: STATE.lastTranscript });
                     
-                    const aBbl = document.createElement('div'); 
-                    aBbl.className = "chat-bubble ai mt-4"; 
-                    aBbl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 생각 중...`; 
-                    content.appendChild(aBbl); 
-                    content.scrollTop = content.scrollHeight;
+                    const aBbl = document.createElement('div'); aBbl.className = "chat-bubble ai mt-4"; aBbl.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:var(--br-green)"></i> 생각 중...`; content.appendChild(aBbl); content.scrollTop = content.scrollHeight;
                     
                     try {
-                        const prompt = `Student answered: "${STATE.lastTranscript}".`;
+                        const prompt = `Student answered: "${STATE.lastTranscript}". Respond warmly.`;
                         const reply = await this.callBackendTutor(prompt);
-                        
                         if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
-                        
-                        STATE.chatHistory.push({ role: "Teacher", text: reply });
-
-                        aBbl.innerHTML = ''; 
-                        const b = document.createElement('b'); 
-                        b.style.color = 'var(--br-green)'; 
-                        b.textContent = reply || "That's wonderful!"; 
-                        aBbl.appendChild(b); 
-                        content.scrollTop = content.scrollHeight; 
-                        
-                        if (reply) this.speak(reply);
-                        
-                    } finally { 
-                        this.unlockUI(); 
-                    }
-                } else { 
-                    this.unlockUI(); 
-                }
-            },
-            
-            speak(text) { 
-                if (window.speechSynthesis) { 
-                    window.speechSynthesis.cancel(); 
-                    const u = new SpeechSynthesisUtterance(text); 
-                    u.lang = 'en-US'; 
-                    u.rate = 0.9; 
-                    u.pitch = 1.05; 
-                    
-                    const voices = window.speechSynthesis.getVoices(); 
-                    const preferredVoices = voices.filter(v => v.lang.startsWith('en-') && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Siri') || v.name.includes('Alex')));
-                    if (preferredVoices.length > 0) u.voice = preferredVoices[0];
-                    
-                    window.speechSynthesis.speak(u); 
-                } 
-            },
-            
-            close() { 
-                const panel = document.getElementById('ai-panel'); 
-                if (panel) panel.classList.remove('open'); 
-                if (window.speechSynthesis) window.speechSynthesis.cancel(); 
-            }
-        };
-
-        const AudioEngine = {
-            recordingMode: 'main',
-            
-            async ensurePermission() { 
-                try { 
-                    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) { 
-                        await navigator.mediaDevices.getUserMedia({ audio: true }); 
-                        return true; 
-                    } 
-                    return false; 
-                } catch (e) { 
-                    CustomModalEngine.alert("Microphone Needed", "마이크 사용을 허용해주셔야 선생님과 이야기할 수 있어요!"); 
-                    return false; 
-                } 
-            },
-            
-            init() {
-                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-                if (SR) {
-                    this.rec = new SR(); 
-                    this.rec.lang = 'en-US'; 
-                    this.rec.continuous = false; 
-                    this.rec.interimResults = false;
-                    
-                    this.rec.onresult = (e) => { 
-                        STATE.lastTranscript = e.results[0][0].transcript; 
-                        STATE.sttConfidence = Math.round(e.results[0][0].confidence * 100); 
-                    };
-                    
-                    this.rec.onend = () => { 
-                        if (!STATE.isRecording) return; 
-                        STATE.isRecording = false;
-                        
-                        if (this.recordingMode === 'chat') { 
-                            const chatBtn = document.getElementById('btn-chat-record'); 
-                            if (chatBtn) { 
-                                chatBtn.classList.remove('recording'); 
-                                chatBtn.innerText = "🎤 Speak to Teacher"; 
-                            } 
-                            setTimeout(() => { AITutor.processReply(); }, 800); 
-                        } else { 
-                            const recBtn = document.getElementById('btn-record'); 
-                            const recText = document.getElementById('record-text'); 
-                            if (recBtn) recBtn.classList.remove('recording'); 
-                            if (recText) recText.innerText = "Voice Log"; 
-                            setTimeout(() => { AITutor.submit(); }, 800); 
-                        }
-                    };
-                    
-                    this.rec.onerror = () => { 
-                        if (STATE.isRecording) { 
-                            STATE.isRecording = false; 
-                            const recBtn = document.getElementById('btn-record'); 
-                            const recText = document.getElementById('record-text'); 
-                            if (recBtn) recBtn.classList.remove('recording'); 
-                            if (recText) recText.innerText = "Voice Log"; 
-                        } 
-                    };
-                } else { 
-                    ['btn-record', 'btn-chat-record'].forEach((id) => { 
-                        const btn = document.getElementById(id); 
-                        if (btn) btn.disabled = true; 
-                    }); 
-                }
-            },
-            
-            async toggle() { 
-                if (!this.rec) return; 
-                const hasPermission = await this.ensurePermission(); 
-                if (!hasPermission) return; 
-                
-                this.recordingMode = 'main'; 
-                const recBtn = document.getElementById('btn-record'); 
-                const recText = document.getElementById('record-text'); 
-                
-                if (!STATE.isRecording) { 
-                    STATE.isRecording = true; 
-                    if (recBtn) recBtn.classList.add('recording'); 
-                    if (recText) recText.innerText = "Listening..."; 
-                    this.rec.start(); 
-                } else { 
-                    STATE.isRecording = false; 
-                    if (recBtn) recBtn.classList.remove('recording'); 
-                    if (recText) recText.innerText = "Voice Log"; 
-                    this.rec.stop(); 
-                } 
-            },
-            
-            async toggleChat() { 
-                if (!this.rec) return; 
-                const hasPermission = await this.ensurePermission(); 
-                if (!hasPermission) return; 
-                
-                this.recordingMode = 'chat'; 
-                const chatBtn = document.getElementById('btn-chat-record'); 
-                
-                if (!STATE.isRecording) { 
-                    STATE.isRecording = true; 
-                    if (chatBtn) { 
-                        chatBtn.classList.add('recording'); 
-                        chatBtn.innerText = "Listening..."; 
-                    } 
-                    this.rec.start(); 
-                } else { 
-                    STATE.isRecording = false; 
-                    if (chatBtn) { 
-                        chatBtn.classList.remove('recording'); 
-                        chatBtn.innerText = "🎤 Speak to Teacher"; 
-                    } 
-                    this.rec.stop(); 
-                } 
-            }
-        };
-
-        if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
-            window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
-        }
-
-        // ----------------------------------------------------------------------
-        // 7. ROUTING & UI ENGINES (Non-Blocking Page Loader)
-        // ----------------------------------------------------------------------
-        const CertificateEngine = {
-            open(weekNum) {
-                const modal = document.getElementById('cert-modal'); 
-                if (!modal) return;
-                
-                const weekLabel = document.getElementById('cert-week'); 
-                if (weekLabel) weekLabel.innerText = `WEEK ${weekNum} COMPLETED`;
-                
-                const nameLabel = document.getElementById('cert-student-name'); 
-                if (nameLabel) nameLabel.innerText = STATE.studentName || "Global Explorer";
-                
-                const imgEl = document.getElementById('cert-canvas-img'); 
-                const mergedImg = CanvasEngine.captureWorksheetWithDrawing(false); 
-                if (imgEl) imgEl.src = mergedImg || CanvasEngine.cvs.toDataURL();
-                
-                const msgEl = document.getElementById('cert-ai-msg'); 
-                const hasArt = STATE.badges.includes("🎨 Colorful Artist"); 
-                const hasVoice = STATE.badges.includes("🗣️ Great Speaker");
-                
-                let msg = "For showing amazing curiosity and completing your inquiry journey.";
-                if (hasArt && hasVoice) msg = "For your brilliant colorful art and speaking English so confidently!"; 
-                else if (hasArt) msg = "For expressing your wonderful imagination through colorful art!"; 
-                else if (hasVoice) msg = "For speaking English with a clear, brave voice!";
-                
-                if (msgEl) msgEl.innerText = `"${msg}"`; 
-                
-                modal.classList.add('active'); 
-                if (window.confetti) {
-                    confetti({ particleCount: 200, spread: 120, origin: { y: 0.5 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
-                }
-            },
-            close() { 
-                const modal = document.getElementById('cert-modal'); 
-                if (modal) modal.classList.remove('active'); 
-                
-                if (STATE.currentPage === CurriculumEngine.last(STATE.unitId)) {
-                    location.href = 'dashboard.html'; 
-                } else {
-                    AppEngine.smoothMove(1); 
-                }
-            },
-            print() {
-                const card = document.getElementById('cert-card-content'); 
-                const closeBtn = document.querySelector('.cert-close'); 
-                const printBtn = document.querySelector('.btn-print');
-                
-                if (closeBtn) closeBtn.style.display = 'none'; 
-                if (printBtn) printBtn.style.display = 'none';
-                
-                if (window.html2canvas && card) { 
-                    html2canvas(card, { backgroundColor: '#FFFFFF', scale: 2 }).then((canvas) => { 
-                        if (closeBtn) closeBtn.style.display = 'block'; 
-                        if (printBtn) printBtn.style.display = 'inline-flex'; 
-                        const link = document.createElement('a'); 
-                        link.download = `Certificate_${STATE.studentName}.png`; 
-                        link.href = canvas.toDataURL('image/png'); 
-                        link.click(); 
-                    }); 
-                } else { 
-                    window.print(); 
-                    if (closeBtn) closeBtn.style.display = 'block'; 
-                    if (printBtn) printBtn.style.display = 'inline-flex'; 
-                }
-            }
-        };
-
-        const AppEngine = {
-            smoothMove(dir) {
-                const nextPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir); 
-                if (nextPage === STATE.currentPage) return;
-                
-                StorageEngine.saveCanvasLocal(); 
-                StorageEngine.executeCloudSave(StorageEngine.createCanvasSnapshot(true));
-                
-                const board = document.getElementById('drawing-board'); 
-                if (board) board.classList.add('fade-out');
-                
-                setTimeout(() => { 
-                    STATE.currentPage = nextPage; 
-                    PageEngine.load(STATE.currentPage); 
-                    setTimeout(() => { 
-                        if (board) board.classList.remove('fade-out'); 
-                    }, 150); 
-                }, 400);
-            },
-            handleNextAdventure() { 
-                AITutor.close(); 
-                if (CurriculumEngine.isWeekEnd(STATE.unitId, STATE.currentPage)) { 
-                    CertificateEngine.open(CurriculumEngine.weekIndex(STATE.unitId, STATE.currentPage)); 
-                } else { 
-                    this.smoothMove(1); 
-                } 
-            }
-        };
-
-        const PageEngine = {
-            init() {
-                const list = document.getElementById('nav-list'); 
-                if (!list) return; 
-                list.innerHTML = '';
-                
-                const unitData = PAGE_INTELLIGENCE[STATE.unitId];
-                if (unitData) {
-                    // [P0] 안전한 객체 순회 및 정렬 보장
-                    CurriculumEngine.pages(STATE.unitId).forEach((key) => {
-                        const item = document.createElement('div'); 
-                        item.className = 'nav-item interactive-hover'; 
-                        item.id = `nav-${key}`;
-                        
-                        const titleText = unitData[key].navTitle; 
-                        const numKey = Number(key); 
-                        const weekIdx = CurriculumEngine.weekIndex(STATE.unitId, numKey);
-                        
-                        item.innerHTML = `<span class="nav-title">${titleText}</span><span class="nav-badge">W${weekIdx}-P.${key}</span>`;
-                        item.onclick = () => { 
-                            AppEngine.smoothMove(numKey - STATE.currentPage); 
-                            UIEngine.closeSidebar(); 
-                        }; 
-                        list.appendChild(item);
-                    });
-                }
-                this.load(STATE.currentPage);
-            },
-            load(n) {
-                STATE.currentPage = n; 
-                STATE.lastTranscript = ""; 
-                STATE.sttConfidence = 0;
-                
-                const unitInfo = document.getElementById('unit-info'); 
-                if (unitInfo) unitInfo.innerText = `MASTER LAB: ${STATE.unitId}`; 
-                
-                const pageInfo = document.getElementById('page-info'); 
-                const pageGoal = document.getElementById('page-goal-text'); 
-                const padN = String(n).padStart(2, '0');
-                
-                if (document.getElementById('page-number-text')) {
-                    document.getElementById('page-number-text').innerText = `Inquiry P.${padN}`;
-                }
-                
-                let goalText = "Free Exploration"; 
-                if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][n]) {
-                    goalText = PAGE_INTELLIGENCE[STATE.unitId][n].goal;
-                }
-                if (pageGoal) pageGoal.innerText = goalText;
-                
-                document.querySelectorAll('.nav-item').forEach((el) => { 
-                    el.classList.remove('active'); 
-                });
-                
-                const activeNav = document.getElementById(`nav-${n}`); 
-                const navList = document.getElementById('nav-list');
-                
-                if (activeNav) { 
-                    activeNav.classList.add('active'); 
-                    if (navList) navList.scrollTo({ top: activeNav.offsetTop - navList.offsetTop - 50, behavior: 'smooth' }); 
-                }
-                
-                CanvasEngine.hardReset(); 
-                AITutor.close(); 
-                ImageEngine.loadWorksheet(STATE.unitId, STATE.currentPage); 
-                
-                // StorageEngine은 Firebase 로딩 완료 후 안전할 때 호출됨
-                if (STATE.uid) StorageEngine.save();
-            }
-        };
-
-        // ----------------------------------------------------------------------
-        // 8. ASYNC BOOTLOADER (0초 UI 렌더링 무결점 부팅 가드)
-        // ----------------------------------------------------------------------
-        let uiBooted = false;
-
-        // [P0] 파이어베이스 연결과 상관없이 0초 만에 화면을 그리는 UIBoot
-        function UIBoot() {
-            if (uiBooted) return; 
-            uiBooted = true;
-            
-            try {
-                CustomModalEngine.init(); 
-                SyncIndicatorEngine.init();
-                CursorEngine.init(); 
-                RGBRingEngine.init(); 
-                CanvasEngine.init(); 
-                PageEngine.init(); // 캔버스 그리기 및 이미지 로딩 실행
-                AudioEngine.init(); 
-                Logger.log("V100.1100 UI Engine Started. Canvas Ready.");
-            } catch(error) { 
-                Logger.error("UI initialization error:", error); 
-            }
-        }
-
-        // 파이어베이스에서 인증이 완료되었을 때 학생 데이터를 가져오는 DataBoot
-        function DataBoot() {
-            try {
-                StorageEngine.load();
-                BadgeEngine.renderAll();
-                PageEngine.load(STATE.currentPage); // 동기화된 페이지로 이동
-                Logger.log("V100.1100 Firebase Data Synchronized.");
-            } catch(error) {
-                Logger.error("Data synchronization error:", error);
-            }
-        }
-
-        function safeFirebaseBoot() {
-            if (typeof firebase !== 'undefined' && firebase.apps) {
-                try {
-                    if (!firebase.apps.length) {
-                        firebase.initializeApp(CONFIG.FIREBASE_CONFIG);
-                    }
-                    auth = firebase.auth(); 
-                    db = firebase.firestore();
-
-                    auth.onAuthStateChanged((user) => {
-                        if (user) {
-                            Logger.log("Secured Session Authenticated:", user.email);
-                            STATE.uid = user.uid; 
-                            STATE.studentEmail = user.email; 
-                            STATE.studentName = user.email.split('@')[0].toUpperCase() || "EXPLORER";
-                            
-                            const profileBox = document.getElementById('profile-box'); 
-                            if (profileBox) profileBox.classList.add('registered');
-                            
-                            const displayNameEl = document.getElementById('display-name'); 
-                            if (displayNameEl) displayNameEl.innerText = STATE.studentName;
-                            
-                            const avatarEl = document.getElementById('avatar-char'); 
-                            if (avatarEl) avatarEl.innerText = STATE.studentName.charAt(0);
-                        } else {
-                            Logger.warn("No active session. Launching in Guest Fallback Mode."); 
-                            STATE.studentName = "GUEST";
-                        }
-                        
-                        DataBoot(); 
-                    });
-                } catch (e) { 
-                    Logger.error("Firebase init caught error", e); 
-                    DataBoot(); 
-                }
-            } else { 
-                setTimeout(safeFirebaseBoot, 100); 
-            }
-        }
-
-        // [P0] 실행 순서 확정 (DOMContentLoaded -> UIBoot(0초) -> FirebaseBoot(백그라운드))
-        document.addEventListener("DOMContentLoaded", () => {
-            UIBoot();
-            safeFirebaseBoot();
-            
-            // 만약 4초 동안 파이어베이스가 응답하지 않으면 오프라인(Guest) 모드로 강제 기동
-            setTimeout(() => { 
-                if (!STATE.uid && STATE.studentName !== "GUEST") { 
-                    Logger.warn("Absolute Timeout. Booting Guest Data Mode."); 
-                    STATE.studentName = "GUEST"; 
-                    DataBoot(); 
-                } 
-            }, 4000);
-        });
-
-    </script>
-</body>
-</html>

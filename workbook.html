@@ -1083,3 +1083,118 @@
                         const prompt = `Student answered: "${STATE.lastTranscript}". Respond warmly.`;
                         const reply = await this.callBackendTutor(prompt);
                         if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
+                        
+                        STATE.chatHistory.push({ role: "Teacher", text: reply });
+
+                        aBbl.innerHTML = ''; const b = document.createElement('b'); b.style.color = 'var(--br-green)'; b.textContent = reply || "That's wonderful!"; aBbl.appendChild(b); content.scrollTop = content.scrollHeight; 
+                        if (reply) this.speak(reply);
+                    } finally { this.unlockUI(); }
+                } else { this.unlockUI(); }
+            },
+            
+            speak(text) { 
+                if (window.speechSynthesis) { 
+                    window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.rate = 0.9; u.pitch = 1.05; 
+                    const voices = window.speechSynthesis.getVoices(); const preferredVoices = voices.filter(v => v.lang.startsWith('en-') && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Siri') || v.name.includes('Alex')));
+                    if (preferredVoices.length > 0) u.voice = preferredVoices[0];
+                    window.speechSynthesis.speak(u); 
+                } 
+            },
+            
+            close() { const panel = document.getElementById('ai-panel'); if (panel) panel.classList.remove('open'); if (window.speechSynthesis) window.speechSynthesis.cancel(); }
+        };
+
+        if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+        }
+
+        const AppEngine = {
+            smoothMove(dir) {
+                const nextPage = CurriculumEngine.next(STATE.unitId, STATE.currentPage, dir); if (nextPage === STATE.currentPage) return;
+                StorageEngine.saveCanvasLocal(); StorageEngine.executeCloudSave(StorageEngine.createCanvasSnapshot(true));
+                const board = document.getElementById('drawing-board'); if (board) board.classList.add('fade-out');
+                setTimeout(() => { STATE.currentPage = nextPage; PageEngine.load(STATE.currentPage); setTimeout(() => { if (board) board.classList.remove('fade-out'); }, 150); }, 400);
+            },
+            handleNextAdventure() { AITutor.close(); if (CurriculumEngine.isWeekEnd(STATE.unitId, STATE.currentPage)) { CertificateEngine.open(CurriculumEngine.weekIndex(STATE.unitId, STATE.currentPage)); } else { this.smoothMove(1); } }
+        };
+
+        const PageEngine = {
+            init() {
+                const list = document.getElementById('nav-list'); if (!list) return; list.innerHTML = '';
+                const unitData = PAGE_INTELLIGENCE[STATE.unitId];
+                if (unitData) {
+                    Object.keys(unitData).forEach((key) => {
+                        const item = document.createElement('div'); item.className = 'nav-item interactive-hover'; item.id = `nav-${key}`;
+                        const titleText = unitData[key].navTitle; const numKey = Number(key); const weekIdx = CurriculumEngine.weekIndex(STATE.unitId, numKey);
+                        item.innerHTML = `<span class="nav-title">${titleText}</span><span class="nav-badge">W${weekIdx}-P.${key}</span>`;
+                        item.onclick = () => { AppEngine.smoothMove(numKey - STATE.currentPage); UIEngine.closeSidebar(); }; list.appendChild(item);
+                    });
+                }
+                this.load(STATE.currentPage);
+            },
+            load(n) {
+                STATE.currentPage = n; STATE.lastTranscript = ""; STATE.sttConfidence = 0; 
+                STATE.pageStartTime = Date.now(); 
+                
+                const unitInfo = document.getElementById('unit-info'); if (unitInfo) unitInfo.innerText = `MASTER LAB: ${STATE.unitId}`; 
+                const pageInfo = document.getElementById('page-info'); const pageGoal = document.getElementById('page-goal-text'); const padN = String(n).padStart(2, '0');
+                if (document.getElementById('page-number-text')) document.getElementById('page-number-text').innerText = `Inquiry P.${padN}`;
+                let goalText = "Free Exploration"; if (PAGE_INTELLIGENCE[STATE.unitId] && PAGE_INTELLIGENCE[STATE.unitId][n]) goalText = PAGE_INTELLIGENCE[STATE.unitId][n].goal;
+                if (pageGoal) pageGoal.innerText = goalText;
+                
+                document.querySelectorAll('.nav-item').forEach((el) => { el.classList.remove('active'); });
+                const activeNav = document.getElementById(`nav-${n}`); const navList = document.getElementById('nav-list');
+                if (activeNav) { activeNav.classList.add('active'); if (navList) navList.scrollTo({ top: activeNav.offsetTop - navList.offsetTop - 50, behavior: 'smooth' }); }
+                
+                CanvasEngine.hardReset(); AITutor.close(); 
+                ImageEngine.loadWorksheet(STATE.unitId, STATE.currentPage); 
+                if (STATE.uid) StorageEngine.save();
+            }
+        };
+
+        const UIEngine = {
+            toggleSidebar() { if (window.innerWidth > 1180) return; const sb = document.getElementById('sidebar'); if (sb) sb.classList.toggle('open'); const bd = document.getElementById('sidebar-backdrop'); if (bd) bd.classList.toggle('active'); },
+            closeSidebar() { const sb = document.getElementById('sidebar'); if (sb) sb.classList.remove('open'); const bd = document.getElementById('sidebar-backdrop'); if (bd) bd.classList.remove('active'); }
+        };
+
+        let uiBooted = false;
+        function UIBoot() {
+            if (uiBooted) return; uiBooted = true;
+            try {
+                CustomModalEngine.init(); SyncIndicatorEngine.init(); CursorEngine.init(); RGBRingEngine.init(); CanvasEngine.init(); PageEngine.init(); AudioEngine.init();
+                Logger.log("V100.1600 UI Engine Started. Non-Blocking Boot Complete.");
+            } catch(error) { Logger.error("UI initialization error:", error); }
+        }
+
+        function DataBoot() {
+            try { StorageEngine.load(); BadgeEngine.renderAll(); PageEngine.load(STATE.currentPage); Logger.log("V100.1600 Firebase Data Synchronized."); } catch(error) { Logger.error("Data sync error:", error); }
+        }
+
+        function safeFirebaseBoot() {
+            if (typeof firebase !== 'undefined' && firebase.apps) {
+                try {
+                    if (!firebase.apps.length) firebase.initializeApp(CONFIG.FIREBASE_CONFIG);
+                    auth = firebase.auth(); db = firebase.firestore();
+
+                    auth.onAuthStateChanged((user) => {
+                        if (user) {
+                            STATE.uid = user.uid; STATE.studentEmail = user.email; STATE.studentName = user.email.split('@')[0].toUpperCase() || "EXPLORER";
+                            const profileBox = document.getElementById('profile-box'); if (profileBox) profileBox.classList.add('registered');
+                            const displayNameEl = document.getElementById('display-name'); if (displayNameEl) displayNameEl.innerText = STATE.studentName;
+                            const avatarEl = document.getElementById('avatar-char'); if (avatarEl) avatarEl.innerText = STATE.studentName.charAt(0);
+                        } else { STATE.studentName = "GUEST"; }
+                        DataBoot(); 
+                    });
+                } catch (e) { DataBoot(); }
+            } else { setTimeout(safeFirebaseBoot, 100); }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            UIBoot();
+            safeFirebaseBoot();
+            setTimeout(() => { if (!STATE.uid && STATE.studentName !== "GUEST") { STATE.studentName = "GUEST"; DataBoot(); } }, 4000);
+        });
+
+    </script>
+</body>
+</html>

@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#FCFBF9">
     
-    <title>Bridge Academy | Premium AI Lab V100.1800</title>
+    <title>Bridge Academy | Premium AI Lab V100.1900</title>
 
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     
@@ -87,7 +87,7 @@
         .sidebar-header { padding: 35px 30px; text-align: center; border-bottom: 1px solid var(--br-border); transition: background-color 0.4s ease; }
         .sidebar-header:hover { background-color: var(--br-bg); }
 
-        /* [P1] 브랜드 로고 폰트 통일 (Nunito 900 Black 강제) */
+        /* [P0 Fix] 로고 폰트 일체화 (Nunito Black 강제 유지) */
         .brand-logo { font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; color: var(--br-charcoal); letter-spacing: -0.5px; line-height: 1; display: flex; align-items: center; justify-content: center; gap: 4px; text-transform: uppercase; }
         .brand-logo span { color: var(--br-green); font-weight: 900; }
         
@@ -142,10 +142,7 @@
            ====================================================================== */
         .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px; background-color: var(--br-bg); perspective: 1200px; overflow: hidden; }
         .drawing-board { position: relative; display: inline-flex; border-radius: 20px; box-shadow: var(--shadow-premium); background-color: #FFFFFF; transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); transform-origin: center; max-width: 100%; max-height: 100%; overflow: hidden; }
-        
-        /* [P0] 에러 상태에서도 배경 모눈종이(Grid) 렌더링 유지 (생존력 확보) */
         .drawing-board::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 10000; mix-blend-mode: multiply; }
-        
         .drawing-board.fade-out { opacity: 0; transform: scale(0.95) translateY(20px); }
         .drawing-board.error-state { border: 2px dashed var(--br-border); background-color: #FAFAFA; } 
 
@@ -182,7 +179,7 @@
         .btn-nav:hover { background-color: #FAFAFA; border-color: var(--br-charcoal); }
         .btn-nav:active { transform: scale(0.85); }
 
-        /* [P1] 연타 방어 시스템 (Mutex Lock UI) */
+        /* [P0 Fix] 뮤텍스 락 (연타 방어 UI 적용) */
         .locked-btn { opacity: 0.5; pointer-events: none !important; }
 
         .btn-main { height: 60px; padding: 0 35px; border-radius: 18px; font-weight: 900; font-size: 15px; letter-spacing: 1px; display: flex; align-items: center; gap: 12px; transition: all 0.3s ease; text-transform: uppercase; font-family: 'Nunito', sans-serif; }
@@ -474,14 +471,16 @@
         const STATE = {
             uid: null, studentEmail: "", studentName: "GUEST", isNameRegistered: false,
             unitId: new URLSearchParams(window.location.search).get('id') || "A-1",
-            currentPage: 1, isRecording: false, lastTranscript: "", sttConfidence: 0,
+            currentPage: 1, 
+            loadedPage: -1, // [P0] 이중 로딩 방어 락(Lock)
+            isRecording: false, lastTranscript: "", sttConfidence: 0,
             historyStack: [], historyIndex: -1, chatHistory: [], badges: [], brushType: 'normal',
             strokeCount: 0, usedColors: new Set(),
             isBlankCanvas: false,
             pageStartTime: Date.now()
         };
 
-        // Firebase 전역 포인터
+        // Firebase 전역 포인터 (Race Condition 방어)
         let auth = null;
         let db = null;
 
@@ -635,15 +634,15 @@
                 11: { navTitle: "[W3] Labels", goal: "Labeling Body Parts", question: "Where is the shoulder?", expectedAction: "Draw lines to label body parts correctly." },
                 12: { navTitle: "[W3] Giraffe", goal: "Coloring a Giraffe", question: "Why is the neck long?", expectedAction: "Color the giraffe. Check their color choices." },
                 13: { navTitle: "[W4] Creative", goal: "Creative Imagination", question: "Spaghetti arms?", expectedAction: "Use imagination to draw funny arms." },
-                14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?", expectedAction: "Count the fingers and trace the numbers explicitly." },
+                14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?", expectedAction: "Count the fingers and trace the numbers." },
                 15: { navTitle: "[W4] Review", goal: "Reviewing the Story", question: "Did you enjoy it?", expectedAction: "Review the lesson concepts." },
                 16: { navTitle: "[W3] Board Design", goal: "Selecting Tools", question: "Which tools do you need?", expectedAction: "Checklist analysis: Look at the boxes (Clay, Paint, Scissors, Stickers, etc) and explicitly state which ones the student checked or scribbled on." },
-                17: { navTitle: "[W4] Presentation", goal: "Self-Evaluation", question: "How was your presentation?", expectedAction: "Evaluation analysis: Check which smiley faces the student circled or marked for speaking LOUDLY, using ENGLISH, and having FUN." }
+                17: { navTitle: "[W4] Presentation", goal: "Self-Evaluation", question: "How was your presentation?", expectedAction: "Evaluation analysis: Check which smiley faces the student circled or marked for 'I spoke LOUDLY!', 'I used ENGLISH!', and 'I had FUN!'." }
             },
             "A-2": {
                 18: { navTitle: "[W1] Intro", goal: "Meeting Crawlers", question: "Ready for bugs?", expectedAction: "Draw or circle insects." },
                 19: { navTitle: "[W1] Hungry", goal: "Food Recognition", question: "What is it eating?", expectedAction: "Identify and trace the food." },
-                20: { navTitle: "[W1] Fruits", goal: "Reading Fruit Words", question: "Apples or plums?", expectedAction: "Trace the fruit names explicitly." },
+                20: { navTitle: "[W1] Fruits", goal: "Reading Fruit Words", question: "Apples or plums?", expectedAction: "Trace the fruit names. Check OCR." },
                 21: { navTitle: "[W1] Favorite", goal: "Favorite Fruit Drawing", question: "Why is it your favorite?", expectedAction: "Draw their favorite fruit." },
                 22: { navTitle: "[W2] I Eat", goal: "Sentence Practice", question: "Crunchy or soft?", expectedAction: "Describe food texture and trace." },
                 23: { navTitle: "[W2] Magic 1", goal: "Compound Words", question: "Butter meets Fly?", expectedAction: "Trace the compound words." },
@@ -716,7 +715,7 @@
         }
 
         // ----------------------------------------------------------------------
-        // 4. STORAGE, SYNC & IMAGE LOADER (무결점 로딩 코어)
+        // 4. STORAGE, SYNC & IMAGE LOADER (이중 로딩 방어 락 적용)
         // ----------------------------------------------------------------------
         const BadgeEngine = {
             add(label) {
@@ -804,7 +803,7 @@
             }
         };
 
-        // [P0] 스마트 이미지 로더 (무한 로딩 100% 방어. 메모리 다이렉트 렌더링 방식)
+        // [P0] 스마트 이미지 로더 (이름 일치, 404 폴백 방어막)
         const SmartImageLoader = {
             requestToken: 0,
             async findValidWorksheet(unitId, pageNum) {
@@ -821,6 +820,7 @@
                 const seriesChar = unitId.charAt(0); 
                 const t = Date.now(); 
                 
+                // 브라우저 404 로그는 자연스러운 fallback 처리 과정입니다. (네트워크 낭비 방지용)
                 const basePaths = [
                     `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${pageNum}.png`,
                     `${CONFIG.STORAGE_URL}${unitId}/${unitId}-${pageNum}.png`,
@@ -831,15 +831,14 @@
                 const tryLoad = (index) => {
                     if (token !== this.requestToken) return;
                     
-                    // [P0] 교재 로딩 100% 실패 시 안전한 백지 캔버스(Free Draw) 전환 로직
                     if (index >= basePaths.length) {
-                        Logger.warn(`Worksheet ${unitId} Page ${pageNum} missing. Enabling Blank Free-Draw Mode.`);
+                        Logger.warn(`Worksheet missing. Enabling Blank Canvas.`);
                         STATE.isBlankCanvas = true; 
                         if (imgElement) {
                             imgElement.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3C/svg%3E"; 
                             imgElement.style.opacity = '1';
                         }
-                        if (boardElement) boardElement.classList.add('error-state'); // 부드러운 회색 모눈종이 모드로 전환
+                        if (boardElement) boardElement.classList.add('error-state');
                         setTimeout(() => { 
                             if (token === this.requestToken) { 
                                 CanvasEngine.resizeCanvas(); 
@@ -852,13 +851,12 @@
                     const tempImg = new Image();
                     tempImg.crossOrigin = "anonymous";
                     
-                    // 타임아웃 2.5초. 시간 초과 시 다음 경로 찌름. 무한 로딩 방지.
                     let loadTimeout = setTimeout(() => { 
                         if (token === this.requestToken) {
                             tempImg.src = ""; 
                             tryLoad(index + 1); 
                         }
-                    }, 2500); 
+                    }, 3000); 
                     
                     tempImg.onload = () => {
                         clearTimeout(loadTimeout); 
@@ -866,7 +864,6 @@
                         
                         Logger.log("Worksheet Loaded:", basePaths[index]);
                         
-                        // [핵심] 메모리에서 바로 주입하여 레이스 컨디션 차단
                         if (imgElement) {
                             imgElement.src = tempImg.src;
                             imgElement.style.opacity = '1';
@@ -1061,7 +1058,6 @@
                     slider.addEventListener('input', () => this.updateBrushPreview());
                 }
                 
-                // [P0] 아이패드 회전 시 캔버스 날아가는 현상을 막는 디바운스(Debounce) 락
                 if (window.ResizeObserver && this.board) {
                     new ResizeObserver(() => {
                         if(this.resizeTimer) clearTimeout(this.resizeTimer);
@@ -1141,7 +1137,6 @@
                     let qualityLevel = 0.7; 
                     let encodedString = merged.toDataURL('image/jpeg', qualityLevel);
                     
-                    // [P0] Base64 오염 100% 원천 차단 (Gemini API 500 에러 방어)
                     encodedString = encodedString.replace(/^data:image\/\w+;base64,/, "");
                     
                     while (encodedString.length > 400000) {
@@ -1213,7 +1208,6 @@
                         clientY = e.touches[0].clientY; 
                     }
                     
-                    // 스케일 오차 없는 순수 CSS 상대 좌표 계산
                     return { 
                         x: (clientX - rect.left) * (this.cvs.width / rect.width / this.dpr), 
                         y: (clientY - rect.top) * (this.cvs.height / rect.height / this.dpr) 
@@ -1271,7 +1265,6 @@
                     } 
                 };
                 
-                // 마우스 / 터치 분리 결합 (펜 오작동 방지)
                 this.cvs.addEventListener('mousedown', startDraw); 
                 this.cvs.addEventListener('mousemove', moveDraw); 
                 this.cvs.addEventListener('mouseup', endDraw); 
@@ -1469,7 +1462,7 @@
         };
 
         // ----------------------------------------------------------------------
-        // 6. AUDIO & AI ENGINES (AITutor.close 참조 에러 박멸 완료)
+        // 6. AUDIO & AI ENGINES (AITutor.close 참조 에러 완전 박멸)
         // ----------------------------------------------------------------------
         const AudioEngine = {
             recordingMode: 'main',
@@ -1595,7 +1588,7 @@
         const AITutor = {
             isBusy: false,
             
-            // [P1] 연타 방어 시스템 (Mutex Lock UI)
+            // [P1] 연타(Double-Tap) 방어 스레드 락
             lockUI() {
                 this.isBusy = true;
                 const buttons = document.querySelectorAll('.btn-submit, .btn-record, .btn-nav');
@@ -1617,11 +1610,11 @@
                 const timeoutId = setTimeout(() => controller.abort(), 15000);
                 
                 try {
-                    if (!auth) throw new Error("Auth not fully initialized"); 
-                    const user = auth.currentUser; 
-                    if (!user) throw new Error("Unauthorized"); 
-                    
-                    const token = await user.getIdToken();
+                    // Firebase Auth 토큰이 없어도 게스트 모드면 그냥 패스하도록 예외처리 덧씌움
+                    let token = "guest-token";
+                    if (auth && auth.currentUser) {
+                        token = await auth.currentUser.getIdToken();
+                    }
                     
                     let expectedAction = PAGE_INTELLIGENCE[STATE.unitId]?.[STATE.currentPage]?.expectedAction || "Free exploration";
                     let theme = UNIT_THEMES[STATE.unitId] || "General Learning";
@@ -1816,7 +1809,7 @@
                 } 
             },
             
-            // [P0] AITutor.close() ReferenceError 완전 박멸 구역
+            // [P0] AITutor.close() ReferenceError 완벽 방어 완료
             close() { 
                 const panel = document.getElementById('ai-panel'); 
                 if (panel) panel.classList.remove('open'); 
@@ -1885,9 +1878,12 @@
                         list.appendChild(item);
                     });
                 }
-                this.load(STATE.currentPage);
             },
             load(n) {
+                // [P0] 이중 로딩(Double-Load) 방어 락 (404 스팸 방지)
+                if (STATE.loadedPage === n) return;
+                STATE.loadedPage = n;
+
                 STATE.currentPage = n; 
                 STATE.lastTranscript = ""; 
                 STATE.sttConfidence = 0; 
@@ -1925,15 +1921,31 @@
                 CanvasEngine.hardReset(); 
                 AITutor.close(); 
                 
-                // [P0] ImageEngine이 아닌 SmartImageLoader 호출로 100% 에러 방어
+                // 교재 렌더링 시작
                 SmartImageLoader.findValidWorksheet(STATE.unitId, STATE.currentPage); 
                 
                 if (STATE.uid) StorageEngine.save();
             }
         };
 
+        const UIEngine = {
+            toggleSidebar() { 
+                if (window.innerWidth > 1180) return; 
+                const sb = document.getElementById('sidebar'); 
+                if (sb) sb.classList.toggle('open'); 
+                const bd = document.getElementById('sidebar-backdrop'); 
+                if (bd) bd.classList.toggle('active'); 
+            },
+            closeSidebar() { 
+                const sb = document.getElementById('sidebar'); 
+                if (sb) sb.classList.remove('open'); 
+                const bd = document.getElementById('sidebar-backdrop'); 
+                if (bd) bd.classList.remove('active'); 
+            }
+        };
+
         // ----------------------------------------------------------------------
-        // 8. ASYNC BOOTLOADER (0초 무결점 UI 렌더링 부팅)
+        // 8. ASYNC BOOTLOADER (비동기 듀얼 부팅 아키텍처)
         // ----------------------------------------------------------------------
         let uiBooted = false;
 
@@ -1947,9 +1959,10 @@
                 CursorEngine.init(); 
                 RGBRingEngine.init(); 
                 CanvasEngine.init(); 
-                PageEngine.init(); 
+                PageEngine.init(); // 네비게이션 생성
+                PageEngine.load(STATE.currentPage); // 즉각적인 UI 렌더링 실행
                 AudioEngine.init();
-                Logger.log("V100.1800 UI Engine Started. Canvas Ready.");
+                Logger.log("V100.1900 UI Engine Started. Canvas Ready.");
             } catch(error) { 
                 Logger.error("UI initialization error:", error); 
             }
@@ -1959,8 +1972,13 @@
             try { 
                 StorageEngine.load(); 
                 BadgeEngine.renderAll(); 
-                PageEngine.load(STATE.currentPage); 
-                Logger.log("V100.1800 Firebase Data Synchronized."); 
+                
+                // UIBoot에서 로드된 페이지와 Firebase에서 가져온 페이지가 다를 경우에만 렌더링
+                if (STATE.loadedPage !== STATE.currentPage) {
+                    PageEngine.load(STATE.currentPage); 
+                }
+                
+                Logger.log("V100.1900 Firebase Data Synchronized."); 
             } catch(error) { 
                 Logger.error("Data sync error:", error); 
             }
@@ -2002,8 +2020,11 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
+            // [핵심] 파이어베이스 응답을 기다리지 않고 화면을 먼저 무조건 띄웁니다.
             UIBoot();
             safeFirebaseBoot();
+            
+            // 4초가 지나도 파이어베이스가 연결되지 않으면 오프라인 모드로 강제 동기화
             setTimeout(() => { 
                 if (!STATE.uid && STATE.studentName !== "GUEST") { 
                     STATE.studentName = "GUEST"; 

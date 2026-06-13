@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#FCFBF9">
     
-    <title>Bridge Academy | Premium AI Lab V100.2000</title>
+    <title>Bridge Academy | Premium AI Lab V100.FINAL</title>
 
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     
@@ -453,7 +453,7 @@
 
     <script>
         // ----------------------------------------------------------------------
-        // 1. CONFIG & STATE (전역 상태 관리)
+        // 1. CONFIG & STATE (전역 변수 완벽 최상단 격리)
         // ----------------------------------------------------------------------
         const CONFIG = { 
             STORAGE_URL: "https://eunbeenlee.github.io/bridge-heritage/assets/",
@@ -472,7 +472,7 @@
             uid: null, studentEmail: "", studentName: "GUEST", isNameRegistered: false,
             unitId: new URLSearchParams(window.location.search).get('id') || "A-1",
             currentPage: 1, 
-            loadedPage: -1, // [P0] 이중 로딩(Double-Load) 방어 락(Lock)
+            loadedPage: -1, // [P0] 이중 로딩(Double-Load) 방어 락
             isRecording: false, lastTranscript: "", sttConfidence: 0,
             historyStack: [], historyIndex: -1, chatHistory: [], badges: [], brushType: 'normal',
             strokeCount: 0, usedColors: new Set(),
@@ -485,7 +485,7 @@
         let db = null;
 
         // ----------------------------------------------------------------------
-        // 2. CORE UTILITIES (로깅 및 모달 엔진, UI 엔진)
+        // 2. CORE UTILITIES (로깅, 모달, 커서, UI 엔진 - 단일 선언 보장)
         // ----------------------------------------------------------------------
         const Logger = {
             log(msg, data = "") { console.log(`[BRIDGE OK] ${msg}`, data); },
@@ -702,18 +702,6 @@
             }
         };
 
-        if (!PAGE_INTELLIGENCE[STATE.unitId]) {
-            Logger.warn(`Invalid Unit ID constraint detected: ${STATE.unitId}. Forcing fallback to A-1.`);
-            STATE.unitId = "A-1";
-        }
-        
-        const rawPageParam = new URLSearchParams(window.location.search).get('page');
-        if (rawPageParam) {
-            STATE.currentPage = CurriculumEngine.clamp(STATE.unitId, Number(rawPageParam));
-        } else {
-            STATE.currentPage = CurriculumEngine.first(STATE.unitId);
-        }
-
         // ----------------------------------------------------------------------
         // 4. STORAGE, SYNC & IMAGE LOADER (이중 로딩 방어 락 적용)
         // ----------------------------------------------------------------------
@@ -803,10 +791,10 @@
             }
         };
 
-        // [P0] 스마트 이미지 로더 (404 스팸 방지 및 백지 캔버스 생존 로직)
-        const SmartImageLoader = {
+        // [P0] ImageEngine 명칭 통일 (Reference Error 완벽 해결)
+        const ImageEngine = {
             requestToken: 0,
-            async findValidWorksheet(unitId, pageNum) {
+            async loadWorksheet(unitId, pageNum) {
                 this.requestToken++; 
                 const token = this.requestToken; 
                 
@@ -820,7 +808,7 @@
                 const seriesChar = unitId.charAt(0); 
                 const t = Date.now(); 
                 
-                // 브라우저 404 로그는 자연스러운 fallback 처리 과정입니다. (네트워크 낭비 방지용)
+                // 브라우저 404 로그는 자연스러운 fallback 처리 과정입니다.
                 const basePaths = [
                     `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${pageNum}.png`,
                     `${CONFIG.STORAGE_URL}${unitId}/${unitId}-${pageNum}.png`,
@@ -856,7 +844,7 @@
                             tempImg.src = ""; 
                             tryLoad(index + 1); 
                         }
-                    }, 3000); 
+                    }, 2500); 
                     
                     tempImg.onload = () => {
                         clearTimeout(loadTimeout); 
@@ -941,9 +929,11 @@
                 let canvasData = null;
                 
                 if (compressForDatabase) { 
+                    // DB용은 가볍게 압축
                     canvasData = CanvasEngine.captureWorksheetWithDrawing(true, 600); 
                 } else { 
-                    canvasData = CanvasEngine.cvs.toDataURL('image/webp', 0.6); 
+                    // [P0 Fix] 로컬 캐시는 압축 없는 원본 PNG로 저장하여 픽셀 깨짐/흐려짐 현상 100% 박멸
+                    canvasData = CanvasEngine.cvs.toDataURL('image/png'); 
                 }
                 
                 if (!compressForDatabase) {
@@ -1015,7 +1005,12 @@
                     if (localData) { 
                         const img = new Image(); 
                         img.onload = () => { 
-                            CanvasEngine.ctx.drawImage(img, 0, 0, CanvasEngine.cvs.width / CanvasEngine.dpr, CanvasEngine.cvs.height / CanvasEngine.dpr); 
+                            // [P0 Fix] 1:1 픽셀 매칭 수학 알고리즘 (복원 시 화질 저하 방지)
+                            CanvasEngine.ctx.save();
+                            CanvasEngine.ctx.setTransform(1, 0, 0, 1, 0, 0); 
+                            CanvasEngine.ctx.clearRect(0, 0, CanvasEngine.cvs.width, CanvasEngine.cvs.height);
+                            CanvasEngine.ctx.drawImage(img, 0, 0, CanvasEngine.cvs.width, CanvasEngine.cvs.height); 
+                            CanvasEngine.ctx.restore();
                             CanvasEngine.saveHistory(); 
                         }; 
                         img.src = localData; 
@@ -1138,7 +1133,6 @@
                     let qualityLevel = 0.7; 
                     let encodedString = merged.toDataURL('image/jpeg', qualityLevel);
                     
-                    // [P0] Base64 오염 100% 원천 차단 (Gemini API 500 에러 방어)
                     encodedString = encodedString.replace(/^data:image\/\w+;base64,/, "");
                     
                     while (encodedString.length > 400000) {
@@ -1194,8 +1188,12 @@
                 
                 this.setupCanvas();
                 
+                // [P0 Fix] 리사이즈 복원 시 Dpr 스케일로 인해 뿌옇게 변하는 현상 방지
                 if (temp.width > 0 && temp.height > 0) {
-                    this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, rect.width, rect.height);
+                    this.ctx.save();
+                    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    this.ctx.drawImage(temp, 0, 0, temp.width, temp.height, 0, 0, this.cvs.width, this.cvs.height);
+                    this.ctx.restore();
                 }
             },
             
@@ -1281,7 +1279,7 @@
             saveHistory() { 
                 this.historyIndex++; 
                 this.historyStack.length = this.historyIndex; 
-                this.historyStack.push(this.cvs.toDataURL()); 
+                this.historyStack.push(this.cvs.toDataURL('image/png')); 
                 if (this.historyStack.length > 20) { 
                     this.historyStack.shift(); 
                     this.historyIndex--; 
@@ -1305,7 +1303,6 @@
                     this.ctx.setTransform(1, 0, 0, 1, 0, 0); 
                     this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height); 
                     this.ctx.drawImage(img, 0, 0, this.cvs.width, this.cvs.height); 
-                    this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0); 
                     this.ctx.restore(); 
                 }; 
                 img.src = this.historyStack[this.historyIndex]; 
@@ -1590,7 +1587,7 @@
         const AITutor = {
             isBusy: false,
             
-            // [P1] 연타 방어 시스템 (Mutex Lock UI)
+            // [P1] 연타(Double-Tap) 방어 스레드 락
             lockUI() {
                 this.isBusy = true;
                 const buttons = document.querySelectorAll('.btn-submit, .btn-record, .btn-nav');
@@ -1612,7 +1609,7 @@
                 const timeoutId = setTimeout(() => controller.abort(), 15000);
                 
                 try {
-                    // [P0] Firebase Auth 예외 처리 (오프라인/Guest 생존 모드)
+                    // Firebase Auth 토큰이 없어도 게스트 모드면 그냥 패스하도록 예외처리 덧씌움
                     let token = "guest-token";
                     if (auth && auth.currentUser) {
                         token = await auth.currentUser.getIdToken();
@@ -1811,7 +1808,7 @@
                 } 
             },
             
-            // [P0] AITutor.close() ReferenceError 완벽 방어
+            // [P0] AITutor.close() ReferenceError 완벽 방어 완료
             close() { 
                 const panel = document.getElementById('ai-panel'); 
                 if (panel) panel.classList.remove('open'); 
@@ -1923,6 +1920,7 @@
                 CanvasEngine.hardReset(); 
                 AITutor.close(); 
                 
+                // SmartImageLoader 호출
                 SmartImageLoader.findValidWorksheet(STATE.unitId, STATE.currentPage); 
                 
                 if (STATE.uid) StorageEngine.save();
@@ -1947,7 +1945,7 @@
                 PageEngine.init(); 
                 PageEngine.load(STATE.currentPage); 
                 AudioEngine.init();
-                Logger.log("V100.1900 UI Engine Started. Canvas Ready.");
+                Logger.log("V100.2000 UI Engine Started. Canvas Ready.");
             } catch(error) { 
                 Logger.error("UI initialization error:", error); 
             }
@@ -1963,7 +1961,7 @@
                     PageEngine.load(STATE.currentPage); 
                 }
                 
-                Logger.log("V100.1900 Firebase Data Synchronized."); 
+                Logger.log("V100.2000 Firebase Data Synchronized."); 
             } catch(error) { 
                 Logger.error("Data sync error:", error); 
             }

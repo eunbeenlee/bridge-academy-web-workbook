@@ -2,23 +2,20 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <!-- 모바일 환경 최적화 메타 태그 (핀치 줌 방지) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#FCFBF9">
     
-    <title>Bridge Academy | Premium AI Lab V100.2300</title>
+    <title>Bridge Academy | Premium AI Lab V100.2400</title>
 
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     
-    <!-- 폰트 및 아이콘 시스템 -->
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- 외부 코어 라이브러리 -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -61,7 +58,7 @@
         }
 
         /* ======================================================================
-           [2] BASE RESET & GLOBAL TYPOGRAPHY
+           [2] BASE RESET & GLOBAL TYPOGRAPHY ENFORCEMENT
            ====================================================================== */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; cursor: none !important; }
         html, body { width: 100%; height: 100dvh; overflow: hidden; background-color: var(--br-bg); color: var(--br-charcoal); font-family: 'Nunito', 'Pretendard', sans-serif; pointer-events: auto !important; -webkit-font-smoothing: antialiased; }
@@ -123,7 +120,7 @@
            [5] WORKSPACE & TOP BAR
            ====================================================================== */
         .workspace { flex: 1; display: flex; flex-direction: column; min-width: 0; height: 100%; position: relative; overflow: hidden; pointer-events: auto !important; }
-        .top-bar { height: var(--topbar-height); padding: 0 45px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); background-color: #FFFFFF; z-index: 10; }
+        .top-bar { height: var(--topbar-height); padding: 0 45px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); background-color: #FFFFFF; z-index: 10; flex-shrink: 0; }
         .top-bar-left { display: flex; align-items: center; gap: 20px; }
         .mobile-menu-btn { display: none; font-size: 28px; padding: 10px; color: var(--br-charcoal); z-index: 1500; }
 
@@ -142,24 +139,24 @@
         /* ======================================================================
            [6] STAGE & DRAWING BOARD
            ====================================================================== */
-        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px; background-color: var(--br-bg); perspective: 1200px; overflow: hidden; }
+        .stage-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px; background-color: var(--br-bg); perspective: 1200px; overflow: hidden; min-height: 0; }
         .drawing-board { position: relative; display: inline-flex; border-radius: 20px; box-shadow: var(--shadow-premium); background-color: #FFFFFF; transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); transform-origin: center; max-width: 100%; max-height: 100%; overflow: hidden; }
         .drawing-board::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 10000; mix-blend-mode: multiply; }
         .drawing-board.fade-out { opacity: 0; transform: scale(0.95) translateY(20px); }
         .drawing-board.error-state { border: 2px dashed var(--br-border); background-color: #FAFAFA; } 
 
-        #worksheet-img { display: block; max-width: 100%; max-height: calc(100dvh - 250px); width: auto; height: auto; border-radius: 20px; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; user-select: none; object-fit: contain; background-color: transparent; }
+        #worksheet-img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; border-radius: 20px; pointer-events: none; opacity: 0; transition: opacity 0.5s ease; user-select: none; object-fit: contain; background-color: transparent; }
         #draw-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; touch-action: none; border-radius: 20px; }
 
         /* ======================================================================
-           [7] BOTTOM CONTROLS & MOBILE OPTIMIZATION
+           [7] BOTTOM CONTROLS (UX/UI 모바일 원터치 레이아웃)
            ====================================================================== */
-        .bottom-dock { height: var(--dock-height); background-color: rgba(255, 255, 255, 0.98); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 0 50px var(--safe-bottom) 50px; z-index: 500; }
-        .tool-group { display: flex; align-items: center; gap: 15px; background-color: #F8F9FA; padding: 12px 30px; border-radius: 100px; border: 1px solid var(--br-border); }
-        .color-preview { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #FFFFFF; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); flex-shrink: 0; }
+        .bottom-dock { flex-shrink: 0; background-color: rgba(255, 255, 255, 0.98); border-top: 1px solid var(--br-border); display: flex; align-items: center; justify-content: space-between; padding: 15px 50px calc(15px + var(--safe-bottom)) 50px; z-index: 500; height: auto; }
+        .tool-group { display: flex; align-items: center; gap: 15px; background-color: #F8F9FA; padding: 12px 30px; border-radius: 100px; border: 1px solid var(--br-border); flex-wrap: wrap; justify-content: center; }
+        .color-preview { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #FFFFFF; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); cursor: pointer; flex-shrink: 0; }
         .color-preview:active { transform: scale(0.85); }
         
-        .btn-magic { font-size: 24px; padding: 5px; transition: all 0.3s ease; filter: grayscale(100%); opacity: 0.6; flex-shrink: 0; }
+        .btn-magic { font-size: 24px; padding: 5px; transition: all 0.3s ease; filter: grayscale(100%); opacity: 0.6; cursor: pointer; min-width: 44px; min-height: 44px; display: flex; justify-content: center; align-items: center; }
         .btn-magic:active { transform: scale(0.8); }
         .btn-magic.active { filter: grayscale(0%); opacity: 1; transform: scale(1.3); }
 
@@ -167,23 +164,24 @@
         .brush-slider { width: 90px; accent-color: var(--br-green); height: 6px; border-radius: 10px; }
         .brush-preview-dot { width: 6px; height: 6px; background-color: var(--br-charcoal); border-radius: 50%; transition: all 0.2s ease; display: inline-block; }
 
-        .btn-tool { font-size: 18px; font-weight: 900; padding: 10px 14px; color: var(--br-charcoal); transition: all 0.2s ease; background-color: #FFFFFF; border: 1px solid var(--br-border); border-radius: 12px; flex-shrink: 0; }
+        .btn-tool { font-size: 18px; font-weight: 900; padding: 10px 14px; color: var(--br-charcoal); transition: all 0.2s ease; background-color: #FFFFFF; border: 1px solid var(--br-border); border-radius: 12px; cursor: pointer; min-height: 44px; }
         .btn-tool:active { transform: scale(0.85); }
-        .btn-erase { font-size: 14px; font-weight: 900; padding: 12px 18px; border-radius: 14px; background-color: #FFFFFF; border: 1px solid var(--br-border); transition: all 0.2s ease; color: var(--br-charcoal); flex-shrink: 0; }
+        .btn-erase { font-size: 14px; font-weight: 900; padding: 10px 18px; border-radius: 14px; background-color: #FFFFFF; border: 1px solid var(--br-border); transition: all 0.2s ease; color: var(--br-charcoal); cursor: pointer; min-height: 44px; }
         .btn-erase:active { transform: scale(0.9); }
         .btn-erase.active { background-color: var(--br-error); color: #FFFFFF; border-color: var(--br-error); }
-        .btn-reset-all { font-size: 14px; font-weight: 900; padding: 12px 18px; border-radius: 14px; background-color: #FFF5F5; border: 1px solid #FFEBEB; transition: all 0.2s ease; color: var(--br-error); display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .btn-reset-all { font-size: 14px; font-weight: 900; padding: 10px 18px; border-radius: 14px; background-color: #FFF5F5; border: 1px solid #FFEBEB; transition: all 0.2s ease; color: var(--br-error); display: flex; align-items: center; gap: 6px; cursor: pointer; min-height: 44px; }
         .btn-reset-all:hover { background-color: var(--br-error-light); border-color: var(--br-error-border); }
         .btn-reset-all:active { transform: scale(0.9); }
 
-        .action-group { display: flex; gap: 15px; align-items: center; }
-        .btn-nav { width: 60px; height: 60px; border-radius: 18px; border: 1px solid var(--br-border); background-color: #FFFFFF; font-size: 24px; transition: all 0.3s ease; color: var(--br-charcoal); display: flex; justify-content: center; align-items: center; box-shadow: var(--shadow-button); flex-shrink: 0; }
+        .action-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .btn-nav { width: 60px; height: 60px; border-radius: 18px; border: 1px solid var(--br-border); background-color: #FFFFFF; font-size: 24px; transition: all 0.3s ease; color: var(--br-charcoal); display: flex; justify-content: center; align-items: center; box-shadow: var(--shadow-button); cursor: pointer; flex-shrink: 0; }
         .btn-nav:hover { background-color: #FAFAFA; border-color: var(--br-charcoal); }
         .btn-nav:active { transform: scale(0.85); }
 
+        /* [P0 Fix] 뮤텍스 락 UI 보존 */
         .locked-btn { opacity: 0.5; pointer-events: none !important; }
 
-        .btn-main { height: 60px; padding: 0 35px; border-radius: 18px; font-weight: 900; font-size: 15px; letter-spacing: 1px; display: flex; align-items: center; gap: 12px; transition: all 0.3s ease; text-transform: uppercase; font-family: 'Nunito', sans-serif; flex-shrink: 0; white-space: nowrap; }
+        .btn-main { height: 60px; padding: 0 25px; border-radius: 18px; font-weight: 900; font-size: 15px; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; text-transform: uppercase; font-family: 'Nunito', sans-serif; cursor: pointer; white-space: nowrap; }
         .btn-main:disabled { opacity: 0.6; cursor: not-allowed !important; transform: none !important; }
         .btn-record { background-color: #FFFFFF; border: 1px solid var(--br-border); color: var(--br-charcoal); }
         .btn-record:hover:not(:disabled) { border-color: var(--br-error); color: var(--br-error); }
@@ -197,13 +195,13 @@
         .btn-submit:active:not(:disabled) { transform: scale(0.9) translateY(0); }
 
         /* ======================================================================
-           [8] AI RESPONSIVE SIDE PANEL & PROACTIVE FOOTER
+           [8] AI RESPONSIVE SIDE PANEL & PROACTIVE STICKY FOOTER
            ====================================================================== */
         .ai-panel { position: absolute; top: 0; right: -480px; width: 480px; height: 100%; background-color: #FFFFFF; box-shadow: -25px 0 60px rgba(0,0,0,0.12); z-index: 10001; transition: right 0.6s cubic-bezier(0.19, 1, 0.22, 1); display: flex; flex-direction: column; border-left: 1px solid var(--br-border); }
         .ai-panel.open { right: 0; }
         .ai-header { padding: 30px 35px; background-color: var(--br-ai-soft); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--br-border); }
         .ai-title { font-family: 'Jua', sans-serif; font-size: 24px; color: var(--br-green); display: flex; align-items: center; gap: 12px; }
-        .btn-close-ai { font-size: 34px; color: var(--br-muted); line-height: 1; transition: all 0.2s ease; }
+        .btn-close-ai { font-size: 34px; color: var(--br-muted); line-height: 1; transition: all 0.2s ease; cursor: pointer; background: transparent; border: none; }
         .btn-close-ai:hover { color: var(--br-error); transform: rotate(90deg); }
         
         .ai-content { padding: 30px 35px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; scroll-behavior: smooth; }
@@ -222,45 +220,14 @@
         .bar-bg { width: 100%; height: 10px; background-color: #E8E6E1; border-radius: 12px; overflow: hidden; }
         .bar-fill { height: 100%; background-color: var(--br-blue); border-radius: 12px; transition: width 1.2s ease; }
 
-        /* [NEW] AI 패널 스티키 푸터 (모바일 편의성) */
-        .chat-footer { 
-            position: sticky; 
-            bottom: 0; 
-            padding: 25px 35px; 
-            border-top: 1px solid var(--br-border); 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-            background-color: #FFFFFF; 
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.03);
-            z-index: 10;
-        }
+        .chat-footer { position: sticky; bottom: 0; padding: 25px 35px; border-top: 1px solid var(--br-border); display: flex; flex-direction: column; gap: 15px; background-color: #FFFFFF; box-shadow: 0 -10px 30px rgba(0,0,0,0.03); z-index: 10; }
         
-        /* [NEW] 능동적 마이크 버튼 (Pulse Animation) */
-        .btn-chat-action { 
-            width: 100%; 
-            height: 65px; 
-            background-color: var(--br-charcoal); 
-            color: #FFFFFF; 
-            border-radius: 20px; 
-            font-weight: 900; 
-            transition: all 0.3s ease; 
-            font-size: 16px; 
-            letter-spacing: 1px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 12px; 
-            font-family: 'Nunito', sans-serif; 
-            box-shadow: 0 10px 20px rgba(54, 52, 49, 0.2); 
-        }
+        /* [P0 Fix] 능동적 마이크(Pulse) 모바일 최적화 보존 */
+        .btn-chat-action { width: 100%; height: 65px; background-color: var(--br-charcoal); color: #FFFFFF; border-radius: 20px; font-weight: 900; transition: all 0.3s ease; font-size: 16px; letter-spacing: 1px; display: flex; justify-content: center; align-items: center; gap: 12px; font-family: 'Nunito', sans-serif; box-shadow: 0 10px 20px rgba(54, 52, 49, 0.2); cursor: pointer; }
         .btn-chat-action:hover:not(:disabled) { background-color: var(--br-gold); transform: translateY(-2px); }
         .btn-chat-action:active:not(:disabled) { transform: scale(0.95); }
         .btn-chat-action:disabled { opacity: 0.6; cursor: not-allowed !important; }
-        .btn-chat-action.recording { 
-            background-color: var(--br-error); 
-            animation: pulse-red 1.5s infinite; 
-        }
+        .btn-chat-action.recording { background-color: var(--br-error); animation: pulse-red 1.5s infinite; }
 
         @keyframes pulse-red {
             0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7); }
@@ -268,7 +235,7 @@
             100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
         }
 
-        .btn-chat-next { width: 100%; text-align: center; font-size: 14px; font-weight: bold; color: var(--br-blue); margin-top: 10px; transition: color 0.3s ease; padding: 10px; border-radius: 10px; background-color: #F8F9FA;}
+        .btn-chat-next { width: 100%; text-align: center; font-size: 14px; font-weight: bold; color: var(--br-blue); margin-top: 10px; transition: color 0.3s ease; padding: 10px; border-radius: 10px; background-color: #F8F9FA; cursor: pointer; }
         .btn-chat-next:hover { color: var(--br-gold); background-color: #F0F4F8; }
 
         /* ======================================================================
@@ -283,7 +250,7 @@
         .bridge-modal-title { font-size: 26px; font-weight: 900; margin-bottom: 12px; }
         .bridge-modal-text { font-size: 15px; color: var(--br-muted); line-height: 1.6; margin-bottom: 30px; word-break: keep-all; }
         .bridge-modal-actions { display: flex; gap: 12px; justify-content: center; }
-        .bridge-modal-btn { flex: 1; padding: 15px 0; border-radius: 14px; font-weight: 900; font-size: 15px; text-transform: uppercase; transition: all 0.3s ease; }
+        .bridge-modal-btn { flex: 1; padding: 15px 0; border-radius: 14px; font-weight: 900; font-size: 15px; text-transform: uppercase; transition: all 0.3s ease; cursor: pointer; }
         .bridge-modal-btn:active { transform: scale(0.9); }
         .bridge-modal-cancel { background-color: #F0EFEB; color: var(--br-charcoal); border: 1px solid transparent; }
         .bridge-modal-cancel:hover { background-color: #E5E4E0; }
@@ -294,7 +261,7 @@
 
         .rgb-modal { position: absolute; bottom: 130px; left: 50px; background-color: #FFFFFF; border-radius: 25px; padding: 25px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); z-index: 5000; opacity: 0; pointer-events: none; transform: translateY(20px); transition: all 0.3s ease; }
         .rgb-modal.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .rgb-modal-close { text-align: center; font-size: 10px; margin-top: 12px; font-weight: 900; color: var(--br-muted); transition: color 0.2s ease; }
+        .rgb-modal-close { text-align: center; font-size: 10px; margin-top: 12px; font-weight: 900; color: var(--br-muted); transition: color 0.2s ease; cursor: pointer; }
         .rgb-modal-close:hover { color: var(--br-charcoal); }
 
         .cert-modal-overlay { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.85); z-index: 30000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(15px); }
@@ -308,10 +275,10 @@
         .cert-img-container { width: 100%; max-width: 450px; height: 280px; margin: 0 auto 35px auto; border-radius: 18px; border: 3px dashed var(--br-border); overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: var(--br-bg); }
         .cert-img-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .cert-msg { font-size: 18px; font-style: italic; margin-bottom: 35px; }
-        .btn-print { background-color: var(--br-charcoal); color: #FFFFFF; padding: 18px 45px; font-size: 18px; font-weight: 900; border-radius: 100px; display: inline-flex; align-items: center; gap: 12px; transition: all 0.3s ease; box-shadow: 0 12px 25px rgba(0,0,0,0.15); }
+        .btn-print { background-color: var(--br-charcoal); color: #FFFFFF; padding: 18px 45px; font-size: 18px; font-weight: 900; border-radius: 100px; display: inline-flex; align-items: center; gap: 12px; transition: all 0.3s ease; box-shadow: 0 12px 25px rgba(0,0,0,0.15); cursor: pointer; }
         .btn-print:hover { transform: translateY(-4px); background-color: var(--br-gold); box-shadow: 0 20px 35px rgba(203,174,117,0.3); }
         .btn-print:active { transform: scale(0.95); }
-        .cert-close { position: absolute; top: 25px; right: 35px; font-size: 35px; color: var(--br-muted); font-weight: 900; transition: all 0.2s ease; }
+        .cert-close { position: absolute; top: 25px; right: 35px; font-size: 35px; color: var(--br-muted); font-weight: 900; transition: all 0.2s ease; cursor: pointer; }
         .cert-close:hover { color: var(--br-error); transform: rotate(90deg); }
 
         @keyframes popIn { from { opacity: 0; transform: scale(0.92) translateY(15px); } to { opacity: 1; transform: scale(1) translateY(0); } }
@@ -319,7 +286,7 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* ======================================================================
-           [10] RESPONSIVE BREAKPOINTS (Mobile & Tablet UX 완벽 개선)
+           [10] RESPONSIVE BREAKPOINTS (Mobile One-Touch Dock)
            ====================================================================== */
         @media (max-width: 1180px) {
             .sidebar { position: fixed; transform: translateX(-100%); }
@@ -329,46 +296,49 @@
             .bottom-dock { padding: 14px 24px; }
         }
         @media (max-width: 800px) {
-            /* [NEW] 모바일 하단 도크 스와이프 및 터치 최적화 */
+            /* [P0 Fix] 모바일에서 스와이프 없이 한눈에 들어오는 2단 플로팅 툴바 */
             .bottom-dock { 
                 height: auto; 
-                flex-direction: row; 
-                padding: 15px; 
+                flex-direction: column; 
+                padding: 15px 20px calc(15px + var(--safe-bottom)) 20px; 
                 gap: 12px; 
                 border-radius: 25px 25px 0 0; 
-                overflow-x: auto; 
-                -webkit-overflow-scrolling: touch; 
-                scroll-snap-type: x mandatory;
+                overflow: hidden; /* 스크롤 제거 */
             }
-            .bottom-dock::-webkit-scrollbar { display: none; }
-            .tool-group, .action-group { 
+            .tool-group { 
+                width: 100%; 
+                justify-content: center; 
+                flex-wrap: wrap; 
+                padding: 10px;
+                border-radius: 20px;
+            }
+            .action-group { 
+                width: 100%; 
+                justify-content: space-between; 
                 flex-wrap: nowrap; 
-                flex-shrink: 0; 
-                scroll-snap-align: start; 
             }
-            .btn-magic, .btn-tool, .btn-erase, .btn-nav {
-                min-width: 44px; /* Apple Human Interface Guideline Touch Target */
-                min-height: 44px;
-            }
+            .btn-nav { width: 50px; height: 50px; border-radius: 14px; }
+            .btn-main { height: 50px; padding: 0 15px; font-size: 14px; flex: 1; justify-content: center; border-radius: 14px; }
+            .brush-slider-wrapper { display: none; } /* 공간 확보를 위해 모바일에서는 두께 슬라이더 숨김 (기본값 고정) */
+            
             .ai-panel { width: 100%; right: -100%; border-left: none; }
-            .rgb-modal { left: 50%; transform: translateX(-50%) translateY(20px); bottom: calc(100px + var(--safe-bottom)); }
+            .rgb-modal { left: 50%; transform: translateX(-50%) translateY(20px); bottom: calc(160px + var(--safe-bottom)); }
             .rgb-modal.active { transform: translateX(-50%) translateY(0); }
-            #worksheet-img { max-height: 50vh; }
+            /* 캔버스 렌더링 영역 보호 */
+            .stage-wrapper { padding: 15px; }
         }
         @media (max-width: 560px) {
             .top-bar { height: 70px; padding: 0 15px; }
             .page-info { font-size: 18px; flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 4px; }
             .page-goal { font-size: 12px; padding: 2px 8px; }
             .ai-header, .ai-content { padding: 20px; }
-            .chat-footer { padding: 15px 20px; } /* 모바일 스티키 푸터 패딩 조정 */
+            .chat-footer { padding: 15px 20px; } 
             .chat-bubble { max-width: 96%; font-size: 15px; }
         }
         @media (max-width: 480px) {
-            .btn-nav, .btn-main { height: 48px; font-size: 13px; }
             .cert-card { padding: 30px 20px; }
             .cert-border { padding: 20px; }
             .cert-title { font-size: 30px; }
-            .brush-slider { width: 70px; }
         }
     </style>
 </head>
@@ -478,7 +448,6 @@
             </header>
             <section class="ai-content" id="ai-content" aria-live="polite"></section>
             
-            <!-- [P0] 모바일 대응 고정(Sticky) 푸터 적용 완료 -->
             <footer class="chat-footer" id="chat-footer" style="display:none;">
                 <button class="btn-chat-action interactive-hover" id="btn-chat-record" onclick="window.AudioEngine.toggleChat()">
                     <i class="fa-solid fa-microphone"></i> <span>Speak to Teacher</span>
@@ -487,7 +456,6 @@
             </footer>
         </aside>
 
-        <!-- 모달 및 배경 클릭 닫힘 편의성 -->
         <div class="bridge-modal-overlay" id="custom-modal-overlay" onclick="if(event.target === this) window.CustomModalEngine.close();">
             <div class="bridge-modal-box">
                 <i class="fa-solid fa-circle-exclamation bridge-modal-icon" id="custom-modal-icon"></i>
@@ -518,13 +486,6 @@
         </div>
     </div>
 
-    <!-- ======================================================================
-         [JAVASCRIPT MASTER CORE PLATFORM ENGINE V100.2300]
-         - NO MINIFICATION: 100% Full Uncompressed Logic (대기업 유지보수 규격)
-         - MOBILE OPTIMIZED: UI 터치 스와이프 도크 및 스티키 채팅 액션
-         - PIXEL PERFECT: 캔버스 픽셀 깨짐/흐려짐 현상 100% 원상 복구 보존
-         - MUTEX LOCK: 아이들의 연타(Double-tap) 다운 방어 보존
-         ====================================================================== -->
     <script>
         // ----------------------------------------------------------------------
         // 1. CONFIG & STATE (전역 상태 관리)
@@ -546,7 +507,7 @@
             uid: null, studentEmail: "", studentName: "GUEST", isNameRegistered: false,
             unitId: new URLSearchParams(window.location.search).get('id') || "A-1",
             currentPage: 1, 
-            loadedPage: -1, 
+            loadedPage: -1, // [P0] 이중 로딩(Double-Load) 방어 락(Lock)
             isRecording: false, lastTranscript: "", sttConfidence: 0,
             historyStack: [], historyIndex: -1, chatHistory: [], badges: [], brushType: 'normal',
             strokeCount: 0, usedColors: new Set(),
@@ -611,6 +572,7 @@
                 const btnOk = document.createElement('button');
                 btnOk.className = "bridge-modal-btn bridge-modal-confirm neutral interactive-hover";
                 btnOk.innerText = "OK"; 
+                // [P1] iOS Audio Auto-play Unlock 연동
                 btnOk.onclick = () => { this.close(); window.AudioEngine.unlockAudioContext(); };
                 
                 this.actionsEl.appendChild(btnOk); 
@@ -693,7 +655,7 @@
 
         const PAGE_INTELLIGENCE = {
             "A-1": {
-                1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?", expectedAction: "Trace or write their name explicitly. Read their handwriting." },
+                1: { navTitle: "[W1] Name", goal: "Name Registration", question: "What is your name?", expectedAction: "Trace or write their name explicitly." },
                 2: { navTitle: "[W1] Mind", goal: "Self-Esteem & I like myself", question: "Do you like yourself?", expectedAction: "Draw something they like about themselves." },
                 3: { navTitle: "[W1] Face", goal: "Face Vocabulary", question: "Where is your nose?", expectedAction: "Circle or trace facial features on the given face." },
                 4: { navTitle: "[W1] Face Words", goal: "Writing Face Features", question: "What parts of the face did you write?", expectedAction: "Write words like 'Nose' and 'Ears' in the blank boxes, and trace the gray words 'Hair' and 'Eyes'. Explicitly praise their spelling and tracing accuracy!" },
@@ -709,7 +671,7 @@
                 14: { navTitle: "[W4] Math", goal: "Body Math & Counting", question: "How many fingers?", expectedAction: "Count the fingers and trace the numbers explicitly." },
                 15: { navTitle: "[W4] Review", goal: "Reviewing the Story", question: "Did you enjoy it?", expectedAction: "Review the lesson concepts." },
                 16: { navTitle: "[W3] Board Design", goal: "Selecting Tools", question: "Which tools do you need?", expectedAction: "Checklist analysis: Look at the boxes (Clay, Paint, Scissors, Stickers, etc) and explicitly state which ones the student checked or scribbled on." },
-                17: { navTitle: "[W4] Presentation", goal: "Self-Evaluation", question: "How was your presentation?", expectedAction: "Evaluation analysis: Check which smiley faces the student circled or marked for speaking LOUDLY, using ENGLISH, and having FUN." }
+                17: { navTitle: "[W4] Presentation", goal: "Self-Evaluation", question: "How was your presentation?", expectedAction: "Evaluation analysis: Check which smiley faces the student circled or marked for 'I spoke LOUDLY!', 'I used ENGLISH!', and 'I had FUN!'." }
             },
             "A-2": {
                 18: { navTitle: "[W1] Intro", goal: "Meeting Crawlers", question: "Ready for bugs?", expectedAction: "Draw or circle insects." },
@@ -786,7 +748,7 @@
         }
 
         // ----------------------------------------------------------------------
-        // 4. STORAGE, SYNC & IMAGE LOADER
+        // 4. STORAGE, SYNC & IMAGE LOADER (이중 로딩 방어 락 적용)
         // ----------------------------------------------------------------------
         window.BadgeEngine = {
             add(label) {
@@ -803,7 +765,12 @@
                 }
                 
                 if (window.confetti) {
-                    confetti({ particleCount: 80, spread: 70, origin: { y: 0.8 }, colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] });
+                    confetti({ 
+                        particleCount: 80, 
+                        spread: 70, 
+                        origin: { y: 0.8 }, 
+                        colors: ['#CBAE75', '#89BFA0', '#7CA6C1'] 
+                    });
                 }
             },
             renderAll() {
@@ -869,7 +836,7 @@
             }
         };
 
-        // 스마트 이미지 로더 (404 스팸 방지 및 백지 캔버스 전환)
+        // [P0] 스마트 이미지 로더 (404 스팸 방지 및 백지 캔버스 전환)
         window.SmartImageLoader = {
             requestToken: 0,
             async findValidWorksheet(unitId, pageNum) {
@@ -886,6 +853,7 @@
                 const seriesChar = unitId.charAt(0); 
                 const t = Date.now(); 
                 
+                // 브라우저 404 로그는 자연스러운 fallback 과정입니다.
                 const basePaths = [
                     `${CONFIG.STORAGE_URL}${seriesChar}/${unitId}/${unitId}-${pageNum}.png`,
                     `${CONFIG.STORAGE_URL}${unitId}/${unitId}-${pageNum}.png`,
@@ -1006,10 +974,10 @@
                 let canvasData = null;
                 
                 if (compressForDatabase) { 
-                    // DB 전송용은 가볍게 압축 (통신 병목 방지)
+                    // DB 전송용은 통신 병목을 막기 위해 JPEG로 압축
                     canvasData = window.CanvasEngine.captureWorksheetWithDrawing(true, 600); 
                 } else { 
-                    // [P0] 로컬 캐시는 원본 PNG(1:1 픽셀)로 저장하여 리사이징 픽셀 깨짐 100% 방어
+                    // [P0] 로컬 백업은 1:1 픽셀 매칭을 위해 무압축 원본(PNG)으로 저장하여 선명도 유지
                     canvasData = window.CanvasEngine.cvs.toDataURL('image/png'); 
                 }
                 
@@ -1082,7 +1050,7 @@
                     if (localData) { 
                         const img = new Image(); 
                         img.onload = () => { 
-                            // [P0] 1:1 픽셀 매칭 수학적 보정으로 복원 화질 100% 보존
+                            // [P0 Fix] 1:1 픽셀 매칭 수학적 보정으로 복원 화질 100% 보존
                             window.CanvasEngine.ctx.save();
                             window.CanvasEngine.ctx.setTransform(1, 0, 0, 1, 0, 0); 
                             window.CanvasEngine.ctx.clearRect(0, 0, window.CanvasEngine.cvs.width, window.CanvasEngine.cvs.height);
@@ -1100,7 +1068,7 @@
             }
         };
 
-        // 이탈 방어 로직 (BeforeUnload Auto-Save) 보존
+        // [P1] 브라우저 종료 및 이탈 시 데이터 증발 방어(Auto-Save)
         window.addEventListener('beforeunload', () => {
             if(window.StorageEngine) {
                 window.StorageEngine.saveCanvasLocal();
@@ -1132,7 +1100,7 @@
                     slider.addEventListener('input', () => this.updateBrushPreview());
                 }
                 
-                // 아이패드 회전 시 캔버스 날아가는 현상을 막는 디바운스(Debounce) 락 보존
+                // [P0] 아이패드 회전 시 캔버스 날아가는 현상을 막는 디바운스(Debounce) 락 보존
                 if (window.ResizeObserver && this.board) {
                     new ResizeObserver(() => {
                         if(this.resizeTimer) clearTimeout(this.resizeTimer);
@@ -1197,7 +1165,7 @@
                     }
                     ctx.drawImage(draw, 0, 0, merged.width, merged.height);
                 } catch(e) { 
-                    window.Logger.warn("Security Canvas Taint Detected.");
+                    window.Logger.warn("Security Canvas Taint Detected. Engaging fallback extraction.");
                     const fallbackCanvas = document.createElement('canvas'); 
                     fallbackCanvas.width = Math.floor(draw.width * scaleRatio); 
                     fallbackCanvas.height = Math.floor(draw.height * scaleRatio);
@@ -1212,6 +1180,7 @@
                     let qualityLevel = 0.7; 
                     let encodedString = merged.toDataURL('image/jpeg', qualityLevel);
                     
+                    // [P0] Base64 헤더 오염 원천 차단
                     encodedString = encodedString.replace(/^data:image\/\w+;base64,/, "");
                     
                     while (encodedString.length > 400000) {
@@ -1267,6 +1236,7 @@
                 
                 this.setupCanvas();
                 
+                // [P0] 리사이즈 수학 교정 (픽셀 깨짐 100% 방어)
                 if (temp.width > 0 && temp.height > 0) {
                     this.ctx.save();
                     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -1473,7 +1443,7 @@
             }
         };
 
-        window.CertificateEngine = {
+        const CertificateEngine = {
             open(weekNum) {
                 const modal = document.getElementById('cert-modal'); 
                 if (!modal) return;
@@ -1540,7 +1510,7 @@
         };
 
         // ----------------------------------------------------------------------
-        // 6. AUDIO & AI ENGINES (모바일 녹음 펄스 UX 및 연타 방지 락 보존)
+        // 6. AUDIO & AI ENGINES (iOS 우회 및 연타 방어 보존)
         // ----------------------------------------------------------------------
         window.AudioEngine = {
             recordingMode: 'main',
@@ -1588,7 +1558,7 @@
                             const chatBtn = document.getElementById('btn-chat-record'); 
                             if (chatBtn) { 
                                 chatBtn.classList.remove('recording'); 
-                                chatBtn.innerHTML = `<i class="fa-solid fa-microphone"></i> <span>Speak to Teacher</span>`; 
+                                chatBtn.innerText = "🎤 Speak to Teacher"; 
                             } 
                             setTimeout(() => { window.AITutor.processReply(); }, 800); 
                         } else { 
@@ -1607,12 +1577,6 @@
                             const recText = document.getElementById('record-text'); 
                             if (recBtn) recBtn.classList.remove('recording'); 
                             if (recText) recText.innerText = "Voice Log"; 
-                            
-                            const chatBtn = document.getElementById('btn-chat-record');
-                            if(chatBtn) {
-                                chatBtn.classList.remove('recording'); 
-                                chatBtn.innerHTML = `<i class="fa-solid fa-microphone"></i> <span>Speak to Teacher</span>`;
-                            }
                         } 
                     };
                 } else { 
@@ -1655,14 +1619,14 @@
                     STATE.isRecording = true; 
                     if (chatBtn) { 
                         chatBtn.classList.add('recording'); 
-                        chatBtn.innerHTML = `<i class="fa-solid fa-microphone-lines"></i> <span>Listening... Tap to send</span>`; 
+                        chatBtn.innerText = "Listening..."; 
                     } 
                     this.rec.start(); 
                 } else { 
                     STATE.isRecording = false; 
                     if (chatBtn) { 
                         chatBtn.classList.remove('recording'); 
-                        chatBtn.innerHTML = `<i class="fa-solid fa-microphone"></i> <span>Speak to Teacher</span>`; 
+                        chatBtn.innerText = "🎤 Speak to Teacher"; 
                     } 
                     this.rec.stop(); 
                 } 
@@ -1672,16 +1636,16 @@
         window.AITutor = {
             isBusy: false,
             
-            // [P1] 연타 방어 시스템 보존
+            // [P0] 연타 방어 시스템 보존 (Mutext Lock)
             lockUI() {
                 this.isBusy = true;
-                const buttons = document.querySelectorAll('.btn-submit, .btn-record, .btn-nav, .btn-chat-action');
+                const buttons = document.querySelectorAll('.btn-submit, .btn-record, .btn-nav');
                 buttons.forEach(b => b.classList.add('locked-btn'));
             },
             
             unlockUI() {
                 this.isBusy = false;
-                const buttons = document.querySelectorAll('.btn-submit, .btn-record, .btn-nav, .btn-chat-action');
+                const buttons = document.querySelectorAll('.btn-submit, .btn-record, .btn-nav');
                 buttons.forEach(b => b.classList.remove('locked-btn'));
             },
             
@@ -1691,7 +1655,7 @@
             
             async callBackendTutor(promptText, base64Img = null) {
                 const controller = new AbortController(); 
-                const timeoutId = setTimeout(() => controller.abort(), 20000); // 넉넉한 타임아웃
+                const timeoutId = setTimeout(() => controller.abort(), 15000);
                 
                 try {
                     let token = "guest-token";
@@ -1820,7 +1784,7 @@
                     }
                     
                     const footer = document.getElementById('chat-footer'); 
-                    if (footer) footer.style.display = "flex"; 
+                    if (footer) footer.style.display = "block"; 
                     
                     if (reply) this.speak(reply);
                     
@@ -1852,7 +1816,7 @@
                     content.scrollTop = content.scrollHeight;
                     
                     try {
-                        const prompt = `Student answered: "${STATE.lastTranscript}". Respond warmly and actively facilitate the next step.`;
+                        const prompt = `Student answered: "${STATE.lastTranscript}". Respond warmly.`;
                         const reply = await this.callBackendTutor(prompt);
                         
                         if (STATE.currentPage !== requestPage || STATE.unitId !== requestUnit) return;
@@ -1904,7 +1868,7 @@
         }
 
         // ----------------------------------------------------------------------
-        // 7. ROUTING & UI ENGINES
+        // 7. ROUTING & UI ENGINES (이중 로딩(404) 방어 락 보존)
         // ----------------------------------------------------------------------
         window.AppEngine = {
             smoothMove(dir) {
@@ -1962,6 +1926,7 @@
                 }
             },
             load(n) {
+                // [P0] 이중 로딩(Double-Load) 방어 락
                 if (STATE.loadedPage === n) return;
                 STATE.loadedPage = n;
 
@@ -2009,7 +1974,7 @@
         };
 
         // ----------------------------------------------------------------------
-        // 8. ASYNC BOOTLOADER (비동기 듀얼 부팅 아키텍처)
+        // 8. ASYNC BOOTLOADER (비동기 듀얼 부팅 및 오프라인 생존 모드)
         // ----------------------------------------------------------------------
         let uiBooted = false;
 
@@ -2026,7 +1991,7 @@
                 window.PageEngine.init(); 
                 window.PageEngine.load(STATE.currentPage); 
                 window.AudioEngine.init();
-                window.Logger.log("V100.2300 UI Engine Started. Canvas Ready.");
+                window.Logger.log("V100.2000 UI Engine Started. Canvas Ready.");
             } catch(error) { 
                 window.Logger.error("UI initialization error:", error); 
             }
@@ -2041,7 +2006,7 @@
                     window.PageEngine.load(STATE.currentPage); 
                 }
                 
-                window.Logger.log("V100.2300 Firebase Data Synchronized."); 
+                window.Logger.log("V100.2000 Firebase Data Synchronized."); 
             } catch(error) { 
                 window.Logger.error("Data sync error:", error); 
             }
@@ -2083,11 +2048,10 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            // [핵심] 파이어베이스 응답 대기 없이 화면을 0초 즉각 렌더링
+            // [P0] 파이어베이스 연결과 무관하게 화면 0.01초 만에 즉각 렌더링
             UIBoot();
             safeFirebaseBoot();
             
-            // 4초 오프라인 생존 모드 가드
             setTimeout(() => { 
                 if (!STATE.uid && STATE.studentName !== "GUEST") { 
                     STATE.studentName = "GUEST"; 
